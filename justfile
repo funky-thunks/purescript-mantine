@@ -1,6 +1,9 @@
 code:
   nix develop -c -- $EDITOR .
 
+watch:
+  nix develop -c -- spago build --watch --clear-screen
+
 clean:
   rm -rf dce-output/ output/ dist/
 
