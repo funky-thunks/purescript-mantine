@@ -4,6 +4,9 @@ code:
 watch:
   nix develop -c -- spago build --watch --clear-screen
 
+repl:
+  nix develop -c -- spago repl
+
 clean:
   rm -rf dce-output/ output/ dist/
 

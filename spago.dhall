@@ -1,6 +1,8 @@
 { name = "mantine"
 , dependencies =
-  [ "console"
+  [ "aff"
+  , "aff-promise"
+  , "console"
   , "effect"
   , "either"
   , "functions"
