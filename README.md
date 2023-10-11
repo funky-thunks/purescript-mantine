@@ -2,6 +2,8 @@
 
 Bindings to use [Mantine](mantine.dev) components from a Purescript codebase.
 
+Currently supporting mantine v5.
+
 :warning: This is work-in-progress and this is very unstable.
 
 ## Progress
@@ -19,8 +21,8 @@ Bindings to use [Mantine](mantine.dev) components from a Purescript codebase.
   - [ ] Space
   - [ ] Stack
 - [ ] Buttons
-  - [x] [ActionIcon](https://mantine.dev/core/action-icon/)
-  - [x] [Button](https://mantine.dev/core/button/)
+  - [x] [ActionIcon](https://v5.mantine.dev/core/action-icon/)
+  - [x] [Button](https://v5.mantine.dev/core/button/)
   - [ ] CloseButton
   - [ ] CopyButton
   - [ ] FileButton
