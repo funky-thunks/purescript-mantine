@@ -5,6 +5,30 @@
 let
   inputs = {
 
+    "aff" = pkgs.stdenv.mkDerivation {
+        name = "aff";
+        version = "v7.1.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/purescript-contrib/purescript-aff.git";
+          rev = "6adec6ff048a7876f74c294c440374cd21342d39";
+          sha256 = "1viplap030ym9ya033xl6x41hvdc12v9ngwp1v64ayl40a5m1d47";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
+    "aff-promise" = pkgs.stdenv.mkDerivation {
+        name = "aff-promise";
+        version = "v4.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/nwolverson/purescript-aff-promise.git";
+          rev = "3aa74e68e3e4c3e38d821375703e0b2f49d831eb";
+          sha256 = "10gv3b05dxnlmr9zmigqs1hz4xqrx7da30aqh12kqg3zrg49k9cc";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "arrays" = pkgs.stdenv.mkDerivation {
         name = "arrays";
         version = "v7.2.1";
@@ -269,6 +293,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "indexed-monad" = pkgs.stdenv.mkDerivation {
+        name = "indexed-monad";
+        version = "v3.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/garyb/purescript-indexed-monad.git";
+          rev = "cd4d506dc86c525bbb126b972fd3fc1b237bdec4";
+          sha256 = "0cnpiamz5xcjw2yhzdfw0shaxcani7bjf4k8dnvxidfzrsgijm4d";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "integers" = pkgs.stdenv.mkDerivation {
         name = "integers";
         version = "v6.0.0";
@@ -449,6 +485,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "parallel" = pkgs.stdenv.mkDerivation {
+        name = "parallel";
+        version = "v6.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/purescript/purescript-parallel.git";
+          rev = "85290dca837771ac4870071008c933d315ef678f";
+          sha256 = "0bpwvzq4dn7vx5mfj12w1zvvnamc6w2c45c2v54b9yw36snnwpcf";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "partial" = pkgs.stdenv.mkDerivation {
         name = "partial";
         version = "v4.0.0";
@@ -509,6 +557,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "react-basic-dom" = pkgs.stdenv.mkDerivation {
+        name = "react-basic-dom";
+        version = "v6.1.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/lumihq/purescript-react-basic-dom.git";
+          rev = "a3406d6a27afcdea36a2dae7ab23245267a061a6";
+          sha256 = "0w4rhvfh48p6bwj3pdd1487hsnm392mabqps6aqspnm1gw3wkv3i";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "react-basic-emotion" = pkgs.stdenv.mkDerivation {
         name = "react-basic-emotion";
         version = "v7.1.0";
@@ -516,6 +576,30 @@ let
           url = "https://github.com/lumihq/purescript-react-basic-emotion.git";
           rev = "fe0dff7635404b7748f545bd3fd6462f8c6bb519";
           sha256 = "1v7qcqlq26xmfhwv5p2lvsc9vv05l46ixgzwwhy3agx3ar3mq6fz";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
+    "react-basic-hooks" = pkgs.stdenv.mkDerivation {
+        name = "react-basic-hooks";
+        version = "v8.2.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/megamaddu/purescript-react-basic-hooks.git";
+          rev = "2a0b5981bbb12c88d7ae1689d8a2ecdce97235ac";
+          sha256 = "12agri814hln4mqyx070fn8f0zq7nl7jvjad1y8s9w4pfr9pn7wl";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
+    "react-icons" = pkgs.stdenv.mkDerivation {
+        name = "react-icons";
+        version = "v1.1.1";
+        src = pkgs.fetchgit {
+          url = "https://github.com/purescript-react/purescript-react-icons.git";
+          rev = "c78be583b025aab3e72b4110325a763f9fbc3e7b";
+          sha256 = "14lri1s05hibqrxr6hw7yjl22cc8214x7r83jx4hbl13hm9rkpk2";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
@@ -660,6 +744,18 @@ let
           url = "https://github.com/purescript/purescript-unsafe-coerce.git";
           rev = "ab956f82e66e633f647fb3098e8ddd3ec58d689f";
           sha256 = "0r6d3dx8jalfzvrvkagz9v05yxwkkhgbzlpswg4w1cyl03zjcla4";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
+    "unsafe-reference" = pkgs.stdenv.mkDerivation {
+        name = "unsafe-reference";
+        version = "v5.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/purescript-contrib/purescript-unsafe-reference.git";
+          rev = "058e23b8b9adcf776a910f9934ff515ddee73af5";
+          sha256 = "07793ijx8vv9rac0yqkxzh5djckhslcy16cm8k0lgjl6bc9mwgra";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
