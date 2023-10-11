@@ -9,6 +9,8 @@
   , "prelude"
   , "react-basic"
   , "react-basic-emotion"
+  , "react-basic-hooks"
+  , "react-icons"
   , "record"
   , "typelevel-prelude"
   , "untagged-union"
