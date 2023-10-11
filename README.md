@@ -152,7 +152,7 @@ Currently supporting mantine v5.
   - [ ] [useResizeObserver](https://v5.mantine.dev/hooks/use-resize-observer/)
   - [ ] [useScrollInto-view](https://v5.mantine.dev/hooks/use-scroll-into-view/)
   - [ ] [useScrollLock](https://v5.mantine.dev/hooks/use-scroll-lock/)
-  - [ ] [useViewportSize](https://v5.mantine.dev/hooks/use-viewport-size/)
+  - [x] [useViewportSize](https://v5.mantine.dev/hooks/use-viewport-size/)
 - [ ] Utilities
   - [ ] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
   - [ ] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)

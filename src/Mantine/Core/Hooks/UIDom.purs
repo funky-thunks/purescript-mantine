@@ -6,6 +6,10 @@ module Mantine.Core.Hooks.UIDom
   , UseMovePosition
   , UseMoveHandlers
   , useMove
+
+  , useViewportSize
+  , UseViewportSize
+  , ViewportDimensions
   ) where
 
 import Prelude
@@ -57,3 +61,15 @@ useMove :: (UseMovePosition -> Effect Unit) -> UseMoveHandlers -> Hook UseMove (
 useMove onChange handlers =
   let mkResult { active, ref } = active /\ ref
    in unsafeHook (mkResult <$> runEffectFn2 useMoveImpl (mkEffectFn1 onChange) handlers)
+
+type ViewportDimensions =
+  { height :: Number
+  , width  :: Number
+  }
+
+foreign import useViewportSizeImpl :: Effect ViewportDimensions
+
+foreign import data UseViewportSize :: Type -> Type
+
+useViewportSize :: Hook UseViewportSize ViewportDimensions
+useViewportSize = unsafeHook  useViewportSizeImpl
