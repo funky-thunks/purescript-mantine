@@ -8,6 +8,8 @@ Currently supporting mantine v5.
 
 ## Progress
 
+### Components
+
 - [ ] Layout
   - [ ] AppShell
   - [ ] AspectRatio
@@ -107,3 +109,67 @@ Currently supporting mantine v5.
   - [ ] Portal
   - [ ] ScrollArea
   - [ ] Transition
+
+### Hooks
+
+- [ ] Theming
+  - [x] [useMantineColorScheme](https://v5.mantine.dev/guides/dark-theme/#colorschemeprovider)
+- [ ] State management
+  - [ ] [useCounter](https://v5.mantine.dev/hooks/use-counter/)
+  - [ ] [useDebouncedState](https://v5.mantine.dev/hooks/use-debounced-state/)
+  - [ ] [useDebouncedValue](https://v5.mantine.dev/hooks/use-debounced-value/)
+  - [ ] [useDisclosure](https://v5.mantine.dev/hooks/use-disclosure/)
+  - [ ] [useId](https://v5.mantine.dev/hooks/use-id/)
+  - [ ] [useIdle](https://v5.mantine.dev/hooks/use-idle/)
+  - [ ] [useInputState](https://v5.mantine.dev/hooks/use-input-state/)
+  - [ ] [useInterval](https://v5.mantine.dev/hooks/use-interval/)
+  - [ ] [useListState](https://v5.mantine.dev/hooks/use-list-state/)
+  - [ ] [useLocalStorage](https://v5.mantine.dev/hooks/use-local-storage/)
+  - [ ] [usePagination](https://v5.mantine.dev/hooks/use-pagination/)
+  - [ ] [usePrevious](https://v5.mantine.dev/hooks/use-previous/)
+  - [ ] [useQueue](https://v5.mantine.dev/hooks/use-queue/)
+  - [ ] [useSetState](https://v5.mantine.dev/hooks/use-set-state/)
+  - [ ] [useTimeout](https://v5.mantine.dev/hooks/use-timeout/)
+  - [ ] [useToggle](https://v5.mantine.dev/hooks/use-toggle/)
+  - [ ] [useUncontrolled](https://v5.mantine.dev/hooks/use-uncontrolled/)
+  - [ ] [useValidatedState](https://v5.mantine.dev/hooks/use-validated-state/)
+- [ ] UI and Dom
+  - [ ] [useClickOutside](https://v5.mantine.dev/hooks/use-click-outside/)
+  - [ ] [useColorScheme](https://v5.mantine.dev/hooks/use-color-scheme/)
+  - [ ] [useElementSize](https://v5.mantine.dev/hooks/use-element-size/)
+  - [ ] [useEventListener](https://v5.mantine.dev/hooks/use-event-listener/)
+  - [ ] [useFocusReturn](https://v5.mantine.dev/hooks/use-focus-return/)
+  - [ ] [useFocusTrap](https://v5.mantine.dev/hooks/use-focus-trap/)
+  - [x] [useFocusWithin](https://v5.mantine.dev/hooks/use-focus-within/)
+  - [ ] [useFullscreen](https://v5.mantine.dev/hooks/use-fullscreen/)
+  - [ ] [useHotkeys](https://v5.mantine.dev/hooks/use-hotkeys/)
+  - [ ] [useHover](https://v5.mantine.dev/hooks/use-hover/)
+  - [ ] [useIntersection](https://v5.mantine.dev/hooks/use-intersection/)
+  - [ ] [useMediaQuery](https://v5.mantine.dev/hooks/use-media-query/)
+  - [ ] [useMouse](https://v5.mantine.dev/hooks/use-mouse/)
+  - [x] [useMove](https://v5.mantine.dev/hooks/use-move/)
+  - [ ] [useReduced-Motion](https://v5.mantine.dev/hooks/use-reduced-motion/)
+  - [ ] [useResizeObserver](https://v5.mantine.dev/hooks/use-resize-observer/)
+  - [ ] [useScrollInto-view](https://v5.mantine.dev/hooks/use-scroll-into-view/)
+  - [ ] [useScrollLock](https://v5.mantine.dev/hooks/use-scroll-lock/)
+  - [ ] [useViewportSize](https://v5.mantine.dev/hooks/use-viewport-size/)
+- [ ] Utilities
+  - [ ] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
+  - [ ] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
+  - [ ] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
+  - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)
+  - [ ] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
+  - [ ] [useHash](https://v5.mantine.dev/hooks/use-hash/)
+  - [ ] [useMergedRef](https://v5.mantine.dev/hooks/use-merged-ref/)
+  - [ ] [useNetwork](https://v5.mantine.dev/hooks/use-network/)
+  - [ ] [useOs](https://v5.mantine.dev/hooks/use-os/)
+  - [ ] [usePageLeave](https://v5.mantine.dev/hooks/use-page-leave/)
+  - [ ] [useTextSelection](https://v5.mantine.dev/hooks/use-text-selection/)
+  - [ ] [useWindowEvent](https://v5.mantine.dev/hooks/use-window-event/)
+  - [ ] [useWindowScroll](https://v5.mantine.dev/hooks/use-window-scroll/)
+- [ ] Lifecycle
+  - [ ] [useDidUpdate](https://v5.mantine.dev/hooks/use-did-update/)
+  - [ ] [useForceUpdate](https://v5.mantine.dev/hooks/use-force-update/)
+  - [ ] [useIsomorphicEffect](https://v5.mantine.dev/hooks/use-isomorphic-effect/)
+  - [ ] [useLogger](https://v5.mantine.dev/hooks/use-logger/)
+  - [ ] [useShallowEffect](https://v5.mantine.dev/hooks/use-shallow-effect/)
