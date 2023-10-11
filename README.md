@@ -1,0 +1,107 @@
+# Purescript bindings for mantine
+
+Bindings to use [Mantine](mantine.dev) components from a Purescript codebase.
+
+:warning: This is work-in-progress and this is very unstable.
+
+## Progress
+
+- [ ] Layout
+  - [ ] AppShell
+  - [ ] AspectRatio
+  - [ ] Center
+  - [ ] Container
+  - [ ] Flex
+  - [ ] Grid
+  - [ ] Group
+  - [ ] MediaQuery
+  - [ ] SimpleGrid
+  - [ ] Space
+  - [ ] Stack
+- [ ] Buttons
+  - [ ] ActionIcon
+  - [ ] Button
+  - [ ] CloseButton
+  - [ ] CopyButton
+  - [ ] FileButton
+  - [ ] UnstyledButton
+- [ ] Inputs
+  - [ ] Autocomplete
+  - [ ] Checkbox
+  - [ ] Chip
+  - [ ] ColorInput
+  - [ ] ColorPicker
+  - [ ] FileInput
+  - [ ] Input
+  - [ ] JsonInput
+  - [ ] MultiSelect
+  - [ ] NativeSelect
+  - [ ] NumberInput
+  - [ ] PasswordInput
+  - [ ] Radio
+  - [ ] Rating
+  - [ ] SegmentedControl
+  - [ ] Select
+  - [ ] Slider
+  - [ ] Switch
+  - [ ] Textarea
+  - [ ] TextInput
+  - [ ] TransferList
+- [ ] Navigation
+  - [ ] Anchor
+  - [ ] Breadcrumbs
+  - [ ] Burger
+  - [ ] NavLink
+  - [ ] Pagination
+  - [ ] Stepper
+  - [ ] Tabs
+- [ ] Data display
+  - [ ] Accordion
+  - [ ] Avatar
+  - [ ] BackgroundImage
+  - [ ] Badge
+  - [ ] Card
+  - [ ] ColorSwatch
+  - [ ] Image
+  - [ ] Indicator
+  - [ ] Kbd
+  - [ ] Spoiler
+  - [ ] ThemeIcon
+  - [ ] Timeline
+- [ ] Overlays
+  - [ ] Affix
+  - [ ] Dialog
+  - [ ] Drawer
+  - [ ] HoverCard
+  - [ ] LoadingOverlay
+  - [ ] Menu
+  - [ ] Modal
+  - [ ] Overlay
+  - [ ] Popover
+  - [ ] Tooltip
+- [ ] Typography
+  - [ ] Blockquote
+  - [ ] Code
+  - [ ] Highlight
+  - [ ] List
+  - [ ] Mark
+  - [ ] Table
+  - [ ] Text
+  - [ ] Title
+  - [ ] TypographyStylesProvider
+- [ ] Feedback
+  - [ ] Alert
+  - [ ] Loader
+  - [ ] Notification
+  - [ ] Progress
+  - [ ] RingProgress
+  - [ ] Skeleton
+- [ ] Miscellaneous
+  - [ ] Box
+  - [ ] Collapse
+  - [ ] Divider
+  - [ ] FocusTrap
+  - [ ] Paper
+  - [ ] Portal
+  - [ ] ScrollArea
+  - [ ] Transition
