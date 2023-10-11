@@ -3,6 +3,7 @@
   [ "console"
   , "effect"
   , "either"
+  , "functions"
   , "maybe"
   , "newtype"
   , "nullable"
@@ -12,8 +13,10 @@
   , "react-basic-hooks"
   , "react-icons"
   , "record"
+  , "tuples"
   , "typelevel-prelude"
   , "untagged-union"
+  , "web-dom"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
