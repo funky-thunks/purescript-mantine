@@ -6,6 +6,10 @@ module Mantine.Core.Hooks.UIDom
   , UseFullscreen
   , UseFullscreenResult
 
+  , useMediaQuery
+  , UseMediaQuery
+  , UseMediaQueryOptions
+
   , UseMove
   , UseMovePosition
   , UseMoveHandlers
@@ -18,7 +22,8 @@ module Mantine.Core.Hooks.UIDom
 
 import Prelude
 import Control.Promise (Promise, toAff)
-import Data.Nullable (Nullable)
+import Data.Maybe (Maybe)
+import Data.Nullable (Nullable, toNullable)
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEffectFn2)
@@ -65,6 +70,27 @@ foreign import data UseFullscreen :: Type -> Type
 
 useFullscreen :: Hook UseFullscreen UseFullscreenResult
 useFullscreen = unsafeHook (fromUseFullscreenResultImpl <$> useFullscreenImpl)
+
+type UseMediaQueryOptions =
+  { query        :: String
+  , initialValue :: Maybe Boolean
+  , options      :: Maybe { getInitialValueInEffect :: Boolean }
+  }
+
+type UseMediaQueryOptionsImpl =
+  { query        :: String
+  , initialValue :: Nullable Boolean
+  , options      :: Nullable { getInitialValueInEffect :: Boolean }
+  }
+
+foreign import useMediaQueryImpl :: EffectFn1 UseMediaQueryOptionsImpl Boolean
+
+foreign import data UseMediaQuery :: Type -> Type
+
+useMediaQuery :: UseMediaQueryOptions -> Hook UseMediaQuery Boolean
+useMediaQuery options =
+  let nativeOptions = options { initialValue = toNullable options.initialValue, options = toNullable options.options }
+   in unsafeHook (runEffectFn1 useMediaQueryImpl nativeOptions)
 
 type UseMovePosition =
   { x :: Number
