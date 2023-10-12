@@ -146,7 +146,7 @@ Currently supporting mantine v5.
   - [ ] [useHover](https://v5.mantine.dev/hooks/use-hover/)
   - [ ] [useIntersection](https://v5.mantine.dev/hooks/use-intersection/)
   - [x] [useMediaQuery](https://v5.mantine.dev/hooks/use-media-query/)
-  - [ ] [useMouse](https://v5.mantine.dev/hooks/use-mouse/)
+  - [x] [useMouse](https://v5.mantine.dev/hooks/use-mouse/)
   - [x] [useMove](https://v5.mantine.dev/hooks/use-move/)
   - [ ] [useReduced-Motion](https://v5.mantine.dev/hooks/use-reduced-motion/)
   - [ ] [useResizeObserver](https://v5.mantine.dev/hooks/use-resize-observer/)

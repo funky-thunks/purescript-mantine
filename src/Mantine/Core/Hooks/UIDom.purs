@@ -10,6 +10,12 @@ module Mantine.Core.Hooks.UIDom
   , UseMediaQuery
   , UseMediaQueryOptions
 
+  , useMouse
+  , useMouse_
+  , UseMouse
+  , UseMouseOptions
+  , UseMouseResult
+
   , UseMove
   , UseMovePosition
   , UseMoveHandlers
@@ -91,6 +97,26 @@ useMediaQuery :: UseMediaQueryOptions -> Hook UseMediaQuery Boolean
 useMediaQuery options =
   let nativeOptions = options { initialValue = toNullable options.initialValue, options = toNullable options.options }
    in unsafeHook (runEffectFn1 useMediaQueryImpl nativeOptions)
+
+type UseMouseOptions =
+  { resetOnExit :: Boolean
+  }
+
+type UseMouseResult =
+  { x   :: Number
+  , y   :: Number
+  , ref :: Ref (Nullable Node)
+  }
+
+foreign import useMouseImpl :: EffectFn1 UseMouseOptions UseMouseResult
+
+foreign import data UseMouse :: Type -> Type
+
+useMouse :: UseMouseOptions -> Hook UseMouse UseMouseResult
+useMouse options = unsafeHook (runEffectFn1 useMouseImpl options)
+
+useMouse_ :: Hook UseMouse UseMouseResult
+useMouse_ = useMouse { resetOnExit: false }
 
 type UseMovePosition =
   { x :: Number

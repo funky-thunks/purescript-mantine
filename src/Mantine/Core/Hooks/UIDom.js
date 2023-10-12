@@ -1,10 +1,12 @@
-import { useFocusWithin, useFullscreen, useMediaQuery, useMove, useViewportSize } from '@mantine/hooks';
+import { useFocusWithin, useFullscreen, useMediaQuery, useMouse, useMove, useViewportSize } from '@mantine/hooks';
 
 export const useFocusWithinImpl = useFocusWithin;
 
 export const useFullscreenImpl = useFullscreen;
 
 export const useMediaQueryImpl = useMediaQuery;
+
+export const useMouseImpl = useMouse;
 
 export const useMoveImpl = useMove;
 
