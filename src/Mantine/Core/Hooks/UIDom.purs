@@ -2,6 +2,10 @@ module Mantine.Core.Hooks.UIDom
   ( useFocusWithin
   , UseFocusWithin
 
+  , useFullscreen
+  , UseFullscreen
+  , UseFullscreenResult
+
   , UseMove
   , UseMovePosition
   , UseMoveHandlers
@@ -13,8 +17,10 @@ module Mantine.Core.Hooks.UIDom
   ) where
 
 import Prelude
+import Control.Promise (Promise, toAff)
 import Data.Nullable (Nullable)
 import Effect (Effect)
+import Effect.Aff (Aff)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEffectFn2)
 import React.Basic.Hooks (type (/\), Hook, Ref, (/\), unsafeHook)
 import Web.DOM (Node)
@@ -37,6 +43,28 @@ useFocusWithin ::  UseFocusWithinHandlers -> Hook UseFocusWithin (Boolean /\ Ref
 useFocusWithin handlers =
   let mkResult { focused, ref } = focused /\ ref
    in unsafeHook (mkResult <$> runEffectFn1 useFocusWithinImpl handlers)
+
+type UseFullscreenResultImpl =
+  { fullscreen :: Boolean
+  , ref        :: Ref (Nullable Node)
+  , toggle     :: Promise Unit
+  }
+
+type UseFullscreenResult =
+  { fullscreen :: Boolean
+  , ref        :: Ref (Nullable Node)
+  , toggle     :: Aff Unit
+  }
+
+fromUseFullscreenResultImpl :: UseFullscreenResultImpl -> UseFullscreenResult
+fromUseFullscreenResultImpl n = n { toggle = toAff n.toggle }
+
+foreign import useFullscreenImpl :: Effect UseFullscreenResultImpl
+
+foreign import data UseFullscreen :: Type -> Type
+
+useFullscreen :: Hook UseFullscreen UseFullscreenResult
+useFullscreen = unsafeHook (fromUseFullscreenResultImpl <$> useFullscreenImpl)
 
 type UseMovePosition =
   { x :: Number
