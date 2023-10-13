@@ -155,7 +155,7 @@ Currently supporting mantine v5.
   - [x] [useViewportSize](https://v5.mantine.dev/hooks/use-viewport-size/)
 - [ ] Utilities
   - [ ] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
-  - [ ] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
+  - [x] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
   - [ ] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
   - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)
   - [ ] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
