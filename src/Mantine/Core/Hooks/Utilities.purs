@@ -7,6 +7,8 @@ module Mantine.Core.Hooks.Utilities
   , UseHash
   , usePageLeave
   , UsePageLeave
+  , useWindowEvent
+  , UseWindowEvent
   , useWindowScroll
   , UseWindowScroll
   , Position
@@ -14,8 +16,9 @@ module Mantine.Core.Hooks.Utilities
 
 import Prelude
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1, runEffectFn1)
+import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import React.Basic.Hooks (type (/\), Hook, (/\), unsafeHook)
+import Web.Event.Event (Event)
 
 foreign import useDocumentTitleImpl :: String -> Effect Unit
 foreign import data UseDocumentTitle :: Type -> Type
@@ -42,6 +45,24 @@ foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
 usePageLeave e = unsafeHook (usePageLeaveImpl e)
+
+type UseWindowEventOptions =
+  { type     :: String
+  , listener :: Event -> Effect Unit
+  }
+
+type UseWindowEventOptionsImpl =
+  { type     :: String
+  , listener :: EffectFn1 Event Unit
+  }
+
+foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
+foreign import data UseWindowEvent :: Type -> Type
+
+useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
+useWindowEvent options =
+  let nativeOptions = options { listener = mkEffectFn1 options.listener }
+   in unsafeHook (runEffectFn1 useWindowEventImpl nativeOptions)
 
 type UseWindowScrollImpl =
   { current :: Position
