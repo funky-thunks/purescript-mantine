@@ -10,3 +10,8 @@ export const useViewportSizeImpl = hooks.useViewportSize;
 export const useHotkeysImpl = options => {
   hooks.useHotkeys([ options.hotKeyItems, options.tagsToIgnore ]);
 };
+
+export const useResizeObserverImpl = () => {
+  const [ref, rect] = hooks.useResizeObserver;
+  return { ref, rect };
+};
