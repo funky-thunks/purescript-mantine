@@ -159,7 +159,7 @@ Currently supporting mantine v5.
   - [ ] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
   - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)
   - [x] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
-  - [ ] [useHash](https://v5.mantine.dev/hooks/use-hash/)
+  - [x] [useHash](https://v5.mantine.dev/hooks/use-hash/)
   - [ ] [useMergedRef](https://v5.mantine.dev/hooks/use-merged-ref/)
   - [ ] [useNetwork](https://v5.mantine.dev/hooks/use-network/)
   - [ ] [useOs](https://v5.mantine.dev/hooks/use-os/)

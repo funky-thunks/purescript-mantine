@@ -3,11 +3,14 @@ module Mantine.Core.Hooks.Utilities
   , UseDocumentTitle
   , useFavicon
   , UseFavicon
+  , useHash
+  , UseHash
   ) where
 
 import Prelude
 import Effect (Effect)
-import React.Basic.Hooks (Hook, unsafeHook)
+import Effect.Uncurried (EffectFn1, runEffectFn1)
+import React.Basic.Hooks (type (/\), Hook, (/\), unsafeHook)
 
 foreign import useDocumentTitleImpl :: String -> Effect Unit
 foreign import data UseDocumentTitle :: Type -> Type
@@ -20,3 +23,11 @@ foreign import data UseFavicon :: Type -> Type
 
 useFavicon :: String -> Hook UseFavicon Unit
 useFavicon t = unsafeHook (useFaviconImpl t)
+
+foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
+foreign import data UseHash :: Type -> Type
+
+useHash :: Hook UseHash (String /\ (String -> Effect Unit))
+useHash =
+  let fromNative { hash, setHash } = hash /\ runEffectFn1 setHash
+   in unsafeHook (fromNative <$> useHashImpl)
