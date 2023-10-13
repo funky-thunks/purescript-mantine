@@ -26,6 +26,10 @@ module Mantine.Core.Hooks.UIDom
   , UseMoveHandlers
   , useMove
 
+  , useResizeObserver
+  , UseResizeObserver
+  , ResizeRectangle
+
   , useViewportSize
   , UseViewportSize
   , ViewportDimensions
@@ -173,6 +177,30 @@ useMove :: (UseMovePosition -> Effect Unit) -> UseMoveHandlers -> Hook UseMove (
 useMove onChange handlers =
   let mkResult { active, ref } = active /\ ref
    in unsafeHook (mkResult <$> runEffectFn2 useMoveImpl (mkEffectFn1 onChange) handlers)
+
+type ResizeRectangle =
+  { x      :: Number
+  , y      :: Number
+  , top    :: Number
+  , left   :: Number
+  , right  :: Number
+  , bottom :: Number
+  , height :: Number
+  , width  :: Number
+  }
+
+type UseResizeObserverImpl =
+  { ref  :: Ref Node
+  , rect :: ResizeRectangle
+  }
+
+foreign import useResizeObserverImpl :: Effect UseResizeObserverImpl
+foreign import data UseResizeObserver :: Type -> Type
+
+useResizeObserver :: Hook UseResizeObserver (Ref Node /\ ResizeRectangle)
+useResizeObserver =
+  let fromNative { ref, rect } = ref /\ rect
+   in unsafeHook (fromNative <$> useResizeObserverImpl)
 
 type ViewportDimensions =
   { height :: Number

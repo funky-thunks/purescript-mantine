@@ -7,5 +7,5 @@ module Mantine.Core.Hooks
 
 import Mantine.Core.Hooks.StateManagement (UseIdle, useIdle)
 import Mantine.Core.Hooks.Theming (useMantineColorScheme, MantineColorScheme (..), UseMantineColorScheme)
-import Mantine.Core.Hooks.UIDom (HotkeyItem, UseFocusWithin, UseFullscreen, UseFullscreenResult, UseHotkeys, UseHotkeysOptions, UseMediaQuery, UseMediaQueryOptions, UseMouse, UseMouseOptions, UseMouseResult, UseMove, UseMoveHandlers, UseMovePosition, UseViewportSize, ViewportDimensions, useFocusWithin, useFullscreen, useHotkeys, useMediaQuery, useMouse, useMouse_, useMove, useViewportSize)
-import Mantine.Core.Hooks.Utilities (UseDocumentTitle, UseFavicon, UseHash, useDocumentTitle, useFavicon, useHash)
+import Mantine.Core.Hooks.UIDom (HotkeyItem, ResizeRectangle, UseFocusWithin, UseFullscreen, UseFullscreenResult, UseHotkeys, UseHotkeysOptions, UseMediaQuery, UseMediaQueryOptions, UseMouse, UseMouseOptions, UseMouseResult, UseMove, UseMoveHandlers, UseMovePosition, UseResizeObserver, UseViewportSize, ViewportDimensions, useFocusWithin, useFullscreen, useHotkeys, useMediaQuery, useMouse, useMouse_, useMove, useResizeObserver, useViewportSize)
+import Mantine.Core.Hooks.Utilities (Position, UseDocumentTitle, UseFavicon, UseHash, UsePageLeave, UseWindowEvent, UseWindowScroll, useDocumentTitle, useFavicon, useHash, usePageLeave, useWindowEvent, useWindowScroll)
