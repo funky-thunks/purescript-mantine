@@ -158,7 +158,7 @@ Currently supporting mantine v5.
   - [x] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
   - [ ] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
   - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)
-  - [ ] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
+  - [x] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
   - [ ] [useHash](https://v5.mantine.dev/hooks/use-hash/)
   - [ ] [useMergedRef](https://v5.mantine.dev/hooks/use-merged-ref/)
   - [ ] [useNetwork](https://v5.mantine.dev/hooks/use-network/)
