@@ -6,6 +6,21 @@ module Mantine.Core.Hooks.UIDom
   , UseFullscreen
   , UseFullscreenResult
 
+  , useHotkeys
+  , UseHotkeys
+  , UseHotkeysOptions
+  , HotkeyItem
+
+  , useMediaQuery
+  , UseMediaQuery
+  , UseMediaQueryOptions
+
+  , useMouse
+  , useMouse_
+  , UseMouse
+  , UseMouseOptions
+  , UseMouseResult
+
   , UseMove
   , UseMovePosition
   , UseMoveHandlers
@@ -18,12 +33,14 @@ module Mantine.Core.Hooks.UIDom
 
 import Prelude
 import Control.Promise (Promise, toAff)
-import Data.Nullable (Nullable)
+import Data.Maybe (Maybe)
+import Data.Nullable (Nullable, toNullable)
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEffectFn2)
 import React.Basic.Hooks (type (/\), Hook, Ref, (/\), unsafeHook)
 import Web.DOM (Node)
+import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
@@ -65,6 +82,73 @@ foreign import data UseFullscreen :: Type -> Type
 
 useFullscreen :: Hook UseFullscreen UseFullscreenResult
 useFullscreen = unsafeHook (fromUseFullscreenResultImpl <$> useFullscreenImpl)
+
+type UseHotkeysOptions item =
+  { hotKeyItems  :: Array item
+  , tagsToIgnore :: Array String
+  }
+
+type HotkeyItem =
+  { hotkey  :: String
+  , handler :: KeyboardEvent -> Effect Unit
+  , options :: Maybe { preventDefault :: Boolean }
+  }
+
+type HotkeyItemImpl =
+  { hotkey  :: String
+  , handler :: EffectFn1 KeyboardEvent Unit
+  , options :: Nullable { preventDefault :: Boolean }
+  }
+
+foreign import useHotkeysImpl :: EffectFn1 (UseHotkeysOptions HotkeyItemImpl) Unit
+foreign import data UseHotkeys :: Type -> Type
+
+useHotkeys :: UseHotkeysOptions HotkeyItem -> Hook UseHotkeys Unit
+useHotkeys options =
+  let nativeOptions = options { hotKeyItems = nativeHotKeyItem <$> options.hotKeyItems}
+      nativeHotKeyItem item = item { options = toNullable item.options, handler = mkEffectFn1 item.handler }
+   in unsafeHook (runEffectFn1 useHotkeysImpl nativeOptions)
+
+type UseMediaQueryOptions =
+  { query        :: String
+  , initialValue :: Maybe Boolean
+  , options      :: Maybe { getInitialValueInEffect :: Boolean }
+  }
+
+type UseMediaQueryOptionsImpl =
+  { query        :: String
+  , initialValue :: Nullable Boolean
+  , options      :: Nullable { getInitialValueInEffect :: Boolean }
+  }
+
+foreign import useMediaQueryImpl :: EffectFn1 UseMediaQueryOptionsImpl Boolean
+
+foreign import data UseMediaQuery :: Type -> Type
+
+useMediaQuery :: UseMediaQueryOptions -> Hook UseMediaQuery Boolean
+useMediaQuery options =
+  let nativeOptions = options { initialValue = toNullable options.initialValue, options = toNullable options.options }
+   in unsafeHook (runEffectFn1 useMediaQueryImpl nativeOptions)
+
+type UseMouseOptions =
+  { resetOnExit :: Boolean
+  }
+
+type UseMouseResult =
+  { x   :: Number
+  , y   :: Number
+  , ref :: Ref (Nullable Node)
+  }
+
+foreign import useMouseImpl :: EffectFn1 UseMouseOptions UseMouseResult
+
+foreign import data UseMouse :: Type -> Type
+
+useMouse :: UseMouseOptions -> Hook UseMouse UseMouseResult
+useMouse options = unsafeHook (runEffectFn1 useMouseImpl options)
+
+useMouse_ :: Hook UseMouse UseMouseResult
+useMouse_ = useMouse { resetOnExit: false }
 
 type UseMovePosition =
   { x :: Number

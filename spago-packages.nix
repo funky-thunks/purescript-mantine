@@ -833,6 +833,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "web-uievents" = pkgs.stdenv.mkDerivation {
+        name = "web-uievents";
+        version = "v4.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/purescript-web/purescript-web-uievents.git";
+          rev = "091ad1b092dee27ec9bcbaad84bb34c4218026df";
+          sha256 = "1dj52fn9nx7qk8i22kyss2xjwpzjqjm3qjfad2lc4802iglii9i7";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
   };
 
   cpPackage = pkg:
