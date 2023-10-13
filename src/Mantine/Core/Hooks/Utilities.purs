@@ -7,6 +7,9 @@ module Mantine.Core.Hooks.Utilities
   , UseHash
   , usePageLeave
   , UsePageLeave
+  , useWindowScroll
+  , UseWindowScroll
+  , Position
   ) where
 
 import Prelude
@@ -39,3 +42,21 @@ foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
 usePageLeave e = unsafeHook (usePageLeaveImpl e)
+
+type UseWindowScrollImpl =
+  { current :: Position
+  , moveTo  :: EffectFn1 Position Unit
+  }
+
+type Position =
+  { x :: Number
+  , y :: Number
+  }
+
+foreign import useWindowScrollImpl :: Effect UseWindowScrollImpl
+foreign import data UseWindowScroll :: Type -> Type
+
+useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
+useWindowScroll =
+  let toNative { current, moveTo } = current /\ runEffectFn1 moveTo
+   in unsafeHook (toNative <$> useWindowScrollImpl)

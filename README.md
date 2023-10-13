@@ -166,7 +166,7 @@ Currently supporting mantine v5.
   - [x] [usePageLeave](https://v5.mantine.dev/hooks/use-page-leave/)
   - [ ] [useTextSelection](https://v5.mantine.dev/hooks/use-text-selection/)
   - [ ] [useWindowEvent](https://v5.mantine.dev/hooks/use-window-event/)
-  - [ ] [useWindowScroll](https://v5.mantine.dev/hooks/use-window-scroll/)
+  - [x] [useWindowScroll](https://v5.mantine.dev/hooks/use-window-scroll/)
 - [ ] Lifecycle
   - [ ] [useDidUpdate](https://v5.mantine.dev/hooks/use-did-update/)
   - [ ] [useForceUpdate](https://v5.mantine.dev/hooks/use-force-update/)
