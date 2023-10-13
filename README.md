@@ -142,7 +142,7 @@ Currently supporting mantine v5.
   - [ ] [useFocusTrap](https://v5.mantine.dev/hooks/use-focus-trap/)
   - [x] [useFocusWithin](https://v5.mantine.dev/hooks/use-focus-within/)
   - [x] [useFullscreen](https://v5.mantine.dev/hooks/use-fullscreen/)
-  - [ ] [useHotkeys](https://v5.mantine.dev/hooks/use-hotkeys/)
+  - [x] [useHotkeys](https://v5.mantine.dev/hooks/use-hotkeys/)
   - [ ] [useHover](https://v5.mantine.dev/hooks/use-hover/)
   - [ ] [useIntersection](https://v5.mantine.dev/hooks/use-intersection/)
   - [x] [useMediaQuery](https://v5.mantine.dev/hooks/use-media-query/)

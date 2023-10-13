@@ -6,6 +6,11 @@ module Mantine.Core.Hooks.UIDom
   , UseFullscreen
   , UseFullscreenResult
 
+  , useHotkeys
+  , UseHotkeys
+  , UseHotkeysOptions
+  , HotkeyItem
+
   , useMediaQuery
   , UseMediaQuery
   , UseMediaQueryOptions
@@ -35,6 +40,7 @@ import Effect.Aff (Aff)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEffectFn2)
 import React.Basic.Hooks (type (/\), Hook, Ref, (/\), unsafeHook)
 import Web.DOM (Node)
+import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
@@ -76,6 +82,32 @@ foreign import data UseFullscreen :: Type -> Type
 
 useFullscreen :: Hook UseFullscreen UseFullscreenResult
 useFullscreen = unsafeHook (fromUseFullscreenResultImpl <$> useFullscreenImpl)
+
+type UseHotkeysOptions item =
+  { hotKeyItems  :: Array item
+  , tagsToIgnore :: Array String
+  }
+
+type HotkeyItem =
+  { hotkey  :: String
+  , handler :: KeyboardEvent -> Effect Unit
+  , options :: Maybe { preventDefault :: Boolean }
+  }
+
+type HotkeyItemImpl =
+  { hotkey  :: String
+  , handler :: EffectFn1 KeyboardEvent Unit
+  , options :: Nullable { preventDefault :: Boolean }
+  }
+
+foreign import useHotkeysImpl :: EffectFn1 (UseHotkeysOptions HotkeyItemImpl) Unit
+foreign import data UseHotkeys :: Type -> Type
+
+useHotkeys :: UseHotkeysOptions HotkeyItem -> Hook UseHotkeys Unit
+useHotkeys options =
+  let nativeOptions = options { hotKeyItems = nativeHotKeyItem <$> options.hotKeyItems}
+      nativeHotKeyItem item = item { options = toNullable item.options, handler = mkEffectFn1 item.handler }
+   in unsafeHook (runEffectFn1 useHotkeysImpl nativeOptions)
 
 type UseMediaQueryOptions =
   { query        :: String

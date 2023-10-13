@@ -19,6 +19,7 @@
   , "typelevel-prelude"
   , "untagged-union"
   , "web-dom"
+  , "web-uievents"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
