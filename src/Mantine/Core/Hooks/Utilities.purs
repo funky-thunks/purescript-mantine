@@ -5,6 +5,8 @@ module Mantine.Core.Hooks.Utilities
   , UseFavicon
   , useHash
   , UseHash
+  , usePageLeave
+  , UsePageLeave
   ) where
 
 import Prelude
@@ -31,3 +33,9 @@ useHash :: Hook UseHash (String /\ (String -> Effect Unit))
 useHash =
   let fromNative { hash, setHash } = hash /\ runEffectFn1 setHash
    in unsafeHook (fromNative <$> useHashImpl)
+
+foreign import usePageLeaveImpl :: Effect Unit -> Effect Unit
+foreign import data UsePageLeave :: Type -> Type
+
+usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
+usePageLeave e = unsafeHook (usePageLeaveImpl e)

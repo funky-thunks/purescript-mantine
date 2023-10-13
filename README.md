@@ -163,7 +163,7 @@ Currently supporting mantine v5.
   - [ ] [useMergedRef](https://v5.mantine.dev/hooks/use-merged-ref/)
   - [ ] [useNetwork](https://v5.mantine.dev/hooks/use-network/)
   - [ ] [useOs](https://v5.mantine.dev/hooks/use-os/)
-  - [ ] [usePageLeave](https://v5.mantine.dev/hooks/use-page-leave/)
+  - [x] [usePageLeave](https://v5.mantine.dev/hooks/use-page-leave/)
   - [ ] [useTextSelection](https://v5.mantine.dev/hooks/use-text-selection/)
   - [ ] [useWindowEvent](https://v5.mantine.dev/hooks/use-window-event/)
   - [ ] [useWindowScroll](https://v5.mantine.dev/hooks/use-window-scroll/)
