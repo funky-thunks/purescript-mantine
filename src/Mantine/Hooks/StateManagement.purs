@@ -1,4 +1,4 @@
-module Mantine.Core.Hooks.StateManagement
+module Mantine.Hooks.StateManagement
   ( useIdle
   , UseIdle
   ) where

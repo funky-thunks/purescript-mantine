@@ -1,4 +1,4 @@
-module Mantine.Core.Hooks.UIDom
+module Mantine.Hooks.UIDom
   ( useFocusWithin
   , UseFocusWithin
 

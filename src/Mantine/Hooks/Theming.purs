@@ -1,4 +1,4 @@
-module Mantine.Core.Hooks.Theming
+module Mantine.Hooks.Theming
   ( useMantineColorScheme
   , MantineColorScheme (..)
   , UseMantineColorScheme

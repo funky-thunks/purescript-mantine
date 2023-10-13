@@ -1,4 +1,4 @@
-module Mantine.Core.Hooks.Utilities
+module Mantine.Hooks.Utilities
   ( useDocumentTitle
   , UseDocumentTitle
   , useFavicon
