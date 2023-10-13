@@ -10,6 +10,10 @@ Currently supporting mantine v5.
 
 ### Components
 
+```purescript
+import Mantine.Core
+```
+
 - [ ] Layout
   - [ ] [AppShell](https://v5.mantine.dev/core/app-shell/)
   - [ ] [AspectRatio](https://v5.mantine.dev/core/aspect-ratio/)
@@ -111,6 +115,10 @@ Currently supporting mantine v5.
   - [ ] [Transition](https://v5.mantine.dev/core/transition/)
 
 ### Hooks
+
+```purescript
+import Mantine.Hooks
+```
 
 - [ ] Theming
   - [x] [useMantineColorScheme](https://v5.mantine.dev/guides/dark-theme/#colorschemeprovider)
