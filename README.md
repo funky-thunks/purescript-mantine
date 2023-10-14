@@ -144,7 +144,7 @@ import Mantine.Hooks
 - [ ] UI and Dom
   - [x] [useClickOutside](https://v5.mantine.dev/hooks/use-click-outside/)
   - [x] [useColorScheme](https://v5.mantine.dev/hooks/use-color-scheme/)
-  - [ ] [useElementSize](https://v5.mantine.dev/hooks/use-element-size/)
+  - [x] [useElementSize](https://v5.mantine.dev/hooks/use-element-size/)
   - [ ] [useEventListener](https://v5.mantine.dev/hooks/use-event-listener/)
   - [ ] [useFocusReturn](https://v5.mantine.dev/hooks/use-focus-return/)
   - [ ] [useFocusTrap](https://v5.mantine.dev/hooks/use-focus-trap/)

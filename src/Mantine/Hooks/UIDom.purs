@@ -6,6 +6,9 @@ module Mantine.Hooks.UIDom
   , UseColorScheme
   , ColorScheme(..)
 
+  , useElementSize
+  , UseElementSize
+
   , useFocusWithin
   , UseFocusWithin
 
@@ -76,6 +79,12 @@ useColorScheme initialValue options =
         "dark" -> Dark
         _      -> Light
    in unsafeHook (toColorScheme <$> runEffectFn2 useColorSchemeImpl (toNullable (fromColorScheme <$> initialValue)) (toNullable options))
+
+foreign import useElementSizeImpl :: Effect { ref :: Ref Node, width :: Number, height :: Number }
+foreign import data UseElementSize :: Type -> Type
+
+useElementSize :: Hook UseElementSize { ref :: Ref Node, width :: Number, height :: Number }
+useElementSize = unsafeHook useElementSizeImpl
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
