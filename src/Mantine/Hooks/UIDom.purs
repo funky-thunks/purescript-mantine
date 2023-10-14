@@ -34,10 +34,13 @@ module Mantine.Hooks.UIDom
   , UseMouseOptions
   , UseMouseResult
 
+  , useMove
   , UseMove
   , UseMovePosition
   , UseMoveHandlers
-  , useMove
+
+  , useReducedMotion
+  , UseReducedMotion
 
   , useResizeObserver
   , UseResizeObserver
@@ -223,6 +226,12 @@ useMove :: (UseMovePosition -> Effect Unit) -> UseMoveHandlers -> Hook UseMove (
 useMove onChange handlers =
   let mkResult { active, ref } = active /\ ref
    in unsafeHook (mkResult <$> runEffectFn2 useMoveImpl (mkEffectFn1 onChange) handlers)
+
+foreign import useReducedMotionImpl :: EffectFn2 (Nullable Boolean) (Nullable { getInitialValueInEffect :: Boolean }) Boolean
+foreign import data UseReducedMotion :: Type -> Type
+
+useReducedMotion :: Maybe Boolean -> Maybe { getInitialValueInEffect :: Boolean } -> Hook UseReducedMotion Boolean
+useReducedMotion initialValue options = unsafeHook (runEffectFn2 useReducedMotionImpl (toNullable initialValue) (toNullable options))
 
 type ResizeRectangle =
   { x      :: Number
