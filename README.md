@@ -162,7 +162,7 @@ import Mantine.Hooks
   - [ ] [useScrollLock](https://v5.mantine.dev/hooks/use-scroll-lock/)
   - [x] [useViewportSize](https://v5.mantine.dev/hooks/use-viewport-size/)
 - [ ] Utilities
-  - [ ] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
+  - [x] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
   - [x] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
   - [x] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
   - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)

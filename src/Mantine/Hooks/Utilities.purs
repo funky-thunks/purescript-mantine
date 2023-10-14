@@ -1,5 +1,10 @@
 module Mantine.Hooks.Utilities
-  ( useDocumentTitle
+  ( useClipboard
+  , useClipboard_
+  , UseClipboard
+  , UseClipboardResult
+  , module Effect.Exception
+  , useDocumentTitle
   , UseDocumentTitle
   , useDocumentVisibility
   , UseDocumentVisibility
@@ -18,16 +23,50 @@ module Mantine.Hooks.Utilities
   ) where
 
 import Prelude
+import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
+import Data.Nullable (Nullable, toMaybe)
 import Effect (Effect)
+import Effect.Exception (Error)
 import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import React.Basic.Hooks (type (/\), Hook, (/\), unsafeHook)
 import Web.Event.Event (Event)
 
-foreign import useDocumentTitleImpl :: String -> Effect Unit
+type UseClipboardResult =
+  { copy   :: String -> Effect Unit
+  , reset  :: Effect Unit
+  , copied :: Boolean
+  }
+
+type UseClipboardResultImpl =
+  { copy   :: EffectFn1 String Unit
+  , reset  :: Effect Unit
+  , copied :: Boolean
+  , error  :: Nullable Error
+  }
+
+foreign import useClipboardImpl :: EffectFn1 { timeout :: Number } UseClipboardResultImpl
+foreign import data UseClipboard :: Type -> Type
+
+useClipboard :: { timeout :: Number } -> Hook UseClipboard (Either Error UseClipboardResult)
+useClipboard options =
+  let toNative result = case toMaybe result.error of
+        Just e -> Left e
+        Nothing -> Right
+          { copy:   runEffectFn1 result.copy
+          , copied: result.copied
+          , reset:  result.reset
+          }
+   in unsafeHook (toNative <$> runEffectFn1 useClipboardImpl options)
+
+useClipboard_ :: Hook UseClipboard (Either Error UseClipboardResult)
+useClipboard_ = useClipboard { timeout: 2000.0 }
+
+foreign import useDocumentTitleImpl :: EffectFn1 String Unit
 foreign import data UseDocumentTitle :: Type -> Type
 
 useDocumentTitle :: String -> Hook UseDocumentTitle Unit
-useDocumentTitle t = unsafeHook (useDocumentTitleImpl t)
+useDocumentTitle t = unsafeHook (runEffectFn1 useDocumentTitleImpl t)
 
 foreign import useDocumentVisibilityImpl :: Effect String
 foreign import data UseDocumentVisibility :: Type -> Type

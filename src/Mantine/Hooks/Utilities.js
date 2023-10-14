@@ -1,5 +1,6 @@
 import hooks from '@mantine/hooks';
 
+export const useClipboardImpl          = hooks.useClipboard;
 export const useDocumentTitleImpl      = hooks.useDocumentTitle;
 export const useDocumentVisibilityImpl = hooks.useDocumentVisibility;
 export const useFaviconImpl            = hooks.useFavicon;
