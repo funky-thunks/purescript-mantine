@@ -142,7 +142,7 @@ import Mantine.Hooks
   - [ ] [useUncontrolled](https://v5.mantine.dev/hooks/use-uncontrolled/)
   - [ ] [useValidatedState](https://v5.mantine.dev/hooks/use-validated-state/)
 - [ ] UI and Dom
-  - [ ] [useClickOutside](https://v5.mantine.dev/hooks/use-click-outside/)
+  - [x] [useClickOutside](https://v5.mantine.dev/hooks/use-click-outside/)
   - [ ] [useColorScheme](https://v5.mantine.dev/hooks/use-color-scheme/)
   - [ ] [useElementSize](https://v5.mantine.dev/hooks/use-element-size/)
   - [ ] [useEventListener](https://v5.mantine.dev/hooks/use-event-listener/)

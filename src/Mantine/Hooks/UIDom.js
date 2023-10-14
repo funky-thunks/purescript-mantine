@@ -1,5 +1,6 @@
 import hooks from '@mantine/hooks';
 
+export const useClickOutsideImpl = hooks.useClickOutside;
 export const useFocusWithinImpl  = hooks.useFocusWithin;
 export const useFullscreenImpl   = hooks.useFullscreen;
 export const useHoverImpl        = hooks.useHover;

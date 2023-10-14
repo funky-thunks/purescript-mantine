@@ -1,5 +1,8 @@
 module Mantine.Hooks.UIDom
-  ( useFocusWithin
+  ( useClickOutside
+  , UseClickOutside
+
+  , useFocusWithin
   , UseFocusWithin
 
   , useFullscreen
@@ -48,6 +51,12 @@ import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEff
 import React.Basic.Hooks (type (/\), Hook, Ref, (/\), unsafeHook)
 import Web.DOM (Node)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
+
+foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (Nullable (Array String)) (Ref Node)
+foreign import data UseClickOutside :: Type -> Type
+
+useClickOutside :: Effect Unit -> Maybe (Array String) -> Hook UseClickOutside (Ref Node)
+useClickOutside handler events = unsafeHook (runEffectFn2 useClickOutsideImpl handler (toNullable events))
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
