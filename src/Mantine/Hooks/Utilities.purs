@@ -1,6 +1,9 @@
 module Mantine.Hooks.Utilities
   ( useDocumentTitle
   , UseDocumentTitle
+  , useDocumentVisibility
+  , UseDocumentVisibility
+  , DocumentVisibility(..)
   , useFavicon
   , UseFavicon
   , useHash
@@ -25,6 +28,20 @@ foreign import data UseDocumentTitle :: Type -> Type
 
 useDocumentTitle :: String -> Hook UseDocumentTitle Unit
 useDocumentTitle t = unsafeHook (useDocumentTitleImpl t)
+
+foreign import useDocumentVisibilityImpl :: Effect String
+foreign import data UseDocumentVisibility :: Type -> Type
+
+data DocumentVisibility = DocumentVisible | DocumentHidden
+
+derive instance Eq DocumentVisibility
+
+useDocumentVisibility :: Hook UseDocumentVisibility DocumentVisibility
+useDocumentVisibility =
+  let parseVisibility = case _ of
+        "visible" -> DocumentVisible
+        _         -> DocumentHidden
+   in unsafeHook (parseVisibility <$> useDocumentVisibilityImpl)
 
 foreign import useFaviconImpl :: String -> Effect Unit
 foreign import data UseFavicon :: Type -> Type

@@ -164,7 +164,7 @@ import Mantine.Hooks
 - [ ] Utilities
   - [ ] [useClipboard](https://v5.mantine.dev/hooks/use-clipboard/)
   - [x] [useDocumentTitle](https://v5.mantine.dev/hooks/use-document-title/)
-  - [ ] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
+  - [x] [useDocumentVisibility](https://v5.mantine.dev/hooks/use-document-visibility/)
   - [ ] [useEyeDropper](https://v5.mantine.dev/hooks/use-eye-dropper/)
   - [x] [useFavicon](https://v5.mantine.dev/hooks/use-favicon/)
   - [x] [useHash](https://v5.mantine.dev/hooks/use-hash/)
