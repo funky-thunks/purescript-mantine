@@ -151,7 +151,7 @@ import Mantine.Hooks
   - [x] [useFocusWithin](https://v5.mantine.dev/hooks/use-focus-within/)
   - [x] [useFullscreen](https://v5.mantine.dev/hooks/use-fullscreen/)
   - [x] [useHotkeys](https://v5.mantine.dev/hooks/use-hotkeys/)
-  - [ ] [useHover](https://v5.mantine.dev/hooks/use-hover/)
+  - [x] [useHover](https://v5.mantine.dev/hooks/use-hover/)
   - [ ] [useIntersection](https://v5.mantine.dev/hooks/use-intersection/)
   - [x] [useMediaQuery](https://v5.mantine.dev/hooks/use-media-query/)
   - [x] [useMouse](https://v5.mantine.dev/hooks/use-mouse/)

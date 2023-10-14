@@ -11,6 +11,9 @@ module Mantine.Hooks.UIDom
   , UseHotkeysOptions
   , HotkeyItem
 
+  , useHover
+  , UseHover
+
   , useMediaQuery
   , UseMediaQuery
   , UseMediaQueryOptions
@@ -112,6 +115,12 @@ useHotkeys options =
   let nativeOptions = options { hotKeyItems = nativeHotKeyItem <$> options.hotKeyItems}
       nativeHotKeyItem item = item { options = toNullable item.options, handler = mkEffectFn1 item.handler }
    in unsafeHook (runEffectFn1 useHotkeysImpl nativeOptions)
+
+foreign import useHoverImpl :: Effect { ref :: Ref Node, hovered :: Boolean }
+foreign import data UseHover :: Type -> Type
+
+useHover :: Hook UseHover { ref :: Ref Node, hovered :: Boolean }
+useHover = unsafeHook useHoverImpl
 
 type UseMediaQueryOptions =
   { query        :: String
