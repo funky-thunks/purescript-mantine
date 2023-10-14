@@ -156,7 +156,7 @@ import Mantine.Hooks
   - [x] [useMediaQuery](https://v5.mantine.dev/hooks/use-media-query/)
   - [x] [useMouse](https://v5.mantine.dev/hooks/use-mouse/)
   - [x] [useMove](https://v5.mantine.dev/hooks/use-move/)
-  - [ ] [useReducedMotion](https://v5.mantine.dev/hooks/use-reduced-motion/)
+  - [x] [useReducedMotion](https://v5.mantine.dev/hooks/use-reduced-motion/)
   - [x] [useResizeObserver](https://v5.mantine.dev/hooks/use-resize-observer/)
   - [ ] [useScrollIntoView](https://v5.mantine.dev/hooks/use-scroll-into-view/)
   - [ ] [useScrollLock](https://v5.mantine.dev/hooks/use-scroll-lock/)
