@@ -143,7 +143,7 @@ import Mantine.Hooks
   - [ ] [useValidatedState](https://v5.mantine.dev/hooks/use-validated-state/)
 - [ ] UI and Dom
   - [x] [useClickOutside](https://v5.mantine.dev/hooks/use-click-outside/)
-  - [ ] [useColorScheme](https://v5.mantine.dev/hooks/use-color-scheme/)
+  - [x] [useColorScheme](https://v5.mantine.dev/hooks/use-color-scheme/)
   - [ ] [useElementSize](https://v5.mantine.dev/hooks/use-element-size/)
   - [ ] [useEventListener](https://v5.mantine.dev/hooks/use-event-listener/)
   - [ ] [useFocusReturn](https://v5.mantine.dev/hooks/use-focus-return/)

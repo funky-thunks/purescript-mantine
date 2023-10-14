@@ -2,6 +2,10 @@ module Mantine.Hooks.UIDom
   ( useClickOutside
   , UseClickOutside
 
+  , useColorScheme
+  , UseColorScheme
+  , ColorScheme(..)
+
   , useFocusWithin
   , UseFocusWithin
 
@@ -57,6 +61,21 @@ foreign import data UseClickOutside :: Type -> Type
 
 useClickOutside :: Effect Unit -> Maybe (Array String) -> Hook UseClickOutside (Ref Node)
 useClickOutside handler events = unsafeHook (runEffectFn2 useClickOutsideImpl handler (toNullable events))
+
+foreign import useColorSchemeImpl :: EffectFn2 (Nullable String) (Nullable { getInitialValueInEffect :: Boolean }) String
+foreign import data UseColorScheme :: Type -> Type
+
+data ColorScheme = Light | Dark
+
+useColorScheme :: Maybe ColorScheme -> Maybe { getInitialValueInEffect :: Boolean } -> Hook UseColorScheme ColorScheme
+useColorScheme initialValue options =
+  let fromColorScheme = case _ of
+        Dark  -> "dark"
+        Light -> "light"
+      toColorScheme = case _ of
+        "dark" -> Dark
+        _      -> Light
+   in unsafeHook (toColorScheme <$> runEffectFn2 useColorSchemeImpl (toNullable (fromColorScheme <$> initialValue)) (toNullable options))
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
