@@ -1,5 +1,15 @@
 module Mantine.Hooks.UIDom
-  ( useFocusWithin
+  ( useClickOutside
+  , UseClickOutside
+
+  , useColorScheme
+  , UseColorScheme
+  , ColorScheme(..)
+
+  , useElementSize
+  , UseElementSize
+
+  , useFocusWithin
   , UseFocusWithin
 
   , useFullscreen
@@ -10,6 +20,9 @@ module Mantine.Hooks.UIDom
   , UseHotkeys
   , UseHotkeysOptions
   , HotkeyItem
+
+  , useHover
+  , UseHover
 
   , useMediaQuery
   , UseMediaQuery
@@ -45,6 +58,33 @@ import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEff
 import React.Basic.Hooks (type (/\), Hook, Ref, (/\), unsafeHook)
 import Web.DOM (Node)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
+
+foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (Nullable (Array String)) (Ref Node)
+foreign import data UseClickOutside :: Type -> Type
+
+useClickOutside :: Effect Unit -> Maybe (Array String) -> Hook UseClickOutside (Ref Node)
+useClickOutside handler events = unsafeHook (runEffectFn2 useClickOutsideImpl handler (toNullable events))
+
+foreign import useColorSchemeImpl :: EffectFn2 (Nullable String) (Nullable { getInitialValueInEffect :: Boolean }) String
+foreign import data UseColorScheme :: Type -> Type
+
+data ColorScheme = Light | Dark
+
+useColorScheme :: Maybe ColorScheme -> Maybe { getInitialValueInEffect :: Boolean } -> Hook UseColorScheme ColorScheme
+useColorScheme initialValue options =
+  let fromColorScheme = case _ of
+        Dark  -> "dark"
+        Light -> "light"
+      toColorScheme = case _ of
+        "dark" -> Dark
+        _      -> Light
+   in unsafeHook (toColorScheme <$> runEffectFn2 useColorSchemeImpl (toNullable (fromColorScheme <$> initialValue)) (toNullable options))
+
+foreign import useElementSizeImpl :: Effect { ref :: Ref Node, width :: Number, height :: Number }
+foreign import data UseElementSize :: Type -> Type
+
+useElementSize :: Hook UseElementSize { ref :: Ref Node, width :: Number, height :: Number }
+useElementSize = unsafeHook useElementSizeImpl
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
@@ -112,6 +152,12 @@ useHotkeys options =
   let nativeOptions = options { hotKeyItems = nativeHotKeyItem <$> options.hotKeyItems}
       nativeHotKeyItem item = item { options = toNullable item.options, handler = mkEffectFn1 item.handler }
    in unsafeHook (runEffectFn1 useHotkeysImpl nativeOptions)
+
+foreign import useHoverImpl :: Effect { ref :: Ref Node, hovered :: Boolean }
+foreign import data UseHover :: Type -> Type
+
+useHover :: Hook UseHover { ref :: Ref Node, hovered :: Boolean }
+useHover = unsafeHook useHoverImpl
 
 type UseMediaQueryOptions =
   { query        :: String
