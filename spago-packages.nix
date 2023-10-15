@@ -137,6 +137,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "default" = pkgs.stdenv.mkDerivation {
+        name = "default";
+        version = "v1.0.1";
+        src = pkgs.fetchgit {
+          url = "https://github.com/imsaravana369/purescript-default";
+          rev = "5c4bf1e367c05be7f0939ff7a7fc80535f5ea3ad";
+          sha256 = "0n5rzh2sy9q3bmwj932z51kdxf5a43p3nh7g17d7n1xnc0qizisg";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "distributive" = pkgs.stdenv.mkDerivation {
         name = "distributive";
         version = "v6.0.0";

@@ -17,16 +17,19 @@ module Mantine.Core.Buttons.Button
   ) where
 
 import Prelude hiding (bind)
+import Data.Default (defaultValue)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Nullable (Nullable, toNullable)
 import Data.Show.Generic (genericShow)
 import Mantine.Core.Common (MantineColor(..), MantineGradient, MantineSize(..), Orientation(..), Radius(..))
 import Mantine.Core.Common as MC
+import Mantine.FFI (class ToFFI, toNative)
 import React.Basic (ReactComponent, element)
 import React.Basic.Emotion as E
 import React.Basic.Events (EventHandler, handler_)
 import React.Basic.Hooks (JSX)
+import Record (union)
 
 type ButtonProps =
   -- FIXME it doesn't work well with the Button component
@@ -53,23 +56,10 @@ defaultButtonProps :: ButtonProps
 defaultButtonProps =
   -- FIXME it doesn't work well with the Button component
   -- MC.defaultThemingProps
-    { children: []
-    , sx: E.css {}
-    , color: Nothing
-    , compact: false
-    , disabled: false
-    , fullWidth: false
-    , leftIcon: Nothing
-    , loaderPosition: Nothing
-    , loading: false
+    { sx: E.css {}
     , onClick: handler_ (pure unit)
-    , radius: Nothing
-    , rightIcon: Nothing
     , size: Small
-    , type: Nothing
-    , uppercase: false
-    , variant: Nothing
-    }
+    } `union` defaultValue
 
 type ButtonPropsImpl =
   -- FIXME it doesn't work well with the Button component
@@ -105,8 +95,7 @@ defaultButtonGroupProps =
   -- FIXME it doesn't work well with the Button component
   -- MC.defaultThemingProps
     { orientation: Horizontal
-    , children: []
-    }
+    } `union` defaultValue
 
 type ButtonGroupPropsImpl =
   -- FIXME it doesn't work well with the Button component
@@ -120,10 +109,22 @@ data ButtonType
   | Reset
   | Submit
 
+instance ToFFI ButtonType String where
+  toNative = case _ of
+    Button -> "button"
+    Reset  -> "reset"
+    Submit -> "submit"
+
 data LoaderPosition
   = LoaderPositionLeft
   | LoaderPositionRight
   | LoaderPositionCenter
+
+instance ToFFI LoaderPosition String where
+  toNative = case _ of
+    LoaderPositionLeft   -> "left"
+    LoaderPositionRight  -> "right"
+    LoaderPositionCenter -> "center"
 
 data ButtonVariant
   = ButtonVariantDefault
@@ -134,65 +135,27 @@ data ButtonVariant
   | ButtonVariantWhite
   | ButtonVariantGradient MantineGradient
 
+instance ToFFI ButtonVariant String where
+  toNative = case _ of
+    ButtonVariantOutline    -> "outline"
+    ButtonVariantWhite      -> "white"
+    ButtonVariantLight      -> "light"
+    ButtonVariantDefault    -> "default"
+    ButtonVariantFilled     -> "filled"
+    ButtonVariantSubtle     -> "subtle"
+    ButtonVariantGradient _ -> "gradient"
+
 derive instance genericVariant :: Generic ButtonVariant _
 instance showVariant :: Show ButtonVariant where show = genericShow
 
 buttonToImpl :: ButtonProps -> ButtonPropsImpl
-buttonToImpl =
-  -- FIXME it doesn't work well with the Button component
-  {- MC.themingToImpl -} \ props@{ children, sx, loading, compact, fullWidth, disabled, uppercase, onClick } ->
-    let
-        loaderPositionNative = case _ of
-          LoaderPositionLeft -> "left"
-          LoaderPositionRight -> "right"
-          LoaderPositionCenter -> "center"
+buttonToImpl props =
+  let gradient = case _ of
+        ButtonVariantGradient g -> pure (toNative g)
+        _                       -> Nothing
 
-        variantNative = case _ of
-          ButtonVariantOutline    -> "outline"
-          ButtonVariantWhite      -> "white"
-          ButtonVariantLight      -> "light"
-          ButtonVariantDefault    -> "default"
-          ButtonVariantFilled     -> "filled"
-          ButtonVariantSubtle     -> "subtle"
-          ButtonVariantGradient _ -> "gradient"
-
-        gradient = case _ of
-          ButtonVariantGradient g -> pure (MC.gradientNative g)
-          _                       -> Nothing
-
-        buttonNative = case _ of
-          Button -> "button"
-          Reset  -> "reset"
-          Submit -> "submit"
-
-        radiusNative = case _ of
-          Radius       nr -> show nr
-          RadiusPreset s  -> MC.sizeNative s
-
-     in
-        { children, sx, loading, compact, fullWidth, disabled, uppercase, onClick
-        , size:           MC.sizeNative props.size
-        , leftIcon:       toNullable props.leftIcon
-        , rightIcon:      toNullable props.rightIcon
-        , gradient:       toNullable $ gradient =<< props.variant
-        , loaderPosition: toNullable $ loaderPositionNative <$> props.loaderPosition
-        , variant:        toNullable $ variantNative        <$> props.variant
-        , type:           toNullable $ buttonNative         <$> props.type
-        , radius:         toNullable $ radiusNative         <$> props.radius
-        , color:          toNullable $ MC.colorNative       <$> props.color
-        }
-
-buttonGroupToImpl :: ButtonGroupProps -> ButtonGroupPropsImpl
-buttonGroupToImpl =
-  -- FIXME it doesn't work well with the Button component
-  {- MC.themingToImpl -} \ props@{ children } ->
-    let orientationNative =
-          case _ of
-            Horizontal -> "horizontal"
-            Vertical   -> "vertical"
-     in { children
-        , orientation: orientationNative props.orientation
-        }
+   in { gradient: toNullable $ gradient =<< props.variant
+      } `union` toNative props
 
 button :: (ButtonProps -> ButtonProps) -> JSX
 button setProps = element buttonComponent (buttonToImpl (setProps defaultButtonProps))
@@ -203,7 +166,7 @@ button_ child = button _ { children = pure child }
 foreign import buttonComponent :: ReactComponent ButtonPropsImpl
 
 buttonGroup :: (ButtonGroupProps -> ButtonGroupProps) -> JSX
-buttonGroup setProps = element buttonGroupComponent (buttonGroupToImpl (setProps defaultButtonGroupProps))
+buttonGroup setProps = element buttonGroupComponent (toNative (setProps defaultButtonGroupProps))
 
 foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
 
@@ -213,9 +176,8 @@ unstyledButton setProps = element unstyledButtonComponent (setProps defaultUnsty
 defaultUnstyledButtonProps :: UnstyledButtonProps
 defaultUnstyledButtonProps =
   MC.defaultThemingProps
-    { children: []
-    , onClick: handler_ (pure unit)
-    }
+    { onClick: handler_ (pure unit)
+    } `union` defaultValue
 
 type UnstyledButtonProps =
   MC.ThemingProps

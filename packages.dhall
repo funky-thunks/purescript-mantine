@@ -103,3 +103,16 @@ let upstream =
         sha256:661c257c997f37bba1b169020a87ae6ea08eb998e931875cb92e86ac9ea26846
 
 in  upstream
+     with default =
+       { dependencies =
+           [ "prelude"
+           , "either"
+           , "maybe"
+           , "tuples"
+           , "lists"
+           , "ordered-collections"
+           , "foreign-object"
+           ]
+       , repo = "https://github.com/imsaravana369/purescript-default"
+       , version = "v1.0.1"
+       }

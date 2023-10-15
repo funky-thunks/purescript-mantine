@@ -1,40 +1,25 @@
 module Mantine.Core.Common
   ( MantineColor(..)
-  , colorNative
   , DimmedOrColor(..)
-  , dimmedOrColorNative
   , MantineSize(..)
-  , sizeNative
   , MantineNumberSize
   , MantineNumberSizeImpl
-  , numberSizeNative
   , Orientation(..)
-  , orientationNative
   , Radius(..)
-  , radiusNative
   , AlignItems(..)
-  , alignItemsNative
   , AlignContent(..)
-  , alignContentNative
   , Position(..)
-  , positionNative
   , MantineGradient
   , MantineGradientImpl
-  , gradientNative
   , Degrees(..)
   , JustifyContent(..)
-  , justifyContentNative
   , Milliseconds
   , Pixels
   , Dimension
   , DimensionImpl
-  , dimensionNative
   , MantineTransition(..)
-  , transitionNative
   , MantineTransitionTimingFunction(..)
-  , transitionTimingFunctionNative
   , TextAlign(..)
-  , textAlignNative
 
   , ThemingProps
   , ThemingPropsRow
@@ -45,16 +30,18 @@ module Mantine.Core.Common
   ) where
 
 import Prelude hiding (bind)
-import Data.Either (Either, either)
+import Data.Default (defaultValue)
+import Data.Either (Either)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype, unwrap)
-import Data.Nullable (Nullable, toNullable)
+import Data.Nullable (Nullable)
 import Data.Show.Generic (genericShow)
+import Mantine.FFI (class ToFFI, toNative)
 import React.Basic.Emotion (Style)
-import Record (merge)
+import Record (merge, union)
 import Type.Row (class Nub, type (+))
-import Untagged.Union (type (|+|), asOneOf)
+import Untagged.Union (type (|+|))
 
 data MantineColor
   = Dark
@@ -247,6 +234,15 @@ data Radius
 
 data Orientation = Horizontal | Vertical
 
+instance ToFFI Orientation String where toNative = orientationNative
+
+orientationNative :: Orientation -> String
+orientationNative = case _ of
+  Horizontal -> "horizontal"
+  Vertical   -> "vertical"
+
+instance ToFFI MantineSize String where toNative = sizeNative
+
 sizeNative :: MantineSize -> String
 sizeNative = case _ of
   ExtraSmall -> "xs"
@@ -255,13 +251,14 @@ sizeNative = case _ of
   Large      -> "lg"
   ExtraLarge -> "xl"
 
-numberSizeNative :: MantineNumberSize -> MantineNumberSizeImpl
-numberSizeNative = either asOneOf (asOneOf <<< sizeNative)
+instance ToFFI Radius String where toNative = radiusNative
 
 radiusNative :: Radius -> String
 radiusNative = case _ of
   Radius       nr -> show nr
-  RadiusPreset s  -> sizeNative s
+  RadiusPreset s  -> toNative s
+
+instance ToFFI MantineColor String where toNative = colorNative
 
 colorNative :: MantineColor -> String
 colorNative = case _ of
@@ -432,15 +429,12 @@ colorNative = case _ of
 
   Hexa h -> "#" <> h
 
+instance ToFFI DimmedOrColor String where toNative = dimmedOrColorNative
+
 dimmedOrColorNative :: DimmedOrColor -> String
 dimmedOrColorNative = case _ of
   Dimmed  -> "dimmed"
-  Color c -> colorNative c
-
-orientationNative :: Orientation -> String
-orientationNative = case _ of
-  Horizontal -> "horizontal"
-  Vertical   -> "vertical"
+  Color c -> toNative c
 
 data AlignItems
   = AlignItemsNormal
@@ -460,6 +454,8 @@ data AlignItems
   | AlignItemsRevert
   | AlignItemsRevertLayer
   | AlignItemsUnset
+
+instance ToFFI AlignItems String where toNative = alignItemsNative
 
 alignItemsNative :: AlignItems -> String
 alignItemsNative = case _ of
@@ -503,6 +499,8 @@ data AlignContent
   | AlignContentRevertLayer
   | AlignContentUnset
 
+instance ToFFI AlignContent String where toNative = alignContentNative
+
 alignContentNative :: AlignContent -> String
 alignContentNative = case _ of
   AlignContentCenter        -> "center"
@@ -532,6 +530,8 @@ data Position
   | PositionCenter
   | PositionApart
 
+instance ToFFI Position String where toNative = positionNative
+
 positionNative :: Position -> String
 positionNative = case _ of
   PositionLeft   -> "left"
@@ -550,14 +550,9 @@ newtype Degrees = Degrees Number
 derive instance newtypeDegrees :: Newtype Degrees _
 derive newtype instance showDegrees :: Show Degrees
 
-type MantineGradientImpl = { from :: String, to :: String, angle :: Nullable Number }
+instance ToFFI Degrees Number where toNative = unwrap
 
-gradientNative :: MantineGradient -> MantineGradientImpl
-gradientNative { from, to, angle } =
-  { from:  colorNative from
-  , to:    colorNative to
-  , angle: toNullable (unwrap <$> angle)
-  }
+type MantineGradientImpl = { from :: String, to :: String, angle :: Nullable Number }
 
 data JustifyContent
   = JustifyContentCenter
@@ -579,6 +574,8 @@ data JustifyContent
   | JustifyContentRevert
   | JustifyContentRevertLayer
   | JustifyContentUnset
+
+instance ToFFI JustifyContent String where toNative = justifyContentNative
 
 justifyContentNative :: JustifyContent -> String
 justifyContentNative = case _ of
@@ -608,9 +605,6 @@ type Pixels = Number
 type Dimension = Either Number String
 type DimensionImpl = Number |+| String
 
-dimensionNative :: Dimension -> DimensionImpl
-dimensionNative = either asOneOf asOneOf
-
 data MantineTransition
   = TransitionFade
   | TransitionPop
@@ -629,6 +623,8 @@ data MantineTransition
   | TransitionSlideLeft
   | TransitionSlideRight
   | TransitionSlideUp
+
+instance ToFFI MantineTransition String where toNative = transitionNative
 
 transitionNative :: MantineTransition -> String
 transitionNative = case _ of
@@ -654,6 +650,8 @@ data MantineTransitionTimingFunction
   = TransitionTimingEase
   | TransitionTimingLinear
 
+instance ToFFI MantineTransitionTimingFunction String where toNative = transitionTimingFunctionNative
+
 transitionTimingFunctionNative :: MantineTransitionTimingFunction -> String
 transitionTimingFunctionNative = case _ of
   TransitionTimingEase   -> "ease"
@@ -672,6 +670,8 @@ data TextAlign
   | TextAlignStart
   | TextAlignJustify
   | TextAlignMatchParent
+
+instance ToFFI TextAlign String where toNative = textAlignNative
 
 textAlignNative :: TextAlign -> String
 textAlignNative = case _ of
@@ -716,28 +716,10 @@ defaultThemingProps
    . Nub (ThemingPropsRow otherProps)
          (ThemingPropsRow otherProps)
   => Record otherProps -> ThemingProps otherProps
-defaultThemingProps defaults =
+defaultThemingProps =
   let baseProps :: ThemingProps ()
-      baseProps =
-        { m:  Nothing
-        , mt: Nothing
-        , mb: Nothing
-        , ml: Nothing
-        , mr: Nothing
-        , mx: Nothing
-        , my: Nothing
-        , p:  Nothing
-        , pt: Nothing
-        , pb: Nothing
-        , pl: Nothing
-        , pr: Nothing
-        , px: Nothing
-        , py: Nothing
-        , bg: Nothing
-        , c:  Nothing
-        , sx: mempty
-        }
-   in baseProps `merge` defaults
+      baseProps = { sx: mempty } `union` defaultValue
+   in merge baseProps
 
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 
@@ -767,24 +749,6 @@ themingToImpl :: forall otherProps otherPropsImpl
                      (ThemingPropsImplRow otherPropsImpl)
               => (ThemingProps otherProps -> Record                      otherPropsImpl)
               ->  ThemingProps otherProps -> Record (ThemingPropsImplRow otherPropsImpl)
-themingToImpl f props@{ sx } =
-  let toSize  f' = toNullable $ sizeNative  <$> f' props
-      toColor f' = toNullable $ colorNative <$> f' props
-   in { m:  toSize  _.m
-      , mt: toSize  _.mt
-      , mb: toSize  _.mb
-      , ml: toSize  _.ml
-      , mr: toSize  _.mr
-      , mx: toSize  _.mx
-      , my: toSize  _.my
-      , p:  toSize  _.p
-      , pt: toSize  _.pt
-      , pb: toSize  _.pb
-      , pl: toSize  _.pl
-      , pr: toSize  _.pr
-      , px: toSize  _.px
-      , py: toSize  _.py
-      , bg: toColor _.bg
-      , c:  toColor _.c
-      , sx
-      } `merge` f props
+themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx } =
+  toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx }
+    `merge` f props
