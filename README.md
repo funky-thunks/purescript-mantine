@@ -50,7 +50,7 @@ import Mantine.Core
   - [ ] [Rating](https://v5.mantine.dev/core/rating/)
   - [ ] [SegmentedControl](https://v5.mantine.dev/core/segmented-control/)
   - [ ] [Select](https://v5.mantine.dev/core/select/)
-  - [ ] [Slider](https://v5.mantine.dev/core/slider/)
+  - [x] [Slider](https://v5.mantine.dev/core/slider/)
   - [ ] [Switch](https://v5.mantine.dev/core/switch/)
   - [ ] [Textarea](https://v5.mantine.dev/core/textarea/)
   - [ ] [TextInput](https://v5.mantine.dev/core/text-input/)

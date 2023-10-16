@@ -100,8 +100,8 @@ instance ( IsSymbol key
 instance RecordToFFI Nil any () where
   recordToNative _ _ = {}
 
-class FromFFI ps js | ps -> js where
-  fromNative :: ps -> js
+class FromFFI js ps | ps -> js where
+  fromNative :: js -> ps
 
 instance FromFFI Boolean Boolean where
   fromNative = identity
