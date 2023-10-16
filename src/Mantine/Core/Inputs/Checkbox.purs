@@ -3,6 +3,10 @@ module Mantine.Core.Inputs.Checkbox
   , CheckboxProps
   , CheckboxLabelPosition(..)
 
+  , checkboxGroup
+  , checkboxGroup_
+  , CheckboxGroupProps
+
   , module Mantine.Core.Common
   ) where
 
@@ -74,3 +78,43 @@ instance ToFFI CheckboxLabelPosition String where
 
 toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
 toNativeCheckbox props = toNative (delete (Proxy :: Proxy "icon") props) `merge` { icon: toNullable props.icon }
+
+checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
+checkboxGroup setProps = element checkboxGroupComponent (toNative (setProps MC.defaultThemingProps_))
+
+checkboxGroup_ :: Array JSX -> JSX
+checkboxGroup_ children = checkboxGroup _ { children = children }
+
+foreign import checkboxGroupComponent :: ReactComponent CheckboxGroupPropsImpl
+
+type CheckboxGroupProps =
+  MC.ThemingProps
+    ( children     :: Array JSX
+    , defaultValue :: Maybe (Array String)
+    , description  :: Maybe JSX
+    , error        :: Maybe JSX
+    , label        :: Maybe JSX
+    , offset       :: Maybe MantineNumberSize
+    , onChange     :: Maybe (Array String -> Effect Unit)
+    , orientation  :: Maybe Orientation
+    , required     :: Maybe Boolean
+    , size         :: Maybe MantineSize
+    , value        :: Maybe (Array String)
+    , withAsterisk :: Maybe Boolean
+    )
+
+type CheckboxGroupPropsImpl =
+  MC.ThemingPropsImpl
+    ( children     :: Array JSX
+    , defaultValue :: Nullable (Array String)
+    , description  :: Nullable JSX
+    , error        :: Nullable JSX
+    , label        :: Nullable JSX
+    , offset       :: Nullable MC.MantineNumberSizeImpl
+    , onChange     :: Nullable (EffectFn1 (Array String) Unit)
+    , orientation  :: Nullable String
+    , required     :: Nullable Boolean
+    , size         :: Nullable String
+    , value        :: Nullable (Array String)
+    , withAsterisk :: Nullable Boolean
+    )

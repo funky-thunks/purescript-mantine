@@ -12,3 +12,7 @@ function removeEmpty(obj) {
 export function checkboxComponent(props) {
   return React.createElement(Checkbox, removeEmpty(props), props.children);
 }
+
+export function checkboxGroupComponent(props) {
+  return React.createElement(Checkbox.Group, removeEmpty(props), props.children);
+}
