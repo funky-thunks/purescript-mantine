@@ -3,8 +3,10 @@
   [ "aff"
   , "aff-promise"
   , "console"
+  , "default"
   , "effect"
   , "either"
+  , "exceptions"
   , "functions"
   , "maybe"
   , "newtype"
@@ -19,6 +21,7 @@
   , "typelevel-prelude"
   , "untagged-union"
   , "web-dom"
+  , "web-events"
   , "web-uievents"
   ]
 , packages = ./packages.dhall

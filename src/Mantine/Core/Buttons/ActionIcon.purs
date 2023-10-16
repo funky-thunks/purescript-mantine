@@ -5,16 +5,19 @@ module Mantine.Core.Buttons.ActionIcon
   , module Mantine.Core.Common
   ) where
 
-import Prelude (pure, unit, (<$>))
-import Data.Maybe (Maybe(..))
-import Data.Nullable (Nullable, toNullable, notNull, null)
+import Prelude (pure, unit)
+import Data.Default (class DefaultValue, defaultValue)
+import Data.Maybe (Maybe)
+import Data.Nullable (Nullable, notNull, null)
 import Mantine.Core.Common (AlignItems(..), MantineColor(..), MantineNumberSize, MantineSize(..), Orientation(..), Position(..), Radius(..))
 import Mantine.Core.Common as MC
+import Mantine.FFI (class ToFFI, toNative)
 import React.Basic (ReactComponent, element)
 import React.Basic.Events (EventHandler, handler_)
 import React.Basic.Hooks (JSX)
 import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
+import Record (union)
 
 actionIcon :: ReactIcon -> (ActionIconProps -> ActionIconProps) -> JSX
 actionIcon icon setProps = element actionIconComponent (actionIconToImpl (setProps (defaultActionIconProps icon)))
@@ -37,14 +40,8 @@ defaultActionIconProps :: ReactIcon -> ActionIconProps
 defaultActionIconProps icon =
   MC.defaultThemingProps
     { icon
-    , color: Nothing
-    , disabled: false
-    , loading: false
     , onClick: handler_ (pure unit)
-    , size: Nothing
-    , radius: Nothing
-    , variant: ActionIconDefault
-    }
+    } `union` defaultValue
 
 type ActionIconPropsImpl =
   MC.ThemingPropsImpl
@@ -67,6 +64,10 @@ data ActionIconVariant
   | ActionIconSubtle
   | ActionIconGradient
 
+instance DefaultValue ActionIconVariant where defaultValue = ActionIconDefault
+
+instance ToFFI ActionIconVariant (Nullable String) where toNative = actionIconVariantNative
+
 actionIconVariantNative :: ActionIconVariant -> Nullable String
 actionIconVariantNative = case _ of
   ActionIconOutline     -> notNull "outline"
@@ -79,11 +80,6 @@ actionIconVariantNative = case _ of
 
 actionIconToImpl :: ActionIconProps -> ActionIconPropsImpl
 actionIconToImpl =
-  MC.themingToImpl \ props@{ disabled, loading, onClick } ->
-    { disabled, loading, onClick
-    , children: pure (icon_ props.icon)
-    , color:   toNullable (MC.colorNative          <$> props.color)
-    , size:    toNullable (MC.numberSizeNative     <$> props.size)
-    , radius:  toNullable (MC.numberSizeNative     <$> props.radius)
-    , variant: actionIconVariantNative props.variant
-    }
+  MC.themingToImpl \ { icon, disabled, loading, onClick, color, size, radius, variant } ->
+    { children: pure (icon_ icon)
+    } `union` toNative { onClick, disabled, loading, color, size, radius, variant }
