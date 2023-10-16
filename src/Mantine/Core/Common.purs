@@ -24,13 +24,14 @@ module Mantine.Core.Common
   , ThemingProps
   , ThemingPropsRow
   , defaultThemingProps
+  , defaultThemingProps_
   , ThemingPropsImpl
   , ThemingPropsImplRow
   , themingToImpl
   ) where
 
 import Prelude hiding (bind)
-import Data.Default (defaultValue)
+import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
@@ -720,6 +721,14 @@ defaultThemingProps =
   let baseProps :: ThemingProps ()
       baseProps = { sx: mempty } `union` defaultValue
    in merge baseProps
+
+defaultThemingProps_
+  :: forall otherProps
+   . Nub (ThemingPropsRow otherProps)
+         (ThemingPropsRow otherProps)
+  => DefaultValue (Record otherProps)
+  => ThemingProps otherProps
+defaultThemingProps_ = defaultThemingProps defaultValue
 
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 

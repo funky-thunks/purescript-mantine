@@ -35,7 +35,7 @@ import Mantine.Core
   - [ ] [UnstyledButton](https://v5.mantine.dev/core/unstyled-button)
 - [ ] Inputs
   - [ ] [Autocomplete](https://v5.mantine.dev/core/autocomplete/)
-  - [ ] [Checkbox](https://v5.mantine.dev/core/checkbox/)
+  - [x] [Checkbox](https://v5.mantine.dev/core/checkbox/)
   - [ ] [Chip](https://v5.mantine.dev/core/chip/)
   - [ ] [ColorInput](https://v5.mantine.dev/core/color-input/)
   - [ ] [ColorPicker](https://v5.mantine.dev/core/color-picker/)
