@@ -102,7 +102,7 @@ import Mantine.Core
   - [x] [Loader](https://v5.mantine.dev/core/loader/)
   - [x] [Notification](https://v5.mantine.dev/core/notification/)
   - [ ] [Progress](https://v5.mantine.dev/core/progress/)
-  - [ ] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
+  - [x] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
   - [x] [Skeleton](https://v5.mantine.dev/core/skeleton/)
 - [ ] Miscellaneous
   - [ ] [Box](https://v5.mantine.dev/core/box/)
