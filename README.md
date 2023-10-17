@@ -59,7 +59,7 @@ import Mantine.Core
   - [ ] [Anchor](https://v5.mantine.dev/core/anchor/)
   - [ ] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
   - [x] [Burger](https://v5.mantine.dev/core/burger/)
-  - [ ] [NavLink](https://v5.mantine.dev/core/nav-link/)
+  - [x] [NavLink](https://v5.mantine.dev/core/nav-link/)
   - [x] [Pagination](https://v5.mantine.dev/core/pagination/)
   - [ ] [Stepper](https://v5.mantine.dev/core/stepper/)
   - [x] [Tabs](https://v5.mantine.dev/core/tabs/)
