@@ -19,31 +19,19 @@ module Mantine.Core.Layout.AppShell
   , VerticalSectionHeight(..)
   , VerticalSectionPosition
   , Rules(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude (map, (<$>))
-import Data.Default (class DefaultValue)
-import Data.Either (Either, either)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Data.Tuple.Nested (type (/\))
 import Foreign.Object (Object, fromFoldable)
-import Mantine.Core.Common (MantineSize(..), MantineNumberSize)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Untagged.Union (type (|+|), asOneOf)
+import Mantine.Core.Prelude
 
 appShell :: (AppShellProps -> AppShellProps) -> JSX
-appShell setProps = element appShellComponent (toNative (setProps MC.defaultThemingProps_))
+appShell = mkComponentWithDefault appShellComponent defaultThemingProps_
 
 foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
 type AppShellProps =
-  MC.ThemingProps
+  ThemingProps
     ( aside                  :: Maybe JSX
     , asideOffsetBreakpoint  :: Maybe MantineNumberSize
     , children               :: Array JSX
@@ -58,28 +46,28 @@ type AppShellProps =
     )
 
 type AppShellPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( aside                  :: Nullable JSX
-    , asideOffsetBreakpoint  :: Nullable MC.MantineNumberSizeImpl
+    , asideOffsetBreakpoint  :: Nullable MantineNumberSizeImpl
     , children               :: Array JSX
     , fixed                  :: Boolean
     , footer                 :: Nullable JSX
     , header                 :: Nullable JSX
     , hidden                 :: Boolean
     , navbar                 :: Nullable JSX
-    , navbarOffsetBreakpoint :: Nullable MC.MantineNumberSizeImpl
-    , padding                :: Nullable MC.MantineNumberSizeImpl
+    , navbarOffsetBreakpoint :: Nullable MantineNumberSizeImpl
+    , padding                :: Nullable MantineNumberSizeImpl
     , zIndex                 :: Nullable Number
     )
 
 navbar :: (NavbarProps -> NavbarProps) -> JSX
-navbar setProps = element navbarComponent (toNative (setProps MC.defaultThemingProps_))
+navbar = mkComponentWithDefault navbarComponent defaultThemingProps_
 
 navbar_ :: Array JSX -> JSX
 navbar_ children = navbar _ { children = children }
 
 aside :: (AsideProps -> AsideProps) -> JSX
-aside setProps = element asideComponent (toNative (setProps MC.defaultThemingProps_))
+aside = mkComponentWithDefault asideComponent defaultThemingProps_
 
 aside_ :: Array JSX -> JSX
 aside_ children = aside _ { children = children }
@@ -100,7 +88,7 @@ instance ToFFI HorizontalSectionHeight (Number |+| String) where
     HorizontalSectionHeightString  s  -> asOneOf s
 
 type HorizontalSectionProps =
-  MC.ThemingProps
+  ThemingProps
     ( children         :: Array JSX
     , fixed            :: Boolean
     , height           :: Maybe HorizontalSectionHeight
@@ -127,12 +115,12 @@ instance ToFFI Rules (Object (String |+| Number)) where
      in fromFoldable (map f <$> rs)
 
 type HorizontalSectionPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children         :: Array JSX
     , fixed            :: Boolean
-    , height           :: Nullable MC.MantineNumberSizeImpl
+    , height           :: Nullable MantineNumberSizeImpl
     , hidden           :: Boolean
-    , hiddenBreakpoint :: Nullable MC.MantineNumberSizeImpl
+    , hiddenBreakpoint :: Nullable MantineNumberSizeImpl
     , position         :: Nullable HorizontalSectionPositionImpl
     , width            :: Object (String |+| Number)
     , withBorder       :: Boolean
@@ -145,7 +133,7 @@ type HorizontalSectionPositionImpl =
   }
 
 navbarSection :: (NavbarSectionProps -> NavbarSectionProps) -> JSX
-navbarSection setProps = element navbarSectionComponent (toNative (setProps MC.defaultThemingProps_))
+navbarSection = mkComponentWithDefault navbarSectionComponent defaultThemingProps_
 
 navbarSection_ :: Array JSX -> JSX
 navbarSection_ children = navbarSection _ { children = children }
@@ -153,22 +141,22 @@ navbarSection_ children = navbarSection _ { children = children }
 foreign import navbarSectionComponent :: ReactComponent NavbarSectionPropsImpl
 
 type NavbarSectionProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
 type NavbarSectionPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
 header :: (HeaderProps -> HeaderProps) -> JSX
-header setProps = element headerComponent (toNative (setProps MC.defaultThemingProps_))
+header = mkComponentWithDefault headerComponent defaultThemingProps_
 
 footer :: (FooterProps -> FooterProps) -> JSX
-footer setProps = element footerComponent (toNative (setProps MC.defaultThemingProps_))
+footer = mkComponentWithDefault footerComponent defaultThemingProps_
 
 foreign import headerComponent :: ReactComponent VerticalSectionPropsImpl
 foreign import footerComponent :: ReactComponent VerticalSectionPropsImpl
@@ -177,7 +165,7 @@ type HeaderProps = VerticalSectionProps
 type FooterProps = VerticalSectionProps
 
 type VerticalSectionProps =
-  MC.ThemingProps
+  ThemingProps
     ( children   :: Array JSX
     , fixed      :: Boolean
     , height     :: Maybe VerticalSectionHeight
@@ -208,7 +196,7 @@ type VerticalSectionPosition =
   }
 
 type VerticalSectionPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children   :: Array JSX
     , fixed      :: Boolean
     , height     :: Nullable VerticalSectionHeightImpl

@@ -5,25 +5,15 @@ module Mantine.Core.Navigation.NavLink
   ) where
 
 import Prelude
-import Data.Default (defaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Effect.Uncurried (EffectFn1)
-import Mantine.Core.Common (MantineColor, MantineNumberSize, ValueHandler)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Events (EventHandler, handler_)
-import React.Basic.Hooks (JSX)
-import Record (union)
+import Mantine.Core.Prelude
 
 navLink :: (NavLinkProps -> NavLinkProps) -> JSX
-navLink setProps = element navLinkComponent (navLinkToImpl (setProps defaultNavLinkProps))
+navLink = mkComponent navLinkComponent navLinkToImpl defaultNavLinkProps
 
 foreign import navLinkComponent :: ReactComponent NavLinkPropsImpl
 
 type NavLinkProps =
-  MC.ThemingProps
+  ThemingProps
     ( active                      :: Boolean
     , children                    :: Array JSX
     , childrenOffset              :: Maybe MantineNumberSize
@@ -45,17 +35,17 @@ type NavLinkProps =
 
 defaultNavLinkProps :: NavLinkProps
 defaultNavLinkProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { label:   mempty :: JSX
     , onClick: handler_ (pure unit)
     , variant: NavLinkLight
     } `union` defaultValue
 
 type NavLinkPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( active                      :: Boolean
     , children                    :: Array JSX
-    , childrenOffset              :: Nullable MC.MantineNumberSizeImpl
+    , childrenOffset              :: Nullable MantineNumberSizeImpl
     , color                       :: Nullable String
     , component                   :: Nullable String
     , defaultOpened               :: Boolean

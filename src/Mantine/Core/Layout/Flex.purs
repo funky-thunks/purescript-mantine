@@ -4,21 +4,12 @@ module Mantine.Core.Layout.Flex
   , FlexProps
   , FlexDirection(..)
   , FlexWrap(..)
-
-  , module Mantine.Core.Common
   ) where
 
-import Data.Default (class DefaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (AlignItems(..), JustifyContent(..), MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI)
-import React.Basic (ReactComponent)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 flex :: (FlexProps -> FlexProps) -> JSX
-flex = MC.mkTrivialComponent flexComponent MC.defaultThemingProps_
+flex = mkComponentWithDefault flexComponent defaultThemingProps_
 
 flex_ :: Array JSX -> JSX
 flex_ children = flex _ { children = children }
@@ -26,7 +17,7 @@ flex_ children = flex _ { children = children }
 foreign import flexComponent :: ReactComponent FlexPropsImpl
 
 type FlexProps =
-  MC.ThemingProps
+  ThemingProps
     ( children  :: Array JSX
     , align     :: Maybe AlignItems
     , columnGap :: Maybe MantineSize
@@ -84,7 +75,7 @@ instance ToFFI FlexWrap String where
 instance DefaultValue FlexWrap where defaultValue = FlexWrapNowrap
 
 type FlexPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children  :: Array JSX
     , align     :: Nullable String
     , columnGap :: Nullable String

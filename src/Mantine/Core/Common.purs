@@ -31,7 +31,7 @@ module Mantine.Core.Common
 
   , ValueHandler(..)
 
-  , mkTrivialComponent
+  , mkComponentWithDefault
   , mkComponent
   ) where
 
@@ -779,8 +779,8 @@ instance DefaultValue (ValueHandler value) where
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
 
-mkTrivialComponent :: forall props foreignProps. ToFFI props (Record foreignProps) => ReactComponent (Record foreignProps) -> props -> (props -> props) -> JSX
-mkTrivialComponent cmpt default = mkComponent cmpt default toNative
+mkComponentWithDefault :: forall props foreignProps. ToFFI props (Record foreignProps) => ReactComponent (Record foreignProps) -> props -> (props -> props) -> JSX
+mkComponentWithDefault cmpt = mkComponent cmpt toNative
 
-mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> props -> (props -> Record foreignProps) -> (props -> props) -> JSX
-mkComponent cmpt default converter setProps = element cmpt (converter (setProps default))
+mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> (props -> Record foreignProps) -> props -> (props -> props) -> JSX
+mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))

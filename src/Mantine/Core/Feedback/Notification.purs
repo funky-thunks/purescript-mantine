@@ -2,24 +2,13 @@ module Mantine.Core.Feedback.Notification
   ( notification
   , notification_
   , NotificationProps
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (defaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Effect (Effect)
-import Mantine.Core.Common (Dimension, MantineColor(..), MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Record (union)
+import Mantine.Core.Prelude
 
 notification :: (NotificationProps -> NotificationProps) -> JSX
-notification setProps = element notificationComponent (toNative (setProps defaultNotificationProps))
+notification = mkComponentWithDefault notificationComponent defaultNotificationProps
 
 notification_ :: JSX -> JSX
 notification_ children = notification _ { children = children }
@@ -27,7 +16,7 @@ notification_ children = notification _ { children = children }
 foreign import notificationComponent :: ReactComponent NotificationPropsImpl
 
 type NotificationProps =
-  MC.ThemingProps
+  ThemingProps
     ( children      :: JSX
     , color         :: Maybe MantineColor
     , disallowClose :: Boolean
@@ -40,19 +29,19 @@ type NotificationProps =
 
 defaultNotificationProps :: NotificationProps
 defaultNotificationProps =
-   MC.defaultThemingProps
+   defaultThemingProps
      { children: mempty
      , onClose: pure unit
      } `union` defaultValue
 
 type NotificationPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children      :: JSX
     , color         :: Nullable String
     , disallowClose :: Boolean
     , icon          :: Nullable JSX
     , loading       :: Boolean
     , onClose       :: Effect Unit
-    , radius        :: Nullable MC.MantineNumberSizeImpl
+    , radius        :: Nullable MantineNumberSizeImpl
     , title         :: Nullable JSX
     )

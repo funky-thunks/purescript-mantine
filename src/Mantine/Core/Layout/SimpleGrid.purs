@@ -5,32 +5,26 @@ module Mantine.Core.Layout.SimpleGrid
   , SimpleGridBreakpoint(..)
   ) where
 
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent)
-import React.Basic.Hooks (JSX)
-import Untagged.Union (type (|+|), asOneOf)
+import Mantine.Core.Prelude
 
 simpleGrid :: (SimpleGridProps -> SimpleGridProps) -> JSX
-simpleGrid = MC.mkTrivialComponent simpleGridComponent MC.defaultThemingProps_
+simpleGrid = mkComponentWithDefault simpleGridComponent defaultThemingProps_
 
 simpleGrid_ :: Array JSX -> JSX
 simpleGrid_ children = simpleGrid _ { children = children }
 
 type SimpleGridProps =
-  MC.ThemingProps
+  ThemingProps
     ( breakpoints     :: Array SimpleGridBreakpoint
     , children        :: Array JSX
     , cols            :: Maybe Int
-    , spacing         :: Maybe MC.MantineSize
-    , verticalSpacing :: Maybe MC.MantineSize
+    , spacing         :: Maybe MantineSize
+    , verticalSpacing :: Maybe MantineSize
     )
 
 data SimpleGridBreakpoint
-  = SimpleGridBreakpointMaxWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MC.MantineSize }
-  | SimpleGridBreakpointMinWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MC.MantineSize }
+  = SimpleGridBreakpointMaxWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MantineSize }
+  | SimpleGridBreakpointMinWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MantineSize }
 
 type SimpleGridBreakpointImpl = { maxWidth :: Number, cols :: Nullable Number, spacing :: Nullable String }
                             |+| { minWidth :: Number, cols :: Nullable Number, spacing :: Nullable String }
@@ -41,7 +35,7 @@ instance ToFFI SimpleGridBreakpoint SimpleGridBreakpointImpl where
     SimpleGridBreakpointMinWidth { width, cols, spacing } -> asOneOf (toNative { minWidth: width, cols, spacing })
 
 type SimpleGridPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( breakpoints     :: Array SimpleGridBreakpointImpl
     , children        :: Array JSX
     , cols            :: Nullable Number

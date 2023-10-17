@@ -3,22 +3,13 @@ module Mantine.Core.Feedback.Loader
   , loader_
   , LoaderProps
   , LoaderVariant(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (class DefaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 loader :: (LoaderProps -> LoaderProps) -> JSX
-loader setProps = element loaderComponent (toNative (setProps MC.defaultThemingProps_))
+loader = mkComponentWithDefault loaderComponent defaultThemingProps_
 
 loader_ :: JSX
 loader_ = loader identity
@@ -26,7 +17,7 @@ loader_ = loader identity
 foreign import loaderComponent :: ReactComponent LoaderPropsImpl
 
 type LoaderProps =
-  MC.ThemingProps
+  ThemingProps
     ( color    :: Maybe MantineColor
     , size     :: Maybe MantineNumberSize
     , variant  :: LoaderVariant
@@ -47,8 +38,8 @@ instance DefaultValue LoaderVariant where
   defaultValue = LoaderVariantOval
 
 type LoaderPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( color   :: Nullable String
-    , size    :: Nullable MC.MantineNumberSizeImpl
+    , size    :: Nullable MantineNumberSizeImpl
     , variant :: String
     )

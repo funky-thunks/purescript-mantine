@@ -2,26 +2,17 @@ module Mantine.Core.Feedback.RingProgress
   ( ringProgress
   , RingProgressProps
   , RingProgressSection
-
-  , module Mantine.Core.Common
   ) where
 
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (MantineColor(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Events (EventHandler)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 ringProgress :: (RingProgressProps -> RingProgressProps) -> JSX
-ringProgress setProps = element ringProgressComponent (toNative (setProps MC.defaultThemingProps_))
+ringProgress = mkComponentWithDefault ringProgressComponent defaultThemingProps_
 
 foreign import ringProgressComponent :: ReactComponent RingProgressPropsImpl
 
 type RingProgressProps =
-  MC.ThemingProps
+  ThemingProps
     ( label     :: Maybe String
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSection
@@ -38,7 +29,7 @@ type RingProgressSection =
   }
 
 type RingProgressPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( label     :: Nullable String
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSectionImpl
