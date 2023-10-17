@@ -7,26 +7,14 @@ module Mantine.Core.Layout.Grid
   , gridCol_
   , GridColProps
   , GridColSpan(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (defaultValue)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..))
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (AlignContent(..), JustifyContent(..), MantineNumberSize, MantineSize(..), Pixels)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Record (rename, union)
-import Type.Proxy (Proxy(..))
-import Untagged.Union (type (|+|), asOneOf)
+import Mantine.Core.Prelude
 
 grid :: (GridProps -> GridProps) -> JSX
-grid setProps = element gridComponent (toNative (setProps defaultGridProps))
+grid = mkComponentWithDefault gridComponent defaultGridProps
 
 grid_ :: Array JSX -> JSX
 grid_ children = grid _ { children = children }
@@ -34,7 +22,7 @@ grid_ children = grid _ { children = children }
 foreign import gridComponent :: ReactComponent GridPropsImpl
 
 type GridProps =
-  MC.ThemingProps
+  ThemingProps
     ( align    :: AlignContent
     , children :: Array JSX
     , columns  :: Int
@@ -45,7 +33,7 @@ type GridProps =
 
 defaultGridProps :: GridProps
 defaultGridProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { align:    AlignContentStretch
     , columns:  12
     , gutter:   pure Medium
@@ -53,17 +41,17 @@ defaultGridProps =
     } `union` defaultValue
 
 type GridPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( align    :: String
     , children :: Array JSX
     , columns  :: Number
     , grow     :: Boolean
-    , gutter   :: MC.MantineNumberSizeImpl
+    , gutter   :: MantineNumberSizeImpl
     , justify  :: String
     )
 
 gridCol :: (GridColProps -> GridColProps) -> JSX
-gridCol setProps = element gridColComponent (gridColToImpl (setProps defaultGridColProps))
+gridCol = mkComponent gridColComponent gridColToImpl defaultGridColProps
 
 gridCol_ :: Array JSX -> JSX
 gridCol_ children = gridCol _ { children = children }
@@ -71,7 +59,7 @@ gridCol_ children = gridCol _ { children = children }
 foreign import gridColComponent :: ReactComponent GridColPropsImpl
 
 type GridColProps =
-  MC.ThemingProps
+  ThemingProps
     ( children  :: Array JSX
 
     , span      :: Maybe GridColSpan
@@ -111,7 +99,7 @@ instance ToFFI GridColSpan ColSpanImpl where
 
 defaultGridColProps :: GridColProps
 defaultGridColProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { children: []
 
     , span:     Nothing
@@ -137,7 +125,7 @@ defaultGridColProps =
     }
 
 type GridColPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
 
     , span     :: Nullable ColSpanImpl

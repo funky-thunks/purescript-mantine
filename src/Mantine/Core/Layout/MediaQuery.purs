@@ -1,24 +1,17 @@
 module Mantine.Core.Layout.MediaQuery
   ( mediaQuery
   , MediaQueryProps
-
-  , module Mantine.Core.Common
   ) where
 
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, JSX, element)
+import Mantine.Core.Prelude
 
 mediaQuery :: (MediaQueryProps -> MediaQueryProps) -> JSX
-mediaQuery setProps = element mediaQueryComponent (toNative (setProps MC.defaultThemingProps_))
+mediaQuery = mkTrivialComponent mediaQueryComponent
 
 foreign import mediaQueryComponent :: ReactComponent MediaQueryPropsImpl
 
 type MediaQueryProps =
-  MC.ThemingProps
+  ThemingProps
     ( children    :: Array JSX
     , largerThan  :: Maybe MantineNumberSize
     , query       :: Maybe String
@@ -26,9 +19,9 @@ type MediaQueryProps =
     )
 
 type MediaQueryPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children    :: Array JSX
-    , largerThan  :: Nullable MC.MantineNumberSizeImpl
+    , largerThan  :: Nullable MantineNumberSizeImpl
     , query       :: Nullable String
-    , smallerThan :: Nullable MC.MantineNumberSizeImpl
+    , smallerThan :: Nullable MantineNumberSizeImpl
     )

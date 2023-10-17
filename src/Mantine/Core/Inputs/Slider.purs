@@ -10,43 +10,32 @@ module Mantine.Core.Inputs.Slider
 
   , LabelFormatter(..)
   , ScaleFunction(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (class DefaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Effect.Uncurried (EffectFn1)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..), MantineGradient, MantineTransition(..), MantineTransitionTimingFunction(..), Milliseconds, Orientation(..), Pixels, Radius(..), ValueHandler)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class FromFFI, class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Type.Row (type (+))
+import Mantine.Core.Prelude
 
 slider :: (SliderProps -> SliderProps) -> JSX
-slider setProps = element sliderComponent (toNative (setProps MC.defaultThemingProps_))
+slider = mkTrivialComponent sliderComponent
 
 foreign import sliderComponent :: ReactComponent SliderPropsImpl
 
 type SliderProps =
-  MC.ThemingProps
+  ThemingProps
     ( SliderCommonProps Number +
         ( thumbLabel :: Maybe String
         )
     )
 
 type SliderPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( SliderCommonPropsImpl Number +
         ( thumbLabel :: Nullable String
         )
     )
 
 rangeSlider :: (RangeSliderProps -> RangeSliderProps) -> JSX
-rangeSlider setProps = element rangeSliderComponent (toNative (setProps MC.defaultThemingProps_))
+rangeSlider = mkTrivialComponent rangeSliderComponent
 
 foreign import rangeSliderComponent :: ReactComponent RangeSliderPropsImpl
 
@@ -65,7 +54,7 @@ instance FromFFI (Array Number) SliderRange where
     _          -> SliderRange { from: 0.0, to: 0.0 }
 
 type RangeSliderProps =
-  MC.ThemingProps
+  ThemingProps
     ( SliderCommonProps SliderRange +
         ( maxRange       :: Maybe Number
         , minRange       :: Maybe Number
@@ -75,7 +64,7 @@ type RangeSliderProps =
     )
 
 type RangeSliderPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( SliderCommonPropsImpl (Array Number) +
         ( maxRange       :: Nullable Number
         , minRange       :: Nullable Number
@@ -142,10 +131,10 @@ type SliderCommonPropsImpl value r =
   , onChange                      :: EffectFn1 value Unit
   , onChangeEnd                   :: EffectFn1 value Unit
   , precision                     :: Nullable Number
-  , radius                        :: Nullable MC.MantineNumberSizeImpl
+  , radius                        :: Nullable MantineNumberSizeImpl
   , scale                         :: Number -> Number
   , showLabelOnHover              :: Boolean
-  , size                          :: Nullable MC.MantineNumberSizeImpl
+  , size                          :: Nullable MantineNumberSizeImpl
   , step                          :: Nullable Number
   , thumbChildren                 :: Nullable JSX
   , thumbSize                     :: Nullable Number

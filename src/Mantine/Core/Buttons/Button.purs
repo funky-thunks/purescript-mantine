@@ -12,28 +12,18 @@ module Mantine.Core.Buttons.Button
   , ButtonType(..)
   , LoaderPosition(..)
   , ButtonVariant(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude hiding (bind)
-import Data.Default (defaultValue)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe(..))
-import Data.Nullable (Nullable, toNullable)
 import Data.Show.Generic (genericShow)
-import Mantine.Core.Common (MantineColor(..), MantineGradient, MantineSize(..), Orientation(..), Radius(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
+import Mantine.Core.Prelude
 import React.Basic.Emotion as E
 import React.Basic.Events (EventHandler, handler_)
-import React.Basic.Hooks (JSX)
-import Record (union)
 
 type ButtonProps =
   -- FIXME it doesn't work well with the Button component
-  -- MC.ThemingProps
+  -- ThemingProps
     { children       :: Array JSX
     , sx             :: E.Style
     , color          :: Maybe MantineColor
@@ -55,7 +45,7 @@ type ButtonProps =
 defaultButtonProps :: ButtonProps
 defaultButtonProps =
   -- FIXME it doesn't work well with the Button component
-  -- MC.defaultThemingProps
+  -- defaultThemingProps
     { sx: E.css {}
     , onClick: handler_ (pure unit)
     , size: Small
@@ -63,7 +53,7 @@ defaultButtonProps =
 
 type ButtonPropsImpl =
   -- FIXME it doesn't work well with the Button component
-  -- MC.ThemingPropsImpl
+  -- ThemingPropsImpl
     { children       :: Array JSX
     , sx             :: E.Style
     , color          :: Nullable String
@@ -85,7 +75,7 @@ type ButtonPropsImpl =
 
 type ButtonGroupProps =
   -- FIXME it doesn't work well with the Button component
-  -- MC.ThemingProps
+  -- ThemingProps
     { children    :: Array JSX
     , orientation :: Orientation
     }
@@ -93,13 +83,13 @@ type ButtonGroupProps =
 defaultButtonGroupProps :: ButtonGroupProps
 defaultButtonGroupProps =
   -- FIXME it doesn't work well with the Button component
-  -- MC.defaultThemingProps
+  -- defaultThemingProps
     { orientation: Horizontal
     } `union` defaultValue
 
 type ButtonGroupPropsImpl =
   -- FIXME it doesn't work well with the Button component
-  -- MC.ThemingPropsImpl
+  -- ThemingPropsImpl
     { children    :: Array JSX
     , orientation :: String
     }
@@ -158,7 +148,7 @@ buttonToImpl props =
       } `union` toNative props
 
 button :: (ButtonProps -> ButtonProps) -> JSX
-button setProps = element buttonComponent (buttonToImpl (setProps defaultButtonProps))
+button = mkComponent buttonComponent buttonToImpl defaultButtonProps
 
 button_ :: JSX -> JSX
 button_ child = button _ { children = pure child }
@@ -166,23 +156,29 @@ button_ child = button _ { children = pure child }
 foreign import buttonComponent :: ReactComponent ButtonPropsImpl
 
 buttonGroup :: (ButtonGroupProps -> ButtonGroupProps) -> JSX
-buttonGroup setProps = element buttonGroupComponent (toNative (setProps defaultButtonGroupProps))
+buttonGroup = mkComponentWithDefault buttonGroupComponent defaultButtonGroupProps
 
 foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
 
 unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
-unstyledButton setProps = element unstyledButtonComponent (setProps defaultUnstyledButtonProps)
+unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledButtonProps
 
 defaultUnstyledButtonProps :: UnstyledButtonProps
 defaultUnstyledButtonProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { onClick: handler_ (pure unit)
     } `union` defaultValue
 
 type UnstyledButtonProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , onClick  :: EventHandler
     )
 
-foreign import unstyledButtonComponent :: ReactComponent UnstyledButtonProps
+type UnstyledButtonPropsImpl =
+  ThemingPropsImpl
+    ( children :: Array JSX
+    , onClick  :: EventHandler
+    )
+
+foreign import unstyledButtonComponent :: ReactComponent UnstyledButtonPropsImpl

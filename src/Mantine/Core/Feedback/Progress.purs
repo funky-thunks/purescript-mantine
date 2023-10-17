@@ -2,26 +2,17 @@ module Mantine.Core.Feedback.Progress
   ( progress
   , ProgressProps
   , ProgressSection
-
-  , module Mantine.Core.Common
   ) where
 
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Events (EventHandler)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 progress :: (ProgressProps -> ProgressProps) -> JSX
-progress setProps = element progressComponent (toNative (setProps MC.defaultThemingProps_))
+progress = mkTrivialComponent progressComponent
 
 foreign import progressComponent :: ReactComponent ProgressPropsImpl
 
 type ProgressProps =
-  MC.ThemingProps
+  ThemingProps
     ( animate  :: Boolean
     , color    :: Maybe MantineColor
     , label    :: Maybe String
@@ -42,13 +33,13 @@ type ProgressSection =
   }
 
 type ProgressPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( animate  :: Boolean
     , color    :: Nullable String
     , label    :: Nullable String
-    , radius   :: Nullable MC.MantineNumberSizeImpl
+    , radius   :: Nullable MantineNumberSizeImpl
     , sections :: Array ProgressSectionImpl
-    , size     :: Nullable MC.MantineNumberSizeImpl
+    , size     :: Nullable MantineNumberSizeImpl
     , striped  :: Boolean
     , value    :: Number
     )

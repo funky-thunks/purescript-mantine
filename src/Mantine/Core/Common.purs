@@ -30,6 +30,10 @@ module Mantine.Core.Common
   , themingToImpl
 
   , ValueHandler(..)
+
+  , mkComponent
+  , mkComponentWithDefault
+  , mkTrivialComponent
   ) where
 
 import Prelude hiding (bind)
@@ -43,7 +47,9 @@ import Data.Show.Generic (genericShow)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import React.Basic (ReactComponent, element)
 import React.Basic.Emotion (Style)
+import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, type (+))
 import Untagged.Union (type (|+|))
@@ -773,3 +779,16 @@ instance DefaultValue (ValueHandler value) where
 
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
+
+mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> (props -> Record foreignProps) -> props -> (props -> props) -> JSX
+mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))
+
+mkComponentWithDefault :: forall props foreignProps. ToFFI props (Record foreignProps) => ReactComponent (Record foreignProps) -> props -> (props -> props) -> JSX
+mkComponentWithDefault cmpt = mkComponent cmpt toNative
+
+mkTrivialComponent :: forall props foreignProps
+                    . Nub (ThemingPropsRow props) (ThemingPropsRow props)
+                   => DefaultValue (Record props)
+                   => ToFFI (ThemingProps props) (ThemingPropsImpl foreignProps)
+                   => ReactComponent (ThemingPropsImpl foreignProps) -> (ThemingProps props -> ThemingProps props) -> JSX
+mkTrivialComponent cmpt = mkComponentWithDefault cmpt defaultThemingProps_

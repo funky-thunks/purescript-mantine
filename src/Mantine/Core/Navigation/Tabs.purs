@@ -17,23 +17,13 @@ module Mantine.Core.Navigation.Tabs
   , tabPanel
   , tabPanel_
   , TabPanelProps
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude (Unit)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Effect (Effect)
-import Effect.Uncurried (EffectFn1)
-import Mantine.Core.Common (MantineColor, MantineNumberSize, MantineSize, Orientation)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 tabs :: (TabsProps -> TabsProps) -> JSX
-tabs setProps = element tabsComponent (toNative (setProps MC.defaultThemingProps_))
+tabs = mkTrivialComponent tabsComponent
 
 tabs_ :: Array JSX -> JSX
 tabs_ children = tabs _ { children = children}
@@ -41,7 +31,7 @@ tabs_ children = tabs _ { children = children}
 foreign import tabsComponent :: ReactComponent TabsPropsImpl
 
 type TabsProps =
-  MC.ThemingProps
+  ThemingProps
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
@@ -80,7 +70,7 @@ instance ToFFI TabsVariant String where
     TabsVariantPills   -> "pills"
 
 type TabsPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
@@ -93,13 +83,13 @@ type TabsPropsImpl =
     , onTabChange             :: Nullable (EffectFn1 String Unit)
     , orientation             :: Nullable String
     , placement               :: Nullable String
-    , radius                  :: Nullable MC.MantineNumberSizeImpl
+    , radius                  :: Nullable MantineNumberSizeImpl
     , value                   :: Nullable String
     , variant                 :: Nullable String
     )
 
 tab :: (TabProps -> TabProps) -> JSX
-tab setProps = element tabComponent (toNative (setProps MC.defaultThemingProps_))
+tab = mkTrivialComponent tabComponent
 
 tab_ :: Array JSX -> JSX
 tab_ children = tab _ { children = children}
@@ -107,7 +97,7 @@ tab_ children = tab _ { children = children}
 foreign import tabComponent :: ReactComponent TabPropsImpl
 
 type TabProps =
-  MC.ThemingProps
+  ThemingProps
     ( children     :: Array JSX
     , color        :: Maybe MantineColor
     , icon         :: Maybe JSX
@@ -116,7 +106,7 @@ type TabProps =
     )
 
 type TabPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children     :: Array JSX
     , color        :: Nullable String
     , icon         :: Nullable JSX
@@ -125,7 +115,7 @@ type TabPropsImpl =
     )
 
 tabList :: (TabListProps -> TabListProps) -> JSX
-tabList setProps = element tabListComponent (toNative (setProps MC.defaultThemingProps_))
+tabList = mkTrivialComponent tabListComponent
 
 tabList_ :: Array JSX -> JSX
 tabList_ children = tabList _ { children = children }
@@ -133,7 +123,7 @@ tabList_ children = tabList _ { children = children }
 foreign import tabListComponent :: ReactComponent TabListPropsImpl
 
 type TabListProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , grow     :: Boolean
     , position :: Maybe TabAlignment
@@ -153,14 +143,14 @@ instance ToFFI TabAlignment String where
     TabAlignmentApart  -> "apart"
 
 type TabListPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
     , grow     :: Boolean
     , position :: Nullable String
     )
 
 tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX
-tabPanel setProps = element tabPanelComponent (toNative (setProps MC.defaultThemingProps_))
+tabPanel = mkTrivialComponent tabPanelComponent
 
 tabPanel_ :: Array JSX -> JSX
 tabPanel_ children = tabPanel _ { children = children }
@@ -168,13 +158,13 @@ tabPanel_ children = tabPanel _ { children = children }
 foreign import tabPanelComponent :: ReactComponent TabPanelPropsImpl
 
 type TabPanelProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , value    :: Maybe String
     )
 
 type TabPanelPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
     , value    :: Nullable String
     )

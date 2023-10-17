@@ -4,26 +4,13 @@ module Mantine.Core.Feedback.Alert
   , AlertProps
   , AlertClosable(..)
   , AlertVariant(..)
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (defaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable, null, toNullable)
-import Effect (Effect)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Record (delete, union)
-import Type.Proxy (Proxy(..))
-import Type.Row (type (+))
+import Mantine.Core.Prelude
 
 alert :: (AlertProps -> AlertProps) -> JSX
-alert setProps = element alertComponent (alertToImpl (setProps defaultAlertProps))
+alert = mkComponent alertComponent alertToImpl defaultAlertProps
 
 alert_ :: JSX -> JSX
 alert_ children = alert _ { children = children }
@@ -31,7 +18,7 @@ alert_ children = alert _ { children = children }
 foreign import alertComponent :: ReactComponent AlertPropsImpl
 
 type AlertProps =
-  MC.ThemingProps
+  ThemingProps
     ( children  :: JSX
     , color     :: Maybe MantineColor
     , icon      :: Maybe JSX
@@ -58,19 +45,19 @@ instance ToFFI AlertVariant String where
 
 defaultAlertProps :: AlertProps
 defaultAlertProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { children: mempty :: JSX
     , closable: NotClosable
     , variant:  AlertVariantLight
     } `union` defaultValue
 
-type AlertPropsImpl = MC.ThemingPropsImpl (CloseProps + AlertPropsRowImpl)
+type AlertPropsImpl = ThemingPropsImpl (CloseProps + AlertPropsRowImpl)
 
 type AlertPropsRowImpl =
   ( children :: JSX
   , color    :: Nullable String
   , icon     :: Nullable JSX
-  , radius   :: Nullable MC.MantineNumberSizeImpl
+  , radius   :: Nullable MantineNumberSizeImpl
   , title    :: Nullable JSX
   , variant  :: String
   )

@@ -4,32 +4,21 @@ module Mantine.Core.Navigation.Pagination
   , Page(..)
   , PageCount(..)
   , PaginationProps
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude
-import Data.Default (defaultValue)
 import Data.Int (floor, toNumber)
-import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype, unwrap, wrap)
-import Data.Nullable (Nullable)
-import Effect.Uncurried (EffectFn1)
-import Mantine.Core.Common (AlignItems(..), MantineColor(..), MantineNumberSize, MantineSize(..), Position(..), ValueHandler)
-import Mantine.Core.Common as MC
-import Mantine.FFI (class FromFFI, class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Record (union)
+import Mantine.Core.Prelude
 
 pagination :: (PaginationProps -> PaginationProps) -> JSX
-pagination setProps = element paginationComponent (toNative (setProps defaultPaginationProps))
+pagination = mkComponentWithDefault paginationComponent defaultPaginationProps
 
 pagination_ :: JSX
 pagination_ = pagination identity
 
 type PaginationProps =
-  MC.ThemingProps
+  ThemingProps
     ( align        :: Maybe AlignItems
     , boundaries   :: PageCount
     , color        :: Maybe MantineColor
@@ -51,11 +40,11 @@ type PaginationProps =
 
 defaultPaginationProps :: PaginationProps
 defaultPaginationProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { boundaries:   PageCount 1
-    , radius:       pure MC.Small
+    , radius:       pure Small
     , siblings:     PageCount 1
-    , size:         pure MC.Medium
+    , size:         pure Medium
     , total:        PageCount 1
     , withControls: true
     } `union` defaultValue
@@ -84,7 +73,7 @@ instance ToFFI PageCount Number where
   toNative = toNumber <<< unwrap
 
 type PaginationPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( align        :: Nullable String
     , boundaries   :: Number
     , color        :: Nullable String
@@ -95,10 +84,10 @@ type PaginationPropsImpl =
     , onChange     :: EffectFn1 Number Unit
     , page         :: Nullable Number
     , position     :: Nullable String
-    , radius       :: MC.MantineNumberSizeImpl
+    , radius       :: MantineNumberSizeImpl
     , siblings     :: Number
-    , size         :: MC.MantineNumberSizeImpl
-    , spacing      :: Nullable MC.MantineNumberSizeImpl
+    , size         :: MantineNumberSizeImpl
+    , spacing      :: Nullable MantineNumberSizeImpl
     , total        :: Number
     , withControls :: Boolean
     , withEdges    :: Boolean

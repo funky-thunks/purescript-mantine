@@ -6,31 +6,18 @@ module Mantine.Core.Inputs.Checkbox
   , checkboxGroup
   , checkboxGroup_
   , CheckboxGroupProps
-
-  , module Mantine.Core.Common
   ) where
 
 import Prelude hiding (bind)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable, toNullable)
-import Effect (Effect)
-import Effect.Uncurried (EffectFn1)
-import Mantine.Core.Common (AlignItems(..), MantineColor(..), MantineNumberSize, MantineSize(..), Orientation(..), Radius(..))
-import Mantine.Core.Common as MC
-import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Events (SyntheticEvent)
-import React.Basic.Hooks (JSX)
-import Record (delete, merge)
-import Type.Proxy (Proxy(..))
+import Mantine.Core.Prelude
 
 checkbox :: (CheckboxProps -> CheckboxProps) -> JSX
-checkbox setProps = element checkboxComponent (toNativeCheckbox (setProps MC.defaultThemingProps_))
+checkbox = mkComponent checkboxComponent toNativeCheckbox defaultThemingProps_
 
 foreign import checkboxComponent :: ReactComponent CheckboxPropsImpl
 
 type CheckboxProps =
-  MC.ThemingProps
+  ThemingProps
     ( checked            :: Maybe Boolean
     , color              :: Maybe MantineColor
     , description        :: Maybe JSX
@@ -49,7 +36,7 @@ type CheckboxProps =
     )
 
 type CheckboxPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( checked            :: Nullable Boolean
     , color              :: Nullable String
     , description        :: Nullable JSX
@@ -61,7 +48,7 @@ type CheckboxPropsImpl =
     , label              :: Nullable JSX
     , labelPosition      :: Nullable String
     , onChange           :: Nullable (EffectFn1 SyntheticEvent Unit)
-    , radius             :: Nullable MC.MantineNumberSizeImpl
+    , radius             :: Nullable MantineNumberSizeImpl
     , size               :: Nullable String
     , transitionDuration :: Nullable Number
     , value              :: Nullable String
@@ -80,7 +67,7 @@ toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
 toNativeCheckbox props = toNative (delete (Proxy :: Proxy "icon") props) `merge` { icon: toNullable props.icon }
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
-checkboxGroup setProps = element checkboxGroupComponent (toNative (setProps MC.defaultThemingProps_))
+checkboxGroup = mkTrivialComponent checkboxGroupComponent
 
 checkboxGroup_ :: Array JSX -> JSX
 checkboxGroup_ children = checkboxGroup _ { children = children }
@@ -88,7 +75,7 @@ checkboxGroup_ children = checkboxGroup _ { children = children }
 foreign import checkboxGroupComponent :: ReactComponent CheckboxGroupPropsImpl
 
 type CheckboxGroupProps =
-  MC.ThemingProps
+  ThemingProps
     ( children     :: Array JSX
     , defaultValue :: Maybe (Array String)
     , description  :: Maybe JSX
@@ -104,13 +91,13 @@ type CheckboxGroupProps =
     )
 
 type CheckboxGroupPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children     :: Array JSX
     , defaultValue :: Nullable (Array String)
     , description  :: Nullable JSX
     , error        :: Nullable JSX
     , label        :: Nullable JSX
-    , offset       :: Nullable MC.MantineNumberSizeImpl
+    , offset       :: Nullable MantineNumberSizeImpl
     , onChange     :: Nullable (EffectFn1 (Array String) Unit)
     , orientation  :: Nullable String
     , required     :: Nullable Boolean

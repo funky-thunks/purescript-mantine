@@ -3,31 +3,28 @@ module Mantine.Core.Layout.AspectRatio
   , AspectRatioProps
   ) where
 
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
+import Mantine.Core.Prelude
 
 aspectRatio :: (AspectRatioProps -> AspectRatioProps) -> JSX
-aspectRatio setProps = element aspectRatioComponent (toNative (setProps defaultAspectRatioProps))
+aspectRatio = mkComponentWithDefault aspectRatioComponent defaultAspectRatioProps
 
 foreign import aspectRatioComponent :: ReactComponent AspectRatioPropsImpl
 
 type AspectRatioProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , ratio    :: Number
     )
 
 defaultAspectRatioProps :: AspectRatioProps
 defaultAspectRatioProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { children: []
     , ratio: 1.0
     }
 
 type AspectRatioPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
     , ratio    :: Number
     )

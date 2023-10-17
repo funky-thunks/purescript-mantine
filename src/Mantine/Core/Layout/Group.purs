@@ -2,22 +2,12 @@ module Mantine.Core.Layout.Group
   ( group
   , group_
   , GroupProps
-
-  , module Mantine.Core.Common
   ) where
 
-import Data.Default (defaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (AlignItems, MantineNumberSize, Position)
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Hooks (JSX)
-import Record (union)
+import Mantine.Core.Prelude
 
 group :: (GroupProps -> GroupProps) -> JSX
-group setProps = element groupComponent (toNative (setProps defaultGroupProps))
+group = mkComponentWithDefault groupComponent defaultGroupProps
 
 group_ :: Array JSX -> JSX
 group_ children = group _ { children = children }
@@ -25,7 +15,7 @@ group_ children = group _ { children = children }
 foreign import groupComponent :: ReactComponent GroupPropsImpl
 
 type GroupProps =
-  MC.ThemingProps
+  ThemingProps
     ( children :: Array JSX
     , grow     :: Boolean
     , noWrap   :: Boolean
@@ -36,16 +26,16 @@ type GroupProps =
 
 defaultGroupProps :: GroupProps
 defaultGroupProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { noWrap: true
     } `union` defaultValue
 
 type GroupPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( children :: Array JSX
     , grow     :: Boolean
     , noWrap   :: Boolean
     , align    :: Nullable String
     , position :: Nullable String
-    , spacing  :: Nullable MC.MantineNumberSizeImpl
+    , spacing  :: Nullable MantineNumberSizeImpl
     )

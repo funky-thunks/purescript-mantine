@@ -1,29 +1,18 @@
 module Mantine.Core.Navigation.Burger
   ( burger
   , BurgerProps
-
-  , module Mantine.Core.Common
   ) where
 
-import Prelude
-import Data.Default (defaultValue)
-import Data.Maybe (Maybe)
-import Data.Nullable (Nullable)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..), Milliseconds)
-import Mantine.Core.Common as MC
-import Mantine.FFI (toNative)
-import React.Basic (ReactComponent, element)
-import React.Basic.Events (EventHandler, handler_)
-import React.Basic.Hooks (JSX)
-import Record (union)
+import Prelude (pure, unit)
+import Mantine.Core.Prelude
 
 burger :: (BurgerProps -> BurgerProps) -> JSX
-burger setProps = element burgerComponent (toNative (setProps defaultBurgerProps))
+burger = mkComponentWithDefault burgerComponent defaultBurgerProps
 
 foreign import burgerComponent :: ReactComponent BurgerPropsImpl
 
 type BurgerProps =
-  MC.ThemingProps
+  ThemingProps
     ( color              :: Maybe MantineColor
     , onClick            :: EventHandler
     , opened             :: Boolean
@@ -33,15 +22,15 @@ type BurgerProps =
 
 defaultBurgerProps :: BurgerProps
 defaultBurgerProps =
-  MC.defaultThemingProps
+  defaultThemingProps
     { onClick: handler_ (pure unit)
     } `union` defaultValue
 
 type BurgerPropsImpl =
-  MC.ThemingPropsImpl
+  ThemingPropsImpl
     ( color              :: Nullable String
     , onClick            :: EventHandler
     , opened             :: Boolean
-    , size               :: Nullable MC.MantineNumberSizeImpl
+    , size               :: Nullable MantineNumberSizeImpl
     , transitionDuration :: Nullable Number
     )
