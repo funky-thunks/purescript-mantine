@@ -7,6 +7,7 @@ module Mantine.Core.Layout
   , module Mantine.Core.Layout.Grid
   , module Mantine.Core.Layout.Group
   , module Mantine.Core.Layout.MediaQuery
+  , module Mantine.Core.Layout.SimpleGrid
   , module Mantine.Core.Layout.Space
   , module Mantine.Core.Layout.Stack
   ) where
@@ -19,5 +20,6 @@ import Mantine.Core.Layout.Flex (FlexDirection(..), FlexProps, FlexWrap(..), fle
 import Mantine.Core.Layout.Grid (GridColProps, GridColSpan(..), GridProps, grid, gridCol, gridCol_, grid_)
 import Mantine.Core.Layout.Group (GroupProps, group, group_)
 import Mantine.Core.Layout.MediaQuery (MediaQueryProps, mediaQuery)
+import Mantine.Core.Layout.SimpleGrid (SimpleGridBreakpoint(..), SimpleGridProps, simpleGrid, simpleGrid_)
 import Mantine.Core.Layout.Space (SpaceProps, space)
 import Mantine.Core.Layout.Stack (StackProps, stack, stack_)

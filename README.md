@@ -14,7 +14,7 @@ Currently supporting mantine v5.
 import Mantine.Core
 ```
 
-- [ ] Layout
+- [x] Layout
   - [x] [AppShell](https://v5.mantine.dev/core/app-shell/)
   - [x] [AspectRatio](https://v5.mantine.dev/core/aspect-ratio/)
   - [x] [Center](https://v5.mantine.dev/core/center/)
@@ -23,7 +23,7 @@ import Mantine.Core
   - [x] [Grid](https://v5.mantine.dev/core/grid/)
   - [x] [Group](https://v5.mantine.dev/core/group/)
   - [x] [MediaQuery](https://v5.mantine.dev/core/media-query/)
-  - [ ] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
+  - [x] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
   - [x] [Space](https://v5.mantine.dev/core/space/)
   - [x] [Stack](https://v5.mantine.dev/core/stack/)
 - [ ] Buttons
