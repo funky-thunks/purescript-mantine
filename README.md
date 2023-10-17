@@ -14,18 +14,18 @@ Currently supporting mantine v5.
 import Mantine.Core
 ```
 
-- [ ] Layout
-  - [ ] [AppShell](https://v5.mantine.dev/core/app-shell/)
-  - [ ] [AspectRatio](https://v5.mantine.dev/core/aspect-ratio/)
-  - [ ] [Center](https://v5.mantine.dev/core/center/)
-  - [ ] [Container](https://v5.mantine.dev/core/container/)
-  - [ ] [Flex](https://v5.mantine.dev/core/flex/)
-  - [ ] [Grid](https://v5.mantine.dev/core/grid/)
-  - [ ] [Group](https://v5.mantine.dev/core/group/)
-  - [ ] [MediaQuery](https://v5.mantine.dev/core/media-query/)
-  - [ ] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
-  - [ ] [Space](https://v5.mantine.dev/core/space/)
-  - [ ] [Stack](https://v5.mantine.dev/core/stack/)
+- [x] Layout
+  - [x] [AppShell](https://v5.mantine.dev/core/app-shell/)
+  - [x] [AspectRatio](https://v5.mantine.dev/core/aspect-ratio/)
+  - [x] [Center](https://v5.mantine.dev/core/center/)
+  - [x] [Container](https://v5.mantine.dev/core/container/)
+  - [x] [Flex](https://v5.mantine.dev/core/flex/)
+  - [x] [Grid](https://v5.mantine.dev/core/grid/)
+  - [x] [Group](https://v5.mantine.dev/core/group/)
+  - [x] [MediaQuery](https://v5.mantine.dev/core/media-query/)
+  - [x] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
+  - [x] [Space](https://v5.mantine.dev/core/space/)
+  - [x] [Stack](https://v5.mantine.dev/core/stack/)
 - [ ] Buttons
   - [x] [ActionIcon](https://v5.mantine.dev/core/action-icon/)
   - [x] [Button](https://v5.mantine.dev/core/button/)

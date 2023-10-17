@@ -12,6 +12,7 @@ module Mantine.FFI
 
 import Prelude (Unit, identity, map, (<<<))
 import Data.Either (Either, either)
+import Data.Int (toNumber)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
 import Data.Symbol (class IsSymbol)
@@ -38,8 +39,8 @@ instance ToFFI Boolean Boolean where
 instance ToFFI Char Char where
   toNative = identity
 
-instance ToFFI Int Int where
-  toNative = identity
+instance ToFFI Int Number where
+  toNative = toNumber
 
 instance ToFFI Number Number where
   toNative = identity
@@ -116,9 +117,6 @@ instance FromFFI Boolean Boolean where
   fromNative = identity
 
 instance FromFFI Char Char where
-  fromNative = identity
-
-instance FromFFI Int Int where
   fromNative = identity
 
 instance FromFFI Number Number where
