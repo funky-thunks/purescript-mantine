@@ -10,7 +10,7 @@ module Mantine.FFI
   , recordFromNative
   ) where
 
-import Prelude (identity, map, (<<<))
+import Prelude (Unit, identity, map, (<<<))
 import Data.Either (Either, either)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
@@ -28,6 +28,9 @@ import Untagged.Union (class InOneOf, type (|+|), asOneOf)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
+
+instance ToFFI Unit Unit where
+  toNative = identity
 
 instance ToFFI Boolean Boolean where
   toNative = identity
@@ -58,6 +61,9 @@ instance ToFFI Style Style where
 
 instance ToFFI EventHandler EventHandler where
   toNative = identity
+
+instance ToFFI result native => ToFFI (Effect result) (Effect native) where
+  toNative = map toNative
 
 instance ToFFI (arg0 -> Effect result) (EffectFn1 arg0 result) where
   toNative = mkEffectFn1
@@ -103,6 +109,9 @@ instance RecordToFFI Nil any () where
 class FromFFI js ps | ps -> js where
   fromNative :: js -> ps
 
+instance FromFFI Unit Unit where
+  fromNative = identity
+
 instance FromFFI Boolean Boolean where
   fromNative = identity
 
@@ -129,6 +138,12 @@ instance FromFFI JSX JSX where
 
 instance FromFFI Style Style where
   fromNative = identity
+
+instance FromFFI EventHandler EventHandler where
+  fromNative = identity
+
+instance FromFFI native result => FromFFI (Effect native) (Effect result) where
+  fromNative = map fromNative
 
 instance FromFFI (EffectFn1 arg0 result) (arg0 -> Effect result) where
   fromNative = runEffectFn1
