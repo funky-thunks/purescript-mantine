@@ -106,7 +106,7 @@ import Mantine.Core
   - [x] [Skeleton](https://v5.mantine.dev/core/skeleton/)
 - [ ] Miscellaneous
   - [x] [Box](https://v5.mantine.dev/core/box/)
-  - [ ] [Collapse](https://v5.mantine.dev/core/collapse/)
+  - [x] [Collapse](https://v5.mantine.dev/core/collapse/)
   - [ ] [Divider](https://v5.mantine.dev/core/divider/)
   - [ ] [FocusTrap](https://v5.mantine.dev/core/focus-trap/)
   - [ ] [Paper](https://v5.mantine.dev/core/paper/)
