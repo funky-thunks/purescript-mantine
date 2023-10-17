@@ -98,7 +98,7 @@ import Mantine.Core
   - [ ] [Title](https://v5.mantine.dev/core/title/)
   - [ ] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
 - [ ] Feedback
-  - [ ] [Alert](https://v5.mantine.dev/core/alert/)
+  - [x] [Alert](https://v5.mantine.dev/core/alert/)
   - [ ] [Loader](https://v5.mantine.dev/core/loader/)
   - [ ] [Notification](https://v5.mantine.dev/core/notification/)
   - [ ] [Progress](https://v5.mantine.dev/core/progress/)
