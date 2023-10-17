@@ -18,7 +18,7 @@ import Mantine.Core
   - [x] [AppShell](https://v5.mantine.dev/core/app-shell/)
   - [x] [AspectRatio](https://v5.mantine.dev/core/aspect-ratio/)
   - [x] [Center](https://v5.mantine.dev/core/center/)
-  - [ ] [Container](https://v5.mantine.dev/core/container/)
+  - [x] [Container](https://v5.mantine.dev/core/container/)
   - [ ] [Flex](https://v5.mantine.dev/core/flex/)
   - [ ] [Grid](https://v5.mantine.dev/core/grid/)
   - [ ] [Group](https://v5.mantine.dev/core/group/)
