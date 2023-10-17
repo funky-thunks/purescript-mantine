@@ -25,7 +25,7 @@ import Mantine.Core
   - [x] [MediaQuery](https://v5.mantine.dev/core/media-query/)
   - [ ] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
   - [x] [Space](https://v5.mantine.dev/core/space/)
-  - [ ] [Stack](https://v5.mantine.dev/core/stack/)
+  - [x] [Stack](https://v5.mantine.dev/core/stack/)
 - [ ] Buttons
   - [x] [ActionIcon](https://v5.mantine.dev/core/action-icon/)
   - [x] [Button](https://v5.mantine.dev/core/button/)
