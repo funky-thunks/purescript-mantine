@@ -10,7 +10,6 @@ module Mantine.Core.Inputs.Slider
 
   , LabelFormatter(..)
   , ScaleFunction(..)
-  , ValueHandler(..)
 
   , module Mantine.Core.Common
   ) where
@@ -19,11 +18,10 @@ import Prelude
 import Data.Default (class DefaultValue)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable)
-import Effect (Effect)
-import Effect.Uncurried (EffectFn1, mkEffectFn1)
-import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..), MantineGradient, MantineTransition(..), MantineTransitionTimingFunction(..), Milliseconds, Orientation(..), Pixels, Radius(..))
+import Effect.Uncurried (EffectFn1)
+import Mantine.Core.Common (MantineColor(..), MantineNumberSize, MantineSize(..), MantineGradient, MantineTransition(..), MantineTransitionTimingFunction(..), Milliseconds, Orientation(..), Pixels, Radius(..), ValueHandler)
 import Mantine.Core.Common as MC
-import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import Mantine.FFI (class FromFFI, class ToFFI, toNative)
 import React.Basic (ReactComponent, element)
 import React.Basic.Hooks (JSX)
 import Type.Row (type (+))
@@ -126,14 +124,6 @@ instance DefaultValue ScaleFunction where
 
 instance ToFFI ScaleFunction (Number -> Number) where
   toNative (ScaleFunction sf) = sf
-
-newtype ValueHandler value = ValueHandler (value -> Effect Unit)
-
-instance DefaultValue (ValueHandler value) where
-  defaultValue = ValueHandler (const (pure unit))
-
-instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
-  toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
 
 type SliderCommonPropsImpl value r =
   ( color                         :: Nullable String

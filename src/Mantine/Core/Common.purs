@@ -28,6 +28,8 @@ module Mantine.Core.Common
   , ThemingPropsImpl
   , ThemingPropsImplRow
   , themingToImpl
+
+  , ValueHandler(..)
   ) where
 
 import Prelude hiding (bind)
@@ -38,7 +40,9 @@ import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype, unwrap)
 import Data.Nullable (Nullable)
 import Data.Show.Generic (genericShow)
-import Mantine.FFI (class ToFFI, toNative)
+import Effect (Effect)
+import Effect.Uncurried (EffectFn1, mkEffectFn1)
+import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import React.Basic.Emotion (Style)
 import Record (merge, union)
 import Type.Row (class Nub, type (+))
@@ -761,3 +765,11 @@ themingToImpl :: forall otherProps otherPropsImpl
 themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx } =
   toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx }
     `merge` f props
+
+newtype ValueHandler value = ValueHandler (value -> Effect Unit)
+
+instance DefaultValue (ValueHandler value) where
+  defaultValue = ValueHandler (const (pure unit))
+
+instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
+  toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
