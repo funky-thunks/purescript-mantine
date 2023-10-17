@@ -62,7 +62,7 @@ import Mantine.Core
   - [ ] [NavLink](https://v5.mantine.dev/core/nav-link/)
   - [ ] [Pagination](https://v5.mantine.dev/core/pagination/)
   - [ ] [Stepper](https://v5.mantine.dev/core/stepper/)
-  - [ ] [Tabs](https://v5.mantine.dev/core/tabs/)
+  - [x] [Tabs](https://v5.mantine.dev/core/tabs/)
 - [ ] Data display
   - [ ] [Accordion](https://v5.mantine.dev/core/accordion/)
   - [ ] [Avatar](https://v5.mantine.dev/core/avatar/)
