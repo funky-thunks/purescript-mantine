@@ -21,7 +21,7 @@ import Mantine.Core
   - [x] [Container](https://v5.mantine.dev/core/container/)
   - [x] [Flex](https://v5.mantine.dev/core/flex/)
   - [x] [Grid](https://v5.mantine.dev/core/grid/)
-  - [ ] [Group](https://v5.mantine.dev/core/group/)
+  - [x] [Group](https://v5.mantine.dev/core/group/)
   - [ ] [MediaQuery](https://v5.mantine.dev/core/media-query/)
   - [ ] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
   - [ ] [Space](https://v5.mantine.dev/core/space/)
