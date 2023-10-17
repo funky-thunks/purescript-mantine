@@ -31,8 +31,9 @@ module Mantine.Core.Common
 
   , ValueHandler(..)
 
-  , mkComponentWithDefault
   , mkComponent
+  , mkComponentWithDefault
+  , mkTrivialComponent
   ) where
 
 import Prelude hiding (bind)
@@ -779,8 +780,15 @@ instance DefaultValue (ValueHandler value) where
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
 
+mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> (props -> Record foreignProps) -> props -> (props -> props) -> JSX
+mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))
+
 mkComponentWithDefault :: forall props foreignProps. ToFFI props (Record foreignProps) => ReactComponent (Record foreignProps) -> props -> (props -> props) -> JSX
 mkComponentWithDefault cmpt = mkComponent cmpt toNative
 
-mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> (props -> Record foreignProps) -> props -> (props -> props) -> JSX
-mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))
+mkTrivialComponent :: forall props foreignProps
+                    . Nub (ThemingPropsRow props) (ThemingPropsRow props)
+                   => DefaultValue (Record props)
+                   => ToFFI (ThemingProps props) (ThemingPropsImpl foreignProps)
+                   => ReactComponent (ThemingPropsImpl foreignProps) -> (ThemingProps props -> ThemingProps props) -> JSX
+mkTrivialComponent cmpt = mkComponentWithDefault cmpt defaultThemingProps_

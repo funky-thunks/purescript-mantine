@@ -16,7 +16,7 @@ import Prelude
 import Mantine.Core.Prelude
 
 slider :: (SliderProps -> SliderProps) -> JSX
-slider = mkComponentWithDefault sliderComponent defaultThemingProps_
+slider = mkTrivialComponent sliderComponent
 
 foreign import sliderComponent :: ReactComponent SliderPropsImpl
 
@@ -35,7 +35,7 @@ type SliderPropsImpl =
     )
 
 rangeSlider :: (RangeSliderProps -> RangeSliderProps) -> JSX
-rangeSlider = mkComponentWithDefault rangeSliderComponent defaultThemingProps_
+rangeSlider = mkTrivialComponent rangeSliderComponent
 
 foreign import rangeSliderComponent :: ReactComponent RangeSliderPropsImpl
 

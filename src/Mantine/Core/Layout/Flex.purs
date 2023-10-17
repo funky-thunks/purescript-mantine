@@ -9,7 +9,7 @@ module Mantine.Core.Layout.Flex
 import Mantine.Core.Prelude
 
 flex :: (FlexProps -> FlexProps) -> JSX
-flex = mkComponentWithDefault flexComponent defaultThemingProps_
+flex = mkTrivialComponent flexComponent
 
 flex_ :: Array JSX -> JSX
 flex_ children = flex _ { children = children }

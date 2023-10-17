@@ -23,7 +23,7 @@ import Prelude (Unit)
 import Mantine.Core.Prelude
 
 tabs :: (TabsProps -> TabsProps) -> JSX
-tabs = mkComponentWithDefault tabsComponent defaultThemingProps_
+tabs = mkTrivialComponent tabsComponent
 
 tabs_ :: Array JSX -> JSX
 tabs_ children = tabs _ { children = children}
@@ -89,7 +89,7 @@ type TabsPropsImpl =
     )
 
 tab :: (TabProps -> TabProps) -> JSX
-tab = mkComponentWithDefault tabComponent defaultThemingProps_
+tab = mkTrivialComponent tabComponent
 
 tab_ :: Array JSX -> JSX
 tab_ children = tab _ { children = children}
@@ -115,7 +115,7 @@ type TabPropsImpl =
     )
 
 tabList :: (TabListProps -> TabListProps) -> JSX
-tabList = mkComponentWithDefault tabListComponent defaultThemingProps_
+tabList = mkTrivialComponent tabListComponent
 
 tabList_ :: Array JSX -> JSX
 tabList_ children = tabList _ { children = children }
@@ -150,7 +150,7 @@ type TabListPropsImpl =
     )
 
 tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX
-tabPanel = mkComponentWithDefault tabPanelComponent defaultThemingProps_
+tabPanel = mkTrivialComponent tabPanelComponent
 
 tabPanel_ :: Array JSX -> JSX
 tabPanel_ children = tabPanel _ { children = children }

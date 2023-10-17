@@ -6,7 +6,7 @@ module Mantine.Core.Layout.MediaQuery
 import Mantine.Core.Prelude
 
 mediaQuery :: (MediaQueryProps -> MediaQueryProps) -> JSX
-mediaQuery = mkComponentWithDefault mediaQueryComponent defaultThemingProps_
+mediaQuery = mkTrivialComponent mediaQueryComponent
 
 foreign import mediaQueryComponent :: ReactComponent MediaQueryPropsImpl
 

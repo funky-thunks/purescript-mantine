@@ -9,7 +9,7 @@ import Prelude
 import Mantine.Core.Prelude
 
 loader :: (LoaderProps -> LoaderProps) -> JSX
-loader = mkComponentWithDefault loaderComponent defaultThemingProps_
+loader = mkTrivialComponent loaderComponent
 
 loader_ :: JSX
 loader_ = loader identity

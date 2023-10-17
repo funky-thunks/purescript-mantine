@@ -67,7 +67,7 @@ toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
 toNativeCheckbox props = toNative (delete (Proxy :: Proxy "icon") props) `merge` { icon: toNullable props.icon }
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
-checkboxGroup = mkComponentWithDefault checkboxGroupComponent defaultThemingProps_
+checkboxGroup = mkTrivialComponent checkboxGroupComponent
 
 checkboxGroup_ :: Array JSX -> JSX
 checkboxGroup_ children = checkboxGroup _ { children = children }

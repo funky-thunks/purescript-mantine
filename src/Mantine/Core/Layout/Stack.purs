@@ -7,7 +7,7 @@ module Mantine.Core.Layout.Stack
 import Mantine.Core.Prelude
 
 stack :: (StackProps -> StackProps) -> JSX
-stack = mkComponentWithDefault stackComponent defaultThemingProps_
+stack = mkTrivialComponent stackComponent
 
 stack_ :: Array JSX -> JSX
 stack_ children = stack _ { children = children }

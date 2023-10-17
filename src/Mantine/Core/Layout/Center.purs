@@ -7,7 +7,7 @@ module Mantine.Core.Layout.Center
 import Mantine.Core.Prelude
 
 center :: (CenterProps -> CenterProps) -> JSX
-center = mkComponentWithDefault centerComponent defaultThemingProps_
+center = mkTrivialComponent centerComponent
 
 center_ :: Array JSX -> JSX
 center_ children = center _ { children = children }

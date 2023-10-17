@@ -7,7 +7,7 @@ module Mantine.Core.Feedback.RingProgress
 import Mantine.Core.Prelude
 
 ringProgress :: (RingProgressProps -> RingProgressProps) -> JSX
-ringProgress = mkComponentWithDefault ringProgressComponent defaultThemingProps_
+ringProgress = mkTrivialComponent ringProgressComponent
 
 foreign import ringProgressComponent :: ReactComponent RingProgressPropsImpl
 

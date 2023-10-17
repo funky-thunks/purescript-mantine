@@ -6,7 +6,7 @@ module Mantine.Core.Layout.Space
 import Mantine.Core.Prelude
 
 space :: (SpaceProps -> SpaceProps) -> JSX
-space = mkComponentWithDefault spaceComponent defaultThemingProps_
+space = mkTrivialComponent spaceComponent
 
 foreign import spaceComponent :: ReactComponent SpacePropsImpl
 

@@ -8,7 +8,7 @@ module Mantine.Core.Layout.SimpleGrid
 import Mantine.Core.Prelude
 
 simpleGrid :: (SimpleGridProps -> SimpleGridProps) -> JSX
-simpleGrid = mkComponentWithDefault simpleGridComponent defaultThemingProps_
+simpleGrid = mkTrivialComponent simpleGridComponent
 
 simpleGrid_ :: Array JSX -> JSX
 simpleGrid_ children = simpleGrid _ { children = children }

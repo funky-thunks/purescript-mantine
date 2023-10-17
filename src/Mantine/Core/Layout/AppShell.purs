@@ -26,7 +26,7 @@ import Foreign.Object (Object, fromFoldable)
 import Mantine.Core.Prelude
 
 appShell :: (AppShellProps -> AppShellProps) -> JSX
-appShell = mkComponentWithDefault appShellComponent defaultThemingProps_
+appShell = mkTrivialComponent appShellComponent
 
 foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
@@ -61,13 +61,13 @@ type AppShellPropsImpl =
     )
 
 navbar :: (NavbarProps -> NavbarProps) -> JSX
-navbar = mkComponentWithDefault navbarComponent defaultThemingProps_
+navbar = mkTrivialComponent navbarComponent
 
 navbar_ :: Array JSX -> JSX
 navbar_ children = navbar _ { children = children }
 
 aside :: (AsideProps -> AsideProps) -> JSX
-aside = mkComponentWithDefault asideComponent defaultThemingProps_
+aside = mkTrivialComponent asideComponent
 
 aside_ :: Array JSX -> JSX
 aside_ children = aside _ { children = children }
@@ -133,7 +133,7 @@ type HorizontalSectionPositionImpl =
   }
 
 navbarSection :: (NavbarSectionProps -> NavbarSectionProps) -> JSX
-navbarSection = mkComponentWithDefault navbarSectionComponent defaultThemingProps_
+navbarSection = mkTrivialComponent navbarSectionComponent
 
 navbarSection_ :: Array JSX -> JSX
 navbarSection_ children = navbarSection _ { children = children }
@@ -153,10 +153,10 @@ type NavbarSectionPropsImpl =
     )
 
 header :: (HeaderProps -> HeaderProps) -> JSX
-header = mkComponentWithDefault headerComponent defaultThemingProps_
+header = mkTrivialComponent headerComponent
 
 footer :: (FooterProps -> FooterProps) -> JSX
-footer = mkComponentWithDefault footerComponent defaultThemingProps_
+footer = mkTrivialComponent footerComponent
 
 foreign import headerComponent :: ReactComponent VerticalSectionPropsImpl
 foreign import footerComponent :: ReactComponent VerticalSectionPropsImpl

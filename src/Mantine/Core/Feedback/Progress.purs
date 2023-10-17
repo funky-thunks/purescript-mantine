@@ -7,7 +7,7 @@ module Mantine.Core.Feedback.Progress
 import Mantine.Core.Prelude
 
 progress :: (ProgressProps -> ProgressProps) -> JSX
-progress = mkComponentWithDefault progressComponent defaultThemingProps_
+progress = mkTrivialComponent progressComponent
 
 foreign import progressComponent :: ReactComponent ProgressPropsImpl
 
