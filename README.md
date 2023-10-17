@@ -86,7 +86,7 @@ import Mantine.Core
   - [x] [Modal](https://v5.mantine.dev/core/modal/)
   - [ ] [Overlay](https://v5.mantine.dev/core/overlay/)
   - [ ] [Popover](https://v5.mantine.dev/core/popover/)
-  - [ ] [Tooltip](https://v5.mantine.dev/core/tooltip/)
+  - [x] [Tooltip](https://v5.mantine.dev/core/tooltip/)
 - [ ] Typography
   - [ ] [Blockquote](https://v5.mantine.dev/core/blockquote/)
   - [ ] [Code](https://v5.mantine.dev/core/code/)
