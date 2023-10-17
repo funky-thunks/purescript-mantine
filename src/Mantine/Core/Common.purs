@@ -30,6 +30,9 @@ module Mantine.Core.Common
   , themingToImpl
 
   , ValueHandler(..)
+
+  , mkTrivialComponent
+  , mkComponent
   ) where
 
 import Prelude hiding (bind)
@@ -43,7 +46,9 @@ import Data.Show.Generic (genericShow)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import React.Basic (ReactComponent, element)
 import React.Basic.Emotion (Style)
+import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, type (+))
 import Untagged.Union (type (|+|))
@@ -773,3 +778,9 @@ instance DefaultValue (ValueHandler value) where
 
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
+
+mkTrivialComponent :: forall props foreignProps. ToFFI props (Record foreignProps) => ReactComponent (Record foreignProps) -> props -> (props -> props) -> JSX
+mkTrivialComponent cmpt default = mkComponent cmpt default toNative
+
+mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> props -> (props -> Record foreignProps) -> (props -> props) -> JSX
+mkComponent cmpt default converter setProps = element cmpt (converter (setProps default))

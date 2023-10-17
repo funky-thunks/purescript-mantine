@@ -9,12 +9,12 @@ import Data.Maybe (Maybe)
 import Data.Nullable (Nullable)
 import Mantine.Core.Common as MC
 import Mantine.FFI (class ToFFI, toNative)
-import React.Basic (ReactComponent, element)
+import React.Basic (ReactComponent)
 import React.Basic.Hooks (JSX)
 import Untagged.Union (type (|+|), asOneOf)
 
 simpleGrid :: (SimpleGridProps -> SimpleGridProps) -> JSX
-simpleGrid setProps = element simpleGridComponent (toNative (setProps MC.defaultThemingProps_))
+simpleGrid = MC.mkTrivialComponent simpleGridComponent MC.defaultThemingProps_
 
 simpleGrid_ :: Array JSX -> JSX
 simpleGrid_ children = simpleGrid _ { children = children }
