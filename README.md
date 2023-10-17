@@ -100,7 +100,7 @@ import Mantine.Core
 - [ ] Feedback
   - [x] [Alert](https://v5.mantine.dev/core/alert/)
   - [x] [Loader](https://v5.mantine.dev/core/loader/)
-  - [ ] [Notification](https://v5.mantine.dev/core/notification/)
+  - [x] [Notification](https://v5.mantine.dev/core/notification/)
   - [ ] [Progress](https://v5.mantine.dev/core/progress/)
   - [ ] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
   - [x] [Skeleton](https://v5.mantine.dev/core/skeleton/)
