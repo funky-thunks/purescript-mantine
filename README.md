@@ -97,11 +97,11 @@ import Mantine.Core
   - [ ] [Text](https://v5.mantine.dev/core/text/)
   - [ ] [Title](https://v5.mantine.dev/core/title/)
   - [ ] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
-- [ ] Feedback
+- [x] Feedback
   - [x] [Alert](https://v5.mantine.dev/core/alert/)
   - [x] [Loader](https://v5.mantine.dev/core/loader/)
   - [x] [Notification](https://v5.mantine.dev/core/notification/)
-  - [ ] [Progress](https://v5.mantine.dev/core/progress/)
+  - [x] [Progress](https://v5.mantine.dev/core/progress/)
   - [x] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
   - [x] [Skeleton](https://v5.mantine.dev/core/skeleton/)
 - [ ] Miscellaneous
