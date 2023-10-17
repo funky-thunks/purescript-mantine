@@ -20,6 +20,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import Prim.Row (class Cons, class Lacks)
 import Prim.RowList (class RowToList, RowList, Cons, Nil)
+import React.Basic (Ref)
 import React.Basic.Emotion (Style)
 import React.Basic.Events (EventHandler)
 import React.Basic.Hooks (JSX)
@@ -61,6 +62,9 @@ instance ToFFI Style Style where
   toNative = identity
 
 instance ToFFI EventHandler EventHandler where
+  toNative = identity
+
+instance ToFFI (Ref referenced) (Ref referenced) where
   toNative = identity
 
 instance ToFFI result native => ToFFI (Effect result) (Effect native) where
@@ -138,6 +142,9 @@ instance FromFFI Style Style where
   fromNative = identity
 
 instance FromFFI EventHandler EventHandler where
+  fromNative = identity
+
+instance FromFFI (Ref referenced) (Ref referenced) where
   fromNative = identity
 
 instance FromFFI native result => FromFFI (Effect native) (Effect result) where
