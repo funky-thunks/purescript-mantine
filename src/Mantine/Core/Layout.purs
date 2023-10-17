@@ -7,6 +7,7 @@ module Mantine.Core.Layout
   , module Mantine.Core.Layout.Grid
   , module Mantine.Core.Layout.Group
   , module Mantine.Core.Layout.MediaQuery
+  , module Mantine.Core.Layout.Space
   ) where
 
 import Mantine.Core.Layout.AppShell (AppShellProps, HorizontalSectionHeight(..), HorizontalSectionPosition, HorizontalSectionProps, NavbarSectionProps, Rules(..), VerticalSectionHeight(..), VerticalSectionPosition, VerticalSectionProps, appShell, aside, aside_, footer, header, navbar, navbarSection, navbarSection_, navbar_)
@@ -17,3 +18,4 @@ import Mantine.Core.Layout.Flex (FlexDirection(..), FlexProps, FlexWrap(..), fle
 import Mantine.Core.Layout.Grid (GridColProps, GridColSpan(..), GridProps, grid, gridCol, gridCol_, grid_)
 import Mantine.Core.Layout.Group (GroupProps, group, group_)
 import Mantine.Core.Layout.MediaQuery (MediaQueryProps, mediaQuery)
+import Mantine.Core.Layout.Space (SpaceProps, space)
