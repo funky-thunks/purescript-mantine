@@ -30,7 +30,7 @@ import Effect.Uncurried (EffectFn1)
 import Foreign.Object (Object, fromFoldable)
 import Mantine.Core.Common
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
-import React.Basic (ReactComponent)
+import React.Basic (ReactComponent, Ref)
 import React.Basic.Events (EventHandler, SyntheticEvent, handler_)
 import React.Basic.Hooks (JSX)
 import Record (delete, merge, rename, union)

@@ -111,7 +111,7 @@ import Mantine.Core
   - [ ] [FocusTrap](https://v5.mantine.dev/core/focus-trap/)
   - [x] [Paper](https://v5.mantine.dev/core/paper/)
   - [x] [Portal](https://v5.mantine.dev/core/portal/)
-  - [ ] [ScrollArea](https://v5.mantine.dev/core/scroll-area/)
+  - [x] [ScrollArea](https://v5.mantine.dev/core/scroll-area/)
   - [ ] [Transition](https://v5.mantine.dev/core/transition/)
 
 ### Hooks
