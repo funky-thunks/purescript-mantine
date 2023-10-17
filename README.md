@@ -99,7 +99,7 @@ import Mantine.Core
   - [ ] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
 - [ ] Feedback
   - [x] [Alert](https://v5.mantine.dev/core/alert/)
-  - [ ] [Loader](https://v5.mantine.dev/core/loader/)
+  - [x] [Loader](https://v5.mantine.dev/core/loader/)
   - [ ] [Notification](https://v5.mantine.dev/core/notification/)
   - [ ] [Progress](https://v5.mantine.dev/core/progress/)
   - [ ] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
