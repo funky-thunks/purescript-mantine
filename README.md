@@ -103,7 +103,7 @@ import Mantine.Core
   - [ ] [Notification](https://v5.mantine.dev/core/notification/)
   - [ ] [Progress](https://v5.mantine.dev/core/progress/)
   - [ ] [RingProgress](https://v5.mantine.dev/core/ring-progress/)
-  - [ ] [Skeleton](https://v5.mantine.dev/core/skeleton/)
+  - [x] [Skeleton](https://v5.mantine.dev/core/skeleton/)
 - [ ] Miscellaneous
   - [ ] [Box](https://v5.mantine.dev/core/box/)
   - [ ] [Collapse](https://v5.mantine.dev/core/collapse/)
