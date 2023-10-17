@@ -4,4 +4,4 @@ module Mantine.Core.Inputs
   ) where
 
 import Mantine.Core.Inputs.Checkbox (checkbox, CheckboxProps, CheckboxLabelPosition(..), checkboxGroup, checkboxGroup_, CheckboxGroupProps)
-import Mantine.Core.Inputs.Slider (LabelFormatter(..), RangeSliderProps, ScaleFunction(..), SliderCommonProps, SliderMark, SliderProps, SliderRange(..), ValueHandler(..), rangeSlider, slider)
+import Mantine.Core.Inputs.Slider (LabelFormatter(..), RangeSliderProps, ScaleFunction(..), SliderCommonProps, SliderMark, SliderProps, SliderRange(..), rangeSlider, slider)
