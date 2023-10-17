@@ -81,7 +81,7 @@ import Mantine.Core
   - [ ] [Dialog](https://v5.mantine.dev/core/dialog/)
   - [ ] [Drawer](https://v5.mantine.dev/core/drawer/)
   - [ ] [HoverCard](https://v5.mantine.dev/core/hover-card/)
-  - [ ] [LoadingOverlay](https://v5.mantine.dev/core/loading-overlay/)
+  - [x] [LoadingOverlay](https://v5.mantine.dev/core/loading-overlay/)
   - [ ] [Menu](https://v5.mantine.dev/core/menu/)
   - [ ] [Modal](https://v5.mantine.dev/core/modal/)
   - [ ] [Overlay](https://v5.mantine.dev/core/overlay/)
