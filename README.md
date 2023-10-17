@@ -78,7 +78,7 @@ import Mantine.Core
   - [ ] [Timeline](https://v5.mantine.dev/core/timeline/)
 - [ ] Overlays
   - [x] [Affix](https://v5.mantine.dev/core/affix/)
-  - [ ] [Dialog](https://v5.mantine.dev/core/dialog/)
+  - [x] [Dialog](https://v5.mantine.dev/core/dialog/)
   - [ ] [Drawer](https://v5.mantine.dev/core/drawer/)
   - [ ] [HoverCard](https://v5.mantine.dev/core/hover-card/)
   - [x] [LoadingOverlay](https://v5.mantine.dev/core/loading-overlay/)
