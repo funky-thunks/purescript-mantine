@@ -74,7 +74,7 @@ import Mantine.Core
   - [ ] [Indicator](https://v5.mantine.dev/core/indicator/)
   - [ ] [Kbd](https://v5.mantine.dev/core/kbd/)
   - [x] [Spoiler](https://v5.mantine.dev/core/spoiler/)
-  - [ ] [ThemeIcon](https://v5.mantine.dev/core/theme-icon/)
+  - [x] [ThemeIcon](https://v5.mantine.dev/core/theme-icon/)
   - [ ] [Timeline](https://v5.mantine.dev/core/timeline/)
 - [x] Overlays
   - [x] [Affix](https://v5.mantine.dev/core/affix/)
