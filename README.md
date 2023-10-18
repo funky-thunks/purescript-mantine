@@ -56,7 +56,7 @@ import Mantine.Core
   - [ ] [TextInput](https://v5.mantine.dev/core/text-input/)
   - [ ] [TransferList](https://v5.mantine.dev/core/transfer-list/)
 - [ ] Navigation
-  - [ ] [Anchor](https://v5.mantine.dev/core/anchor/)
+  - [x] [Anchor](https://v5.mantine.dev/core/anchor/)
   - [ ] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
   - [x] [Burger](https://v5.mantine.dev/core/burger/)
   - [x] [NavLink](https://v5.mantine.dev/core/nav-link/)
