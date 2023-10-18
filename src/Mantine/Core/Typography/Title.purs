@@ -5,7 +5,6 @@ module Mantine.Core.Typography.Title
   , TitleOrder(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 title :: (TitleProps -> TitleProps) -> JSX

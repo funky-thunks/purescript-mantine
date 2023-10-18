@@ -7,7 +7,6 @@ module Mantine.Core.Typography.Text
   , WithChildren
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 text :: (TextProps -> TextProps) -> JSX

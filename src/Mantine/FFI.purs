@@ -18,6 +18,8 @@ import Data.Nullable (Nullable, toMaybe, toNullable)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
+import Foreign (Foreign)
+import Foreign.Object (Object)
 import Prim.Row (class Cons, class Lacks)
 import Prim.RowList (class RowToList, RowList, Cons, Nil)
 import React.Basic (Ref)
@@ -50,11 +52,17 @@ instance ToFFI Number Number where
 instance ToFFI String String where
   toNative = identity
 
-instance ToFFI item nativeItem => ToFFI (Array item) (Array nativeItem) where
+instance ToFFI Foreign Foreign where
+  toNative = identity
+
+instance ToFFI abstract native => ToFFI (Array abstract) (Array native) where
   toNative = map toNative
 
 instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
   toNative m = toNullable (map toNative m)
+
+instance ToFFI abstract native => ToFFI (Object abstract) (Object native) where
+  toNative = map toNative
 
 instance ToFFI JSX JSX where
   toNative = identity
@@ -133,11 +141,17 @@ instance FromFFI Number Number where
 instance FromFFI String String where
   fromNative = identity
 
-instance FromFFI item nativeItem => FromFFI (Array item) (Array nativeItem) where
+instance FromFFI Foreign Foreign where
+  fromNative = identity
+
+instance FromFFI native abstract => FromFFI (Array native) (Array abstract) where
   fromNative = map fromNative
 
 instance FromFFI native abstract => FromFFI (Nullable native) (Maybe abstract) where
   fromNative m = map fromNative (toMaybe m)
+
+instance FromFFI native abstract => FromFFI (Object native) (Object abstract) where
+  fromNative = map fromNative
 
 instance FromFFI JSX JSX where
   fromNative = identity
