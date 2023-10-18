@@ -92,7 +92,7 @@ import Mantine.Core
   - [x] [Code](https://v5.mantine.dev/core/code/)
   - [x] [Highlight](https://v5.mantine.dev/core/highlight/)
   - [x] [List](https://v5.mantine.dev/core/list/)
-  - [ ] [Mark](https://v5.mantine.dev/core/mark/)
+  - [x] [Mark](https://v5.mantine.dev/core/mark/)
   - [ ] [Table](https://v5.mantine.dev/core/table/)
   - [ ] [Text](https://v5.mantine.dev/core/text/)
   - [ ] [Title](https://v5.mantine.dev/core/title/)
