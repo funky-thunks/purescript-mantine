@@ -6,6 +6,7 @@ module Mantine.Core
   , module Mantine.Core.Miscellaneous
   , module Mantine.Core.Navigation
   , module Mantine.Core.Overlays
+  , module Mantine.Core.Typography
   ) where
 
 import Mantine.Core.Buttons
@@ -15,3 +16,4 @@ import Mantine.Core.Layout
 import Mantine.Core.Miscellaneous
 import Mantine.Core.Navigation
 import Mantine.Core.Overlays
+import Mantine.Core.Typography
