@@ -4,6 +4,7 @@ module Mantine.Core.DataDisplay
   , module Mantine.Core.DataDisplay.BackgroundImage
   , module Mantine.Core.DataDisplay.Badge
   , module Mantine.Core.DataDisplay.Card
+  , module Mantine.Core.DataDisplay.ColorSwatch
   , module Mantine.Core.DataDisplay.Image
   , module Mantine.Core.DataDisplay.Spoiler
   , module Mantine.Core.DataDisplay.ThemeIcon
@@ -14,6 +15,7 @@ import Mantine.Core.DataDisplay.Avatar (AvatarGroupProps, AvatarProps, AvatarVar
 import Mantine.Core.DataDisplay.BackgroundImage (BackgroundImageProps, backgroundImage, backgroundImage_)
 import Mantine.Core.DataDisplay.Badge (BadgeProps, BadgeVariant(..), badge, badge_)
 import Mantine.Core.DataDisplay.Card (CardProps, CardSectionProps, card, cardSection)
+import Mantine.Core.DataDisplay.ColorSwatch (ColorSwatchProps, colorSwatch)
 import Mantine.Core.DataDisplay.Image (ImageFit(..), ImageProps, image)
 import Mantine.Core.DataDisplay.Spoiler (SpoilerProps, SpoilerState(..), spoiler, spoiler_)
 import Mantine.Core.DataDisplay.ThemeIcon (ThemeIconProps, ThemeIconVariant(..), themeIcon)

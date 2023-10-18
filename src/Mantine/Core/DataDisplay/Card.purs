@@ -6,7 +6,6 @@ module Mantine.Core.DataDisplay.Card
   , CardSectionProps
   ) where
 
-import Foreign (Foreign)
 import Mantine.Core.Prelude
 
 card :: (CardProps -> CardProps) -> JSX
@@ -41,16 +40,6 @@ cardSection = mkComponent cardSectionComponent toNative defaultThemingProps_
 
 foreign import cardSectionComponent :: ReactComponent CardSectionPropsImpl
 
-type CardSectionProps =
-  ThemingProps
-    ( children         :: Array  JSX
-    , component        :: Maybe  String
-    , polymorphicProps :: Object Foreign
-    )
+type CardSectionProps = ThemingProps (Polymorphic (children :: Array  JSX))
 
-type CardSectionPropsImpl =
-  ThemingPropsImpl
-    ( children         :: Array JSX
-    , component        :: Nullable String
-    , polymorphicProps :: Object Foreign
-    )
+type CardSectionPropsImpl = ThemingPropsImpl (PolymorphicImpl (children :: Array JSX))

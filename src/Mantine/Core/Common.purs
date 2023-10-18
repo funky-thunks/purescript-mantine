@@ -34,6 +34,9 @@ module Mantine.Core.Common
   , mkComponent
   , mkComponentWithDefault
   , mkTrivialComponent
+
+  , Polymorphic
+  , PolymorphicImpl
   ) where
 
 import Prelude hiding (bind)
@@ -46,6 +49,8 @@ import Data.Nullable (Nullable)
 import Data.Show.Generic (genericShow)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
+import Foreign (Foreign)
+import Foreign.Object (Object)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import React.Basic (ReactComponent, element)
 import React.Basic.Emotion (Style)
@@ -806,3 +811,15 @@ mkTrivialComponent :: forall props foreignProps
                    => ToFFI (ThemingProps props) (ThemingPropsImpl foreignProps)
                    => ReactComponent (ThemingPropsImpl foreignProps) -> (ThemingProps props -> ThemingProps props) -> JSX
 mkTrivialComponent cmpt = mkComponentWithDefault cmpt defaultThemingProps_
+
+type Polymorphic rest =
+  ( component        :: Maybe String
+  , polymorphicProps :: Object Foreign
+  | rest
+  )
+
+type PolymorphicImpl rest =
+  ( component        :: Nullable String
+  , polymorphicProps :: Object Foreign
+  | rest
+  )
