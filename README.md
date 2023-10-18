@@ -64,7 +64,7 @@ import Mantine.Core
   - [ ] [Stepper](https://v5.mantine.dev/core/stepper/)
   - [x] [Tabs](https://v5.mantine.dev/core/tabs/)
 - [ ] Data display
-  - [ ] [Accordion](https://v5.mantine.dev/core/accordion/)
+  - [x] [Accordion](https://v5.mantine.dev/core/accordion/)
   - [x] [Avatar](https://v5.mantine.dev/core/avatar/)
   - [ ] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
   - [x] [Badge](https://v5.mantine.dev/core/badge/)

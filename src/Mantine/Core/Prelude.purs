@@ -1,5 +1,6 @@
 module Mantine.Core.Prelude
-  ( module Data.Default
+  ( module Prelude
+  , module Data.Default
   , module Data.Either
   , module Data.Maybe
   , module Data.Nullable
@@ -19,6 +20,7 @@ module Mantine.Core.Prelude
   , module Untagged.Union
   ) where
 
+import Prelude (Unit, pure, unit)
 import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either, either)
 import Data.Maybe (Maybe(..))
