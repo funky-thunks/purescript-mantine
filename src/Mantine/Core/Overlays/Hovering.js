@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HoverCard } from '@mantine/core';
+import { HoverCard, Popover } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -19,4 +19,16 @@ export function hoverCardTargetComponent(props) {
 
 export function hoverCardDropdownComponent(props) {
   return React.createElement(HoverCard.Dropdown, removeEmpty(props), props.children);
+}
+
+export function popoverComponent(props) {
+  return React.createElement(Popover, removeEmpty(props), props.children);
+}
+
+export function popoverTargetComponent(props) {
+  return React.createElement(Popover.Target, removeEmpty(props), props.children);
+}
+
+export function popoverDropdownComponent(props) {
+  return React.createElement(Popover.Dropdown, removeEmpty(props), props.children);
 }

@@ -76,7 +76,7 @@ import Mantine.Core
   - [ ] [Spoiler](https://v5.mantine.dev/core/spoiler/)
   - [ ] [ThemeIcon](https://v5.mantine.dev/core/theme-icon/)
   - [ ] [Timeline](https://v5.mantine.dev/core/timeline/)
-- [ ] Overlays
+- [x] Overlays
   - [x] [Affix](https://v5.mantine.dev/core/affix/)
   - [x] [Dialog](https://v5.mantine.dev/core/dialog/)
   - [x] [Drawer](https://v5.mantine.dev/core/drawer/)
@@ -85,7 +85,7 @@ import Mantine.Core
   - [x] [Menu](https://v5.mantine.dev/core/menu/)
   - [x] [Modal](https://v5.mantine.dev/core/modal/)
   - [x] [Overlay](https://v5.mantine.dev/core/overlay/)
-  - [ ] [Popover](https://v5.mantine.dev/core/popover/)
+  - [x] [Popover](https://v5.mantine.dev/core/popover/)
   - [x] [Tooltip](https://v5.mantine.dev/core/tooltip/)
 - [ ] Typography
   - [ ] [Blockquote](https://v5.mantine.dev/core/blockquote/)
