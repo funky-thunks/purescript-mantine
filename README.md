@@ -108,7 +108,7 @@ import Mantine.Core
   - [x] [Box](https://v5.mantine.dev/core/box/)
   - [x] [Collapse](https://v5.mantine.dev/core/collapse/)
   - [x] [Divider](https://v5.mantine.dev/core/divider/)
-  - [ ] [FocusTrap](https://v5.mantine.dev/core/focus-trap/)
+  - [x] [FocusTrap](https://v5.mantine.dev/core/focus-trap/)
   - [x] [Paper](https://v5.mantine.dev/core/paper/)
   - [x] [Portal](https://v5.mantine.dev/core/portal/)
   - [x] [ScrollArea](https://v5.mantine.dev/core/scroll-area/)
