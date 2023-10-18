@@ -57,7 +57,7 @@ import Mantine.Core
   - [ ] [TransferList](https://v5.mantine.dev/core/transfer-list/)
 - [ ] Navigation
   - [x] [Anchor](https://v5.mantine.dev/core/anchor/)
-  - [ ] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
+  - [x] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
   - [x] [Burger](https://v5.mantine.dev/core/burger/)
   - [x] [NavLink](https://v5.mantine.dev/core/nav-link/)
   - [x] [Pagination](https://v5.mantine.dev/core/pagination/)
