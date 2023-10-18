@@ -2,6 +2,11 @@ module Mantine.Core.Buttons.ActionIcon
   ( actionIcon
   , ActionIconProps
   , ActionIconVariant(..)
+
+  , defaultActionIconProps
+  , actionIconToImpl
+  , ActionIconPropsRow
+  , ActionIconPropsImplRow
   ) where
 
 import Prelude (pure, unit)
@@ -11,21 +16,22 @@ import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
 
 actionIcon :: ReactIcon -> (ActionIconProps -> ActionIconProps) -> JSX
-actionIcon icon = mkComponent actionIconComponent actionIconToImpl (defaultActionIconProps icon)
+actionIcon = mkComponent actionIconComponent actionIconToImpl <<< defaultActionIconProps
 
 foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
 
-type ActionIconProps =
-  ThemingProps
-    ( icon     :: ReactIcon
-    , color    :: Maybe MantineColor
-    , disabled :: Boolean
-    , loading  :: Boolean
-    , onClick  :: EventHandler
-    , size     :: Maybe MantineNumberSize
-    , radius   :: Maybe MantineNumberSize
-    , variant  :: ActionIconVariant
-    )
+type ActionIconProps = ThemingProps ActionIconPropsRow
+
+type ActionIconPropsRow =
+  ( icon     :: ReactIcon
+  , color    :: Maybe MantineColor
+  , disabled :: Boolean
+  , loading  :: Boolean
+  , onClick  :: EventHandler
+  , size     :: Maybe MantineNumberSize
+  , radius   :: Maybe MantineNumberSize
+  , variant  :: ActionIconVariant
+  )
 
 defaultActionIconProps :: ReactIcon -> ActionIconProps
 defaultActionIconProps icon =
@@ -34,17 +40,18 @@ defaultActionIconProps icon =
     , onClick: handler_ (pure unit)
     } `union` defaultValue
 
-type ActionIconPropsImpl =
-  ThemingPropsImpl
-    ( children :: Array JSX
-    , color    :: Nullable String
-    , disabled :: Boolean
-    , loading  :: Boolean
-    , onClick  :: EventHandler
-    , size     :: Nullable MantineNumberSizeImpl
-    , radius   :: Nullable MantineNumberSizeImpl
-    , variant  :: Nullable String
-    )
+type ActionIconPropsImpl = ThemingPropsImpl ActionIconPropsImplRow
+
+type ActionIconPropsImplRow =
+  ( children :: Array JSX
+  , color    :: Nullable String
+  , disabled :: Boolean
+  , loading  :: Boolean
+  , onClick  :: EventHandler
+  , size     :: Nullable MantineNumberSizeImpl
+  , radius   :: Nullable MantineNumberSizeImpl
+  , variant  :: Nullable String
+  )
 
 data ActionIconVariant
   = ActionIconOutline
@@ -70,7 +77,6 @@ actionIconVariantNative = case _ of
   ActionIconGradient    -> notNull "gradient"
 
 actionIconToImpl :: ActionIconProps -> ActionIconPropsImpl
-actionIconToImpl =
-  themingToImpl \ { icon, disabled, loading, onClick, color, size, radius, variant } ->
-    { children: pure (icon_ icon)
-    } `union` toNative { onClick, disabled, loading, color, size, radius, variant }
+actionIconToImpl props =
+  toNative (delete (Proxy :: Proxy "icon") props)
+    `union` { children: pure (icon_ props.icon) }
