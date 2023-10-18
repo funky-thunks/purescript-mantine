@@ -29,7 +29,7 @@ defaultSkeletonProps :: SkeletonProps
 defaultSkeletonProps =
   defaultThemingProps
     { animate: true
-    , height:  pure "auto"
+    , height:  Dimension "auto"
     , visible: true
     } `union` defaultValue
 

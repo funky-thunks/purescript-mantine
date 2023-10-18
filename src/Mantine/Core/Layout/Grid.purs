@@ -36,7 +36,7 @@ defaultGridProps =
   defaultThemingProps
     { align:    AlignContentStretch
     , columns:  12
-    , gutter:   pure Medium
+    , gutter:   Preset Medium
     , justify:  JustifyContentFlexStart
     } `union` defaultValue
 

@@ -42,9 +42,9 @@ defaultPaginationProps :: PaginationProps
 defaultPaginationProps =
   defaultThemingProps
     { boundaries:   PageCount 1
-    , radius:       pure Small
+    , radius:       Preset Small
     , siblings:     PageCount 1
-    , size:         pure Medium
+    , size:         Preset Medium
     , total:        PageCount 1
     , withControls: true
     } `union` defaultValue

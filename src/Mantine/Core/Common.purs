@@ -2,7 +2,7 @@ module Mantine.Core.Common
   ( MantineColor(..)
   , DimmedOrColor(..)
   , MantineSize(..)
-  , MantineNumberSize
+  , MantineNumberSize(..)
   , MantineNumberSizeImpl
   , Orientation(..)
   , Radius(..)
@@ -15,7 +15,7 @@ module Mantine.Core.Common
   , JustifyContent(..)
   , Milliseconds
   , Pixels
-  , Dimension
+  , Dimension(..)
   , DimensionImpl
   , MantineTransition(..)
   , MantineTransitionTimingFunction(..)
@@ -52,7 +52,7 @@ import React.Basic.Emotion (Style)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, type (+))
-import Untagged.Union (type (|+|))
+import Untagged.Union (type (|+|), asOneOf)
 
 data MantineColor
   = Dark
@@ -236,7 +236,15 @@ data MantineSize
   | Large
   | ExtraLarge
 
-type MantineNumberSize = Either Number MantineSize
+data MantineNumberSize
+  = Custom Number
+  | Preset MantineSize
+
+instance ToFFI MantineNumberSize MantineNumberSizeImpl where
+  toNative = case _ of
+    Custom n -> asOneOf n
+    Preset s -> asOneOf (toNative s)
+
 type MantineNumberSizeImpl = Number |+| String
 
 data Radius
@@ -613,7 +621,13 @@ justifyContentNative = case _ of
 type Milliseconds = Number
 type Pixels = Number
 
-type Dimension = Either Number String
+data Dimension = Pixels Number | Dimension String
+
+instance ToFFI Dimension DimensionImpl where
+  toNative = case _ of
+    Pixels    p -> asOneOf p
+    Dimension n -> asOneOf n
+
 type DimensionImpl = Number |+| String
 
 data MantineTransition

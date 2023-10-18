@@ -26,7 +26,7 @@ type PaperProps =
 defaultPaperProps :: PaperProps
 defaultPaperProps =
   defaultThemingProps
-    { radius: pure Small
+    { radius: Preset Small
     } `union` defaultValue
 
 type PaperPropsImpl =
