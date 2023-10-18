@@ -55,13 +55,13 @@ import Mantine.Core
   - [ ] [Textarea](https://v5.mantine.dev/core/textarea/)
   - [ ] [TextInput](https://v5.mantine.dev/core/text-input/)
   - [ ] [TransferList](https://v5.mantine.dev/core/transfer-list/)
-- [ ] Navigation
-  - [ ] [Anchor](https://v5.mantine.dev/core/anchor/)
-  - [ ] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
+- [x] Navigation
+  - [x] [Anchor](https://v5.mantine.dev/core/anchor/)
+  - [x] [Breadcrumbs](https://v5.mantine.dev/core/breadcrumbs/)
   - [x] [Burger](https://v5.mantine.dev/core/burger/)
   - [x] [NavLink](https://v5.mantine.dev/core/nav-link/)
   - [x] [Pagination](https://v5.mantine.dev/core/pagination/)
-  - [ ] [Stepper](https://v5.mantine.dev/core/stepper/)
+  - [x] [Stepper](https://v5.mantine.dev/core/stepper/)
   - [x] [Tabs](https://v5.mantine.dev/core/tabs/)
 - [x] Data display
   - [x] [Accordion](https://v5.mantine.dev/core/accordion/)
