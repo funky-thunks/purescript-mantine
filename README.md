@@ -84,7 +84,7 @@ import Mantine.Core
   - [x] [LoadingOverlay](https://v5.mantine.dev/core/loading-overlay/)
   - [x] [Menu](https://v5.mantine.dev/core/menu/)
   - [x] [Modal](https://v5.mantine.dev/core/modal/)
-  - [ ] [Overlay](https://v5.mantine.dev/core/overlay/)
+  - [x] [Overlay](https://v5.mantine.dev/core/overlay/)
   - [ ] [Popover](https://v5.mantine.dev/core/popover/)
   - [x] [Tooltip](https://v5.mantine.dev/core/tooltip/)
 - [ ] Typography
