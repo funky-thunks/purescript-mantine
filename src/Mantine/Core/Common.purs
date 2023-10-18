@@ -42,9 +42,10 @@ module Mantine.Core.Common
 import Prelude hiding (bind)
 import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either)
+import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
-import Data.Newtype (class Newtype, unwrap)
+import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Nullable (Nullable)
 import Data.Show.Generic (genericShow)
 import Effect (Effect)
@@ -792,6 +793,10 @@ themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg
     `merge` f props
 
 newtype ValueHandler value = ValueHandler (value -> Effect Unit)
+derive instance Newtype (ValueHandler value) _
+
+instance Contravariant ValueHandler where
+  cmap f vh = wrap (unwrap vh <<< f)
 
 instance DefaultValue (ValueHandler value) where
   defaultValue = ValueHandler (const (pure unit))
