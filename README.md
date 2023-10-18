@@ -68,7 +68,7 @@ import Mantine.Core
   - [x] [Avatar](https://v5.mantine.dev/core/avatar/)
   - [x] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
   - [x] [Badge](https://v5.mantine.dev/core/badge/)
-  - [ ] [Card](https://v5.mantine.dev/core/card/)
+  - [x] [Card](https://v5.mantine.dev/core/card/)
   - [ ] [ColorSwatch](https://v5.mantine.dev/core/color-swatch/)
   - [x] [Image](https://v5.mantine.dev/core/image/)
   - [ ] [Indicator](https://v5.mantine.dev/core/indicator/)
