@@ -67,7 +67,7 @@ import Mantine.Core
   - [ ] [Accordion](https://v5.mantine.dev/core/accordion/)
   - [x] [Avatar](https://v5.mantine.dev/core/avatar/)
   - [ ] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
-  - [ ] [Badge](https://v5.mantine.dev/core/badge/)
+  - [x] [Badge](https://v5.mantine.dev/core/badge/)
   - [ ] [Card](https://v5.mantine.dev/core/card/)
   - [ ] [ColorSwatch](https://v5.mantine.dev/core/color-swatch/)
   - [ ] [Image](https://v5.mantine.dev/core/image/)
