@@ -4,6 +4,7 @@ module Mantine.Core.Typography
   , module Mantine.Core.Typography.Highlight
   , module Mantine.Core.Typography.List
   , module Mantine.Core.Typography.Mark
+  , module Mantine.Core.Typography.Text
   ) where
 
 import Mantine.Core.Typography.Blockquote (BlockquoteProps, blockquote, blockquote_)
@@ -11,3 +12,4 @@ import Mantine.Core.Typography.Code (CodeProps, code, code_)
 import Mantine.Core.Typography.Highlight (HighlightProps, highlight)
 import Mantine.Core.Typography.List (ListItemProps, ListProps, ListType(..), list, listItem, listItem_, list_)
 import Mantine.Core.Typography.Mark (MarkProps, mark)
+import Mantine.Core.Typography.Text (TextProps, TextPropsImplRow, TextPropsRow, WithChildren, text, text_)

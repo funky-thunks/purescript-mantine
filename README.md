@@ -94,7 +94,7 @@ import Mantine.Core
   - [x] [List](https://v5.mantine.dev/core/list/)
   - [x] [Mark](https://v5.mantine.dev/core/mark/)
   - [ ] [Table](https://v5.mantine.dev/core/table/)
-  - [ ] [Text](https://v5.mantine.dev/core/text/)
+  - [x] [Text](https://v5.mantine.dev/core/text/)
   - [ ] [Title](https://v5.mantine.dev/core/title/)
   - [ ] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
 - [x] Feedback
