@@ -66,7 +66,7 @@ import Mantine.Core
 - [ ] Data display
   - [x] [Accordion](https://v5.mantine.dev/core/accordion/)
   - [x] [Avatar](https://v5.mantine.dev/core/avatar/)
-  - [ ] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
+  - [x] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
   - [x] [Badge](https://v5.mantine.dev/core/badge/)
   - [ ] [Card](https://v5.mantine.dev/core/card/)
   - [ ] [ColorSwatch](https://v5.mantine.dev/core/color-swatch/)
