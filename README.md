@@ -91,7 +91,7 @@ import Mantine.Core
   - [x] [Blockquote](https://v5.mantine.dev/core/blockquote/)
   - [x] [Code](https://v5.mantine.dev/core/code/)
   - [x] [Highlight](https://v5.mantine.dev/core/highlight/)
-  - [ ] [List](https://v5.mantine.dev/core/list/)
+  - [x] [List](https://v5.mantine.dev/core/list/)
   - [ ] [Mark](https://v5.mantine.dev/core/mark/)
   - [ ] [Table](https://v5.mantine.dev/core/table/)
   - [ ] [Text](https://v5.mantine.dev/core/text/)
