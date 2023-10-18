@@ -72,7 +72,7 @@ import Mantine.Core
   - [x] [ColorSwatch](https://v5.mantine.dev/core/color-swatch/)
   - [x] [Image](https://v5.mantine.dev/core/image/)
   - [x] [Indicator](https://v5.mantine.dev/core/indicator/)
-  - [ ] [Kbd](https://v5.mantine.dev/core/kbd/)
+  - [x] [Kbd](https://v5.mantine.dev/core/kbd/)
   - [x] [Spoiler](https://v5.mantine.dev/core/spoiler/)
   - [x] [ThemeIcon](https://v5.mantine.dev/core/theme-icon/)
   - [ ] [Timeline](https://v5.mantine.dev/core/timeline/)
