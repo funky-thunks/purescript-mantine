@@ -89,7 +89,7 @@ import Mantine.Core
   - [x] [Tooltip](https://v5.mantine.dev/core/tooltip/)
 - [ ] Typography
   - [x] [Blockquote](https://v5.mantine.dev/core/blockquote/)
-  - [ ] [Code](https://v5.mantine.dev/core/code/)
+  - [x] [Code](https://v5.mantine.dev/core/code/)
   - [ ] [Highlight](https://v5.mantine.dev/core/highlight/)
   - [ ] [List](https://v5.mantine.dev/core/list/)
   - [ ] [Mark](https://v5.mantine.dev/core/mark/)
