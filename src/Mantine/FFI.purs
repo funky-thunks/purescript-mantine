@@ -27,6 +27,7 @@ import React.Basic.Hooks (JSX)
 import Record (delete, get, insert)
 import Type.Proxy (Proxy(..))
 import Untagged.Union (class InOneOf, type (|+|), asOneOf)
+import Web.HTML (HTMLElement)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
@@ -56,6 +57,9 @@ instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
   toNative m = toNullable (map toNative m)
 
 instance ToFFI JSX JSX where
+  toNative = identity
+
+instance ToFFI HTMLElement HTMLElement where
   toNative = identity
 
 instance ToFFI Style Style where
@@ -136,6 +140,9 @@ instance FromFFI native abstract => FromFFI (Nullable native) (Maybe abstract) w
   fromNative m = map fromNative (toMaybe m)
 
 instance FromFFI JSX JSX where
+  fromNative = identity
+
+instance FromFFI HTMLElement HTMLElement where
   fromNative = identity
 
 instance FromFFI Style Style where
