@@ -5,7 +5,6 @@ module Mantine.Core.Typography.Table
   , TableCaptionSide(..)
   ) where
 
-import Data.Either (Either(..))
 import Mantine.Core.Prelude
 
 table :: (TableProps -> TableProps) -> JSX

@@ -3,7 +3,6 @@ module Mantine.Core.Typography.Highlight
   , HighlightProps
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
 import React.Basic.Emotion (Style)
