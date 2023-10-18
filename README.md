@@ -96,7 +96,7 @@ import Mantine.Core
   - [ ] [Table](https://v5.mantine.dev/core/table/)
   - [x] [Text](https://v5.mantine.dev/core/text/)
   - [x] [Title](https://v5.mantine.dev/core/title/)
-  - [ ] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
+  - [x] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
 - [x] Feedback
   - [x] [Alert](https://v5.mantine.dev/core/alert/)
   - [x] [Loader](https://v5.mantine.dev/core/loader/)
