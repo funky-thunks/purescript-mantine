@@ -115,7 +115,7 @@ defaultTooltipProps =
     , openDelay:        0.0
     , position:         TooltipPositionTop
     , transition:       TransitionFade
-    , width:            pure (pure "auto")
+    , width:            pure (Dimension "auto")
     } `union` defaultValue
 
 type TooltipPropsImpl = ThemingPropsImpl (TooltipPropsBaseImplRow + TooltipPropsImplRow)

@@ -32,9 +32,9 @@ type TableProps =
 defaultTableProps :: TableProps
 defaultTableProps =
   defaultThemingProps
-    { horizontalSpacing: Right ExtraSmall
-    , fontSize:          Right Small
-    , verticalSpacing:   Left 7.0
+    { horizontalSpacing: Preset ExtraSmall
+    , fontSize:          Preset Small
+    , verticalSpacing:   Custom 7.0
     } `union` defaultValue
 
 data TableCaptionSide
