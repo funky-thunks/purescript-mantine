@@ -10,6 +10,7 @@ module Mantine.Core.DataDisplay
   , module Mantine.Core.DataDisplay.Kbd
   , module Mantine.Core.DataDisplay.Spoiler
   , module Mantine.Core.DataDisplay.ThemeIcon
+  , module Mantine.Core.DataDisplay.Timeline
   ) where
 
 import Mantine.Core.DataDisplay.Accordion (AccordionChevronPosition(..), AccordionControlProps, AccordionItemProps, AccordionOrder(..), AccordionProps, AccordionVariant(..), accordion, accordionControl, accordionControl_, accordionItem, accordionItem_, accordionPanel_, multipleAccordion)
@@ -23,3 +24,4 @@ import Mantine.Core.DataDisplay.Indicator (IndicatorPosition(..), IndicatorProps
 import Mantine.Core.DataDisplay.Kbd (kbd)
 import Mantine.Core.DataDisplay.Spoiler (SpoilerProps, SpoilerState(..), spoiler, spoiler_)
 import Mantine.Core.DataDisplay.ThemeIcon (ThemeIconProps, ThemeIconVariant(..), themeIcon)
+import Mantine.Core.DataDisplay.Timeline (TimelineAlign(..), TimelineItemProps, TimelineLineVariant(..), TimelineProps, timeline, timelineItem)

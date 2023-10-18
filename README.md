@@ -63,7 +63,7 @@ import Mantine.Core
   - [x] [Pagination](https://v5.mantine.dev/core/pagination/)
   - [ ] [Stepper](https://v5.mantine.dev/core/stepper/)
   - [x] [Tabs](https://v5.mantine.dev/core/tabs/)
-- [ ] Data display
+- [x] Data display
   - [x] [Accordion](https://v5.mantine.dev/core/accordion/)
   - [x] [Avatar](https://v5.mantine.dev/core/avatar/)
   - [x] [BackgroundImage](https://v5.mantine.dev/core/background-image/)
@@ -75,7 +75,7 @@ import Mantine.Core
   - [x] [Kbd](https://v5.mantine.dev/core/kbd/)
   - [x] [Spoiler](https://v5.mantine.dev/core/spoiler/)
   - [x] [ThemeIcon](https://v5.mantine.dev/core/theme-icon/)
-  - [ ] [Timeline](https://v5.mantine.dev/core/timeline/)
+  - [x] [Timeline](https://v5.mantine.dev/core/timeline/)
 - [x] Overlays
   - [x] [Affix](https://v5.mantine.dev/core/affix/)
   - [x] [Dialog](https://v5.mantine.dev/core/dialog/)
