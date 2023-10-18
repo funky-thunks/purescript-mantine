@@ -87,13 +87,13 @@ import Mantine.Core
   - [x] [Overlay](https://v5.mantine.dev/core/overlay/)
   - [x] [Popover](https://v5.mantine.dev/core/popover/)
   - [x] [Tooltip](https://v5.mantine.dev/core/tooltip/)
-- [ ] Typography
+- [x] Typography
   - [x] [Blockquote](https://v5.mantine.dev/core/blockquote/)
   - [x] [Code](https://v5.mantine.dev/core/code/)
   - [x] [Highlight](https://v5.mantine.dev/core/highlight/)
   - [x] [List](https://v5.mantine.dev/core/list/)
   - [x] [Mark](https://v5.mantine.dev/core/mark/)
-  - [ ] [Table](https://v5.mantine.dev/core/table/)
+  - [x] [Table](https://v5.mantine.dev/core/table/)
   - [x] [Text](https://v5.mantine.dev/core/text/)
   - [x] [Title](https://v5.mantine.dev/core/title/)
   - [x] [TypographyStylesProvider](https://v5.mantine.dev/core/typography-styles-provider/)
