@@ -29,10 +29,10 @@ import Mantine.Core
 - [ ] Buttons
   - [x] [ActionIcon](https://v5.mantine.dev/core/action-icon/)
   - [x] [Button](https://v5.mantine.dev/core/button/)
-  - [ ] [CloseButton](https://v5.mantine.dev/core/close-button/)
-  - [ ] [CopyButton](https://v5.mantine.dev/core/copy-button/)
+  - [x] [CloseButton](https://v5.mantine.dev/core/close-button/)
+  - [x] [CopyButton](https://v5.mantine.dev/core/copy-button/)
   - [ ] [FileButton](https://v5.mantine.dev/core/file-button/)
-  - [ ] [UnstyledButton](https://v5.mantine.dev/core/unstyled-button)
+  - [x] [UnstyledButton](https://v5.mantine.dev/core/unstyled-button)
 - [ ] Inputs
   - [ ] [Autocomplete](https://v5.mantine.dev/core/autocomplete/)
   - [x] [Checkbox](https://v5.mantine.dev/core/checkbox/)

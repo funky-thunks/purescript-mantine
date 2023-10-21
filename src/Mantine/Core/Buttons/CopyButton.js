@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionIcon } from '@mantine/core';
+import { CopyButton } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -9,6 +9,6 @@ function removeEmpty(obj) {
   );
 }
 
-export function actionIconComponent(props) {
-  return React.createElement(ActionIcon, removeEmpty(props), props.children);
+export function copyButtonComponent(props) {
+  return React.createElement(CopyButton, removeEmpty(props), props.children);
 }
