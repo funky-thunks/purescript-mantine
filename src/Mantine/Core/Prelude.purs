@@ -20,7 +20,7 @@ module Mantine.Core.Prelude
   , module Untagged.Union
   ) where
 
-import Prelude (Unit, identity, pure, unit, ($), (<<<))
+import Prelude (Unit, const, identity, map, mempty, pure, unit, ($), (=<<), (<<<), (>>>), (<$), (<$>))
 import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either, either)
 import Data.Maybe (Maybe(..))

@@ -12,7 +12,7 @@ module Mantine.Core.Inputs.Chip
   , ChipGroupPosition(..)
   ) where
 
-import Prelude (class Show, Unit, pure)
+import Prelude (class Show)
 import Data.Array (last)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (maybe)
@@ -44,7 +44,7 @@ defaultChipProps =
   defaultThemingProps
     { size:   Small
     , radius: RadiusPreset ExtraLarge
-    } `union` defaultValue
+    }
 
 type ChipPropsImpl =
   ThemingPropsImpl

@@ -14,8 +14,7 @@ colorSwatch_ c = colorSwatch c identity
 foreign import colorSwatchComponent :: ReactComponent ColorSwatchPropsImpl
 
 defaultColorSwatch :: MantineColor -> ColorSwatchProps
-defaultColorSwatch color =
-  defaultThemingProps { color } `union` defaultValue
+defaultColorSwatch color = defaultThemingProps { color }
 
 type ColorSwatchProps =
   ThemingProps (

@@ -6,7 +6,6 @@ module Mantine.Core.Miscellaneous.Divider
   , DividerVariant(..)
   ) where
 
-import Prelude (identity)
 import Mantine.Core.Prelude
 
 divider :: (DividerProps -> DividerProps) -> JSX
@@ -28,10 +27,7 @@ type DividerProps =
     )
 
 defaultDividerProps :: DividerProps
-defaultDividerProps =
-  defaultThemingProps
-    { orientation: Horizontal
-    } `union` defaultValue
+defaultDividerProps = defaultThemingProps { orientation: Horizontal }
 
 data DividerLabelPosition
   = DividerLabelPositionLeft

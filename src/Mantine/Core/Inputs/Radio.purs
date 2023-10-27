@@ -31,10 +31,7 @@ type RadioProps =
     )
 
 defaultRadioProps :: RadioProps
-defaultRadioProps =
-  defaultThemingProps
-    { size: Small
-    } `union` defaultValue
+defaultRadioProps = defaultThemingProps { size: Small }
 
 type RadioPropsImpl =
   ThemingPropsImpl
@@ -89,7 +86,7 @@ defaultRadioGroupProps =
   defaultThemingProps
     { orientation:  Horizontal
     , size:         Small
-    } `union` defaultValue
+    }
 
 type RadioGroupPropsImpl =
   ThemingPropsImpl

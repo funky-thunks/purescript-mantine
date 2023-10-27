@@ -9,7 +9,6 @@ module Mantine.Core.Inputs.Select
   , module Mantine.Core.Inputs.Input
   ) where
 
-import Prelude ((<$>))
 import Data.Maybe (maybe)
 import Effect.Uncurried (mkEffectFn1)
 import Mantine.Core.Prelude
@@ -104,7 +103,7 @@ defaultSelectProps =
   defaultThemingProps
     { onDropdownClose: pure unit
     , onDropdownOpen:  pure unit
-    } `union` defaultValue
+    }
 
 type SelectPropsImpl =
   ThemingPropsImpl

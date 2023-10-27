@@ -5,7 +5,6 @@ module Mantine.Core.Inputs.SegmentedControl
   , SegmentedControlOrientation(..)
   ) where
 
-import Prelude (Unit, (<<<))
 import Mantine.Core.Prelude
 
 segmentedControl :: (SegmentedControlProps -> SegmentedControlProps) -> JSX

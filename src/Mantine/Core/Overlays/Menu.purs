@@ -18,7 +18,6 @@ module Mantine.Core.Overlays.Menu
   , menuDivider
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 import React.Basic (element)
 import React.Basic.DOM.Events (preventDefault)
@@ -78,7 +77,7 @@ defaultMenuProps =
     , onClose:             pure unit
     , onOpen:              pure unit
     -- , shadow -- TODO
-    } `union` defaultValue
+    }
 
 type MenuPropsImpl =
   ThemingPropsImpl
@@ -258,7 +257,7 @@ defaultMenuItemProps :: MenuItemProps
 defaultMenuItemProps =
   defaultThemingProps
     { onClick: pure unit
-    } `union` defaultValue
+    }
 
 type MenuItemPropsImpl =
   ThemingPropsImpl

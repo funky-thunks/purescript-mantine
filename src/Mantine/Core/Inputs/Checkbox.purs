@@ -8,7 +8,6 @@ module Mantine.Core.Inputs.Checkbox
   , CheckboxGroupProps
   ) where
 
-import Prelude hiding (bind)
 import Mantine.Core.Prelude
 
 checkbox :: (CheckboxProps -> CheckboxProps) -> JSX

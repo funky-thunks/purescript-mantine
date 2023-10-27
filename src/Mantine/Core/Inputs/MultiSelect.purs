@@ -9,7 +9,6 @@ module Mantine.Core.Inputs.MultiSelect
   , module Mantine.Core.Inputs.Input
   ) where
 
-import Prelude (Unit, map, pure, ($), (<$>), (<<<), (=<<))
 import Data.Maybe (fromMaybe, maybe)
 import Effect.Uncurried (mkEffectFn1)
 import Mantine.Core.Prelude

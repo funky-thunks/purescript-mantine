@@ -4,7 +4,6 @@ module Mantine.Core.Feedback.Skeleton
   , SkeletonProps
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 skeleton :: (SkeletonProps -> SkeletonProps) -> JSX
@@ -31,7 +30,7 @@ defaultSkeletonProps =
     { animate: true
     , height:  Dimension "auto"
     , visible: true
-    } `union` defaultValue
+    }
 
 type SkeletonPropsImpl =
   ThemingPropsImpl

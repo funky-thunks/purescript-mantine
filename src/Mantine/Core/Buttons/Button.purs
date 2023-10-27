@@ -14,7 +14,7 @@ module Mantine.Core.Buttons.Button
   , ButtonVariant(..)
   ) where
 
-import Prelude hiding (bind)
+import Prelude (class Show)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Mantine.Core.Prelude
@@ -164,10 +164,7 @@ unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
 unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledButtonProps
 
 defaultUnstyledButtonProps :: UnstyledButtonProps
-defaultUnstyledButtonProps =
-  defaultThemingProps
-    { onClick: handler_ (pure unit)
-    } `union` defaultValue
+defaultUnstyledButtonProps = defaultThemingProps { onClick: handler_ (pure unit) }
 
 type UnstyledButtonProps =
   ThemingProps

@@ -3,7 +3,6 @@ module Mantine.Core.Navigation.Burger
   , BurgerProps
   ) where
 
-import Prelude (pure, unit)
 import Mantine.Core.Prelude
 
 burger :: (BurgerProps -> BurgerProps) -> JSX
@@ -21,10 +20,7 @@ type BurgerProps =
     )
 
 defaultBurgerProps :: BurgerProps
-defaultBurgerProps =
-  defaultThemingProps
-    { onClick: handler_ (pure unit)
-    } `union` defaultValue
+defaultBurgerProps = defaultThemingProps { onClick: handler_ (pure unit) }
 
 type BurgerPropsImpl =
   ThemingPropsImpl

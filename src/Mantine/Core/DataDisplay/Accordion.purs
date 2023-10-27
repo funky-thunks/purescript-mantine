@@ -30,10 +30,7 @@ foreign import accordionComponent :: ReactComponent (AccordionPropsImpl String)
 foreign import multipleAccordionComponent :: ReactComponent (AccordionPropsImpl (Array String))
 
 defaultAccordionProps :: forall accordionValue. AccordionProps accordionValue
-defaultAccordionProps =
-  defaultThemingProps
-    { radius: Preset Small
-    } `union` defaultValue
+defaultAccordionProps = defaultThemingProps { radius: Preset Small }
 
 type AccordionProps accordionValue =
   ThemingProps

@@ -9,7 +9,6 @@ module Mantine.Core.Layout.Grid
   , GridColSpan(..)
   ) where
 
-import Prelude
 import Data.Int (toNumber)
 import Mantine.Core.Prelude
 
@@ -38,7 +37,7 @@ defaultGridProps =
     , columns:  12
     , gutter:   Preset Medium
     , justify:  JustifyContentFlexStart
-    } `union` defaultValue
+    }
 
 type GridPropsImpl =
   ThemingPropsImpl

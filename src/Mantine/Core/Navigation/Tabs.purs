@@ -19,7 +19,6 @@ module Mantine.Core.Navigation.Tabs
   , TabPanelProps
   ) where
 
-import Prelude (Unit)
 import Mantine.Core.Prelude
 
 tabs :: (TabsProps -> TabsProps) -> JSX

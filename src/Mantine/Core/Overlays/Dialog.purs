@@ -4,7 +4,6 @@ module Mantine.Core.Overlays.Dialog
   , DialogPosition
   ) where
 
-import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 
 dialog :: (DialogProps -> DialogProps) -> JSX
@@ -37,7 +36,7 @@ type DialogPosition =
   }
 
 defaultDialogProps :: DialogProps
-defaultDialogProps = defaultThemingProps { onClose: pure unit } `union` defaultValue
+defaultDialogProps = defaultThemingProps { onClose: pure unit }
 
 type DialogPropsImpl =
   ThemingPropsImpl

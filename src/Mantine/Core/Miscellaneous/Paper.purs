@@ -4,7 +4,6 @@ module Mantine.Core.Miscellaneous.Paper
   , PaperProps
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 paper :: (PaperProps -> PaperProps) -> JSX
@@ -24,10 +23,7 @@ type PaperProps =
     )
 
 defaultPaperProps :: PaperProps
-defaultPaperProps =
-  defaultThemingProps
-    { radius: Preset Small
-    } `union` defaultValue
+defaultPaperProps = defaultThemingProps { radius: Preset Small }
 
 type PaperPropsImpl =
   ThemingPropsImpl

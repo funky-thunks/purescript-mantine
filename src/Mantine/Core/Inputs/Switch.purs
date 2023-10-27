@@ -9,7 +9,6 @@ module Mantine.Core.Inputs.Switch
   , SwitchGroupProps
   ) where
 
-import Prelude (Unit, (<$>), (<<<))
 import Mantine.Core.Prelude
 
 switch :: (SwitchProps -> SwitchProps) -> JSX

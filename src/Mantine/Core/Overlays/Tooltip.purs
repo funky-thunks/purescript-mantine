@@ -15,7 +15,6 @@ module Mantine.Core.Overlays.Tooltip
   , TooltipGroupRow
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 
@@ -96,11 +95,11 @@ type TooltipFloatingProps =
 defaultTooltipFloatingProps :: TooltipFloatingProps
 defaultTooltipFloatingProps =
   defaultThemingProps
-    { children:      mempty :: JSX
-    , offset:        10.0
-    , position:      TooltipPositionRight
-    , withinPortal:  true
-    } `union` defaultValue
+    { children:     mempty :: JSX
+    , offset:       10.0
+    , position:     TooltipPositionRight
+    , withinPortal: true
+    }
 
 defaultTooltipProps :: TooltipProps
 defaultTooltipProps =
@@ -116,7 +115,7 @@ defaultTooltipProps =
     , position:         TooltipPositionTop
     , transition:       TransitionFade
     , width:            pure (Dimension "auto")
-    } `union` defaultValue
+    }
 
 type TooltipPropsImpl = ThemingPropsImpl (TooltipPropsBaseImplRow + TooltipPropsImplRow)
 

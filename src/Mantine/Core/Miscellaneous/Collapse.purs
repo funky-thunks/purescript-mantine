@@ -5,7 +5,6 @@ module Mantine.Core.Miscellaneous.Collapse
   , CollapseAxis(..)
   ) where
 
-import Prelude (Unit, unit, pure, (<<<))
 import Mantine.Core.Prelude
 
 collapse :: (CollapseProps -> CollapseProps) -> JSX
@@ -45,7 +44,7 @@ defaultCollapseProps =
     , onTransitionEnd:          pure unit
     , transitionDuration:       200.0
     , transitionTimingFunction: TransitionTimingEase
-    } `union` defaultValue
+    }
 
 type CollapsePropsImpl =
   ThemingPropsImpl

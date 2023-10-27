@@ -5,7 +5,6 @@ module Mantine.Core.Layout.Container
   , ContainerSizes
   ) where
 
-import Prelude
 import Data.Bifunctor (lmap)
 import Mantine.Core.Prelude
 

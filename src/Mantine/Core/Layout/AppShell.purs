@@ -21,8 +21,6 @@ module Mantine.Core.Layout.AppShell
   , Rules(..)
   ) where
 
-import Prelude (map, (<$>))
-import Foreign.Object (Object, fromFoldable)
 import Mantine.Core.Prelude
 
 appShell :: (AppShellProps -> AppShellProps) -> JSX

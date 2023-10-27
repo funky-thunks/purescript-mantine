@@ -22,10 +22,7 @@ type CardProps =
     )
 
 defaultCardProps :: CardProps
-defaultCardProps =
-  defaultThemingProps
-    { radius: Preset Small
-    } `union` defaultValue
+defaultCardProps = defaultThemingProps { radius: Preset Small }
 
 type CardPropsImpl =
   ThemingPropsImpl

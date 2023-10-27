@@ -4,7 +4,6 @@ module Mantine.Core.Navigation.NavLink
   , NavLinkVariant(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 navLink :: (NavLinkProps -> NavLinkProps) -> JSX
@@ -39,7 +38,7 @@ defaultNavLinkProps =
     { label:   mempty :: JSX
     , onClick: handler_ (pure unit)
     , variant: NavLinkLight
-    } `union` defaultValue
+    }
 
 type NavLinkPropsImpl =
   ThemingPropsImpl

@@ -34,7 +34,7 @@ defaultTableProps =
     { horizontalSpacing: Preset ExtraSmall
     , fontSize:          Preset Small
     , verticalSpacing:   Custom 7.0
-    } `union` defaultValue
+    }
 
 data TableCaptionSide
   = TableCaptionSideBottom

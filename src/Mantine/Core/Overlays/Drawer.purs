@@ -4,7 +4,6 @@ module Mantine.Core.Overlays.Drawer
   , DrawerPosition(..)
   ) where
 
-import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 import Web.HTML (HTMLElement)
 
@@ -74,8 +73,7 @@ type DrawerPropsImpl =
     )
 
 defaultDrawerProps :: DrawerProps
-defaultDrawerProps = defaultThemingProps
-  { onClose: pure unit } `union` defaultValue
+defaultDrawerProps = defaultThemingProps { onClose: pure unit }
 
 data DrawerPosition = Bottom | Left | Right | Top
 

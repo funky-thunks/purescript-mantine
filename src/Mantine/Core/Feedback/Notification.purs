@@ -4,7 +4,6 @@ module Mantine.Core.Feedback.Notification
   , NotificationProps
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 notification :: (NotificationProps -> NotificationProps) -> JSX
@@ -32,7 +31,7 @@ defaultNotificationProps =
    defaultThemingProps
      { children: mempty
      , onClose: pure unit
-     } `union` defaultValue
+     }
 
 type NotificationPropsImpl =
   ThemingPropsImpl
