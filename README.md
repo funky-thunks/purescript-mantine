@@ -41,7 +41,7 @@ import Mantine.Core
   - [ ] [ColorPicker](https://v5.mantine.dev/core/color-picker/)
   - [ ] [FileInput](https://v5.mantine.dev/core/file-input/)
   - [ ] [Input](https://v5.mantine.dev/core/input/)
-  - [ ] [JsonInput](https://v5.mantine.dev/core/json-input/)
+  - [x] [JsonInput](https://v5.mantine.dev/core/json-input/)
   - [ ] [MultiSelect](https://v5.mantine.dev/core/multi-select/)
   - [ ] [NativeSelect](https://v5.mantine.dev/core/native-select/)
   - [ ] [NumberInput](https://v5.mantine.dev/core/number-input/)
