@@ -30,6 +30,8 @@ module Mantine.Core.Common
   , themingToImpl
 
   , ValueHandler(..)
+  , CheckerHandler(..)
+  , InputHandler(..)
 
   , mkComponent
   , mkComponentWithDefault
@@ -42,6 +44,7 @@ module Mantine.Core.Common
 import Prelude hiding (bind)
 import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either)
+import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
@@ -55,6 +58,8 @@ import Foreign.Object (Object)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import React.Basic (ReactComponent, element)
 import React.Basic.Emotion (Style)
+import React.Basic.Events (EventHandler, handler)
+import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, type (+))
@@ -803,6 +808,24 @@ instance DefaultValue (ValueHandler value) where
 
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (EffectFn1 nativeValue Unit) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
+
+newtype CheckerHandler = CheckerHandler (Boolean -> Effect Unit)
+derive instance Newtype CheckerHandler _
+
+instance DefaultValue CheckerHandler where
+  defaultValue = CheckerHandler (const (pure unit))
+
+instance ToFFI CheckerHandler EventHandler where
+  toNative (CheckerHandler ch) = handler targetChecked (foldMap ch)
+
+newtype InputHandler = InputHandler (String -> Effect Unit)
+derive instance Newtype InputHandler _
+
+instance DefaultValue InputHandler where
+  defaultValue = InputHandler (const (pure unit))
+
+instance ToFFI InputHandler EventHandler where
+  toNative (InputHandler ch) = handler targetValue (foldMap ch)
 
 mkComponent :: forall props foreignProps. ReactComponent (Record foreignProps) -> (props -> Record foreignProps) -> props -> (props -> props) -> JSX
 mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))
