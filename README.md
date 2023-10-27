@@ -42,7 +42,7 @@ import Mantine.Core
   - [ ] [FileInput](https://v5.mantine.dev/core/file-input/)
   - [ ] [Input](https://v5.mantine.dev/core/input/)
   - [x] [JsonInput](https://v5.mantine.dev/core/json-input/)
-  - [ ] [MultiSelect](https://v5.mantine.dev/core/multi-select/)
+  - [x] [MultiSelect](https://v5.mantine.dev/core/multi-select/)
   - [ ] [NativeSelect](https://v5.mantine.dev/core/native-select/)
   - [ ] [NumberInput](https://v5.mantine.dev/core/number-input/)
   - [ ] [PasswordInput](https://v5.mantine.dev/core/password-input/)
