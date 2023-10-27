@@ -12,6 +12,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.Slider
   , module Mantine.Core.Inputs.Switch
   , module Mantine.Core.Inputs.TextInput
+  , module Mantine.Core.Inputs.Textarea
   ) where
 
 import Mantine.Core.Inputs.Checkbox (checkbox, CheckboxProps, CheckboxLabelPosition(..), checkboxGroup, checkboxGroup_, CheckboxGroupProps)
@@ -27,3 +28,4 @@ import Mantine.Core.Inputs.Select (SelectClearable(..), SelectCreatable(..), Sel
 import Mantine.Core.Inputs.Slider (LabelFormatter(..), RangeSliderProps, ScaleFunction(..), SliderCommonProps, SliderMark, SliderProps, SliderRange(..), rangeSlider, slider)
 import Mantine.Core.Inputs.Switch (SwitchGroupProps, SwitchInnerLabels, SwitchLabelPosition(..), SwitchProps, switch, switchGroup, switchGroup_)
 import Mantine.Core.Inputs.TextInput (TextInputProps, textInput)
+import Mantine.Core.Inputs.Textarea (TextareaProps, textarea)

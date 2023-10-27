@@ -52,7 +52,7 @@ import Mantine.Core
   - [x] [Select](https://v5.mantine.dev/core/select/)
   - [x] [Slider](https://v5.mantine.dev/core/slider/)
   - [x] [Switch](https://v5.mantine.dev/core/switch/)
-  - [ ] [Textarea](https://v5.mantine.dev/core/textarea/)
+  - [x] [Textarea](https://v5.mantine.dev/core/textarea/)
   - [x] [TextInput](https://v5.mantine.dev/core/text-input/)
   - [ ] [TransferList](https://v5.mantine.dev/core/transfer-list/)
 - [x] Navigation
