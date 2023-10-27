@@ -46,7 +46,7 @@ import Mantine.Core
   - [ ] [NativeSelect](https://v5.mantine.dev/core/native-select/)
   - [ ] [NumberInput](https://v5.mantine.dev/core/number-input/)
   - [x] [PasswordInput](https://v5.mantine.dev/core/password-input/)
-  - [ ] [Radio](https://v5.mantine.dev/core/radio/)
+  - [x] [Radio](https://v5.mantine.dev/core/radio/)
   - [ ] [Rating](https://v5.mantine.dev/core/rating/)
   - [ ] [SegmentedControl](https://v5.mantine.dev/core/segmented-control/)
   - [ ] [Select](https://v5.mantine.dev/core/select/)
