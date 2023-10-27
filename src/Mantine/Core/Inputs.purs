@@ -8,6 +8,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.Radio
   , module Mantine.Core.Inputs.Rating
   , module Mantine.Core.Inputs.SegmentedControl
+  , module Mantine.Core.Inputs.Select
   , module Mantine.Core.Inputs.Slider
   ) where
 
@@ -20,4 +21,5 @@ import Mantine.Core.Inputs.PasswordInput (PasswordInputProps, passwordInput)
 import Mantine.Core.Inputs.Radio (RadioGroupProps, RadioLabelPosition(..), RadioProps, radio, radioGroup)
 import Mantine.Core.Inputs.Rating (RatingProps, rating)
 import Mantine.Core.Inputs.SegmentedControl (SegmentedControlItem, SegmentedControlOrientation(..), SegmentedControlProps, segmentedControl)
+import Mantine.Core.Inputs.Select (SelectClearable(..), SelectCreatable(..), SelectDropdownPosition(..), SelectItem, SelectProps, select)
 import Mantine.Core.Inputs.Slider (LabelFormatter(..), RangeSliderProps, ScaleFunction(..), SliderCommonProps, SliderMark, SliderProps, SliderRange(..), rangeSlider, slider)
