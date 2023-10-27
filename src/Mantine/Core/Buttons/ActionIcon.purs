@@ -76,5 +76,5 @@ actionIconVariantNative = case _ of
 
 actionIconToImpl :: ActionIconProps -> ActionIconPropsImpl
 actionIconToImpl props =
-  toNative (delete (Proxy :: Proxy "icon") props)
-    `union` { children: pure (icon_ props.icon) }
+  let rest = toNative <<< delete (Proxy :: Proxy "icon")
+   in { children: pure (icon_ props.icon) } `union` rest props

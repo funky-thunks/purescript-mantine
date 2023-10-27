@@ -100,6 +100,11 @@ type SliderCommonProps value r =
   | r
   )
 
+type SliderMark =
+  { value :: Number
+  , label :: Maybe JSX
+  }
+
 newtype LabelFormatter = LabelFormatter (Number -> JSX)
 
 instance ToFFI LabelFormatter (Number -> JSX) where
@@ -140,11 +145,6 @@ type SliderCommonPropsImpl value r =
   , value                         :: Nullable value
   | r
   )
-
-type SliderMark =
-  { value :: Number
-  , label :: Maybe JSX
-  }
 
 type SliderMarkImpl =
   { value :: Number

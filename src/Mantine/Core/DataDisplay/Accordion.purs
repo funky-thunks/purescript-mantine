@@ -71,7 +71,6 @@ instance ToFFI AccordionVariant String where
     AccordionVariantFilled    -> "filled"
     AccordionVariantSeparated -> "separated"
 
-
 data AccordionOrder = AccordionOrder2 | AccordionOrder3 | AccordionOrder4 | AccordionOrder5 | AccordionOrder6
 
 instance ToFFI AccordionOrder Int where

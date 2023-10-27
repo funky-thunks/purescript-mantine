@@ -48,11 +48,10 @@ type RatingPropsImpl =
 
 ratingToImpl :: RatingProps -> RatingPropsImpl
 ratingToImpl props =
-  let rest =
-        toNative
-          <<< delete (Proxy :: Proxy "emptySymbol")
-          <<< delete (Proxy :: Proxy "fullSymbol")
-          <<< delete (Proxy :: Proxy "getSymbolLabel")
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "emptySymbol")
+         <<< delete (Proxy :: Proxy "fullSymbol")
+         <<< delete (Proxy :: Proxy "getSymbolLabel")
    in { emptySymbol:    toNullable props.emptySymbol
       , fullSymbol:     toNullable props.fullSymbol
       , getSymbolLabel: toNullable props.getSymbolLabel

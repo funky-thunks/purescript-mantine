@@ -199,7 +199,9 @@ data HoverPopoverWidth = AsTarget | Fixed Number
 
 instance DefaultValue HoverPopoverWidth where defaultValue = AsTarget
 
-instance ToFFI HoverPopoverWidth (String |+| Number) where
+type HoverPopoverWidthImpl = String |+| Number
+
+instance ToFFI HoverPopoverWidth HoverPopoverWidthImpl where
   toNative = case _ of
     AsTarget -> asOneOf "target"
     Fixed n  -> asOneOf n
@@ -225,7 +227,7 @@ type HoveringCommonsImpl rest =
  -- , shadow                 :: MantineShadow -- TODO
     , transition             :: Nullable String
     , transitionDuration     :: Nullable Number
-    , width                  :: String |+| Number
+    , width                  :: HoverPopoverWidthImpl
     , withArrow              :: Boolean
     , withinPortal           :: Boolean
     , zIndex                 :: Nullable Number

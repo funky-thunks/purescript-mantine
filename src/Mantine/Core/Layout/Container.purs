@@ -37,4 +37,5 @@ type ContainerPropsImpl =
 centerToImpl :: ContainerProps -> ContainerPropsImpl
 centerToImpl props =
   let nativeSizes = fromFoldable <<< map (lmap toNative)
-   in toNative (delete (Proxy :: Proxy "sizes") props) `union` { sizes: nativeSizes props.sizes }
+      rest = toNative <<< delete (Proxy :: Proxy "sizes")
+   in { sizes: nativeSizes props.sizes } `union` rest props

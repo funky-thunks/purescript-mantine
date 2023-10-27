@@ -23,7 +23,7 @@ import React.Basic (element)
 import React.Basic.DOM.Events (preventDefault)
 
 menu :: (MenuProps -> MenuProps) -> JSX
-menu = mkComponent menuComponent menuToImpl defaultMenuProps
+menu = mkComponentWithDefault menuComponent defaultMenuProps
 
 menu_ :: Array JSX -> JSX
 menu_ children = menu _ { children = children }
@@ -116,36 +116,6 @@ type MenuPropsImpl =
     , withinPortal           :: Boolean
     , zIndex                 :: Nullable Number
     )
-
-menuToImpl :: MenuProps -> MenuPropsImpl
-menuToImpl =
-  themingToImpl \ props@{ children, closeOnClickOutside, closeOnEscape, closeOnItemClick, disabled, loop, onClose, onOpen, returnFocus, withArrow, withinPortal } ->
-    { children, closeOnClickOutside, closeOnEscape, closeOnItemClick, disabled, loop, onClose, onOpen, returnFocus, withArrow, withinPortal
-    , middlewares: toNative props.middlewares
-
-    , arrowOffset:            toNative props.arrowOffset
-    , arrowPosition:          toNative props.arrowPosition
-    , arrowRadius:            toNative props.arrowRadius
-    , arrowSize:              toNative props.arrowSize
-    , clickOutsideEvents:     toNative props.clickOutsideEvents
-    , closeDelay:             toNative props.closeDelay
-    , defaultOpened:          toNative props.defaultOpened
-    , exitTransitionDuration: toNative props.exitTransitionDuration
-    , id:                     toNative props.id
-    , offset:                 toNative props.offset
-    , openDelay:              toNative props.openDelay
-    , opened:                 toNative props.opened
-    , position:               toNative props.position
-    , radius:                 toNative props.radius
-    , transition:             toNative props.transition
-    , transitionDuration:     toNative props.transitionDuration
-    , trigger:                toNative props.trigger
-    , width:                  toNative props.width
-    , zIndex:                 toNative props.zIndex
-
-    , onChange:               toNative props.onChange
-    , onPositionChange:       toNative props.onPositionChange
-    }
 
 data MenuPopoverWidth
   = MenuPopoverWidthTarget
@@ -254,10 +224,7 @@ type MenuItemProps =
     )
 
 defaultMenuItemProps :: MenuItemProps
-defaultMenuItemProps =
-  defaultThemingProps
-    { onClick: pure unit
-    }
+defaultMenuItemProps = defaultThemingProps { onClick: pure unit }
 
 type MenuItemPropsImpl =
   ThemingPropsImpl
@@ -271,10 +238,10 @@ type MenuItemPropsImpl =
 
 menuItemToImpl :: MenuItemProps -> MenuItemPropsImpl
 menuItemToImpl props =
-  toNative (delete (Proxy :: Proxy "onClick") props)
-    `union`
-    { onClick: handler preventDefault (const props.onClick)
-    }
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "onClick")
+   in { onClick: handler preventDefault (const props.onClick)
+      } `union` rest props
 
 menuDropdown :: Array JSX -> JSX
 menuDropdown children = element menuDropdownComponent { children }

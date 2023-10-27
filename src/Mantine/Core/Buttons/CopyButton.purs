@@ -13,8 +13,8 @@ foreign import copyButtonComponent :: ReactComponent CopyButtonPropsImpl
 
 type CopyButtonProps =
   { children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-  , value    :: String
   , timeout  :: Maybe Number
+  , value    :: String
   }
 
 type CopyButtonPropsImpl =

@@ -50,7 +50,7 @@ type GridPropsImpl =
     )
 
 gridCol :: (GridColProps -> GridColProps) -> JSX
-gridCol = mkComponent gridColComponent gridColToImpl defaultGridColProps
+gridCol = mkComponent gridColComponent gridColToImpl defaultThemingProps_
 
 gridCol_ :: Array JSX -> JSX
 gridCol_ children = gridCol _ { children = children }
@@ -95,33 +95,6 @@ instance ToFFI GridColSpan ColSpanImpl where
     ColSpanNumber n -> asOneOf (toNumber n)
     ColSpanAuto     -> asOneOf "auto"
     ColSpanContent  -> asOneOf "content"
-
-defaultGridColProps :: GridColProps
-defaultGridColProps =
-  defaultThemingProps
-    { children: []
-
-    , span:     Nothing
-    , spanXs:   Nothing
-    , spanSm:   Nothing
-    , spanMd:   Nothing
-    , spanLg:   Nothing
-    , spanXl:   Nothing
-
-    , order:    Nothing
-    , orderXs:  Nothing
-    , orderSm:  Nothing
-    , orderMd:  Nothing
-    , orderLg:  Nothing
-    , orderXl:  Nothing
-
-    , offset:   Nothing
-    , offsetXs: Nothing
-    , offsetSm: Nothing
-    , offsetMd: Nothing
-    , offsetLg: Nothing
-    , offsetXl: Nothing
-    }
 
 type GridColPropsImpl =
   ThemingPropsImpl

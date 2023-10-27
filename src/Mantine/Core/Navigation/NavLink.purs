@@ -37,7 +37,6 @@ defaultNavLinkProps =
   defaultThemingProps
     { label:   mempty :: JSX
     , onClick: handler_ (pure unit)
-    , variant: NavLinkLight
     }
 
 type NavLinkPropsImpl =
@@ -66,6 +65,8 @@ data NavLinkVariant
   = NavLinkLight
   | NavLinkFilled
   | NavLinkSubtle
+
+instance DefaultValue NavLinkVariant where defaultValue = NavLinkLight
 
 instance ToFFI NavLinkVariant String where
   toNative = case _ of

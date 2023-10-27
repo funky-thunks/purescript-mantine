@@ -17,11 +17,7 @@ type AspectRatioProps =
     )
 
 defaultAspectRatioProps :: AspectRatioProps
-defaultAspectRatioProps =
-  defaultThemingProps
-    { children: []
-    , ratio: 1.0
-    }
+defaultAspectRatioProps = defaultThemingProps { ratio: 1.0 }
 
 type AspectRatioPropsImpl =
   ThemingPropsImpl
