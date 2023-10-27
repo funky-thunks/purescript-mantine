@@ -6,7 +6,6 @@ module Mantine.Core.Feedback.Alert
   , AlertVariant(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 alert :: (AlertProps -> AlertProps) -> JSX

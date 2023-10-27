@@ -5,7 +5,6 @@ module Mantine.Core.Overlays.Modal
   , ModalOverflow(..)
   ) where
 
-import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 
 modal :: (ModalProps -> ModalProps) -> JSX

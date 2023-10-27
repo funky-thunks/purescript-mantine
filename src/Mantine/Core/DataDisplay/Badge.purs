@@ -5,7 +5,6 @@ module Mantine.Core.DataDisplay.Badge
   , BadgeVariant(..)
   ) where
 
-import Prelude ((=<<), pure)
 import Mantine.Core.Prelude
 
 badge :: (BadgeProps -> BadgeProps) -> JSX

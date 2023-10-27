@@ -4,7 +4,6 @@ module Mantine.Core.Overlays.Dialog
   , DialogPosition
   ) where
 
-import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 
 dialog :: (DialogProps -> DialogProps) -> JSX

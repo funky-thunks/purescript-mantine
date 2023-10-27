@@ -6,7 +6,7 @@ module Mantine.Core.Navigation.Pagination
   , PaginationProps
   ) where
 
-import Prelude
+import Prelude (class Eq, class Ord, class Show)
 import Data.Int (floor, toNumber)
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Mantine.Core.Prelude

@@ -9,9 +9,7 @@ module Mantine.Core.Buttons.ActionIcon
   , ActionIconPropsImplRow
   ) where
 
-import Prelude (pure, unit)
 import Mantine.Core.Prelude
-import React.Basic.Events (EventHandler, handler_)
 import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
 

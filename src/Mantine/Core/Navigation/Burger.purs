@@ -3,7 +3,6 @@ module Mantine.Core.Navigation.Burger
   , BurgerProps
   ) where
 
-import Prelude (pure, unit)
 import Mantine.Core.Prelude
 
 burger :: (BurgerProps -> BurgerProps) -> JSX

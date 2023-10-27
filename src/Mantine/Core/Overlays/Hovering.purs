@@ -19,7 +19,6 @@ module Mantine.Core.Overlays.Hovering
   , HoverPopupType(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 
@@ -247,14 +246,14 @@ type HoveringTargetProps =
     , refProps  :: Maybe String
     )
 
-data HoverPopupType = Dialog | Custom String
+data HoverPopupType = HoverPopupTypeDialog | HoverPopupTypeCustom String
 
-instance DefaultValue HoverPopupType where defaultValue = Dialog
+instance DefaultValue HoverPopupType where defaultValue = HoverPopupTypeDialog
 
 instance ToFFI HoverPopupType String where
   toNative = case _ of
-    Dialog -> "dialog"
-    Custom s -> s
+    HoverPopupTypeDialog -> "dialog"
+    HoverPopupTypeCustom s -> s
 
 defaultHoveringTargetProps :: HoveringTargetProps
 defaultHoveringTargetProps = defaultThemingProps_

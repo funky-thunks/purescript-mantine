@@ -7,7 +7,6 @@ module Mantine.Core.DataDisplay.Avatar
   , AvatarGroupProps
   ) where
 
-import Prelude (pure)
 import Mantine.Core.Prelude
 
 avatar :: (AvatarProps -> AvatarProps) -> JSX

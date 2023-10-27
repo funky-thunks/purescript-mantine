@@ -4,7 +4,6 @@ module Mantine.Core.Navigation.NavLink
   , NavLinkVariant(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 navLink :: (NavLinkProps -> NavLinkProps) -> JSX

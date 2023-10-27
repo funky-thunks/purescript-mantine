@@ -15,7 +15,6 @@ module Mantine.Core.Overlays.Tooltip
   , TooltipGroupRow
   ) where
 
-import Prelude (Unit, const, mempty, pure, unit)
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 

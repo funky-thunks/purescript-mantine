@@ -18,7 +18,6 @@ module Mantine.Core.Overlays.Menu
   , menuDivider
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 import React.Basic (element)
 import React.Basic.DOM.Events (preventDefault)

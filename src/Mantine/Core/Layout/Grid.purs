@@ -9,7 +9,6 @@ module Mantine.Core.Layout.Grid
   , GridColSpan(..)
   ) where
 
-import Prelude
 import Data.Int (toNumber)
 import Mantine.Core.Prelude
 

@@ -12,7 +12,6 @@ module Mantine.Core.Inputs.Slider
   , ScaleFunction(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 slider :: (SliderProps -> SliderProps) -> JSX

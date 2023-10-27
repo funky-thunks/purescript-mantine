@@ -5,7 +5,6 @@ module Mantine.Core.Miscellaneous.Collapse
   , CollapseAxis(..)
   ) where
 
-import Prelude (Unit, unit, pure, (<<<))
 import Mantine.Core.Prelude
 
 collapse :: (CollapseProps -> CollapseProps) -> JSX

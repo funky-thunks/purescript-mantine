@@ -5,7 +5,6 @@ module Mantine.Core.Feedback.Loader
   , LoaderVariant(..)
   ) where
 
-import Prelude
 import Mantine.Core.Prelude
 
 loader :: (LoaderProps -> LoaderProps) -> JSX

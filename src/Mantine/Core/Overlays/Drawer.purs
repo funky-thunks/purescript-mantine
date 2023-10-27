@@ -4,7 +4,6 @@ module Mantine.Core.Overlays.Drawer
   , DrawerPosition(..)
   ) where
 
-import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 import Web.HTML (HTMLElement)
 

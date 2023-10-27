@@ -6,7 +6,6 @@ module Mantine.Core.Miscellaneous.Divider
   , DividerVariant(..)
   ) where
 
-import Prelude (identity)
 import Mantine.Core.Prelude
 
 divider :: (DividerProps -> DividerProps) -> JSX

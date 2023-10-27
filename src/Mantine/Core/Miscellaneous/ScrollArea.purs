@@ -6,7 +6,6 @@ module Mantine.Core.Miscellaneous.ScrollArea
   , ScrollbarType(..)
   ) where
 
-import Prelude (Unit)
 import Mantine.Core.Prelude
 import Web.HTML.HTMLDivElement (HTMLDivElement)
 

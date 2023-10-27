@@ -4,7 +4,6 @@ module Mantine.Core.DataDisplay.BackgroundImage
   , BackgroundImageProps
   ) where
 
-import Prelude (identity, (<<<))
 import Mantine.Core.Prelude
 
 backgroundImage :: String -> (BackgroundImageProps -> BackgroundImageProps) -> JSX
