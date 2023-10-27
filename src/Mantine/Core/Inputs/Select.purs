@@ -104,7 +104,7 @@ defaultSelectProps =
   defaultThemingProps
     { onDropdownClose: pure unit
     , onDropdownOpen:  pure unit
-    } `union` defaultValue
+    }
 
 type SelectPropsImpl =
   ThemingPropsImpl

@@ -44,7 +44,7 @@ defaultChipProps =
   defaultThemingProps
     { size:   Small
     , radius: RadiusPreset ExtraLarge
-    } `union` defaultValue
+    }
 
 type ChipPropsImpl =
   ThemingPropsImpl

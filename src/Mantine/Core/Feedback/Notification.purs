@@ -32,7 +32,7 @@ defaultNotificationProps =
    defaultThemingProps
      { children: mempty
      , onClose: pure unit
-     } `union` defaultValue
+     }
 
 type NotificationPropsImpl =
   ThemingPropsImpl

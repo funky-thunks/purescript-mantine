@@ -25,10 +25,7 @@ type GroupProps =
     )
 
 defaultGroupProps :: GroupProps
-defaultGroupProps =
-  defaultThemingProps
-    { noWrap: true
-    } `union` defaultValue
+defaultGroupProps = defaultThemingProps { noWrap: true }
 
 type GroupPropsImpl =
   ThemingPropsImpl

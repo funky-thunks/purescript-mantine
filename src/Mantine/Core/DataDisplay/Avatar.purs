@@ -46,7 +46,7 @@ defaultAvatarProps =
   defaultThemingProps
     { size:   Preset Medium
     , radius: Preset Small
-    } `union` defaultValue
+    }
 
 type AvatarPropsImpl =
   ThemingPropsImpl

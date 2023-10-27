@@ -21,10 +21,7 @@ type BurgerProps =
     )
 
 defaultBurgerProps :: BurgerProps
-defaultBurgerProps =
-  defaultThemingProps
-    { onClick: handler_ (pure unit)
-    } `union` defaultValue
+defaultBurgerProps = defaultThemingProps { onClick: handler_ (pure unit) }
 
 type BurgerPropsImpl =
   ThemingPropsImpl

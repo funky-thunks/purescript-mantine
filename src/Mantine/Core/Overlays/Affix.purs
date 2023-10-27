@@ -31,10 +31,7 @@ type AffixPosition =
   }
 
 defaultAffixProps :: AffixProps
-defaultAffixProps =
-  defaultThemingProps
-    { withinPortal: true
-    } `union` defaultValue
+defaultAffixProps = defaultThemingProps { withinPortal: true }
 
 type AffixPropsImpl =
   ThemingPropsImpl

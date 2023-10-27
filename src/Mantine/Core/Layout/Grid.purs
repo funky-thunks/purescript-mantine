@@ -38,7 +38,7 @@ defaultGridProps =
     , columns:  12
     , gutter:   Preset Medium
     , justify:  JustifyContentFlexStart
-    } `union` defaultValue
+    }
 
 type GridPropsImpl =
   ThemingPropsImpl

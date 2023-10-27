@@ -28,10 +28,7 @@ type DividerProps =
     )
 
 defaultDividerProps :: DividerProps
-defaultDividerProps =
-  defaultThemingProps
-    { orientation: Horizontal
-    } `union` defaultValue
+defaultDividerProps = defaultThemingProps { orientation: Horizontal }
 
 data DividerLabelPosition
   = DividerLabelPositionLeft

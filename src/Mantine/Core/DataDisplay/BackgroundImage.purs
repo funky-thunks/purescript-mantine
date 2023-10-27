@@ -26,7 +26,7 @@ defaultBackgroundImageProps src =
   defaultThemingProps
     { radius: Preset Small
     , src
-    } `union` defaultValue
+    }
 
 type BackgroundImagePropsImpl =
   ThemingPropsImpl

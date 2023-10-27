@@ -78,7 +78,7 @@ defaultMenuProps =
     , onClose:             pure unit
     , onOpen:              pure unit
     -- , shadow -- TODO
-    } `union` defaultValue
+    }
 
 type MenuPropsImpl =
   ThemingPropsImpl
@@ -258,7 +258,7 @@ defaultMenuItemProps :: MenuItemProps
 defaultMenuItemProps =
   defaultThemingProps
     { onClick: pure unit
-    } `union` defaultValue
+    }
 
 type MenuItemPropsImpl =
   ThemingPropsImpl

@@ -49,7 +49,7 @@ defaultAlertProps =
     { children: mempty :: JSX
     , closable: NotClosable
     , variant:  AlertVariantLight
-    } `union` defaultValue
+    }
 
 type AlertPropsImpl = ThemingPropsImpl (CloseProps + AlertPropsRowImpl)
 

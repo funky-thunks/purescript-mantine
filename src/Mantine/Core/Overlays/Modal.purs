@@ -5,7 +5,7 @@ module Mantine.Core.Overlays.Modal
   , ModalOverflow(..)
   ) where
 
-import Prelude
+import Prelude (Unit, pure, unit)
 import Mantine.Core.Prelude
 
 modal :: (ModalProps -> ModalProps) -> JSX
@@ -52,40 +52,20 @@ type ModalProps =
 defaultModalProps :: ModalProps
 defaultModalProps =
   defaultThemingProps
-    { children:                  []
-    , centered:                  false
-    , closeButtonLabel:          Nothing
-    , closeOnClickOutside:       true
-    , closeOnEscape:             true
-    , exitTransitionDuration:    Nothing
-    , fullScreen:                false
-    , id:                        Nothing
-    , lockScroll:                true
-    , onClose:                   (pure unit)
-    , opened:                    false
-    , overflow:                  ModalOverflowInside
-    , overlayBlur:               Nothing
-    , overlayColor:              Nothing
-    , overlayOpacity:            Nothing
-    , padding:                   Nothing
-    , radius:                    Nothing
-    -- , shadow -- TODO
-    , size:                      Nothing
-    -- , target -- TODO
-    , title:                     Nothing
-    , transition:                Nothing
-    , transitionDuration:        Nothing
-    , transitionTimingFunction:  Nothing
-    , trapFocus:                 false
-    , withCloseButton:           true
-    , withFocusReturn:           true
-    , withinPortal:              true
-    , zIndex:                    Nothing
+    { closeOnClickOutside: true
+    , closeOnEscape:       true
+    , lockScroll:          true
+    , onClose:             pure unit
+    , withCloseButton:     true
+    , withFocusReturn:     true
+    , withinPortal:        true
     }
 
 data ModalOverflow
   = ModalOverflowInside
   | ModalOverflowOutside
+
+instance DefaultValue ModalOverflow where defaultValue = ModalOverflowInside
 
 instance ToFFI ModalOverflow String where
   toNative = case _ of

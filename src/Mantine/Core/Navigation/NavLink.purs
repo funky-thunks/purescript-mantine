@@ -39,7 +39,7 @@ defaultNavLinkProps =
     { label:   mempty :: JSX
     , onClick: handler_ (pure unit)
     , variant: NavLinkLight
-    } `union` defaultValue
+    }
 
 type NavLinkPropsImpl =
   ThemingPropsImpl

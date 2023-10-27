@@ -74,8 +74,7 @@ type DrawerPropsImpl =
     )
 
 defaultDrawerProps :: DrawerProps
-defaultDrawerProps = defaultThemingProps
-  { onClose: pure unit } `union` defaultValue
+defaultDrawerProps = defaultThemingProps { onClose: pure unit }
 
 data DrawerPosition = Bottom | Left | Right | Top
 

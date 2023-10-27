@@ -47,7 +47,7 @@ defaultPaginationProps =
     , size:         Preset Medium
     , total:        PageCount 1
     , withControls: true
-    } `union` defaultValue
+    }
 
 newtype Page = Page Int
 

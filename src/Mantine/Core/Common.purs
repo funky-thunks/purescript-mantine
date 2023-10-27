@@ -43,7 +43,6 @@ module Mantine.Core.Common
 
 import Prelude hiding (bind)
 import Data.Default (class DefaultValue, defaultValue)
-import Data.Either (Either)
 import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
@@ -56,13 +55,14 @@ import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import Prim.RowList (class RowToList)
 import React.Basic (ReactComponent, element)
 import React.Basic.Emotion (Style)
 import React.Basic.Events (EventHandler, handler)
 import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
-import Type.Row (class Nub, type (+))
+import Type.Row (class Nub, class Union, type (+))
 import Untagged.Union (type (|+|), asOneOf)
 
 data MantineColor
@@ -747,15 +747,26 @@ type ThemingPropsRow r =
   | r
   )
 
-defaultThemingProps
+defaultThemingPropsGeneral
   :: forall otherProps
    . Nub (ThemingPropsRow otherProps)
          (ThemingPropsRow otherProps)
   => Record otherProps -> ThemingProps otherProps
-defaultThemingProps =
+defaultThemingPropsGeneral =
   let baseProps :: ThemingProps ()
       baseProps = { sx: mempty } `union` defaultValue
    in merge baseProps
+
+defaultThemingProps
+  :: forall otherProps nonDefaultableProps defaultableProps defaultablePropsList
+   . Nub (ThemingPropsRow otherProps)
+         (ThemingPropsRow otherProps)
+  => Union nonDefaultableProps defaultableProps otherProps
+  => RowToList defaultableProps defaultablePropsList
+  => DefaultValue (Record defaultableProps)
+  => Record nonDefaultableProps
+  -> ThemingProps otherProps
+defaultThemingProps nonDefaultable = defaultThemingPropsGeneral (nonDefaultable `union` defaultValue)
 
 defaultThemingProps_
   :: forall otherProps
@@ -763,7 +774,7 @@ defaultThemingProps_
          (ThemingPropsRow otherProps)
   => DefaultValue (Record otherProps)
   => ThemingProps otherProps
-defaultThemingProps_ = defaultThemingProps defaultValue
+defaultThemingProps_ = defaultThemingPropsGeneral defaultValue
 
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 

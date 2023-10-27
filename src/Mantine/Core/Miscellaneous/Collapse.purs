@@ -45,7 +45,7 @@ defaultCollapseProps =
     , onTransitionEnd:          pure unit
     , transitionDuration:       200.0
     , transitionTimingFunction: TransitionTimingEase
-    } `union` defaultValue
+    }
 
 type CollapsePropsImpl =
   ThemingPropsImpl

@@ -24,10 +24,7 @@ type PaperProps =
     )
 
 defaultPaperProps :: PaperProps
-defaultPaperProps =
-  defaultThemingProps
-    { radius: Preset Small
-    } `union` defaultValue
+defaultPaperProps = defaultThemingProps { radius: Preset Small }
 
 type PaperPropsImpl =
   ThemingPropsImpl

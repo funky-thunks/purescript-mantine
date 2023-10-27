@@ -33,7 +33,7 @@ defaultHoverCardProps =
   defaultThemingProps
     { onClose: pure unit
     , onOpen:  pure unit
-    } `union` defaultValue
+    }
 
 type HoverCardProps =
   HoveringCommons
@@ -82,7 +82,7 @@ defaultPopoverProps =
     , onClose:             pure unit
     , onOpen:              pure unit
     , withRoles:           true
-    } `union` defaultValue
+    }
 
 type PopoverProps =
   HoveringCommons

@@ -37,7 +37,7 @@ type DialogPosition =
   }
 
 defaultDialogProps :: DialogProps
-defaultDialogProps = defaultThemingProps { onClose: pure unit } `union` defaultValue
+defaultDialogProps = defaultThemingProps { onClose: pure unit }
 
 type DialogPropsImpl =
   ThemingPropsImpl

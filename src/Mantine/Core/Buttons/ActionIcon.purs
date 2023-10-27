@@ -38,7 +38,7 @@ defaultActionIconProps icon =
   defaultThemingProps
     { icon
     , onClick: handler_ (pure unit)
-    } `union` defaultValue
+    }
 
 type ActionIconPropsImpl = ThemingPropsImpl ActionIconPropsImplRow
 

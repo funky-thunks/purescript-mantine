@@ -50,7 +50,7 @@ defaultBadgeProps =
   defaultThemingProps
     { size:   Medium
     , radius: Preset ExtraLarge
-    } `union` defaultValue
+    }
 
 type BadgePropsImpl =
   ThemingPropsImpl

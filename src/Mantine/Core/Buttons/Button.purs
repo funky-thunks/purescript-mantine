@@ -164,10 +164,7 @@ unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
 unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledButtonProps
 
 defaultUnstyledButtonProps :: UnstyledButtonProps
-defaultUnstyledButtonProps =
-  defaultThemingProps
-    { onClick: handler_ (pure unit)
-    } `union` defaultValue
+defaultUnstyledButtonProps = defaultThemingProps { onClick: handler_ (pure unit) }
 
 type UnstyledButtonProps =
   ThemingProps

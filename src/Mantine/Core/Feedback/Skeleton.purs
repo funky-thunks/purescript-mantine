@@ -31,7 +31,7 @@ defaultSkeletonProps =
     { animate: true
     , height:  Dimension "auto"
     , visible: true
-    } `union` defaultValue
+    }
 
 type SkeletonPropsImpl =
   ThemingPropsImpl
