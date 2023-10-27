@@ -105,51 +105,61 @@ defaultSelectProps =
     , onDropdownOpen:  pure unit
     }
 
+type ClearablePropsImpl restImpl =
+  ( clearable        :: Boolean
+  , clearButtonLabel :: Nullable String
+  | restImpl
+  )
+
+type CreatablePropsImpl restImpl =
+  ( creatable      :: Boolean
+  , getCreateLabel :: Nullable (String -> JSX)
+  , onCreate       :: Nullable (EffectFn1 String SelectItemImpl)
+  , shouldCreate   :: Nullable ({ query :: String, data :: Array SelectItemImpl } -> Boolean)
+  | restImpl
+  )
+
 type SelectPropsImpl =
   ThemingPropsImpl
-    ( clearButtonLabel             :: Nullable String
-    , clearable                    :: Boolean
-    , creatable                    :: Boolean
-    , data                         :: Array SelectItemImpl
-    , defaultValue                 :: Nullable String
-    , description                  :: Nullable JSX
-    , disabled                     :: Boolean
-    , dropdownPosition             :: String
-    , error                        :: Nullable JSX
-    , filter                       :: Nullable (SelectItemImpl -> Boolean)
-    , filterDataOnExactSearchMatch :: Boolean
-    , getCreateLabel               :: Nullable (String -> JSX)
-    , icon                         :: Nullable JSX
-    , iconWidth                    :: Nullable Number
-    , initiallyOpened              :: Boolean
-    , itemComponent                :: Nullable (SelectItemImpl -> JSX)
-    , label                        :: Nullable JSX
-    , limit                        :: Nullable Number
-    , maxDropdownHeight            :: Nullable Number
-    , nothingFound                 :: Nullable JSX
-    , onChange                     :: EffectFn1 String Unit
-    , onCreate                     :: Nullable (EffectFn1 String SelectItemImpl)
-    , onDropdownClose              :: Effect Unit
-    , onDropdownOpen               :: Effect Unit
-    , onSearchChange               :: EffectFn1 String Unit
-    , placeholder                  :: Nullable String
-    , radius                       :: Nullable MantineNumberSizeImpl
-    , required                     :: Boolean
-    , rightSection                 :: Nullable JSX
-    , rightSectionWidth            :: Nullable Number
-    , searchValue                  :: Nullable String
-    , searchable                   :: Boolean
-    , selectOnBlur                 :: Boolean
-    , shouldCreate                 :: Nullable ({ query :: String, data :: Array SelectItemImpl } -> Boolean)
-    , size                         :: Nullable String
-    , switchDirectionOnFlip        :: Boolean
-    , transition                   :: Nullable String
-    , transitionDuration           :: Nullable Number
-    , value                        :: Nullable String
-    , variant                      :: String
-    , withAsterisk                 :: Boolean
-    , withinPortal                 :: Boolean
-    , zIndex                       :: Nullable Number
+    ( ClearablePropsImpl + CreatablePropsImpl
+      ( data                         :: Array SelectItemImpl
+      , defaultValue                 :: Nullable String
+      , description                  :: Nullable JSX
+      , disabled                     :: Boolean
+      , dropdownPosition             :: String
+      , error                        :: Nullable JSX
+      , filter                       :: Nullable (SelectItemImpl -> Boolean)
+      , filterDataOnExactSearchMatch :: Boolean
+      , icon                         :: Nullable JSX
+      , iconWidth                    :: Nullable Number
+      , initiallyOpened              :: Boolean
+      , itemComponent                :: Nullable (SelectItemImpl -> JSX)
+      , label                        :: Nullable JSX
+      , limit                        :: Nullable Number
+      , maxDropdownHeight            :: Nullable Number
+      , nothingFound                 :: Nullable JSX
+      , onChange                     :: EffectFn1 String Unit
+      , onDropdownClose              :: Effect Unit
+      , onDropdownOpen               :: Effect Unit
+      , onSearchChange               :: EffectFn1 String Unit
+      , placeholder                  :: Nullable String
+      , radius                       :: Nullable MantineNumberSizeImpl
+      , required                     :: Boolean
+      , rightSection                 :: Nullable JSX
+      , rightSectionWidth            :: Nullable Number
+      , searchValue                  :: Nullable String
+      , searchable                   :: Boolean
+      , selectOnBlur                 :: Boolean
+      , size                         :: Nullable String
+      , switchDirectionOnFlip        :: Boolean
+      , transition                   :: Nullable String
+      , transitionDuration           :: Nullable Number
+      , value                        :: Nullable String
+      , variant                      :: String
+      , withAsterisk                 :: Boolean
+      , withinPortal                 :: Boolean
+      , zIndex                       :: Nullable Number
+      )
     )
 
 type SelectItemImpl =
@@ -161,21 +171,10 @@ type SelectItemImpl =
 
 selectToImpl :: SelectProps -> SelectPropsImpl
 selectToImpl props =
-  let isClearable = case _ of
-        SelectClearable _  -> true
-        SelectNotClearable -> false
-      getClearButtonLabel = case _ of
-        SelectClearable l  -> pure l
-        SelectNotClearable -> Nothing
-      isCreatable = case _ of
-        SelectCreatable _  -> true
-        SelectNotCreatable -> false
-      getCreatable = case _ of
-        SelectCreatable c  -> pure c
-        SelectNotCreatable -> Nothing
-      mkOnCreate onCreate = mkEffectFn1 \v -> toNative <$> onCreate v
-
-      mkShouldCreate shouldCreate = \params -> shouldCreate { query: params.query, data: fromNative <$> params.data }
+  let otherProps =
+        { filter:        toNullable $ (\f -> f <<< fromNative) <$> props.filter
+        , itemComponent: maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
+        }
 
       rest = toNative
          <<< delete (Proxy :: Proxy "clearable")
@@ -183,14 +182,38 @@ selectToImpl props =
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "itemComponent")
 
-   in { clearable:        isClearable props.clearable
-      , clearButtonLabel: toNullable $ getClearButtonLabel props.clearable
+   in clearableProps props `union` creatableProps props `union` otherProps `union` rest props
 
-      , creatable:        isCreatable props.creatable
-      , getCreateLabel:   toNullable $ _.getCreateLabel <$> getCreatable props.creatable
-      , onCreate:         maybe null (notNull <<< mkOnCreate <<< _.onCreate) (getCreatable props.creatable)
-      , shouldCreate:     toNullable $ (mkShouldCreate <<< _.shouldCreate) <$> getCreatable props.creatable
+clearableProps :: forall rest.
+  Record ( clearable :: SelectClearable | rest) -> Record (ClearablePropsImpl ())
+clearableProps props =
+  let clearable = case props.clearable of
+        SelectClearable _  -> true
+        SelectNotClearable -> false
 
-      , filter:           toNullable $ (\f -> f <<< fromNative) <$> props.filter
-      , itemComponent:    maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
-      } `union` rest props
+      clearButtonLabel = toNullable $ case props.clearable of
+        SelectClearable l  -> pure l
+        SelectNotClearable -> Nothing
+
+   in { clearable, clearButtonLabel }
+
+creatableProps :: forall rest.
+  Record ( creatable :: SelectCreatable | rest ) -> Record (CreatablePropsImpl ())
+creatableProps props =
+  let creatable = case props.creatable of
+        SelectCreatable _  -> true
+        SelectNotCreatable -> false
+
+      getCreatable = case _ of
+        SelectCreatable c  -> pure c
+        SelectNotCreatable -> Nothing
+
+      mkOnCreate onCreate = mkEffectFn1 \v -> toNative <$> onCreate v
+
+      mkShouldCreate shouldCreate = \params -> shouldCreate { query: params.query, data: fromNative <$> params.data }
+
+   in { creatable
+      , getCreateLabel: toNullable $ _.getCreateLabel <$> getCreatable props.creatable
+      , onCreate:       maybe null (notNull <<< mkOnCreate <<< _.onCreate) (getCreatable props.creatable)
+      , shouldCreate:   toNullable $ (mkShouldCreate <<< _.shouldCreate) <$> getCreatable props.creatable
+      }

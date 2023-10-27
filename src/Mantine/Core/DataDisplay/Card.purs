@@ -9,7 +9,7 @@ module Mantine.Core.DataDisplay.Card
 import Mantine.Core.Prelude
 
 card :: (CardProps -> CardProps) -> JSX
-card = mkComponent cardComponent toNative defaultCardProps
+card = mkComponentWithDefault cardComponent defaultCardProps
 
 foreign import cardComponent :: ReactComponent CardPropsImpl
 

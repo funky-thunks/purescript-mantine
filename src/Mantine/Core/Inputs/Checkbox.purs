@@ -63,7 +63,9 @@ instance ToFFI CheckboxLabelPosition String where
     CheckboxLabelPositionRight -> "right"
 
 toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
-toNativeCheckbox props = toNative (delete (Proxy :: Proxy "icon") props) `merge` { icon: toNullable props.icon }
+toNativeCheckbox props =
+  let rest = toNative <<< delete (Proxy :: Proxy "icon")
+   in { icon: toNullable props.icon } `union` rest props
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
 checkboxGroup = mkTrivialComponent checkboxGroupComponent

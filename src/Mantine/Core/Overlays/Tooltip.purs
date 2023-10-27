@@ -51,7 +51,7 @@ type TooltipPropsRow =
   , closeDelay       :: Maybe Milliseconds
   , events           :: TooltipActivationEvents
   , inline           :: Boolean
-  , onPositionChange :: TooltipPosition -> Effect Unit
+  , onPositionChange :: ValueHandler TooltipPosition
   , openDelay        :: Milliseconds
   , opened           :: Maybe Boolean
   , transition       :: MantineTransition
@@ -87,6 +87,22 @@ instance ToFFI TooltipPosition String where
     TooltipPositionBottomEnd   -> "bottom-end"
     TooltipPositionLeftEnd     -> "left-end"
 
+instance FromFFI String TooltipPosition where
+  fromNative = case _ of
+    "top"          -> TooltipPositionTop
+    "right"        -> TooltipPositionRight
+    "bottom"       -> TooltipPositionBottom
+    "left"         -> TooltipPositionLeft
+    "top-start"    -> TooltipPositionTopStart
+    "right-start"  -> TooltipPositionRightStart
+    "bottom-start" -> TooltipPositionBottomStart
+    "left-start"   -> TooltipPositionLeftStart
+    "top-end"      -> TooltipPositionTopEnd
+    "right-end"    -> TooltipPositionRightEnd
+    "bottom-end"   -> TooltipPositionBottomEnd
+    "left-end"     -> TooltipPositionLeftEnd
+    _              -> TooltipPositionTop
+
 type TooltipActivationEvents = { hover :: Boolean, focus :: Boolean, touch :: Boolean }
 
 type TooltipFloatingProps =
@@ -104,17 +120,16 @@ defaultTooltipFloatingProps =
 defaultTooltipProps :: TooltipProps
 defaultTooltipProps =
   defaultThemingProps
-    { arrowOffset:      5.0
-    , arrowRadius:      0.0
-    , arrowSize:        4.0
-    , children:         mempty :: JSX
-    , events:           { focus: false, hover: true, touch: false }
-    , offset:           5.0
-    , onPositionChange: const (pure unit)
-    , openDelay:        0.0
-    , position:         TooltipPositionTop
-    , transition:       TransitionFade
-    , width:            pure (Dimension "auto")
+    { arrowOffset: 5.0
+    , arrowRadius: 0.0
+    , arrowSize:   4.0
+    , children:    mempty :: JSX
+    , events:      { focus: false, hover: true, touch: false }
+    , offset:      5.0
+    , openDelay:   0.0
+    , position:    TooltipPositionTop
+    , transition:  TransitionFade
+    , width:       pure (Dimension "auto")
     }
 
 type TooltipPropsImpl = ThemingPropsImpl (TooltipPropsBaseImplRow + TooltipPropsImplRow)
@@ -143,7 +158,7 @@ type TooltipPropsImplRow =
   , closeDelay       :: Nullable Milliseconds
   , events           :: TooltipActivationEvents
   , inline           :: Boolean
-  , onPositionChange :: EffectFn1 TooltipPosition Unit
+  , onPositionChange :: EffectFn1 String Unit
   , openDelay        :: Milliseconds
   , opened           :: Nullable Boolean
   , transition       :: String

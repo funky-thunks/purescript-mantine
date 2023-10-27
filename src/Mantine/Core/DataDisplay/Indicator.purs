@@ -7,7 +7,7 @@ module Mantine.Core.DataDisplay.Indicator
 import Mantine.Core.Prelude
 
 indicator :: (IndicatorProps -> IndicatorProps) -> JSX
-indicator = mkComponent indicatorComponent toNative defaultIndicatorProps
+indicator = mkTrivialComponent indicatorComponent
 
 foreign import indicatorComponent :: ReactComponent IndicatorPropsImpl
 
@@ -29,9 +29,6 @@ type IndicatorProps =
     , withBorder    :: Boolean
     , zIndex        :: Maybe Number
     )
-
-defaultIndicatorProps :: IndicatorProps
-defaultIndicatorProps = defaultThemingProps_
 
 data IndicatorPosition
   = BottomEnd

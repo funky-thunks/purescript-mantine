@@ -98,53 +98,61 @@ data MultiSelectCreatable
 
 instance DefaultValue MultiSelectCreatable where defaultValue = MultiSelectNotCreatable
 
+type ClearablePropsImpl restImpl =
+  ( clearable        :: Boolean
+  , clearButtonLabel :: Nullable String
+  | restImpl
+  )
+
+type CreatablePropsImpl restImpl =
+  ( creatable      :: Boolean
+  , getCreateLabel :: Nullable (String -> String)
+  , onCreate       :: Nullable (EffectFn1 String MultiSelectItemImpl)
+  , shouldCreate   :: Nullable ({ query :: String, data :: Nullable (Array MultiSelectItemImpl) } -> Boolean)
+  | restImpl
+  )
+
 type MultiSelectPropsImpl =
   ThemingPropsImpl
-    ( clearable             :: Boolean
-    , clearButtonLabel      :: Nullable String
-
-    , creatable             :: Boolean
-    , getCreateLabel        :: Nullable (String -> String)
-    , onCreate              :: Nullable (EffectFn1 String MultiSelectItemImpl)
-    , shouldCreate          :: Nullable ({ query :: String, data :: Nullable (Array MultiSelectItemImpl) } -> Boolean)
-
-    , data                  :: Array MultiSelectItemImpl
-    , defaultValue          :: Nullable (Array String)
-    , description           :: Nullable JSX
-    , disabled              :: Boolean
-    , dropdownPosition      :: String
-    , error                 :: Nullable JSX
-    , filter                :: Nullable (MultiSelectItemImpl -> Boolean)
-    , icon                  :: Nullable JSX
-    , iconWidth             :: Nullable Number
-    , initiallyOpened       :: Boolean
-    , itemComponent         :: Nullable (MultiSelectItemImpl -> JSX)
-    , label                 :: Nullable JSX
-    , limit                 :: Nullable Number
-    , maxDropdownHeight     :: Nullable Number
-    , maxSelectedValues     :: Nullable Number
-    , nothingFound          :: Nullable JSX
-    , onChange              :: Nullable (EffectFn1 (Nullable (Array String)) Unit)
-    , onDropdownClose       :: Nullable (Effect Unit)
-    , onDropdownOpen        :: Nullable (Effect Unit)
-    , onSearchChange        :: Nullable (EffectFn1 String Unit)
-    , radius                :: Nullable MantineNumberSizeImpl
-    , required              :: Boolean
-    , rightSection          :: Nullable JSX
-    , rightSectionWidth     :: Nullable Number
-    , searchValue           :: Nullable String
-    , searchable            :: Boolean
-    , selectOnBlur          :: Boolean
-    , size                  :: Nullable String
-    , switchDirectionOnFlip :: Boolean
-    , transition            :: Nullable String
-    , transitionDuration    :: Nullable Number
-    , value                 :: Nullable (Array String)
-    , valueComponent        :: Nullable (MultiSelectItemImpl -> JSX)
-    , variant               :: String
-    , withAsterisk          :: Boolean
-    , withinPortal          :: Boolean
-    , zIndex                :: Nullable Number
+    ( ClearablePropsImpl + CreatablePropsImpl
+      ( data                  :: Array MultiSelectItemImpl
+      , defaultValue          :: Nullable (Array String)
+      , description           :: Nullable JSX
+      , disabled              :: Boolean
+      , dropdownPosition      :: String
+      , error                 :: Nullable JSX
+      , filter                :: Nullable (MultiSelectItemImpl -> Boolean)
+      , icon                  :: Nullable JSX
+      , iconWidth             :: Nullable Number
+      , initiallyOpened       :: Boolean
+      , itemComponent         :: Nullable (MultiSelectItemImpl -> JSX)
+      , label                 :: Nullable JSX
+      , limit                 :: Nullable Number
+      , maxDropdownHeight     :: Nullable Number
+      , maxSelectedValues     :: Nullable Number
+      , nothingFound          :: Nullable JSX
+      , onChange              :: Nullable (EffectFn1 (Nullable (Array String)) Unit)
+      , onDropdownClose       :: Nullable (Effect Unit)
+      , onDropdownOpen        :: Nullable (Effect Unit)
+      , onSearchChange        :: Nullable (EffectFn1 String Unit)
+      , radius                :: Nullable MantineNumberSizeImpl
+      , required              :: Boolean
+      , rightSection          :: Nullable JSX
+      , rightSectionWidth     :: Nullable Number
+      , searchValue           :: Nullable String
+      , searchable            :: Boolean
+      , selectOnBlur          :: Boolean
+      , size                  :: Nullable String
+      , switchDirectionOnFlip :: Boolean
+      , transition            :: Nullable String
+      , transitionDuration    :: Nullable Number
+      , value                 :: Nullable (Array String)
+      , valueComponent        :: Nullable (MultiSelectItemImpl -> JSX)
+      , variant               :: String
+      , withAsterisk          :: Boolean
+      , withinPortal          :: Boolean
+      , zIndex                :: Nullable Number
+      )
     )
 
 type MultiSelectItemImpl =
@@ -156,21 +164,13 @@ type MultiSelectItemImpl =
 
 multiSelectToImpl :: MultiSelectProps -> MultiSelectPropsImpl
 multiSelectToImpl props =
-  let isClearable = case _ of
-        MultiSelectClearable _  -> true
-        MultiSelectNotClearable -> false
-      getClearButtonLabel = case _ of
-        MultiSelectClearable l  -> pure l
-        MultiSelectNotClearable -> Nothing
-      isCreatable = case _ of
-        MultiSelectCreatable _  -> true
-        MultiSelectNotCreatable -> false
-      getCreatable = case _ of
-        MultiSelectCreatable c  -> pure c
-        MultiSelectNotCreatable -> Nothing
-      mkOnCreate onCreate = mkEffectFn1 \v -> toNative <$> onCreate v
-
-      mkShouldCreate shouldCreate = \params -> shouldCreate { query: params.query, data: maybe [] (map fromNative) (toMaybe params.data) }
+  let otherProps =
+        { itemComponent:  maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
+        , valueComponent: maybe null (\f -> notNull (f <<< fromNative)) props.valueComponent
+        , filter:         toNullable $ (\f -> f <<< fromNative) <$> props.filter
+        , onChange:       toNullable $ (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< toMaybe)) <$> props.onChange
+        , onSearchChange: toNullable $ mkEffectFn1 <$> props.onSearchChange
+        }
 
       rest = toNative
          <<< delete (Proxy :: Proxy "clearable")
@@ -181,17 +181,38 @@ multiSelectToImpl props =
          <<< delete (Proxy :: Proxy "onChange")
          <<< delete (Proxy :: Proxy "onSearchChange")
 
-   in { clearable:        isClearable props.clearable
-      , clearButtonLabel: toNullable $ getClearButtonLabel props.clearable
+   in clearableProps props `union` creatableProps props `union` otherProps `union` rest props
 
-      , creatable:      isCreatable props.creatable
+clearableProps :: forall rest.
+  Record ( clearable :: MultiSelectClearable | rest) -> Record (ClearablePropsImpl ())
+clearableProps props =
+  let clearable = case props.clearable of
+        MultiSelectClearable _  -> true
+        MultiSelectNotClearable -> false
+
+      clearButtonLabel = toNullable $ case props.clearable of
+        MultiSelectClearable l  -> pure l
+        MultiSelectNotClearable -> Nothing
+
+   in { clearable, clearButtonLabel }
+
+creatableProps :: forall rest.
+  Record ( creatable :: MultiSelectCreatable | rest ) -> Record (CreatablePropsImpl ())
+creatableProps props =
+  let creatable = case props.creatable of
+        MultiSelectCreatable _  -> true
+        MultiSelectNotCreatable -> false
+
+      getCreatable = case _ of
+        MultiSelectCreatable c  -> pure c
+        MultiSelectNotCreatable -> Nothing
+
+      mkOnCreate onCreate = mkEffectFn1 \v -> toNative <$> onCreate v
+
+      mkShouldCreate shouldCreate = \params -> shouldCreate { query: params.query, data: maybe [] (map fromNative) (toMaybe params.data) }
+
+   in { creatable
       , getCreateLabel: toNullable $ _.getCreateLabel <$> getCreatable props.creatable
       , onCreate:       maybe null (notNull <<< mkOnCreate <<< _.onCreate) (getCreatable props.creatable)
       , shouldCreate:   toNullable $ mkShouldCreate <$> (_.shouldCreate =<< getCreatable props.creatable)
-
-      , itemComponent:      maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
-      , valueComponent:     maybe null (\f -> notNull (f <<< fromNative)) props.valueComponent
-      , filter:             toNullable $ (\f -> f <<< fromNative) <$> props.filter
-      , onChange:           toNullable $ (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< toMaybe)) <$> props.onChange
-      , onSearchChange:     toNullable $ mkEffectFn1 <$> props.onSearchChange
-      } `union` rest props
+      }

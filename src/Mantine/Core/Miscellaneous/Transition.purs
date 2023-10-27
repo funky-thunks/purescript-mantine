@@ -47,7 +47,10 @@ type TransitionPropsImpl =
   }
 
 transitionPropsToImpl :: TransitionProps -> TransitionPropsImpl
-transitionPropsToImpl props = toNative (delete (Proxy :: Proxy "children") props) `union` { children: props.children }
+transitionPropsToImpl props =
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "children")
+   in { children: props.children } `union` rest props
 
 -- TODO
 -- groupedTransition :: (GroupedTransitionProps -> GroupedTransitionProps) -> JSX

@@ -31,10 +31,14 @@ data AlertClosable
   = NotClosable
   | Closable String (Effect Unit)
 
+instance DefaultValue AlertClosable where defaultValue = NotClosable
+
 data AlertVariant
   = AlertVariantOutline
   | AlertVariantLight
   | AlertVariantFilled
+
+instance DefaultValue AlertVariant where defaultValue = AlertVariantLight
 
 instance ToFFI AlertVariant String where
   toNative = case _ of
@@ -46,8 +50,6 @@ defaultAlertProps :: AlertProps
 defaultAlertProps =
   defaultThemingProps
     { children: mempty :: JSX
-    , closable: NotClosable
-    , variant:  AlertVariantLight
     }
 
 type AlertPropsImpl = ThemingPropsImpl (CloseProps + AlertPropsRowImpl)
@@ -70,7 +72,8 @@ type CloseProps r =
 
 alertToImpl :: AlertProps -> AlertPropsImpl
 alertToImpl props =
-  closeProps props.closable `union` toNative (delete (Proxy :: Proxy "closable") props)
+  let rest = toNative <<< delete (Proxy :: Proxy "closable")
+   in closeProps props.closable `union` rest props
 
 closeProps :: AlertClosable -> { | CloseProps () }
 closeProps = case _ of
