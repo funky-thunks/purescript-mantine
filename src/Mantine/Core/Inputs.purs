@@ -10,6 +10,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.SegmentedControl
   , module Mantine.Core.Inputs.Select
   , module Mantine.Core.Inputs.Slider
+  , module Mantine.Core.Inputs.Switch
   ) where
 
 import Mantine.Core.Inputs.Checkbox (checkbox, CheckboxProps, CheckboxLabelPosition(..), checkboxGroup, checkboxGroup_, CheckboxGroupProps)
@@ -23,3 +24,4 @@ import Mantine.Core.Inputs.Rating (RatingProps, rating)
 import Mantine.Core.Inputs.SegmentedControl (SegmentedControlItem, SegmentedControlOrientation(..), SegmentedControlProps, segmentedControl)
 import Mantine.Core.Inputs.Select (SelectClearable(..), SelectCreatable(..), SelectDropdownPosition(..), SelectItem, SelectProps, select)
 import Mantine.Core.Inputs.Slider (LabelFormatter(..), RangeSliderProps, ScaleFunction(..), SliderCommonProps, SliderMark, SliderProps, SliderRange(..), rangeSlider, slider)
+import Mantine.Core.Inputs.Switch (SwitchGroupProps, SwitchInnerLabels, SwitchLabelPosition(..), SwitchProps, switch, switchGroup, switchGroup_)
