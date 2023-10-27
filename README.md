@@ -48,7 +48,7 @@ import Mantine.Core
   - [x] [PasswordInput](https://v5.mantine.dev/core/password-input/)
   - [x] [Radio](https://v5.mantine.dev/core/radio/)
   - [x] [Rating](https://v5.mantine.dev/core/rating/)
-  - [ ] [SegmentedControl](https://v5.mantine.dev/core/segmented-control/)
+  - [x] [SegmentedControl](https://v5.mantine.dev/core/segmented-control/)
   - [ ] [Select](https://v5.mantine.dev/core/select/)
   - [x] [Slider](https://v5.mantine.dev/core/slider/)
   - [ ] [Switch](https://v5.mantine.dev/core/switch/)
