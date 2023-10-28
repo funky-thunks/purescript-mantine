@@ -1,5 +1,6 @@
 module Mantine.Core.Inputs
-  ( module Mantine.Core.Inputs.Checkbox
+  ( module Mantine.Core.Inputs.Autocomplete
+  , module Mantine.Core.Inputs.Checkbox
   , module Mantine.Core.Inputs.Chip
   , module Mantine.Core.Inputs.ColorInput
   , module Mantine.Core.Inputs.ColorPicker
@@ -20,6 +21,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.TransferList
   ) where
 
+import Mantine.Core.Inputs.Autocomplete (AutocompleteDropdownPosition(..), AutocompleteItem, AutocompleteProps, autocomplete)
 import Mantine.Core.Inputs.Checkbox (checkbox, CheckboxProps, CheckboxLabelPosition(..), checkboxGroup, checkboxGroup_, CheckboxGroupProps)
 import Mantine.Core.Inputs.Chip (ChipGroupMultiple(..), ChipGroupPosition(..), ChipGroupProps, ChipGroupSingle(..), ChipProps, ChipType(..), ChipVariant(..), chip, chipGroup, multipleChipGroup)
 import Mantine.Core.Inputs.ColorInput (ColorInputProps, colorInput)
