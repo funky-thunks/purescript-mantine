@@ -28,7 +28,7 @@ import Mantine.Core.Inputs.Chip (ChipGroupMultiple(..), ChipGroupPosition(..), C
 import Mantine.Core.Inputs.ColorInput (ColorInputProps, colorInput)
 import Mantine.Core.Inputs.ColorPicker (ColorFormat(..), ColorFormula(..), ColorPickerProps, colorPicker)
 import Mantine.Core.Inputs.FileInput (CaptureMode(..), FileInputProps, fileInput)
-import Mantine.Core.Inputs.Input (InputVariant(..))
+import Mantine.Core.Inputs.Input (InputDescriptionProps, InputErrorProps, InputLabelProps, InputProps, InputVariant(..), InputWrapperElement(..), InputWrapperOrder(..), InputWrapperProps, input, inputDescription, inputError, inputLabel, inputWrapper)
 import Mantine.Core.Inputs.JsonInput (JsonInputProps, jsonInput)
 import Mantine.Core.Inputs.MultiSelect (MultiSelectClearable(..), MultiSelectCreatable(..), MultiSelectDropdownPosition(..), MultiSelectItem, MultiSelectProps, multiSelect)
 import Mantine.Core.Inputs.NativeSelect (NativeSelectProps, nativeSelect)

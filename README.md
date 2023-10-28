@@ -33,14 +33,14 @@ import Mantine.Core
   - [x] [CopyButton](https://v5.mantine.dev/core/copy-button/)
   - [ ] [FileButton](https://v5.mantine.dev/core/file-button/)
   - [x] [UnstyledButton](https://v5.mantine.dev/core/unstyled-button)
-- [ ] Inputs
+- [x] Inputs
   - [x] [Autocomplete](https://v5.mantine.dev/core/autocomplete/)
   - [x] [Checkbox](https://v5.mantine.dev/core/checkbox/)
   - [x] [Chip](https://v5.mantine.dev/core/chip/)
   - [x] [ColorInput](https://v5.mantine.dev/core/color-input/)
   - [x] [ColorPicker](https://v5.mantine.dev/core/color-picker/)
   - [x] [FileInput](https://v5.mantine.dev/core/file-input/)
-  - [ ] [Input](https://v5.mantine.dev/core/input/)
+  - [x] [Input](https://v5.mantine.dev/core/input/)
   - [x] [JsonInput](https://v5.mantine.dev/core/json-input/)
   - [x] [MultiSelect](https://v5.mantine.dev/core/multi-select/)
   - [x] [NativeSelect](https://v5.mantine.dev/core/native-select/)
