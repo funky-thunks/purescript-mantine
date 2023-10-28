@@ -43,6 +43,7 @@ module Mantine.Core.Common
 
 import Prelude hiding (bind)
 import Data.Default (class DefaultValue, defaultValue)
+import Data.Either (Either(..))
 import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
@@ -63,7 +64,7 @@ import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, class Union, type (+))
-import Untagged.Union (type (|+|), asOneOf)
+import Untagged.Union (type (|+|), asOneOf, toEither1)
 
 data MantineColor
   = Dark
@@ -256,6 +257,11 @@ instance ToFFI MantineNumberSize MantineNumberSizeImpl where
     Custom n -> asOneOf n
     Preset s -> asOneOf (toNative s)
 
+instance FromFFI MantineNumberSizeImpl MantineNumberSize where
+  fromNative = toEither1 >>> case _ of
+    Left  n -> Custom n
+    Right s -> Preset (fromNative s)
+
 type MantineNumberSizeImpl = Number |+| String
 
 data Radius
@@ -271,15 +277,22 @@ orientationNative = case _ of
   Horizontal -> "horizontal"
   Vertical   -> "vertical"
 
-instance ToFFI MantineSize String where toNative = sizeNative
+instance ToFFI MantineSize String where
+  toNative = case _ of
+    ExtraSmall -> "xs"
+    Small      -> "sm"
+    Medium     -> "md"
+    Large      -> "lg"
+    ExtraLarge -> "xl"
 
-sizeNative :: MantineSize -> String
-sizeNative = case _ of
-  ExtraSmall -> "xs"
-  Small      -> "sm"
-  Medium     -> "md"
-  Large      -> "lg"
-  ExtraLarge -> "xl"
+instance FromFFI String MantineSize where
+  fromNative = case _ of
+    "xs" -> ExtraSmall
+    "sm" -> Small
+    "md" -> Medium
+    "lg" -> Large
+    "xl" -> ExtraLarge
+    _    -> Medium -- This is a bad default but we need one...
 
 instance ToFFI Radius String where toNative = radiusNative
 
