@@ -6,7 +6,7 @@ module Mantine.Core.Inputs.TextInput
   ) where
 
 import Mantine.Core.Prelude
-import Mantine.Core.Inputs.Input (InputVariant(..))
+import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 
 textInput :: (TextInputProps -> TextInputProps) -> JSX
 textInput = mkTrivialComponent textInputComponent
@@ -21,6 +21,7 @@ type TextInputProps =
     , icon              :: Maybe JSX
     , iconWidth         :: Maybe Pixels
     , id                :: Maybe String
+    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
     , label             :: Maybe JSX
     , onChange          :: InputHandler
     , placeholder       :: Maybe String
@@ -42,6 +43,7 @@ type TextInputPropsImpl =
     , icon              :: Nullable JSX
     , iconWidth         :: Nullable Number
     , id                :: Nullable String
+    , inputWrapperOrder :: Nullable (Array String)
     , label             :: Nullable JSX
     , onChange          :: EffectFn1 SyntheticEvent Unit
     , placeholder       :: Nullable String

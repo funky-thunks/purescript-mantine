@@ -44,7 +44,7 @@ import Mantine.Core
   - [x] [JsonInput](https://v5.mantine.dev/core/json-input/)
   - [x] [MultiSelect](https://v5.mantine.dev/core/multi-select/)
   - [ ] [NativeSelect](https://v5.mantine.dev/core/native-select/)
-  - [ ] [NumberInput](https://v5.mantine.dev/core/number-input/)
+  - [x] [NumberInput](https://v5.mantine.dev/core/number-input/)
   - [x] [PasswordInput](https://v5.mantine.dev/core/password-input/)
   - [x] [Radio](https://v5.mantine.dev/core/radio/)
   - [x] [Rating](https://v5.mantine.dev/core/rating/)

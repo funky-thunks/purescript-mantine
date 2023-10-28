@@ -1,5 +1,6 @@
 module Mantine.Core.Inputs.Input
   ( InputVariant(..)
+  , InputWrapperOrder(..)
   ) where
 
 import Mantine.Core.Prelude
@@ -16,3 +17,16 @@ instance ToFFI InputVariant String where
     InputVariantDefault  -> "default"
     InputVariantUnstyled -> "unstyled"
     InputVariantFilled   -> "filled"
+
+data InputWrapperOrder
+  = InputWrapperOrderInput
+  | InputWrapperOrderLabel
+  | InputWrapperOrderError
+  | InputWrapperOrderDescription
+
+instance ToFFI InputWrapperOrder String where
+  toNative = case _ of
+    InputWrapperOrderInput       -> "input"
+    InputWrapperOrderLabel       -> "label"
+    InputWrapperOrderError       -> "error"
+    InputWrapperOrderDescription -> "description"

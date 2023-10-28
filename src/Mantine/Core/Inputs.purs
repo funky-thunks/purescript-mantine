@@ -6,6 +6,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.Input
   , module Mantine.Core.Inputs.JsonInput
   , module Mantine.Core.Inputs.MultiSelect
+  , module Mantine.Core.Inputs.NumberInput
   , module Mantine.Core.Inputs.PasswordInput
   , module Mantine.Core.Inputs.Radio
   , module Mantine.Core.Inputs.Rating
@@ -24,6 +25,7 @@ import Mantine.Core.Inputs.ColorPicker (ColorFormat(..), ColorFormula(..), Color
 import Mantine.Core.Inputs.Input (InputVariant(..))
 import Mantine.Core.Inputs.JsonInput (JsonInputProps, jsonInput)
 import Mantine.Core.Inputs.MultiSelect (MultiSelectClearable(..), MultiSelectCreatable(..), MultiSelectDropdownPosition(..), MultiSelectItem, MultiSelectProps, multiSelect)
+import Mantine.Core.Inputs.NumberInput (NumberFormat, NumberFormatter, NumberInputHandlers, NumberInputProps, NumberInputType(..), NumberParser, StepHoldInterval(..), numberInput)
 import Mantine.Core.Inputs.PasswordInput (PasswordInputProps, passwordInput)
 import Mantine.Core.Inputs.Radio (RadioGroupProps, RadioLabelPosition(..), RadioProps, radio, radioGroup)
 import Mantine.Core.Inputs.Rating (RatingProps, rating)
