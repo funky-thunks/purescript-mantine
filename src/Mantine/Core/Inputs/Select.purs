@@ -7,6 +7,8 @@ module Mantine.Core.Inputs.Select
   , SelectDropdownPosition(..)
 
   , module Mantine.Core.Inputs.Input
+
+  , SelectItemImpl
   ) where
 
 import Data.Maybe (maybe)
