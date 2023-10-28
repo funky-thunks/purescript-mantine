@@ -1,26 +1,37 @@
-module Mantine.Core.Inputs.TextInput
-  ( textInput
-  , TextInputProps
+module Mantine.Core.Inputs.NativeSelect
+  ( nativeSelect
+  , NativeSelectProps
 
   , module Mantine.Core.Inputs.Input
   ) where
 
-import Mantine.Core.Prelude
 import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
+import Mantine.Core.Inputs.Select (SelectItem, SelectItemImpl)
+import Mantine.Core.Prelude
 
-textInput :: (TextInputProps -> TextInputProps) -> JSX
-textInput = mkTrivialComponent textInputComponent
+nativeSelect :: (NativeSelectProps -> NativeSelectProps) -> JSX
+nativeSelect = mkComponent nativeSelectComponent nativeSelectToImpl defaultThemingProps_
 
-foreign import textInputComponent :: ReactComponent TextInputPropsImpl
+foreign import nativeSelectComponent :: ReactComponent NativeSelectPropsImpl
 
-type TextInputProps =
+-- Not supported properties
+--   { descriptionProps  :: Record<String, any>
+--   , errorProps        :: Record<String, any>
+--   , labelProps        :: Record<String, any>
+--   , rightSectionProps :: Record<String, any>
+--   , wrapperProps      :: Record<String, any>
+--   }
+
+type NativeSelectProps =
   ThemingProps
-    ( description       :: Maybe JSX
+    ( data              :: Array SelectItem
+    , description       :: Maybe JSX
     , disabled          :: Boolean
     , error             :: Maybe JSX
     , icon              :: Maybe JSX
     , iconWidth         :: Maybe Pixels
     , id                :: Maybe String
+    , inputContainer    :: Maybe (JSX -> JSX)
     , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
     , label             :: Maybe JSX
     , onChange          :: InputHandler
@@ -35,14 +46,16 @@ type TextInputProps =
     , withAsterisk      :: Boolean
     )
 
-type TextInputPropsImpl =
+type NativeSelectPropsImpl =
   ThemingPropsImpl
-    ( description       :: Nullable JSX
+    ( data              :: Array SelectItemImpl
+    , description       :: Nullable JSX
     , disabled          :: Boolean
     , error             :: Nullable JSX
     , icon              :: Nullable JSX
     , iconWidth         :: Nullable Number
     , id                :: Nullable String
+    , inputContainer    :: Nullable (JSX -> JSX)
     , inputWrapperOrder :: Nullable (Array String)
     , label             :: Nullable JSX
     , onChange          :: EffectFn1 SyntheticEvent Unit
@@ -56,3 +69,9 @@ type TextInputPropsImpl =
     , variant           :: String
     , withAsterisk      :: Boolean
     )
+
+nativeSelectToImpl :: NativeSelectProps -> NativeSelectPropsImpl
+nativeSelectToImpl props =
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "inputContainer")
+   in { inputContainer: toNullable props.inputContainer } `union` rest props

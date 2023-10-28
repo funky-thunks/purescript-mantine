@@ -1,5 +1,6 @@
 module Mantine.Core.DataDisplay.ColorSwatch
   ( colorSwatch
+  , colorSwatch_
   , ColorSwatchProps
   ) where
 
