@@ -4,6 +4,8 @@ module Mantine.Core.Inputs.FileInput
   , CaptureMode(..)
 
   , module Mantine.Core.Inputs.Input
+
+  , CaptureModeImpl
   ) where
 
 import Prelude (negate)
