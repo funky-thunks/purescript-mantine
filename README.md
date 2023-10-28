@@ -26,12 +26,12 @@ import Mantine.Core
   - [x] [SimpleGrid](https://v5.mantine.dev/core/simple-grid/)
   - [x] [Space](https://v5.mantine.dev/core/space/)
   - [x] [Stack](https://v5.mantine.dev/core/stack/)
-- [ ] Buttons
+- [x] Buttons
   - [x] [ActionIcon](https://v5.mantine.dev/core/action-icon/)
   - [x] [Button](https://v5.mantine.dev/core/button/)
   - [x] [CloseButton](https://v5.mantine.dev/core/close-button/)
   - [x] [CopyButton](https://v5.mantine.dev/core/copy-button/)
-  - [ ] [FileButton](https://v5.mantine.dev/core/file-button/)
+  - [x] [FileButton](https://v5.mantine.dev/core/file-button/)
   - [x] [UnstyledButton](https://v5.mantine.dev/core/unstyled-button)
 - [x] Inputs
   - [x] [Autocomplete](https://v5.mantine.dev/core/autocomplete/)
