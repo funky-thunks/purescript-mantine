@@ -3,6 +3,7 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.Chip
   , module Mantine.Core.Inputs.ColorInput
   , module Mantine.Core.Inputs.ColorPicker
+  , module Mantine.Core.Inputs.FileInput
   , module Mantine.Core.Inputs.Input
   , module Mantine.Core.Inputs.JsonInput
   , module Mantine.Core.Inputs.MultiSelect
@@ -23,6 +24,7 @@ import Mantine.Core.Inputs.Checkbox (checkbox, CheckboxProps, CheckboxLabelPosit
 import Mantine.Core.Inputs.Chip (ChipGroupMultiple(..), ChipGroupPosition(..), ChipGroupProps, ChipGroupSingle(..), ChipProps, ChipType(..), ChipVariant(..), chip, chipGroup, multipleChipGroup)
 import Mantine.Core.Inputs.ColorInput (ColorInputProps, colorInput)
 import Mantine.Core.Inputs.ColorPicker (ColorFormat(..), ColorFormula(..), ColorPickerProps, colorPicker)
+import Mantine.Core.Inputs.FileInput (CaptureMode(..), FileInputProps, fileInput)
 import Mantine.Core.Inputs.Input (InputVariant(..))
 import Mantine.Core.Inputs.JsonInput (JsonInputProps, jsonInput)
 import Mantine.Core.Inputs.MultiSelect (MultiSelectClearable(..), MultiSelectCreatable(..), MultiSelectDropdownPosition(..), MultiSelectItem, MultiSelectProps, multiSelect)

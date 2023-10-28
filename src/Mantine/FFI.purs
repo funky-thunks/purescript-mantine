@@ -29,6 +29,7 @@ import React.Basic.Hooks (JSX)
 import Record (delete, get, insert)
 import Type.Proxy (Proxy(..))
 import Untagged.Union (class InOneOf, type (|+|), asOneOf)
+import Web.File.File (File)
 import Web.HTML (HTMLElement)
 
 class ToFFI ps js | ps -> js where
@@ -68,6 +69,9 @@ instance ToFFI JSX JSX where
   toNative = identity
 
 instance ToFFI HTMLElement HTMLElement where
+  toNative = identity
+
+instance ToFFI File File where
   toNative = identity
 
 instance ToFFI Style Style where
@@ -157,6 +161,9 @@ instance FromFFI JSX JSX where
   fromNative = identity
 
 instance FromFFI HTMLElement HTMLElement where
+  fromNative = identity
+
+instance FromFFI File File where
   fromNative = identity
 
 instance FromFFI Style Style where
