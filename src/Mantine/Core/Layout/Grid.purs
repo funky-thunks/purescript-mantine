@@ -27,6 +27,11 @@ type GridProps =
     , columns  :: Int
     , grow     :: Boolean
     , gutter   :: MantineNumberSize
+    , gutterLg :: Maybe MantineNumberSize
+    , gutterMd :: Maybe MantineNumberSize
+    , gutterSm :: Maybe MantineNumberSize
+    , gutterXl :: Maybe MantineNumberSize
+    , gutterXs :: Maybe MantineNumberSize
     , justify  :: JustifyContent
     )
 
@@ -46,6 +51,11 @@ type GridPropsImpl =
     , columns  :: Number
     , grow     :: Boolean
     , gutter   :: MantineNumberSizeImpl
+    , gutterLg :: Nullable MantineNumberSizeImpl
+    , gutterMd :: Nullable MantineNumberSizeImpl
+    , gutterSm :: Nullable MantineNumberSizeImpl
+    , gutterXl :: Nullable MantineNumberSizeImpl
+    , gutterXs :: Nullable MantineNumberSizeImpl
     , justify  :: String
     )
 

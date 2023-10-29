@@ -1,12 +1,26 @@
 module Mantine.Core.DataDisplay.Kbd
   ( kbd
+  , kbd_
+  , KbdProps
   ) where
 
 import Mantine.Core.Prelude
-import React.Basic (element)
 import React.Basic.DOM as DOM
 
-kbd :: String -> JSX
-kbd text = element kbdComponent { children: [ DOM.text text ] }
+kbd :: (KbdProps -> KbdProps) -> JSX
+kbd = mkComponentWithDefault kbdComponent defaultValue
 
-foreign import kbdComponent :: ReactComponent { children :: Array JSX }
+kbd_ :: String -> JSX
+kbd_ text = kbd _ { children = [ DOM.text text ] }
+
+foreign import kbdComponent :: ReactComponent KbdPropsImpl
+
+type KbdProps =
+  { children :: Array JSX
+  , size     :: Maybe MantineSize
+  }
+
+type KbdPropsImpl =
+  { children :: Array JSX
+  , size     :: Nullable String
+  }

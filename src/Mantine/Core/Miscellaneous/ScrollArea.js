@@ -12,3 +12,7 @@ function removeEmpty(obj) {
 export function scrollAreaComponent(props) {
   return React.createElement(ScrollArea, removeEmpty(props), props.children);
 }
+
+export function scrollAreaAutosizeComponent(props) {
+  return React.createElement(ScrollArea.Autosize, removeEmpty(props), props.children);
+}

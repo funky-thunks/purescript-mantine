@@ -21,8 +21,8 @@ foreign import listComponent :: ReactComponent ListPropsImpl
 
 type ListProps =
   ThemingProps
-    ( children      :: Array JSX
-    , center        :: Boolean
+    ( center        :: Boolean
+    , children      :: Array JSX
     , icon          :: Maybe JSX
     , listStyleType :: Maybe String
     , size          :: Maybe MantineNumberSize
@@ -44,8 +44,8 @@ instance ToFFI ListType String where
 
 type ListPropsImpl =
   ThemingPropsImpl
-    ( children      :: Array JSX
-    , center        :: Boolean
+    ( center        :: Boolean
+    , children      :: Array JSX
     , icon          :: Nullable JSX
     , listStyleType :: Nullable String
     , size          :: Nullable MantineNumberSizeImpl

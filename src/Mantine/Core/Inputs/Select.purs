@@ -6,6 +6,7 @@ module Mantine.Core.Inputs.Select
   , SelectCreatable(..)
   , SelectDropdownPosition(..)
 
+  , module Mantine.Core.Inputs.ClearButtonProps
   , module Mantine.Core.Inputs.Input
 
   , SelectItemImpl
@@ -13,8 +14,9 @@ module Mantine.Core.Inputs.Select
 
 import Data.Maybe (maybe)
 import Effect.Uncurried (mkEffectFn1)
+import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
+import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
-import Mantine.Core.Inputs.Input (InputVariant(..))
 
 select :: (SelectProps -> SelectProps) -> JSX
 select = mkComponent selectComponent selectToImpl defaultSelectProps
@@ -23,7 +25,8 @@ foreign import selectComponent :: ReactComponent SelectPropsImpl
 
 type SelectProps =
   ThemingProps
-    ( clearable                    :: SelectClearable
+    ( allowDeselect                :: Boolean
+    , clearable                    :: SelectClearable
     , creatable                    :: SelectCreatable
     , data                         :: Array SelectItem
     , defaultValue                 :: Maybe String
@@ -33,9 +36,12 @@ type SelectProps =
     , error                        :: Maybe JSX
     , filter                       :: Maybe (SelectItem -> Boolean)
     , filterDataOnExactSearchMatch :: Boolean
+    , hoverOnSearchChange          :: Boolean
     , icon                         :: Maybe JSX
     , iconWidth                    :: Maybe Pixels
     , initiallyOpened              :: Boolean
+    , inputContainer               :: Maybe (JSX -> JSX)
+    , inputWrapperOrder            :: Maybe (Array InputWrapperOrder)
     , itemComponent                :: Maybe (SelectItem -> JSX)
     , label                        :: Maybe JSX
     , limit                        :: Maybe Int
@@ -55,8 +61,7 @@ type SelectProps =
     , selectOnBlur                 :: Boolean
     , size                         :: Maybe MantineSize
     , switchDirectionOnFlip        :: Boolean
-    , transition                   :: Maybe MantineTransition
-    , transitionDuration           :: Maybe Milliseconds
+    , transitionProps              :: MantineTransitionProps
     , value                        :: Maybe String
     , variant                      :: InputVariant
     , withAsterisk                 :: Boolean
@@ -86,7 +91,7 @@ instance ToFFI SelectDropdownPosition String where
 
 data SelectClearable
   = SelectNotClearable
-  | SelectClearable String
+  | SelectClearable ClearButtonProps
 
 instance DefaultValue SelectClearable where defaultValue = SelectNotClearable
 
@@ -109,7 +114,7 @@ defaultSelectProps =
 
 type ClearablePropsImpl restImpl =
   ( clearable        :: Boolean
-  , clearButtonLabel :: Nullable String
+  , clearButtonProps :: Nullable ClearButtonPropsImpl
   | restImpl
   )
 
@@ -124,7 +129,8 @@ type CreatablePropsImpl restImpl =
 type SelectPropsImpl =
   ThemingPropsImpl
     ( ClearablePropsImpl + CreatablePropsImpl
-      ( data                         :: Array SelectItemImpl
+      ( allowDeselect                :: Boolean
+      , data                         :: Array SelectItemImpl
       , defaultValue                 :: Nullable String
       , description                  :: Nullable JSX
       , disabled                     :: Boolean
@@ -132,9 +138,12 @@ type SelectPropsImpl =
       , error                        :: Nullable JSX
       , filter                       :: Nullable (SelectItemImpl -> Boolean)
       , filterDataOnExactSearchMatch :: Boolean
+      , hoverOnSearchChange          :: Boolean
       , icon                         :: Nullable JSX
       , iconWidth                    :: Nullable Number
       , initiallyOpened              :: Boolean
+      , inputContainer               :: Nullable (JSX -> JSX)
+      , inputWrapperOrder            :: Nullable (Array String)
       , itemComponent                :: Nullable (SelectItemImpl -> JSX)
       , label                        :: Nullable JSX
       , limit                        :: Nullable Number
@@ -154,8 +163,7 @@ type SelectPropsImpl =
       , selectOnBlur                 :: Boolean
       , size                         :: Nullable String
       , switchDirectionOnFlip        :: Boolean
-      , transition                   :: Nullable String
-      , transitionDuration           :: Nullable Number
+      , transitionProps              :: MantineTransitionPropsImpl
       , value                        :: Nullable String
       , variant                      :: String
       , withAsterisk                 :: Boolean
@@ -176,6 +184,7 @@ selectToImpl props =
   let otherProps =
         { filter:        toNullable $ (\f -> f <<< fromNative) <$> props.filter
         , itemComponent: maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
+        , inputContainer: toNullable props.inputContainer
         }
 
       rest = toNative
@@ -183,21 +192,15 @@ selectToImpl props =
          <<< delete (Proxy :: Proxy "creatable")
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "itemComponent")
+         <<< delete (Proxy :: Proxy "inputContainer")
 
    in clearableProps props `union` creatableProps props `union` otherProps `union` rest props
 
 clearableProps :: forall rest.
   Record ( clearable :: SelectClearable | rest) -> Record (ClearablePropsImpl ())
-clearableProps props =
-  let clearable = case props.clearable of
-        SelectClearable _  -> true
-        SelectNotClearable -> false
-
-      clearButtonLabel = toNullable $ case props.clearable of
-        SelectClearable l  -> pure l
-        SelectNotClearable -> Nothing
-
-   in { clearable, clearButtonLabel }
+clearableProps props = toNative $ case props.clearable of
+  SelectClearable p  -> { clearable: true,  clearButtonProps: Just p  }
+  SelectNotClearable -> { clearable: false, clearButtonProps: Nothing }
 
 creatableProps :: forall rest.
   Record ( creatable :: SelectCreatable | rest ) -> Record (CreatablePropsImpl ())

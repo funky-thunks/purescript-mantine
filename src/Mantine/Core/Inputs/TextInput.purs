@@ -5,11 +5,11 @@ module Mantine.Core.Inputs.TextInput
   , module Mantine.Core.Inputs.Input
   ) where
 
+import Mantine.Core.Inputs.Input (InputType(..), InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
-import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 
 textInput :: (TextInputProps -> TextInputProps) -> JSX
-textInput = mkTrivialComponent textInputComponent
+textInput = mkComponent textInputComponent textInputToImpl defaultThemingProps_
 
 foreign import textInputComponent :: ReactComponent TextInputPropsImpl
 
@@ -21,6 +21,7 @@ type TextInputProps =
     , icon              :: Maybe JSX
     , iconWidth         :: Maybe Pixels
     , id                :: Maybe String
+    , inputContainer    :: Maybe (JSX -> JSX)
     , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
     , label             :: Maybe JSX
     , onChange          :: InputHandler
@@ -30,6 +31,7 @@ type TextInputProps =
     , rightSection      :: Maybe JSX
     , rightSectionWidth :: Maybe Pixels
     , size              :: Maybe MantineSize
+    , type              :: Maybe InputType
     , value             :: Maybe String
     , variant           :: InputVariant
     , withAsterisk      :: Boolean
@@ -43,6 +45,7 @@ type TextInputPropsImpl =
     , icon              :: Nullable JSX
     , iconWidth         :: Nullable Number
     , id                :: Nullable String
+    , inputContainer    :: Nullable (JSX -> JSX)
     , inputWrapperOrder :: Nullable (Array String)
     , label             :: Nullable JSX
     , onChange          :: EffectFn1 SyntheticEvent Unit
@@ -52,7 +55,14 @@ type TextInputPropsImpl =
     , rightSection      :: Nullable JSX
     , rightSectionWidth :: Nullable Number
     , size              :: Nullable String
+    , type              :: Nullable String
     , value             :: Nullable String
     , variant           :: String
     , withAsterisk      :: Boolean
     )
+
+textInputToImpl :: TextInputProps -> TextInputPropsImpl
+textInputToImpl props =
+  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
+      inputContainer = toNullable props.inputContainer
+   in { inputContainer } `union` rest props

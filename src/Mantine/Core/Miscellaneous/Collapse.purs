@@ -2,7 +2,6 @@ module Mantine.Core.Miscellaneous.Collapse
   ( collapse
   , collapse_
   , CollapseProps
-  , CollapseAxis(..)
   ) where
 
 import Mantine.Core.Prelude
@@ -17,25 +16,13 @@ foreign import collapseComponent :: ReactComponent CollapsePropsImpl
 
 type CollapseProps =
   ThemingProps
-    ( children                 :: Array JSX
-    , animateOpacity           :: Boolean
-    , axis                     :: CollapseAxis
+    ( animateOpacity           :: Boolean
+    , children                 :: Array JSX
     , onTransitionEnd          :: Effect Unit
     , opened                   :: Boolean
     , transitionDuration       :: Number
     , transitionTimingFunction :: MantineTransitionTimingFunction
     )
-
-data CollapseAxis
-  = CollapseAxisX
-  | CollapseAxisY
-
-instance ToFFI CollapseAxis String where
-  toNative = case _ of
-    CollapseAxisX -> "x"
-    CollapseAxisY -> "y"
-
-instance DefaultValue CollapseAxis where defaultValue = CollapseAxisY
 
 defaultCollapseProps :: CollapseProps
 defaultCollapseProps =
@@ -48,9 +35,8 @@ defaultCollapseProps =
 
 type CollapsePropsImpl =
   ThemingPropsImpl
-    ( children                 :: Array JSX
-    , animateOpacity           :: Boolean
-    , axis                     :: String
+    ( animateOpacity           :: Boolean
+    , children                 :: Array JSX
     , in                       :: Boolean
     , onTransitionEnd          :: Effect Unit
     , transitionDuration       :: Number

@@ -36,7 +36,6 @@ type FileButtonProps payload =
     , children :: { onClick :: Effect Unit } -> JSX
     , disabled :: Boolean
     , form     :: Maybe String
-    , multiple :: Boolean
     , name     :: Maybe String
     , onChange :: ValueHandler payload
     , resetRef :: Maybe (Ref (Effect Unit))
@@ -49,7 +48,6 @@ type FileButtonPropsImpl payload =
     , children :: { onClick :: Effect Unit } -> JSX
     , disabled :: Boolean
     , form     :: Nullable String
-    , multiple :: Boolean
     , name     :: Nullable String
     , onChange :: EffectFn1 payload Unit
     , resetRef :: Nullable (Ref (Effect Unit))

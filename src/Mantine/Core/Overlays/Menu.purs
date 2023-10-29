@@ -13,7 +13,11 @@ module Mantine.Core.Overlays.Menu
   , MenuItemProps
 
   , menuDropdown
+
   , menuTarget
+  , menuTarget_
+  , MenuTargetProps
+
   , menuLabel
   , menuDivider
   ) where
@@ -32,40 +36,39 @@ foreign import menuComponent :: ReactComponent MenuPropsImpl
 
 type MenuProps =
   ThemingProps
-    ( arrowOffset            :: Maybe Pixels
-    , arrowPosition          :: Maybe MenuArrowPosition
-    , arrowRadius            :: Maybe Pixels
-    , arrowSize              :: Maybe Pixels
-    , children               :: Array JSX
-    , clickOutsideEvents     :: Maybe (Array String)
-    , closeDelay             :: Maybe Milliseconds
-    , closeOnClickOutside    :: Boolean
-    , closeOnEscape          :: Boolean
-    , closeOnItemClick       :: Boolean
-    , defaultOpened          :: Maybe Boolean
-    , disabled               :: Boolean
-    , exitTransitionDuration :: Maybe Milliseconds
-    , id                     :: Maybe String
-    , loop                   :: Boolean
-    , middlewares            :: PopoverMiddlewares
-    , offset                 :: Maybe Pixels
-    , onChange               :: ValueHandler Boolean
-    , onClose                :: Effect Unit
-    , onOpen                 :: Effect Unit
-    , onPositionChange       :: ValueHandler MenuFloatingPosition
-    , openDelay              :: Maybe Milliseconds
-    , opened                 :: Maybe Boolean
-    , position               :: MenuFloatingPosition
-    , radius                 :: Maybe MantineNumberSize
-    , returnFocus            :: Boolean
+    ( arrowOffset         :: Maybe Pixels
+    , arrowPosition       :: Maybe MenuArrowPosition
+    , arrowRadius         :: Maybe Pixels
+    , arrowSize           :: Maybe Pixels
+    , children            :: Array JSX
+    , clickOutsideEvents  :: Maybe (Array String)
+    , closeDelay          :: Maybe Milliseconds
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , closeOnItemClick    :: Boolean
+    , defaultOpened       :: Maybe Boolean
+    , disabled            :: Boolean
+    , id                  :: Maybe String
+    , keepMounted         :: Boolean
+    , loop                :: Boolean
+    , middlewares         :: PopoverMiddlewares
+    , offset              :: Maybe Pixels
+    , onChange            :: ValueHandler Boolean
+    , onClose             :: Effect Unit
+    , onOpen              :: Effect Unit
+    , onPositionChange    :: ValueHandler MenuFloatingPosition
+    , openDelay           :: Maybe Milliseconds
+    , opened              :: Maybe Boolean
+    , position            :: MenuFloatingPosition
+    , radius              :: Maybe MantineNumberSize
+    , returnFocus         :: Boolean
     -- , shadow -- TODO
-    , transition             :: Maybe MantineTransition
-    , transitionDuration     :: Maybe Milliseconds
-    , trigger                :: Maybe MenuTrigger
-    , width                  :: Maybe MenuPopoverWidth
-    , withArrow              :: Boolean
-    , withinPortal           :: Boolean
-    , zIndex                 :: Maybe Number
+    , transitionProps     :: MantineTransitionProps
+    , trigger             :: Maybe MenuTrigger
+    , width               :: Maybe MenuPopoverWidth
+    , withArrow           :: Boolean
+    , withinPortal        :: Boolean
+    , zIndex              :: Maybe Number
     )
 
 defaultMenuProps :: MenuProps
@@ -81,40 +84,39 @@ defaultMenuProps =
 
 type MenuPropsImpl =
   ThemingPropsImpl
-    ( arrowOffset            :: Nullable Number
-    , arrowPosition          :: Nullable String
-    , arrowRadius            :: Nullable Number
-    , arrowSize              :: Nullable Number
-    , children               :: Array JSX
-    , clickOutsideEvents     :: Nullable (Array String)
-    , closeDelay             :: Nullable Number
-    , closeOnClickOutside    :: Boolean
-    , closeOnEscape          :: Boolean
-    , closeOnItemClick       :: Boolean
-    , defaultOpened          :: Nullable Boolean
-    , disabled               :: Boolean
-    , exitTransitionDuration :: Nullable Number
-    , id                     :: Nullable String
-    , loop                   :: Boolean
-    , middlewares            :: PopoverMiddlewaresImpl
-    , offset                 :: Nullable Number
-    , onChange               :: EffectFn1 Boolean Unit
-    , onClose                :: Effect Unit
-    , onOpen                 :: Effect Unit
-    , onPositionChange       :: EffectFn1 String Unit
-    , openDelay              :: Nullable Number
-    , opened                 :: Nullable Boolean
-    , position               :: String
-    , radius                 :: Nullable MantineNumberSizeImpl
-    , returnFocus            :: Boolean
-    -- , shadow -- TODO
-    , transition             :: Nullable String
-    , transitionDuration     :: Nullable Number
-    , trigger                :: Nullable String
-    , width                  :: Nullable String
-    , withArrow              :: Boolean
-    , withinPortal           :: Boolean
-    , zIndex                 :: Nullable Number
+    ( arrowOffset         :: Nullable Number
+    , arrowPosition       :: Nullable String
+    , arrowRadius         :: Nullable Number
+    , arrowSize           :: Nullable Number
+    , children            :: Array JSX
+    , clickOutsideEvents  :: Nullable (Array String)
+    , closeDelay          :: Nullable Number
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , closeOnItemClick    :: Boolean
+    , defaultOpened       :: Nullable Boolean
+    , disabled            :: Boolean
+    , id                  :: Nullable String
+    , keepMounted         :: Boolean
+    , loop                :: Boolean
+    , middlewares         :: PopoverMiddlewaresImpl
+    , offset              :: Nullable Number
+    , onChange            :: EffectFn1 Boolean Unit
+    , onClose             :: Effect Unit
+    , onOpen              :: Effect Unit
+    , onPositionChange    :: EffectFn1 String Unit
+    , openDelay           :: Nullable Number
+    , opened              :: Nullable Boolean
+    , position            :: String
+    , radius              :: Nullable MantineNumberSizeImpl
+    , returnFocus         :: Boolean
+ -- , shadow -- TODO
+    , transitionProps     :: MantineTransitionPropsImpl
+    , trigger             :: Nullable String
+    , width               :: Nullable String
+    , withArrow           :: Boolean
+    , withinPortal        :: Boolean
+    , zIndex              :: Nullable Number
     )
 
 data MenuPopoverWidth
@@ -248,10 +250,25 @@ menuDropdown children = element menuDropdownComponent { children }
 
 foreign import menuDropdownComponent :: ReactComponent { children :: Array JSX }
 
-menuTarget :: JSX -> JSX
-menuTarget target = element menuTargetComponent { children: pure target }
+menuTarget :: (MenuTargetProps -> MenuTargetProps) -> JSX
+menuTarget = mkTrivialComponent menuTargetComponent
 
-foreign import menuTargetComponent :: ReactComponent { children :: Array JSX }
+menuTarget_ :: JSX -> JSX
+menuTarget_ target = menuTarget _ { children = pure target }
+
+foreign import menuTargetComponent :: ReactComponent MenuTargetPropsImpl
+
+type MenuTargetProps =
+  ThemingProps
+    ( children :: Array JSX
+    , refProp  :: Maybe String
+    )
+
+type MenuTargetPropsImpl =
+  ThemingPropsImpl
+    ( children :: Array JSX
+    , refProp  :: Nullable String
+    )
 
 menuLabel :: JSX -> JSX
 menuLabel label = element menuLabelComponent { children: pure label }

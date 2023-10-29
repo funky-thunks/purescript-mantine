@@ -15,7 +15,7 @@ focusTrap_ children = focusTrap _ { children = children }
 foreign import focusTrapComponent :: ReactComponent FocusTrapProps
 
 type FocusTrapProps =
-  { children :: Array JSX
-  , active   :: Boolean
+  { active   :: Boolean
+  , children :: Array JSX
   , refProp  :: String
   }

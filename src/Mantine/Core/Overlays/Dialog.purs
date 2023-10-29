@@ -14,6 +14,7 @@ foreign import dialogComponent :: ReactComponent DialogPropsImpl
 type DialogProps =
   ThemingProps
     ( children                 :: Array JSX
+    , keepMounted              :: Boolean
     , onClose                  :: Effect Unit
     , opened                   :: Maybe Boolean
     , position                 :: Maybe DialogPosition
@@ -21,8 +22,8 @@ type DialogProps =
  -- , shadow -- TODO
     , size                     :: Maybe Dimension
     , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Number
-    , transitionTimingFunction :: Maybe String
+    , transitionDuration       :: Maybe Milliseconds
+    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
     , withBorder               :: Maybe Boolean
     , withCloseButton          :: Maybe Boolean
     , zIndex                   :: Maybe Number
@@ -41,6 +42,7 @@ defaultDialogProps = defaultThemingProps { onClose: pure unit }
 type DialogPropsImpl =
   ThemingPropsImpl
     ( children                 :: Array JSX
+    , keepMounted              :: Boolean
     , onClose                  :: Effect Unit
     , opened                   :: Nullable Boolean
     , position                 :: Nullable DialogPositionImpl

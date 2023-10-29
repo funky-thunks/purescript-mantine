@@ -17,6 +17,7 @@ foreign import loadingOverlayComponent :: ReactComponent LoadingOverlayPropsImpl
 type LoadingOverlayProps =
   ThemingProps
     ( exitTransitionDuration :: Maybe Milliseconds
+    , keepMounted            :: Boolean
     , loader                 :: Maybe JSX
     , overlayBlur            :: Maybe Number
     , overlayColor           :: Maybe String
@@ -30,6 +31,7 @@ type LoadingOverlayProps =
 type LoadingOverlayPropsImpl =
   ThemingPropsImpl
     ( exitTransitionDuration :: Nullable Number
+    , keepMounted            :: Boolean
     , loader                 :: Nullable JSX
     , overlayBlur            :: Nullable Number
     , overlayColor           :: Nullable String

@@ -24,13 +24,14 @@ module Mantine.Core.Layout.AppShell
 import Mantine.Core.Prelude
 
 appShell :: (AppShellProps -> AppShellProps) -> JSX
-appShell = mkTrivialComponent appShellComponent
+appShell = mkComponent appShellComponent appShellToImpl defaultThemingProps_
 
 foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
 type AppShellProps =
   ThemingProps
-    ( aside                  :: Maybe JSX
+    ( alternativeLayout      :: Boolean
+    , aside                  :: Maybe JSX
     , asideOffsetBreakpoint  :: Maybe MantineNumberSize
     , children               :: Array JSX
     , fixed                  :: Boolean
@@ -52,11 +53,17 @@ type AppShellPropsImpl =
     , footer                 :: Nullable JSX
     , header                 :: Nullable JSX
     , hidden                 :: Boolean
+    , layout                 :: String
     , navbar                 :: Nullable JSX
     , navbarOffsetBreakpoint :: Nullable MantineNumberSizeImpl
     , padding                :: Nullable MantineNumberSizeImpl
     , zIndex                 :: Nullable Number
     )
+
+appShellToImpl :: AppShellProps -> AppShellPropsImpl
+appShellToImpl props =
+  let rest = toNative <<< delete (Proxy :: Proxy "alternativeLayout")
+   in { layout: if props.alternativeLayout then "alt" else "default" } `union` rest props
 
 navbar :: (NavbarProps -> NavbarProps) -> JSX
 navbar = mkTrivialComponent navbarComponent

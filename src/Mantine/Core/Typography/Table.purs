@@ -17,8 +17,8 @@ foreign import tableComponent :: ReactComponent TablePropsImpl
 
 type TableProps =
   ThemingProps
-    ( children          :: Array JSX
-    , captionSide       :: TableCaptionSide
+    ( captionSide       :: TableCaptionSide
+    , children          :: Array JSX
     , fontSize          :: MantineNumberSize
     , highlightOnHover  :: Boolean
     , horizontalSpacing :: MantineNumberSize
@@ -49,8 +49,8 @@ instance ToFFI TableCaptionSide String where
 
 type TablePropsImpl =
   ThemingPropsImpl
-    ( children          :: Array JSX
-    , captionSide       :: String
+    ( captionSide       :: String
+    , children          :: Array JSX
     , fontSize          :: MantineNumberSizeImpl
     , highlightOnHover  :: Boolean
     , horizontalSpacing :: MantineNumberSizeImpl

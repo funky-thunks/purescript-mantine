@@ -15,6 +15,7 @@ type TransitionProps =
   { children       :: Style -> JSX
   , duration       :: Maybe Number
   , exitDuration   :: Maybe Number
+  , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
@@ -37,6 +38,7 @@ type TransitionPropsImpl =
   { children       :: Style -> JSX
   , duration       :: Nullable Number
   , exitDuration   :: Nullable Number
+  , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
@@ -48,10 +50,5 @@ type TransitionPropsImpl =
 
 transitionPropsToImpl :: TransitionProps -> TransitionPropsImpl
 transitionPropsToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "children")
+  let rest = toNative <<< delete (Proxy :: Proxy "children")
    in { children: props.children } `union` rest props
-
--- TODO
--- groupedTransition :: (GroupedTransitionProps -> GroupedTransitionProps) -> JSX
--- groupedTransition = mkTrivialComponent groupedTransitionComponent

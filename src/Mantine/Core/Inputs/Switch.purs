@@ -7,8 +7,11 @@ module Mantine.Core.Inputs.Switch
   , switchGroup
   , switchGroup_
   , SwitchGroupProps
+
+  , module Mantine.Core.Inputs.Input
   ) where
 
+import Mantine.Core.Inputs.Input (InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 switch :: (SwitchProps -> SwitchProps) -> JSX
@@ -75,7 +78,7 @@ switchToImpl =
    in toNative <<< flattenLabels
 
 switchGroup :: (SwitchGroupProps -> SwitchGroupProps) -> JSX
-switchGroup = mkTrivialComponent switchGroupComponent
+switchGroup = mkComponent switchGroupComponent switchGroupToImpl defaultThemingProps_
 
 switchGroup_ :: Array JSX -> JSX
 switchGroup_ children = switchGroup _ { children = children }
@@ -84,34 +87,39 @@ foreign import switchGroupComponent :: ReactComponent SwitchGroupPropsImpl
 
 type SwitchGroupProps =
   ThemingProps
-    ( children     :: Array JSX
-    , defaultValue :: Maybe (Array String)
-    , description  :: Maybe JSX
-    , error        :: Maybe JSX
-    , label        :: Maybe JSX
-    , offset       :: Maybe MantineNumberSize
-    , onChange     :: ValueHandler (Array String)
-    , orientation  :: Maybe Orientation
-    , required     :: Maybe Boolean
-    , size         :: Maybe MantineSize
-    , spacing      :: Maybe MantineNumberSize
-    , value        :: Maybe (Array String)
-    , withAsterisk :: Maybe Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Maybe (Array String)
+    , description       :: Maybe JSX
+    , error             :: Maybe JSX
+    , inputContainer    :: Maybe (JSX -> JSX)
+    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
+    , label             :: Maybe JSX
+    , onChange          :: ValueHandler (Array String)
+    , required          :: Maybe Boolean
+    , size              :: Maybe MantineSize
+    , value             :: Maybe (Array String)
+    , withAsterisk      :: Maybe Boolean
     )
 
 type SwitchGroupPropsImpl =
   ThemingPropsImpl
-    ( children     :: Array JSX
-    , defaultValue :: Nullable (Array String)
-    , description  :: Nullable JSX
-    , error        :: Nullable JSX
-    , label        :: Nullable JSX
-    , offset       :: Nullable MantineNumberSizeImpl
-    , onChange     :: EffectFn1 (Array String) Unit
-    , orientation  :: Nullable String
-    , required     :: Nullable Boolean
-    , size         :: Nullable String
-    , spacing      :: Nullable MantineNumberSizeImpl
-    , value        :: Nullable (Array String)
-    , withAsterisk :: Nullable Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Nullable (Array String)
+    , description       :: Nullable JSX
+    , error             :: Nullable JSX
+    , inputContainer    :: Nullable (JSX -> JSX)
+    , inputWrapperOrder :: Nullable (Array String)
+    , label             :: Nullable JSX
+    , onChange          :: EffectFn1 (Array String) Unit
+    , required          :: Nullable Boolean
+    , size              :: Nullable String
+    , value             :: Nullable (Array String)
+    , withAsterisk      :: Nullable Boolean
     )
+
+switchGroupToImpl :: SwitchGroupProps -> SwitchGroupPropsImpl
+switchGroupToImpl props =
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "inputContainer")
+      inputContainer = toNullable props.inputContainer
+   in { inputContainer } `union` rest props

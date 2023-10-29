@@ -5,17 +5,13 @@ module Mantine.Core.Inputs.Chip
   , ChipVariant(..)
 
   , chipGroup
-  , ChipGroupSingle(..)
   , multipleChipGroup
-  , ChipGroupMultiple(..)
   , ChipGroupProps
   , ChipGroupPosition(..)
   ) where
 
 import Prelude (class Show)
-import Data.Array (last)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (maybe)
 import Data.Show.Generic (genericShow)
 import Mantine.Core.Prelude
 
@@ -26,8 +22,8 @@ foreign import chipComponent :: ReactComponent ChipPropsImpl
 
 type ChipProps =
   ThemingProps
-    ( children       :: Array JSX
-    , checked        :: Maybe Boolean
+    ( checked        :: Maybe Boolean
+    , children       :: Array JSX
     , color          :: Maybe MantineColor
     , defaultChecked :: Maybe Boolean
     , id             :: Maybe String
@@ -36,7 +32,7 @@ type ChipProps =
     , size           :: MantineSize
     , type           :: Maybe ChipType
     , value          :: Maybe String
-    , variant        :: Maybe ChipVariant
+    , variant        :: ChipVariant
     )
 
 defaultChipProps :: ChipProps
@@ -48,17 +44,17 @@ defaultChipProps =
 
 type ChipPropsImpl =
   ThemingPropsImpl
-    ( children       :: Array JSX
-    , onChange       :: EventHandler
-    , id             :: Nullable String
-    , value          :: Nullable String
-    , checked        :: Nullable Boolean
-    , defaultChecked :: Nullable Boolean
+    ( checked        :: Nullable Boolean
+    , children       :: Array JSX
     , color          :: Nullable String
+    , defaultChecked :: Nullable Boolean
+    , id             :: Nullable String
+    , onChange       :: EventHandler
     , radius         :: String
     , size           :: String
     , type           :: Nullable String
-    , variant        :: Nullable String
+    , value          :: Nullable String
+    , variant        :: String
     )
 
 data ChipType
@@ -78,34 +74,37 @@ data LoaderPosition
 data ChipVariant
   = ChipVariantFilled
   | ChipVariantOutline
+  | ChipVariantLight
+
+instance DefaultValue ChipVariant where defaultValue = ChipVariantOutline
 
 instance ToFFI ChipVariant String where
   toNative = case _ of
     ChipVariantOutline -> "outline"
     ChipVariantFilled  -> "filled"
+    ChipVariantLight   -> "light"
 
 derive instance genericChipVariant :: Generic ChipVariant _
 instance showChipVariant :: Show ChipVariant where show = genericShow
 
 chipGroup :: (SingleChipGroupProps -> SingleChipGroupProps) -> JSX
-chipGroup = mkComponent chipGroupComponent toNative defaultThemingProps_
+chipGroup = mkTrivialComponent chipGroupComponent
 
-foreign import chipGroupComponent :: ReactComponent SingleChipGroupPropsImpl
+foreign import chipGroupComponent :: ReactComponent (ChipGroupPropsImpl String)
 
-type SingleChipGroupProps     = ChipGroupProps ChipGroupSingle
-type SingleChipGroupPropsImpl = ChipGroupPropsImpl
+type SingleChipGroupProps = ChipGroupProps String
 
 multipleChipGroup :: (MultipleChipGroupProps -> MultipleChipGroupProps) -> JSX
-multipleChipGroup = mkComponent multipleChipGroupComponent toNative defaultThemingProps_
+multipleChipGroup = mkTrivialComponent multipleChipGroupComponent
 
-foreign import multipleChipGroupComponent :: ReactComponent MultipleChipGroupPropsImpl
+foreign import multipleChipGroupComponent :: ReactComponent (ChipGroupPropsImpl (Array String))
 
-type MultipleChipGroupProps     = ChipGroupProps ChipGroupMultiple
-type MultipleChipGroupPropsImpl = ChipGroupPropsImpl
+type MultipleChipGroupProps = ChipGroupProps (Array String)
 
 type ChipGroupProps value =
   ThemingProps
     ( align        :: Maybe AlignItems
+    , children     :: Array JSX
     , defaultValue :: Maybe value
     , grow         :: Boolean
     , noWrap       :: Boolean
@@ -113,7 +112,6 @@ type ChipGroupProps value =
     , position     :: Maybe ChipGroupPosition
     , spacing      :: Maybe MantineNumberSize
     , value        :: Maybe value
-    , children     :: Array JSX
     )
 
 data ChipGroupPosition
@@ -129,31 +127,15 @@ instance ToFFI ChipGroupPosition String where
   ChipGroupPositionCenter -> "center"
   ChipGroupPositionApart  -> "apart"
 
-newtype ChipGroupSingle = ChipGroupSingle (Maybe String)
-
-instance ToFFI ChipGroupSingle (Array String) where
-  toNative (ChipGroupSingle v) = maybe [] pure v
-
-instance FromFFI (Array String) ChipGroupSingle where
-  fromNative = ChipGroupSingle <<< last
-
-newtype ChipGroupMultiple = ChipGroupMultiple (Array String)
-
-instance ToFFI ChipGroupMultiple (Array String) where
-  toNative (ChipGroupMultiple vs) = vs
-
-instance FromFFI (Array String) ChipGroupMultiple where
-  fromNative = ChipGroupMultiple
-
-type ChipGroupPropsImpl =
+type ChipGroupPropsImpl value =
   ThemingPropsImpl
     ( align        :: Nullable String
-    , defaultValue :: Nullable (Array String)
+    , children     :: Array JSX
+    , defaultValue :: Nullable value
     , grow         :: Boolean
     , noWrap       :: Boolean
-    , onChange     :: EffectFn1 (Array String) Unit
+    , onChange     :: EffectFn1 value Unit
     , position     :: Nullable String
     , spacing      :: Nullable MantineNumberSizeImpl
-    , value        :: Nullable (Array String)
-    , children     :: Array JSX
+    , value        :: Nullable value
     )

@@ -21,7 +21,7 @@ import Mantine.Core.DataDisplay.Card (CardProps, CardSectionProps, card, cardSec
 import Mantine.Core.DataDisplay.ColorSwatch (ColorSwatchProps, colorSwatch, colorSwatch_)
 import Mantine.Core.DataDisplay.Image (ImageFit(..), ImageProps, image)
 import Mantine.Core.DataDisplay.Indicator (IndicatorPosition(..), IndicatorProps, indicator)
-import Mantine.Core.DataDisplay.Kbd (kbd)
+import Mantine.Core.DataDisplay.Kbd (KbdProps, kbd, kbd_)
 import Mantine.Core.DataDisplay.Spoiler (SpoilerProps, SpoilerState(..), spoiler, spoiler_)
 import Mantine.Core.DataDisplay.ThemeIcon (ThemeIconProps, ThemeIconVariant(..), themeIcon)
 import Mantine.Core.DataDisplay.Timeline (TimelineAlign(..), TimelineItemProps, TimelineLineVariant(..), TimelineProps, timeline, timelineItem)

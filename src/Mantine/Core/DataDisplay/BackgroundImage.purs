@@ -16,8 +16,8 @@ foreign import backgroundImageComponent:: ReactComponent BackgroundImagePropsImp
 
 type BackgroundImageProps =
   ThemingProps
-    ( src    :: String
-    , radius :: MantineNumberSize
+    ( radius :: MantineNumberSize
+    , src    :: String
     )
 
 defaultBackgroundImageProps :: String -> BackgroundImageProps
@@ -29,6 +29,6 @@ defaultBackgroundImageProps src =
 
 type BackgroundImagePropsImpl =
   ThemingPropsImpl
-    ( src    :: String
-    , radius :: MantineNumberSizeImpl
+    ( radius :: MantineNumberSizeImpl
+    , src    :: String
     )

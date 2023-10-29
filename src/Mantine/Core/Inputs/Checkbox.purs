@@ -6,8 +6,11 @@ module Mantine.Core.Inputs.Checkbox
   , checkboxGroup
   , checkboxGroup_
   , CheckboxGroupProps
+
+  , module Mantine.Core.Inputs.Input
   ) where
 
+import Mantine.Core.Inputs.Input (InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 checkbox :: (CheckboxProps -> CheckboxProps) -> JSX
@@ -68,7 +71,7 @@ toNativeCheckbox props =
    in { icon: toNullable props.icon } `union` rest props
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
-checkboxGroup = mkTrivialComponent checkboxGroupComponent
+checkboxGroup = mkComponent checkboxGroupComponent checkboxGroupToImpl defaultThemingProps_
 
 checkboxGroup_ :: Array JSX -> JSX
 checkboxGroup_ children = checkboxGroup _ { children = children }
@@ -77,32 +80,38 @@ foreign import checkboxGroupComponent :: ReactComponent CheckboxGroupPropsImpl
 
 type CheckboxGroupProps =
   ThemingProps
-    ( children     :: Array JSX
-    , defaultValue :: Maybe (Array String)
-    , description  :: Maybe JSX
-    , error        :: Maybe JSX
-    , label        :: Maybe JSX
-    , offset       :: Maybe MantineNumberSize
-    , onChange     :: Maybe (Array String -> Effect Unit)
-    , orientation  :: Maybe Orientation
-    , required     :: Maybe Boolean
-    , size         :: Maybe MantineSize
-    , value        :: Maybe (Array String)
-    , withAsterisk :: Maybe Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Maybe (Array String)
+    , description       :: Maybe JSX
+    , error             :: Maybe JSX
+    , inputContainer    :: Maybe (JSX -> JSX)
+    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
+    , label             :: Maybe JSX
+    , onChange          :: Maybe (Array String -> Effect Unit)
+    , required          :: Maybe Boolean
+    , size              :: Maybe MantineSize
+    , value             :: Maybe (Array String)
+    , withAsterisk      :: Maybe Boolean
     )
 
 type CheckboxGroupPropsImpl =
   ThemingPropsImpl
-    ( children     :: Array JSX
-    , defaultValue :: Nullable (Array String)
-    , description  :: Nullable JSX
-    , error        :: Nullable JSX
-    , label        :: Nullable JSX
-    , offset       :: Nullable MantineNumberSizeImpl
-    , onChange     :: Nullable (EffectFn1 (Array String) Unit)
-    , orientation  :: Nullable String
-    , required     :: Nullable Boolean
-    , size         :: Nullable String
-    , value        :: Nullable (Array String)
-    , withAsterisk :: Nullable Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Nullable (Array String)
+    , description       :: Nullable JSX
+    , error             :: Nullable JSX
+    , inputContainer    :: Nullable (JSX -> JSX)
+    , inputWrapperOrder :: Nullable (Array String)
+    , label             :: Nullable JSX
+    , onChange          :: Nullable (EffectFn1 (Array String) Unit)
+    , required          :: Nullable Boolean
+    , size              :: Nullable String
+    , value             :: Nullable (Array String)
+    , withAsterisk      :: Nullable Boolean
     )
+
+checkboxGroupToImpl :: CheckboxGroupProps -> CheckboxGroupPropsImpl
+checkboxGroupToImpl props =
+  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
+      inputContainer = toNullable props.inputContainer
+   in { inputContainer } `union` rest props

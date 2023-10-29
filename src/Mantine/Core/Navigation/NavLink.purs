@@ -1,13 +1,15 @@
 module Mantine.Core.Navigation.NavLink
   ( navLink
   , NavLinkProps
+  , NavLink(..)
   , NavLinkVariant(..)
+  , MandatoryNavLinkProps
   ) where
 
 import Mantine.Core.Prelude
 
-navLink :: (NavLinkProps -> NavLinkProps) -> JSX
-navLink = mkComponent navLinkComponent navLinkToImpl defaultNavLinkProps
+navLink :: MandatoryNavLinkProps -> (NavLinkProps -> NavLinkProps) -> JSX
+navLink = mkComponent navLinkComponent navLinkToImpl <<< defaultThemingProps
 
 foreign import navLinkComponent :: ReactComponent NavLinkPropsImpl
 
@@ -21,23 +23,23 @@ type NavLinkProps =
     , description                 :: Maybe JSX
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
-    , href                        :: Maybe String
     , icon                        :: Maybe JSX
     , label                       :: JSX
     , noWrap                      :: Boolean
     , onChange                    :: ValueHandler Boolean
-    , onClick                     :: EventHandler
     , opened                      :: Boolean
     , rightSection                :: Maybe JSX
     , variant                     :: NavLinkVariant
+    , content                     :: NavLink
     )
 
-defaultNavLinkProps :: NavLinkProps
-defaultNavLinkProps =
-  defaultThemingProps
-    { label:   mempty :: JSX
-    , onClick: handler_ (pure unit)
-    }
+type MandatoryNavLinkProps =
+  { label   :: JSX
+  , content :: NavLink
+  }
+
+data NavLink = NavLink   String
+             | NavButton EventHandler
 
 type NavLinkPropsImpl =
   ThemingPropsImpl
@@ -45,7 +47,7 @@ type NavLinkPropsImpl =
     , children                    :: Array JSX
     , childrenOffset              :: Nullable MantineNumberSizeImpl
     , color                       :: Nullable String
-    , component                   :: Nullable String
+    , component                   :: String
     , defaultOpened               :: Boolean
     , description                 :: Nullable JSX
     , disableRightSectionRotation :: Boolean
@@ -55,7 +57,7 @@ type NavLinkPropsImpl =
     , label                       :: JSX
     , noWrap                      :: Boolean
     , onChange                    :: EffectFn1 Boolean Unit
-    , onClick                     :: EventHandler
+    , onClick                     :: Nullable EventHandler
     , opened                      :: Boolean
     , rightSection                :: Nullable JSX
     , variant                     :: String
@@ -76,4 +78,8 @@ instance ToFFI NavLinkVariant String where
 
 navLinkToImpl :: NavLinkProps -> NavLinkPropsImpl
 navLinkToImpl props =
-  toNative props `union` toNative { component: "a" <$ props.href }
+  let rest = toNative <<< delete (Proxy :: Proxy "content")
+      navigationProps = case props.content of
+        NavLink   href    -> { component: "a",      href: Just href, onClick: Nothing      }
+        NavButton onClick -> { component: "button", href: Nothing  , onClick: Just onClick }
+   in toNative navigationProps `union` rest props

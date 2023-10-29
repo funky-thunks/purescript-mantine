@@ -19,6 +19,7 @@ module Mantine.Core.Overlays.Hovering
   , HoverPopupType(..)
   ) where
 
+import Mantine.Core.Overlays.Modal (ModalTransitionProps, ModalTransitionPropsImpl)
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 
@@ -49,7 +50,7 @@ type HoverCardPropsImpl =
     )
 
 hoverCardTarget :: (HoveringTargetProps -> HoveringTargetProps) -> JSX
-hoverCardTarget = mkComponent hoverCardTargetComponent hoveringTargetToImpl defaultHoveringTargetProps
+hoverCardTarget = mkHoveringComponent hoverCardTargetComponent
 
 foreign import hoverCardTargetComponent :: ReactComponent HoveringTargetPropsImpl
 
@@ -110,7 +111,10 @@ type PopoverPropsImpl =
     )
 
 popoverTarget :: (HoveringTargetProps -> HoveringTargetProps) -> JSX
-popoverTarget = mkComponent popoverTargetComponent hoveringTargetToImpl defaultHoveringTargetProps
+popoverTarget = mkHoveringComponent popoverTargetComponent
+
+mkHoveringComponent :: ReactComponent HoveringTargetPropsImpl -> (HoveringTargetProps -> HoveringTargetProps) -> JSX
+mkHoveringComponent cmpt = mkComponent cmpt hoveringTargetToImpl defaultThemingProps_
 
 foreign import popoverTargetComponent :: ReactComponent HoveringTargetPropsImpl
 
@@ -131,29 +135,28 @@ type PopoverDropdownPropsImpl =
 
 type HoveringCommons rest =
   ThemingProps
-    ( children :: Array JSX
-    , arrowOffset            :: Maybe Number
-    , arrowPosition          :: Maybe HoverArrowPosition
-    , arrowRadius            :: Maybe Number
-    , arrowSize              :: Maybe Number
-    , disabled               :: Boolean
-    , exitTransitionDuration :: Maybe Number
- -- , middlewares            :: PopoverMiddlewares -- TODO
-    , offset                 :: Maybe Number
-    , onClose                :: Effect Unit
-    , onOpen                 :: Effect Unit
-    , onPositionChange       :: ValueHandler HoverFloatingPosition
-    , position               :: HoverFloatingPosition
- -- , positionDependencies   :: any[] -- TODO
-    , radius                 :: Maybe MantineNumberSize
-    , returnFocus            :: Boolean
- -- , shadow                 :: MantineShadow -- TODO
-    , transition             :: Maybe MantineTransition
-    , transitionDuration     :: Maybe Number
-    , width                  :: HoverPopoverWidth
-    , withArrow              :: Boolean
-    , withinPortal           :: Boolean
-    , zIndex                 :: Maybe Number
+    ( children             :: Array JSX
+    , arrowOffset          :: Maybe Number
+    , arrowPosition        :: Maybe HoverArrowPosition
+    , arrowRadius          :: Maybe Number
+    , arrowSize            :: Maybe Number
+    , disabled             :: Boolean
+    , keepMounted          :: Boolean
+ -- , middlewares          :: PopoverMiddlewares -- TODO
+    , offset               :: Maybe Number
+    , onClose              :: Effect Unit
+    , onOpen               :: Effect Unit
+    , onPositionChange     :: ValueHandler HoverFloatingPosition
+    , position             :: HoverFloatingPosition
+ -- , positionDependencies :: any[] -- TODO
+    , radius               :: Maybe MantineNumberSize
+    , returnFocus          :: Boolean
+ -- , shadow               :: MantineShadow -- TODO
+    , transitionProps      :: ModalTransitionProps
+    , width                :: HoverPopoverWidth
+    , withArrow            :: Boolean
+    , withinPortal         :: Boolean
+    , zIndex               :: Maybe Number
     | rest
     )
 
@@ -208,29 +211,28 @@ instance ToFFI HoverPopoverWidth HoverPopoverWidthImpl where
 
 type HoveringCommonsImpl rest =
   ThemingPropsImpl
-    ( children               :: Array JSX
-    , arrowOffset            :: Nullable Number
-    , arrowPosition          :: Nullable String
-    , arrowRadius            :: Nullable Number
-    , arrowSize              :: Nullable Number
-    , disabled               :: Boolean
-    , exitTransitionDuration :: Nullable Number
- -- , middlewares            :: PopoverMiddlewares -- TODO
-    , offset                 :: Nullable Number
-    , onClose                :: Effect Unit
-    , onOpen                 :: Effect Unit
-    , onPositionChange       :: EffectFn1 String Unit
-    , position               :: String
- -- , positionDependencies   :: any[] -- TODO
-    , radius                 :: Nullable MantineNumberSizeImpl
-    , returnFocus            :: Boolean
- -- , shadow                 :: MantineShadow -- TODO
-    , transition             :: Nullable String
-    , transitionDuration     :: Nullable Number
-    , width                  :: HoverPopoverWidthImpl
-    , withArrow              :: Boolean
-    , withinPortal           :: Boolean
-    , zIndex                 :: Nullable Number
+    ( children             :: Array JSX
+    , arrowOffset          :: Nullable Number
+    , arrowPosition        :: Nullable String
+    , arrowRadius          :: Nullable Number
+    , arrowSize            :: Nullable Number
+    , disabled             :: Boolean
+    , keepMounted          :: Boolean
+ -- , middlewares          :: PopoverMiddlewares -- TODO
+    , offset               :: Nullable Number
+    , onClose              :: Effect Unit
+    , onOpen               :: Effect Unit
+    , onPositionChange     :: EffectFn1 String Unit
+    , position             :: String
+ -- , positionDependencies :: any[] -- TODO
+    , radius               :: Nullable MantineNumberSizeImpl
+    , returnFocus          :: Boolean
+ -- , shadow               :: MantineShadow -- TODO
+    , transitionProps      :: ModalTransitionPropsImpl
+    , width                :: HoverPopoverWidthImpl
+    , withArrow            :: Boolean
+    , withinPortal         :: Boolean
+    , zIndex               :: Nullable Number
     | rest
     )
 
@@ -243,9 +245,10 @@ instance ToFFI HoverArrowPosition String where
 
 type HoveringTargetProps =
   ThemingProps
-    ( children  :: Array JSX
-    , popupType :: HoverPopupType
-    , refProps  :: Maybe String
+    ( children                      :: Array JSX
+    , popupType                     :: HoverPopupType
+    , refProp                       :: Maybe String
+    , shouldOverrideDefaultTargetId :: Boolean
     )
 
 data HoverPopupType = HoverPopupTypeDialog | HoverPopupTypeCustom String
@@ -254,17 +257,15 @@ instance DefaultValue HoverPopupType where defaultValue = HoverPopupTypeDialog
 
 instance ToFFI HoverPopupType String where
   toNative = case _ of
-    HoverPopupTypeDialog -> "dialog"
+    HoverPopupTypeDialog   -> "dialog"
     HoverPopupTypeCustom s -> s
-
-defaultHoveringTargetProps :: HoveringTargetProps
-defaultHoveringTargetProps = defaultThemingProps_
 
 type HoveringTargetPropsImpl =
   ThemingPropsImpl
-    ( children  :: Array JSX
-    , popupType :: String
-    , refProps  :: Nullable String
+    ( children                      :: Array JSX
+    , popupType                     :: String
+    , refProp                       :: Nullable String
+    , shouldOverrideDefaultTargetId :: Boolean
     )
 
 hoveringTargetToImpl :: HoveringTargetProps -> HoveringTargetPropsImpl

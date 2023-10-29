@@ -4,10 +4,10 @@ module Mantine.Core.Navigation.Anchor
   ) where
 
 import Mantine.Core.Prelude
-import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
+import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow, textToImpl)
 
 anchor :: (AnchorProps -> AnchorProps) -> JSX
-anchor = mkTrivialComponent anchorComponent
+anchor = mkComponent anchorComponent anchorToImpl defaultThemingProps_
 
 foreign import anchorComponent :: ReactComponent AnchorPropsImpl
 
@@ -24,3 +24,10 @@ type AnchorPropsImpl =
     , href     :: String
     | TextPropsImplRow
     )
+
+anchorToImpl :: AnchorProps -> AnchorPropsImpl
+anchorToImpl props =
+  let rest = textToImpl <<< dropLocalProps
+      dropLocalProps = delete (Proxy :: Proxy "href")
+      anchorProps = { href: props.href }
+   in anchorProps `union` rest props

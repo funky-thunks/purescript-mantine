@@ -18,6 +18,8 @@ module Mantine.Core.Common
   , Rem
   , Dimension(..)
   , DimensionImpl
+  , MantineTransitionProps
+  , MantineTransitionPropsImpl
   , MantineTransition(..)
   , MantineTransitionTimingFunction(..)
   , TextAlign(..)
@@ -665,6 +667,12 @@ instance ToFFI Dimension DimensionImpl where
 
 type DimensionImpl = Number |+| String
 
+type MantineTransitionProps =
+  { transition     :: Maybe MantineTransition
+  , duration       :: Maybe Milliseconds
+  , timingFunction :: Maybe MantineTransitionTimingFunction
+  }
+
 data MantineTransition
   = TransitionFade
   | TransitionPop
@@ -716,6 +724,12 @@ transitionTimingFunctionNative :: MantineTransitionTimingFunction -> String
 transitionTimingFunctionNative = case _ of
   TransitionTimingEase   -> "ease"
   TransitionTimingLinear -> "linear"
+
+type MantineTransitionPropsImpl =
+  { transition     :: Nullable String
+  , duration       :: Nullable Number
+  , timingFunction :: Nullable String
+  }
 
 data TextAlign
   = TextAlignLeft

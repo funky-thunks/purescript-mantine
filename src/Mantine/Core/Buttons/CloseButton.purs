@@ -1,10 +1,13 @@
 module Mantine.Core.Buttons.CloseButton
   ( closeButton
   , CloseButtonProps
+
+  , CloseButtonPropsImpl
+  , closeButtonPropsToImpl
   ) where
 
-import Mantine.Core.Prelude
 import Mantine.Core.Buttons.ActionIcon (ActionIconPropsRow, ActionIconPropsImplRow, actionIconToImpl, defaultActionIconProps)
+import Mantine.Core.Prelude
 import React.Icons.Types (ReactIcon)
 
 closeButton :: ReactIcon -> (CloseButtonProps -> CloseButtonProps) -> JSX

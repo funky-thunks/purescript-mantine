@@ -18,14 +18,14 @@ foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
 
 -- Not supported properties
 --   { descriptionProps     :: Record<String, any>
+--   , dropdownComponent    :: any
 --   , errorProps           :: Record<String, any>
 --   , labelProps           :: Record<String, any>
---   , rightSectionProps    :: Record<String, any>
---   , wrapperProps         :: Record<String, any>
---   , dropdownComponent    :: any
---   , inputContainer       :: Maybe (JSX -> JSX)
+--   , portalProps          :: Omit<PortalProps, "children" | "withinPortal">
 --   , positionDependencies :: any[]
+--   , rightSectionProps    :: Record<String, any>
 --   , shadow               :: MantineShadow
+--   , wrapperProps         :: Record<String, any>
 --   }
 
 type AutocompleteProps =
@@ -60,9 +60,7 @@ type AutocompleteProps =
     , rightSectionWidth        :: Maybe Pixels
     , size                     :: Maybe MantineSize
     , switchDirectionOnFlip    :: Boolean
-    , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , transitionProps          :: MantineTransitionProps
     , value                    :: Maybe String
     , variant                  :: InputVariant
     , withAsterisk             :: Boolean
@@ -127,9 +125,7 @@ type AutocompletePropsImpl =
     , rightSectionWidth        :: Nullable Number
     , size                     :: Nullable String
     , switchDirectionOnFlip    :: Boolean
-    , transition               :: Nullable String
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
+    , transitionProps          :: MantineTransitionPropsImpl
     , value                    :: Nullable String
     , variant                  :: String
     , withAsterisk             :: Boolean

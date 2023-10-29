@@ -16,6 +16,7 @@ foreign import cardComponent :: ReactComponent CardPropsImpl
 type CardProps =
   ThemingProps
     ( children   :: Array JSX
+    , padding    :: Maybe MantineNumberSize
     , radius     :: MantineNumberSize
  -- , shadow     :: MantineShadow -- TODO
     , withBorder :: Boolean
@@ -27,6 +28,7 @@ defaultCardProps = defaultThemingProps { radius: Preset Small }
 type CardPropsImpl =
   ThemingPropsImpl
     ( children   :: Array JSX
+    , padding    :: Nullable MantineNumberSizeImpl
     , radius     :: MantineNumberSizeImpl
  -- , shadow     :: MantineShadowImpl -- TODO
     , withBorder :: Boolean

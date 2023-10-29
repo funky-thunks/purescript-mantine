@@ -16,10 +16,10 @@ foreign import groupComponent :: ReactComponent GroupPropsImpl
 
 type GroupProps =
   ThemingProps
-    ( children :: Array JSX
+    ( align    :: Maybe AlignItems
+    , children :: Array JSX
     , grow     :: Boolean
     , noWrap   :: Boolean
-    , align    :: Maybe AlignItems
     , position :: Maybe Position
     , spacing  :: Maybe MantineNumberSize
     )
@@ -29,10 +29,10 @@ defaultGroupProps = defaultThemingProps { noWrap: true }
 
 type GroupPropsImpl =
   ThemingPropsImpl
-    ( children :: Array JSX
+    ( align    :: Nullable String
+    , children :: Array JSX
     , grow     :: Boolean
     , noWrap   :: Boolean
-    , align    :: Nullable String
     , position :: Nullable String
     , spacing  :: Nullable MantineNumberSizeImpl
     )

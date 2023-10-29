@@ -1,6 +1,7 @@
 module Mantine.Core.Overlays.Tooltip
   ( tooltip
   , TooltipProps
+  , TooltipArrowPosition(..)
 
   , tooltipFloating
   , TooltipFloatingProps
@@ -38,23 +39,35 @@ type TooltipPropsBaseRow r =
   , offset       :: Pixels
   , position     :: TooltipPosition
   , radius       :: Maybe MantineNumberSize
+  , refProp      :: Maybe String
   , width        :: Maybe Dimension
   , withinPortal :: Boolean
   , zIndex       :: Maybe Number
   | r
   )
 
+data TooltipArrowPosition = Center | Side
+
+instance ToFFI TooltipArrowPosition String where
+  toNative = case _ of
+    Center -> "center"
+    Side   -> "side"
+
+instance DefaultValue TooltipArrowPosition where defaultValue = Side
+
 type TooltipPropsRow =
   ( arrowOffset      :: Pixels
+  , arrowPosition    :: TooltipArrowPosition
   , arrowRadius      :: Pixels
   , arrowSize        :: Pixels
   , closeDelay       :: Maybe Milliseconds
   , events           :: TooltipActivationEvents
   , inline           :: Boolean
+  , keepMounted      :: Boolean
   , onPositionChange :: ValueHandler TooltipPosition
   , openDelay        :: Milliseconds
   , opened           :: Maybe Boolean
-  , transition       :: MantineTransition
+  , transitionProps  :: MantineTransitionProps
   , withArrow        :: Boolean
   )
 
@@ -128,7 +141,6 @@ defaultTooltipProps =
     , offset:      5.0
     , openDelay:   0.0
     , position:    TooltipPositionTop
-    , transition:  TransitionFade
     , width:       pure (Dimension "auto")
     }
 
@@ -145,6 +157,7 @@ type TooltipPropsBaseImplRow r =
   , offset       :: Pixels
   , position     :: String
   , radius       :: Nullable MantineNumberSizeImpl
+  , refProp      :: Nullable String
   , width        :: Nullable DimensionImpl
   , withinPortal :: Boolean
   , zIndex       :: Nullable Number
@@ -153,15 +166,17 @@ type TooltipPropsBaseImplRow r =
 
 type TooltipPropsImplRow =
   ( arrowOffset      :: Pixels
+  , arrowPosition    :: String
   , arrowRadius      :: Pixels
   , arrowSize        :: Pixels
   , closeDelay       :: Nullable Milliseconds
   , events           :: TooltipActivationEvents
   , inline           :: Boolean
+  , keepMounted      :: Boolean
   , onPositionChange :: EffectFn1 String Unit
   , openDelay        :: Milliseconds
   , opened           :: Nullable Boolean
-  , transition       :: String
+  , transitionProps  :: MantineTransitionPropsImpl
   , withArrow        :: Boolean
   )
 

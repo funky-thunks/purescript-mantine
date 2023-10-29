@@ -1,6 +1,7 @@
 module Mantine.Core.Inputs.Input
   ( InputVariant(..)
   , InputWrapperOrder(..)
+  , InputType(..)
 
   , input
   , InputProps
@@ -47,6 +48,55 @@ instance ToFFI InputWrapperOrder String where
     InputWrapperOrderError       -> "error"
     InputWrapperOrderDescription -> "description"
 
+data InputType
+  = InputTypeButton
+  | InputTypeCheckbox
+  | InputTypeColor
+  | InputTypeDate
+  | InputTypeDatetimeLocal
+  | InputTypeEmail
+  | InputTypeFile
+  | InputTypeHidden
+  | InputTypeImage
+  | InputTypeMonth
+  | InputTypeNumber
+  | InputTypePassword
+  | InputTypeRadio
+  | InputTypeRange
+  | InputTypeReset
+  | InputTypeSearch
+  | InputTypeSubmit
+  | InputTypeTel
+  | InputTypeText
+  | InputTypeTime
+  | InputTypeUrl
+  | InputTypeWeek
+
+instance ToFFI InputType String where
+  toNative = case _ of
+    InputTypeButton        -> "button"
+    InputTypeCheckbox      -> "checkbox"
+    InputTypeColor         -> "color"
+    InputTypeDate          -> "date"
+    InputTypeDatetimeLocal -> "datetime-local"
+    InputTypeEmail         -> "email"
+    InputTypeFile          -> "file"
+    InputTypeHidden        -> "hidden"
+    InputTypeImage         -> "image"
+    InputTypeMonth         -> "month"
+    InputTypeNumber        -> "number"
+    InputTypePassword      -> "password"
+    InputTypeRadio         -> "radio"
+    InputTypeRange         -> "range"
+    InputTypeReset         -> "reset"
+    InputTypeSearch        -> "search"
+    InputTypeSubmit        -> "submit"
+    InputTypeTel           -> "tel"
+    InputTypeText          -> "text"
+    InputTypeTime          -> "time"
+    InputTypeUrl           -> "url"
+    InputTypeWeek          -> "week"
+
 input :: (InputProps -> InputProps) -> JSX
 input = mkTrivialComponent inputComponent
 
@@ -55,9 +105,9 @@ foreign import inputComponent :: ReactComponent InputPropsImpl
 type InputProps =
   ThemingProps
     ( disabled          :: Boolean
+    , error             :: Maybe JSX
     , icon              :: Maybe JSX
     , iconWidth         :: Maybe Pixels
-    , invalid           :: Boolean
     , multiline         :: Boolean
     , pointer           :: Boolean
     , radius            :: Maybe MantineNumberSize
@@ -71,9 +121,9 @@ type InputProps =
 type InputPropsImpl =
   ThemingPropsImpl
     ( disabled          :: Boolean
+    , error             :: Nullable JSX
     , icon              :: Nullable JSX
     , iconWidth         :: Nullable Number
-    , invalid           :: Boolean
     , multiline         :: Boolean
     , pointer           :: Boolean
     , radius            :: Nullable MantineNumberSizeImpl

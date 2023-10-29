@@ -3,39 +3,38 @@ module Mantine.Core.Inputs.FileInput
   , FileInputProps
   , CaptureMode(..)
 
+  , module Mantine.Core.Inputs.ClearButtonProps
   , module Mantine.Core.Inputs.Input
 
   , CaptureModeImpl
   ) where
 
-import Prelude (negate)
-import Data.Maybe (fromMaybe)
+import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
 import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
 import Web.File.File (File)
 
 fileInput :: (FileInputProps -> FileInputProps) -> JSX
-fileInput = mkComponent fileInputComponent fileInputToImpl defaultThemingProps_
+fileInput = mkTrivialComponent fileInputComponent
 
 foreign import fileInputComponent :: ReactComponent FileInputPropsImpl
 
 -- Not supported properties
 --   { descriptionProps    :: Record<String, any>
 --   , errorProps          :: Record<String, any>
---   , labelProps          :: Record<String, any>
---   , rightSectionProps   :: Record<String, any>
---   , wrapperProps        :: Record<String, any>
 --   , fileInputProps      :: Pick<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "key" | keyof InputHTMLAttributes<...>>
 --   , inputContainer      :: (children: JSX) => JSX
+--   , labelProps          :: Record<String, any>
+--   , rightSectionProps   :: Record<String, any>
 --   , valueComponent      :: FC<{ value: File | File[]; }>
+--   , wrapperProps        :: Record<String, any>
 --   }
 
 type FileInputProps =
   ThemingProps
     ( accept              :: String
     , capture             :: Maybe CaptureMode
-    , clearButtonLabel    :: String
-    , clearButtonTabIndex :: Maybe Int
+    , clearButtonProps    :: ClearButtonProps
     , clearable           :: Boolean
     , defaultValue        :: Maybe File
     , description         :: Maybe JSX
@@ -76,8 +75,7 @@ type FileInputPropsImpl =
   ThemingPropsImpl
     ( accept              :: String
     , capture             :: Nullable CaptureModeImpl
-    , clearButtonLabel    :: String
-    , clearButtonTabIndex :: Number
+    , clearButtonProps    :: ClearButtonPropsImpl
     , clearable           :: Boolean
     , defaultValue        :: Nullable File
     , description         :: Nullable JSX
@@ -103,9 +101,3 @@ type FileInputPropsImpl =
     , variant             :: String
     , withAsterisk        :: Boolean
     )
-
-fileInputToImpl :: FileInputProps -> FileInputPropsImpl
-fileInputToImpl props =
-  let rest = toNative
-        <<< delete (Proxy :: Proxy "clearButtonTabIndex")
-   in { clearButtonTabIndex: toNative (fromMaybe (-1) props.clearButtonTabIndex) } `union` rest props

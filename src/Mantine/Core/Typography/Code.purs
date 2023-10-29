@@ -16,14 +16,14 @@ foreign import codeComponent :: ReactComponent CodePropsImpl
 
 type CodeProps =
   ThemingProps
-    ( children :: Array JSX
-    , block    :: Boolean
+    ( block    :: Boolean
+    , children :: Array JSX
     , color    :: Maybe MantineColor
     )
 
 type CodePropsImpl =
   ThemingPropsImpl
-    ( children :: Array JSX
-    , block    :: Boolean
+    ( block    :: Boolean
+    , children :: Array JSX
     , color    :: Nullable String
     )
