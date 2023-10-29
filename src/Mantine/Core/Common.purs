@@ -15,6 +15,7 @@ module Mantine.Core.Common
   , JustifyContent(..)
   , Milliseconds
   , Pixels
+  , Rem
   , Dimension(..)
   , DimensionImpl
   , MantineTransition(..)
@@ -47,10 +48,12 @@ import Data.Either (Either(..))
 import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe)
+import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Nullable (Nullable)
+import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
+import Data.String (Pattern(..), stripSuffix)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Foreign (Foreign)
@@ -249,18 +252,23 @@ data MantineSize
   | ExtraLarge
 
 data MantineNumberSize
-  = Custom Number
+  = Custom Pixels
+  | InRems Rem
   | Preset MantineSize
 
 instance ToFFI MantineNumberSize MantineNumberSizeImpl where
   toNative = case _ of
     Custom n -> asOneOf n
+    InRems r -> asOneOf (show r <> "rem")
     Preset s -> asOneOf (toNative s)
 
 instance FromFFI MantineNumberSizeImpl MantineNumberSize where
   fromNative = toEither1 >>> case _ of
     Left  n -> Custom n
-    Right s -> Preset (fromNative s)
+    Right s ->
+      case stripSuffix (Pattern "rem") s >>= fromString of
+        Just r  -> InRems r
+        Nothing -> Preset (fromNative s)
 
 type MantineNumberSizeImpl = Number |+| String
 
@@ -644,12 +652,14 @@ justifyContentNative = case _ of
 
 type Milliseconds = Number
 type Pixels = Number
+type Rem = Number
 
-data Dimension = Pixels Number | Dimension String
+data Dimension = Pixels Pixels | Rem Rem | Dimension String
 
 instance ToFFI Dimension DimensionImpl where
   toNative = case _ of
     Pixels    p -> asOneOf p
+    Rem       r -> asOneOf (show r <> "rem")
     Dimension n -> asOneOf n
 
 type DimensionImpl = Number |+| String
