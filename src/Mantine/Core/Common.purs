@@ -32,7 +32,6 @@ module Mantine.Core.Common
   , defaultThemingProps_
   , ThemingPropsImpl
   , ThemingPropsImplRow
-  , themingToImpl
 
   , ValueHandler(..)
   , CheckerHandler(..)
@@ -858,15 +857,6 @@ type ThemingPropsImplRow r =
   , sx  :: Style
   | r
   )
-
-themingToImpl :: forall otherProps otherPropsImpl
-               . Nub (ThemingPropsImplRow otherPropsImpl)
-                     (ThemingPropsImplRow otherPropsImpl)
-              => (ThemingProps otherProps -> Record                      otherPropsImpl)
-              ->  ThemingProps otherProps -> Record (ThemingPropsImplRow otherPropsImpl)
-themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, w, miw, maw, h, mih, mah, fw, bg, c, sx } =
-  toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, w, miw, maw, h, mih, mah, fw, bg, c, sx }
-    `merge` f props
 
 newtype ValueHandler value = ValueHandler (value -> Effect Unit)
 derive instance Newtype (ValueHandler value) _
