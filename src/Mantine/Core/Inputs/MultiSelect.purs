@@ -178,7 +178,6 @@ multiSelectToImpl :: MultiSelectProps -> MultiSelectPropsImpl
 multiSelectToImpl props =
   let otherProps =
         { itemComponent:  maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
-        , inputContainer: toNullable props.inputContainer
         , valueComponent: maybe null (\f -> notNull (f <<< fromNative)) props.valueComponent
         , filter:         toNullable $ (\f -> f <<< fromNative) <$> props.filter
         , onChange:       toNullable $ (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< toMaybe)) <$> props.onChange
@@ -189,7 +188,6 @@ multiSelectToImpl props =
          <<< delete (Proxy :: Proxy "clearable")
          <<< delete (Proxy :: Proxy "creatable")
          <<< delete (Proxy :: Proxy "filter")
-         <<< delete (Proxy :: Proxy "inputContainer")
          <<< delete (Proxy :: Proxy "itemComponent")
          <<< delete (Proxy :: Proxy "onChange")
          <<< delete (Proxy :: Proxy "onSearchChange")

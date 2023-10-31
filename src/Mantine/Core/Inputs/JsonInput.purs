@@ -9,7 +9,7 @@ import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 jsonInput :: (JsonInputProps -> JsonInputProps) -> JSX
-jsonInput = mkComponent jsonInputComponent jsonInputToImpl defaultThemingProps_
+jsonInput = mkTrivialComponent jsonInputComponent
 
 foreign import jsonInputComponent :: ReactComponent JsonInputPropsImpl
 
@@ -75,9 +75,3 @@ type JsonInputPropsImpl =
     , variant           :: String
     , withAsterisk      :: Boolean
     )
-
-jsonInputToImpl :: JsonInputProps -> JsonInputPropsImpl
-jsonInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

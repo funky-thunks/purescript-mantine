@@ -71,7 +71,7 @@ toNativeCheckbox props =
    in { icon: toNullable props.icon } `union` rest props
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
-checkboxGroup = mkComponent checkboxGroupComponent checkboxGroupToImpl defaultThemingProps_
+checkboxGroup = mkTrivialComponent checkboxGroupComponent
 
 checkboxGroup_ :: Array JSX -> JSX
 checkboxGroup_ children = checkboxGroup _ { children = children }
@@ -109,9 +109,3 @@ type CheckboxGroupPropsImpl =
     , value             :: Nullable (Array String)
     , withAsterisk      :: Nullable Boolean
     )
-
-checkboxGroupToImpl :: CheckboxGroupProps -> CheckboxGroupPropsImpl
-checkboxGroupToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

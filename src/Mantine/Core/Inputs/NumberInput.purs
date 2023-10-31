@@ -173,8 +173,6 @@ nonEmptyString = case _ of
 toNumberImpl :: NumberInputProps -> NumberInputPropsImpl
 toNumberImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "format")
-                      <<< delete (Proxy :: Proxy "inputContainer")
       formatter = toNullable $ formatterToNative <<< _.formatter <$> props.format
       parser    = toNullable $ parserToNative    <<< _.parser    <$> props.format
-      inputContainer = toNullable props.inputContainer
-   in { formatter, parser, inputContainer } `union` rest props
+   in { formatter, parser } `union` rest props

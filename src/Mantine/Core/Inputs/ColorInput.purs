@@ -11,14 +11,13 @@ import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 colorInput :: (ColorInputProps -> ColorInputProps) -> JSX
-colorInput = mkComponent colorInputComponent colorInputToImpl defaultColorInputProps
+colorInput = mkComponentWithDefault colorInputComponent defaultColorInputProps
 
 foreign import colorInputComponent :: ReactComponent ColorInputPropsImpl
 
 -- Not supported properties
 --   { descriptionProps         :: Record<string, any>
 --   , errorProps               :: Record<string, any>
---   , inputContainer           :: (children: ReactNode) => ReactNode
 --   , labelProps               :: Record<string, any>
 --   , portalProps              :: Omit<PortalProps, "children" | "withinPortal">
 --   , rightSectionProps        :: Record<string, any>
@@ -106,9 +105,3 @@ type ColorInputPropsImpl =
     , withPreview              :: Boolean
     , withinPortal             :: Boolean
     )
-
-colorInputToImpl :: ColorInputProps -> ColorInputPropsImpl
-colorInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

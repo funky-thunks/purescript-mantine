@@ -10,7 +10,7 @@ import Mantine.Core.Inputs.Select (SelectItem, SelectItemImpl)
 import Mantine.Core.Prelude
 
 nativeSelect :: (NativeSelectProps -> NativeSelectProps) -> JSX
-nativeSelect = mkComponent nativeSelectComponent nativeSelectToImpl defaultThemingProps_
+nativeSelect = mkTrivialComponent nativeSelectComponent
 
 foreign import nativeSelectComponent :: ReactComponent NativeSelectPropsImpl
 
@@ -69,9 +69,3 @@ type NativeSelectPropsImpl =
     , variant           :: String
     , withAsterisk      :: Boolean
     )
-
-nativeSelectToImpl :: NativeSelectProps -> NativeSelectPropsImpl
-nativeSelectToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "inputContainer")
-   in { inputContainer: toNullable props.inputContainer } `union` rest props

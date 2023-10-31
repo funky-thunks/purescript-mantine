@@ -138,11 +138,9 @@ autocompleteToImpl props =
   let rest = toNative
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "maxDropdownHeight")
-         <<< delete (Proxy :: Proxy "inputContainer")
          <<< delete (Proxy :: Proxy "itemComponent")
       customProps =
         { filter:            toNullable (mkEffectFn2 <$> props.filter)
-        , inputContainer:    toNullable props.inputContainer
         , itemComponent:     toNullable props.itemComponent
         , maxDropdownHeight: toNullable props.maxDropdownHeight
         }

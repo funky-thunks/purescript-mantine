@@ -184,7 +184,6 @@ selectToImpl props =
   let otherProps =
         { filter:        toNullable $ (\f -> f <<< fromNative) <$> props.filter
         , itemComponent: maybe null (\f -> notNull (f <<< fromNative)) props.itemComponent
-        , inputContainer: toNullable props.inputContainer
         }
 
       rest = toNative
@@ -192,7 +191,6 @@ selectToImpl props =
          <<< delete (Proxy :: Proxy "creatable")
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "itemComponent")
-         <<< delete (Proxy :: Proxy "inputContainer")
 
    in clearableProps props `union` creatableProps props `union` otherProps `union` rest props
 

@@ -78,7 +78,7 @@ switchToImpl =
    in toNative <<< flattenLabels
 
 switchGroup :: (SwitchGroupProps -> SwitchGroupProps) -> JSX
-switchGroup = mkComponent switchGroupComponent switchGroupToImpl defaultThemingProps_
+switchGroup = mkTrivialComponent switchGroupComponent
 
 switchGroup_ :: Array JSX -> JSX
 switchGroup_ children = switchGroup _ { children = children }
@@ -116,10 +116,3 @@ type SwitchGroupPropsImpl =
     , value             :: Nullable (Array String)
     , withAsterisk      :: Nullable Boolean
     )
-
-switchGroupToImpl :: SwitchGroupProps -> SwitchGroupPropsImpl
-switchGroupToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

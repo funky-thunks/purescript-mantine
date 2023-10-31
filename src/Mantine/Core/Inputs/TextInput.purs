@@ -9,7 +9,7 @@ import Mantine.Core.Inputs.Input (InputType(..), InputVariant(..), InputWrapperO
 import Mantine.Core.Prelude
 
 textInput :: (TextInputProps -> TextInputProps) -> JSX
-textInput = mkComponent textInputComponent textInputToImpl defaultThemingProps_
+textInput = mkTrivialComponent textInputComponent
 
 foreign import textInputComponent :: ReactComponent TextInputPropsImpl
 
@@ -60,9 +60,3 @@ type TextInputPropsImpl =
     , variant           :: String
     , withAsterisk      :: Boolean
     )
-
-textInputToImpl :: TextInputProps -> TextInputPropsImpl
-textInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

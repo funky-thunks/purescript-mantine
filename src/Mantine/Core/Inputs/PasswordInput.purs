@@ -71,10 +71,8 @@ type PasswordInputPropsImpl =
 passwordInputToImpl :: PasswordInputProps -> PasswordInputPropsImpl
 passwordInputToImpl props =
   let rest = toNative
-         <<< delete (Proxy :: Proxy "inputContainer")
          <<< delete (Proxy :: Proxy "toggleFocusable")
          <<< delete (Proxy :: Proxy "visibilityToggleIcon")
-   in { inputContainer: toNullable props.inputContainer
-      , toggleTabIndex: if props.toggleFocusable then 0.0 else -1.0
+   in { toggleTabIndex: if props.toggleFocusable then 0.0 else -1.0
       , visibilityToggleIcon: toNullable props.visibilityToggleIcon
       } `union` rest props

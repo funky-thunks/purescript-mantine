@@ -9,7 +9,7 @@ import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 textarea :: (TextareaProps -> TextareaProps) -> JSX
-textarea = mkComponent textareaComponent textareaToImpl defaultThemingProps_
+textarea = mkTrivialComponent textareaComponent
 
 foreign import textareaComponent :: ReactComponent TextareaPropsImpl
 
@@ -64,9 +64,3 @@ type TextareaPropsImpl =
     , variant           :: String
     , withAsterisk      :: Boolean
     )
-
-textareaToImpl :: TextareaProps -> TextareaPropsImpl
-textareaToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

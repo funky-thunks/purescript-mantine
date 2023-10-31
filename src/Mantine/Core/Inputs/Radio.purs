@@ -64,7 +64,7 @@ instance ToFFI RadioLabelPosition String where
     RadioLabelPositionRight -> "right"
 
 radioGroup :: (RadioGroupProps -> RadioGroupProps) -> JSX
-radioGroup = mkComponent radioGroupComponent radioGroupToImpl defaultRadioGroupProps
+radioGroup = mkComponentWithDefault radioGroupComponent defaultRadioGroupProps
 
 foreign import radioGroupComponent :: ReactComponent RadioGroupPropsImpl
 
@@ -104,10 +104,3 @@ type RadioGroupPropsImpl =
     , value             :: Nullable String
     , withAsterisk      :: Boolean
     )
-
-radioGroupToImpl :: (RadioGroupProps -> RadioGroupPropsImpl)
-radioGroupToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "inputContainer")
-      inputContainer = toNullable props.inputContainer
-   in { inputContainer } `union` rest props

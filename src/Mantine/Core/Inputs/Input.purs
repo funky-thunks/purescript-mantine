@@ -135,7 +135,7 @@ type InputPropsImpl =
     )
 
 inputWrapper :: (InputWrapperProps -> InputWrapperProps) -> JSX
-inputWrapper = mkComponent inputWrapperComponent inputWrapperPropsToImpl defaultThemingProps_
+inputWrapper = mkTrivialComponent inputWrapperComponent
 
 foreign import inputWrapperComponent :: ReactComponent InputWrapperPropsImpl
 
@@ -175,12 +175,6 @@ type InputWrapperPropsImpl =
     , size              :: Nullable String
     , withAsterisk      :: Boolean
     )
-
-inputWrapperPropsToImpl :: InputWrapperProps -> InputWrapperPropsImpl
-inputWrapperPropsToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "inputContainer")
-   in { inputContainer: toNullable props.inputContainer } `union` rest props
 
 inputLabel :: (InputLabelProps -> InputLabelProps) -> JSX
 inputLabel = mkTrivialComponent inputLabelComponent
