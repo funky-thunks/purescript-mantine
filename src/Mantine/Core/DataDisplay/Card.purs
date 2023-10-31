@@ -18,7 +18,7 @@ type CardProps =
     ( children   :: Array JSX
     , padding    :: Maybe MantineNumberSize
     , radius     :: MantineNumberSize
- -- , shadow     :: MantineShadow -- TODO
+    , shadow     :: Maybe MantineShadow
     , withBorder :: Boolean
     )
 
@@ -30,7 +30,7 @@ type CardPropsImpl =
     ( children   :: Array JSX
     , padding    :: Nullable MantineNumberSizeImpl
     , radius     :: MantineNumberSizeImpl
- -- , shadow     :: MantineShadowImpl -- TODO
+    , shadow     :: Nullable String
     , withBorder :: Boolean
     )
 

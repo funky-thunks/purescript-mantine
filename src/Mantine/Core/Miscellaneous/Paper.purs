@@ -18,7 +18,7 @@ type PaperProps =
   ThemingProps
     ( children   :: Array JSX
     , radius     :: Maybe MantineNumberSize
-    , shadow     :: Maybe MantineSize
+    , shadow     :: Maybe MantineShadow
     , withBorder :: Boolean
     )
 

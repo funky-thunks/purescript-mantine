@@ -19,7 +19,7 @@ type DialogProps =
     , opened                   :: Maybe Boolean
     , position                 :: Maybe DialogPosition
     , radius                   :: Maybe MantineNumberSize
- -- , shadow -- TODO
+    , shadow                   :: Maybe MantineShadow
     , size                     :: Maybe Dimension
     , transition               :: Maybe MantineTransition
     , transitionDuration       :: Maybe Milliseconds
@@ -47,7 +47,7 @@ type DialogPropsImpl =
     , opened                   :: Nullable Boolean
     , position                 :: Nullable DialogPositionImpl
     , radius                   :: Nullable MantineNumberSizeImpl
- -- , shadow -- TODO
+    , shadow                   :: Nullable String
     , size                     :: Nullable DimensionImpl
     , transition               :: Nullable String
     , transitionDuration       :: Nullable Number

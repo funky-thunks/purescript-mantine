@@ -2,6 +2,7 @@ module Mantine.Core.Common
   ( MantineColor(..)
   , DimmedOrColor(..)
   , MantineSize(..)
+  , MantineShadow
   , MantineNumberSize(..)
   , MantineNumberSizeImpl
   , Orientation(..)
@@ -258,6 +259,8 @@ data MantineNumberSize
   = Custom Pixels
   | InRems Rem
   | Preset MantineSize
+
+type MantineShadow = MantineSize
 
 instance ToFFI MantineNumberSize MantineNumberSizeImpl where
   toNative = case _ of

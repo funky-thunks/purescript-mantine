@@ -21,7 +21,6 @@ foreign import colorInputComponent :: ReactComponent ColorInputPropsImpl
 --   , labelProps               :: Record<string, any>
 --   , portalProps              :: Omit<PortalProps, "children" | "withinPortal">
 --   , rightSectionProps        :: Record<string, any>
---   , shadow                   :: MantineShadow
 --   , wrapperProps             :: Record<string, any>
 --   }
 
@@ -49,6 +48,7 @@ type ColorInputProps =
     , required                 :: Boolean
     , rightSection             :: Maybe JSX
     , rightSectionWidth        :: Maybe Pixels
+    , shadow                   :: Maybe MantineShadow
     , size                     :: MantineSize
     , swatches                 :: Maybe (Array ColorFormula)
     , swatchesPerRow           :: Int
@@ -93,6 +93,7 @@ type ColorInputPropsImpl =
     , required                 :: Boolean
     , rightSection             :: Nullable JSX
     , rightSectionWidth        :: Nullable Number
+    , shadow                   :: Nullable String
     , size                     :: String
     , swatches                 :: Nullable (Array String)
     , swatchesPerRow           :: Number

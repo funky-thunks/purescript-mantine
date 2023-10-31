@@ -24,7 +24,6 @@ foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
 --   , portalProps          :: Omit<PortalProps, "children" | "withinPortal">
 --   , positionDependencies :: any[]
 --   , rightSectionProps    :: Record<String, any>
---   , shadow               :: MantineShadow
 --   , wrapperProps         :: Record<String, any>
 --   }
 
@@ -58,6 +57,7 @@ type AutocompleteProps =
     , required                 :: Boolean
     , rightSection             :: Maybe JSX
     , rightSectionWidth        :: Maybe Pixels
+    , shadow                   :: Maybe MantineShadow
     , size                     :: Maybe MantineSize
     , switchDirectionOnFlip    :: Boolean
     , transitionProps          :: MantineTransitionProps
@@ -123,6 +123,7 @@ type AutocompletePropsImpl =
     , required                 :: Boolean
     , rightSection             :: Nullable JSX
     , rightSectionWidth        :: Nullable Number
+    , shadow                   :: Nullable String
     , size                     :: Nullable String
     , switchDirectionOnFlip    :: Boolean
     , transitionProps          :: MantineTransitionPropsImpl

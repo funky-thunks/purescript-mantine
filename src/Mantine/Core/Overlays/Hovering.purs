@@ -151,7 +151,7 @@ type HoveringCommons rest =
  -- , positionDependencies :: any[] -- TODO
     , radius               :: Maybe MantineNumberSize
     , returnFocus          :: Boolean
- -- , shadow               :: MantineShadow -- TODO
+    , shadow               :: Maybe MantineShadow
     , transitionProps      :: ModalTransitionProps
     , width                :: HoverPopoverWidth
     , withArrow            :: Boolean
@@ -227,7 +227,7 @@ type HoveringCommonsImpl rest =
  -- , positionDependencies :: any[] -- TODO
     , radius               :: Nullable MantineNumberSizeImpl
     , returnFocus          :: Boolean
- -- , shadow               :: MantineShadow -- TODO
+    , shadow               :: Nullable String
     , transitionProps      :: ModalTransitionPropsImpl
     , width                :: HoverPopoverWidthImpl
     , withArrow            :: Boolean

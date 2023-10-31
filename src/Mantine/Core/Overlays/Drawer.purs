@@ -31,7 +31,7 @@ type DrawerProps =
     , padding             :: Maybe MantineNumberSize
     , position            :: DrawerPosition
     , returnFocus         :: Boolean
- -- , shadow              :: MantineShadow -- TODO
+    , shadow              :: Maybe MantineShadow
     , size                :: Maybe MantineNumberSize
     , target              :: Maybe (Either String HTMLElement)
     , title               :: Maybe JSX
@@ -72,7 +72,7 @@ type DrawerPropsImpl =
     , padding             :: Nullable MantineNumberSizeImpl
     , position            :: String
     , returnFocus         :: Boolean
- -- , shadow              :: MantineShadow -- TODO
+    , shadow              :: Nullable String
     , size                :: Nullable MantineNumberSizeImpl
     , target              :: Nullable (String |+| HTMLElement)
     , title               :: Nullable JSX

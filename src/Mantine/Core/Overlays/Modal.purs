@@ -42,7 +42,7 @@ type ModalProps =
     , padding             :: Maybe MantineNumberSize
     , radius              :: Maybe MantineNumberSize
     , returnFocus         :: Boolean
- -- , shadow              -- TODO
+    , shadow              :: Maybe MantineShadow
     , size                :: Maybe Dimension
     , title               :: Maybe JSX
     , transitionProps     :: ModalTransitionProps
@@ -95,7 +95,7 @@ type ModalPropsImpl =
     , padding             :: Nullable MantineNumberSizeImpl
     , radius              :: Nullable MantineNumberSizeImpl
     , returnFocus         :: Boolean
- -- , shadow              -- TODO
+    , shadow              :: Nullable String
     , size                :: Nullable DimensionImpl
     , title               :: Nullable JSX
     , transitionProps     :: ModalTransitionPropsImpl

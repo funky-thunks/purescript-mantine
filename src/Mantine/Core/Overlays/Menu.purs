@@ -62,7 +62,7 @@ type MenuProps =
     , position            :: MenuFloatingPosition
     , radius              :: Maybe MantineNumberSize
     , returnFocus         :: Boolean
-    -- , shadow -- TODO
+    , shadow              :: Maybe MantineShadow
     , transitionProps     :: MantineTransitionProps
     , trigger             :: Maybe MenuTrigger
     , width               :: Maybe MenuPopoverWidth
@@ -79,7 +79,6 @@ defaultMenuProps =
     , closeOnItemClick:    true
     , onClose:             pure unit
     , onOpen:              pure unit
-    -- , shadow -- TODO
     }
 
 type MenuPropsImpl =
@@ -110,7 +109,7 @@ type MenuPropsImpl =
     , position            :: String
     , radius              :: Nullable MantineNumberSizeImpl
     , returnFocus         :: Boolean
- -- , shadow -- TODO
+    , shadow              :: Nullable String
     , transitionProps     :: MantineTransitionPropsImpl
     , trigger             :: Nullable String
     , width               :: Nullable String
