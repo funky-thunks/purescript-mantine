@@ -16,14 +16,15 @@ foreign import notificationComponent :: ReactComponent NotificationPropsImpl
 
 type NotificationProps =
   ThemingProps
-    ( children      :: JSX
-    , color         :: Maybe MantineColor
-    , disallowClose :: Boolean
-    , icon          :: Maybe JSX
-    , loading       :: Boolean
-    , onClose       :: Effect Unit
-    , radius        :: Maybe MantineNumberSize
-    , title         :: Maybe JSX
+    ( children        :: JSX
+    , color           :: Maybe MantineColor
+    , icon            :: Maybe JSX
+    , loading         :: Boolean
+    , onClose         :: Effect Unit
+    , radius          :: Maybe MantineNumberSize
+    , title           :: Maybe JSX
+    , withBorder      :: Boolean
+    , withCloseButton :: Boolean
     )
 
 defaultNotificationProps :: NotificationProps
@@ -35,12 +36,13 @@ defaultNotificationProps =
 
 type NotificationPropsImpl =
   ThemingPropsImpl
-    ( children      :: JSX
-    , color         :: Nullable String
-    , disallowClose :: Boolean
-    , icon          :: Nullable JSX
-    , loading       :: Boolean
-    , onClose       :: Effect Unit
-    , radius        :: Nullable MantineNumberSizeImpl
-    , title         :: Nullable JSX
+    ( children        :: JSX
+    , color           :: Nullable String
+    , icon            :: Nullable JSX
+    , loading         :: Boolean
+    , onClose         :: Effect Unit
+    , radius          :: Nullable MantineNumberSizeImpl
+    , title           :: Nullable JSX
+    , withBorder      :: Boolean
+    , withCloseButton :: Boolean
     )

@@ -11,42 +11,64 @@ import Data.Int (floor, toNumber)
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Mantine.Core.Prelude
 
+-- Not supported components: Pagination.Root and its children: Pagination.First, Pagination.Previous, Pagination.Items, Pagination.Next, Pagination.Last
+
 pagination :: (PaginationProps -> PaginationProps) -> JSX
 pagination = mkComponentWithDefault paginationComponent defaultPaginationProps
 
 pagination_ :: JSX
 pagination_ = pagination identity
 
+foreign import paginationComponent :: ReactComponent PaginationPropsImpl
+
+-- Not supported properties
+--   { dotsIcon        :: PaginationIcon
+--   , firstIcon       :: PaginationIcon
+--   , getControlProps :: (control: "first" | "last" | "next" | "previous") => Record<string, any>
+--   , getItemProp     :: (page: number) => Record<string, any>
+--   , lastIcon        :: PaginationIcon
+--   , nextIcon        :: PaginationIcon
+--   , previousIcon    :: PaginationIcon
+--   }
+
 type PaginationProps =
   ThemingProps
-    ( align        :: Maybe AlignItems
-    , boundaries   :: PageCount
-    , color        :: Maybe MantineColor
-    , disabled     :: Boolean
-    , grow         :: Boolean
-    , initialPage  :: Maybe Page
-    , noWrap       :: Boolean
-    , onChange     :: ValueHandler Page
-    , page         :: Maybe Page
-    , position     :: Maybe Position
-    , radius       :: MantineNumberSize
-    , siblings     :: PageCount
-    , size         :: MantineNumberSize
-    , spacing      :: Maybe MantineNumberSize
-    , total        :: PageCount
-    , withControls :: Boolean
-    , withEdges    :: Boolean
+    ( align          :: Maybe AlignItems
+    , boundaries     :: PageCount
+    , color          :: Maybe MantineColor
+    , defaultValue   :: Maybe Page
+    , disabled       :: Boolean
+    , grow           :: Boolean
+    , noWrap         :: Boolean
+    , onChange       :: ValueHandler Page
+    , onFirstPage    :: Effect Unit
+    , onLastPage     :: Effect Unit
+    , onNextPage     :: Effect Unit
+    , onPreviousPage :: Effect Unit
+    , position       :: Maybe Position
+    , radius         :: MantineNumberSize
+    , siblings       :: PageCount
+    , size           :: MantineNumberSize
+    , spacing        :: Maybe MantineNumberSize
+    , total          :: PageCount
+    , value          :: Maybe Page
+    , withControls   :: Boolean
+    , withEdges      :: Boolean
     )
 
 defaultPaginationProps :: PaginationProps
 defaultPaginationProps =
   defaultThemingProps
-    { boundaries:   PageCount 1
-    , radius:       Preset Small
-    , siblings:     PageCount 1
-    , size:         Preset Medium
-    , total:        PageCount 1
-    , withControls: true
+    { boundaries:     PageCount 1
+    , onFirstPage:    pure unit
+    , onLastPage:     pure unit
+    , onNextPage:     pure unit
+    , onPreviousPage: pure unit
+    , radius:         Preset Small
+    , siblings:       PageCount 1
+    , size:           Preset Medium
+    , total:          PageCount 1
+    , withControls:   true
     }
 
 newtype Page = Page Int
@@ -74,23 +96,25 @@ instance ToFFI PageCount Number where
 
 type PaginationPropsImpl =
   ThemingPropsImpl
-    ( align        :: Nullable String
-    , boundaries   :: Number
-    , color        :: Nullable String
-    , disabled     :: Boolean
-    , grow         :: Boolean
-    , initialPage  :: Nullable Number
-    , noWrap       :: Boolean
-    , onChange     :: EffectFn1 Number Unit
-    , page         :: Nullable Number
-    , position     :: Nullable String
-    , radius       :: MantineNumberSizeImpl
-    , siblings     :: Number
-    , size         :: MantineNumberSizeImpl
-    , spacing      :: Nullable MantineNumberSizeImpl
-    , total        :: Number
-    , withControls :: Boolean
-    , withEdges    :: Boolean
+    ( align          :: Nullable String
+    , boundaries     :: Number
+    , color          :: Nullable String
+    , defaultValue   :: Nullable Number
+    , disabled       :: Boolean
+    , grow           :: Boolean
+    , noWrap         :: Boolean
+    , onChange       :: EffectFn1 Number Unit
+    , position       :: Nullable String
+    , radius         :: MantineNumberSizeImpl
+    , siblings       :: Number
+    , size           :: MantineNumberSizeImpl
+    , spacing        :: Nullable MantineNumberSizeImpl
+    , total          :: Number
+    , value          :: Nullable Number
+    , withControls   :: Boolean
+    , withEdges      :: Boolean
+    , onFirstPage    :: Effect Unit
+    , onLastPage     :: Effect Unit
+    , onNextPage     :: Effect Unit
+    , onPreviousPage :: Effect Unit
     )
-
-foreign import paginationComponent :: ReactComponent PaginationPropsImpl

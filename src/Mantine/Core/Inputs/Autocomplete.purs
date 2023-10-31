@@ -18,14 +18,13 @@ foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
 
 -- Not supported properties
 --   { descriptionProps     :: Record<String, any>
+--   , dropdownComponent    :: any
 --   , errorProps           :: Record<String, any>
 --   , labelProps           :: Record<String, any>
+--   , portalProps          :: Omit<PortalProps, "children" | "withinPortal">
+--   , positionDependencies :: any[]
 --   , rightSectionProps    :: Record<String, any>
 --   , wrapperProps         :: Record<String, any>
---   , dropdownComponent    :: any
---   , inputContainer       :: Maybe (JSX -> JSX)
---   , positionDependencies :: any[]
---   , shadow               :: MantineShadow
 --   }
 
 type AutocompleteProps =
@@ -58,11 +57,10 @@ type AutocompleteProps =
     , required                 :: Boolean
     , rightSection             :: Maybe JSX
     , rightSectionWidth        :: Maybe Pixels
+    , shadow                   :: Maybe MantineShadow
     , size                     :: Maybe MantineSize
     , switchDirectionOnFlip    :: Boolean
-    , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , transitionProps          :: MantineTransitionProps
     , value                    :: Maybe String
     , variant                  :: InputVariant
     , withAsterisk             :: Boolean
@@ -125,11 +123,10 @@ type AutocompletePropsImpl =
     , required                 :: Boolean
     , rightSection             :: Nullable JSX
     , rightSectionWidth        :: Nullable Number
+    , shadow                   :: Nullable String
     , size                     :: Nullable String
     , switchDirectionOnFlip    :: Boolean
-    , transition               :: Nullable String
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
+    , transitionProps          :: MantineTransitionPropsImpl
     , value                    :: Nullable String
     , variant                  :: String
     , withAsterisk             :: Boolean
@@ -142,11 +139,9 @@ autocompleteToImpl props =
   let rest = toNative
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "maxDropdownHeight")
-         <<< delete (Proxy :: Proxy "inputContainer")
          <<< delete (Proxy :: Proxy "itemComponent")
       customProps =
         { filter:            toNullable (mkEffectFn2 <$> props.filter)
-        , inputContainer:    toNullable props.inputContainer
         , itemComponent:     toNullable props.itemComponent
         , maxDropdownHeight: toNullable props.maxDropdownHeight
         }

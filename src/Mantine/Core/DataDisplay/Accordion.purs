@@ -42,7 +42,6 @@ type AccordionProps accordionValue =
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , multiple               :: Boolean
     , onChange               :: ValueHandler accordionValue
     , order                  :: Maybe AccordionOrder
     , radius                 :: MantineNumberSize
@@ -91,7 +90,6 @@ type AccordionPropsImpl accordionValueNative =
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , multiple               :: Boolean
     , onChange               :: EffectFn1 accordionValueNative Unit
     , order                  :: Nullable Int
     , radius                 :: MantineNumberSizeImpl

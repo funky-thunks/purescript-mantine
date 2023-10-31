@@ -16,12 +16,12 @@ foreign import avatarComponent :: ReactComponent AvatarPropsImpl
 
 type AvatarProps =
   ThemingProps
-    ( children :: Array JSX
-    , alt      :: Maybe String
-    , src      :: Maybe String
+    ( alt      :: Maybe String
+    , children :: Array JSX
     , color    :: Maybe MantineColor
-    , size     :: MantineNumberSize
     , radius   :: MantineNumberSize
+    , size     :: MantineNumberSize
+    , src      :: Maybe String
     , variant  :: AvatarVariant
     )
 
@@ -49,14 +49,14 @@ defaultAvatarProps =
 
 type AvatarPropsImpl =
   ThemingPropsImpl
-    ( children :: Array JSX
-    , alt      :: Nullable String
-    , src      :: Nullable String
+    ( alt      :: Nullable String
+    , children :: Array JSX
     , color    :: Nullable String
-    , size     :: MantineNumberSizeImpl
-    , radius   :: MantineNumberSizeImpl
-    , variant  :: String
     , gradient :: Nullable MantineGradientImpl
+    , radius   :: MantineNumberSizeImpl
+    , size     :: MantineNumberSizeImpl
+    , src      :: Nullable String
+    , variant  :: String
     )
 
 avatarToImpl :: AvatarProps -> AvatarPropsImpl

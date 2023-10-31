@@ -10,10 +10,10 @@ module Mantine.Core.Miscellaneous
   ) where
 
 import Mantine.Core.Miscellaneous.Box (BoxProps, box)
-import Mantine.Core.Miscellaneous.Collapse (CollapseAxis(..), CollapseProps, collapse, collapse_)
+import Mantine.Core.Miscellaneous.Collapse (CollapseProps, collapse, collapse_)
 import Mantine.Core.Miscellaneous.Divider (DividerLabelPosition(..), DividerProps, DividerVariant(..), divider, divider_)
 import Mantine.Core.Miscellaneous.FocusTrap (FocusTrapProps, focusTrap, focusTrap_)
 import Mantine.Core.Miscellaneous.Paper (PaperProps, paper, paper_)
-import Mantine.Core.Miscellaneous.Portal (portal_)
-import Mantine.Core.Miscellaneous.ScrollArea (ScrollAreaProps, ScrollPosition, ScrollbarType(..), scrollArea, scrollArea_)
+import Mantine.Core.Miscellaneous.Portal (PortalProps, portal, portal_)
+import Mantine.Core.Miscellaneous.ScrollArea (ReadingDirection(..), ScrollAreaProps, ScrollPosition, ScrollbarType(..), scrollArea, scrollArea_, scrollAreaAutosize, scrollAreaAutosize_)
 import Mantine.Core.Miscellaneous.Transition (TransitionProps, transition)

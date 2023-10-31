@@ -10,14 +10,6 @@ space = mkTrivialComponent spaceComponent
 
 foreign import spaceComponent :: ReactComponent SpacePropsImpl
 
-type SpaceProps =
-  ThemingProps
-    ( h :: Maybe MantineNumberSize
-    , w :: Maybe MantineNumberSize
-    )
+type SpaceProps = ThemingProps ()
 
-type SpacePropsImpl =
-  ThemingPropsImpl
-    ( h :: Nullable MantineNumberSizeImpl
-    , w :: Nullable MantineNumberSizeImpl
-    )
+type SpacePropsImpl = ThemingPropsImpl ()

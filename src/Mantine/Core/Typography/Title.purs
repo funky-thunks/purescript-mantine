@@ -6,9 +6,10 @@ module Mantine.Core.Typography.Title
   ) where
 
 import Mantine.Core.Prelude
+import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow, textToImpl)
 
 title :: (TitleProps -> TitleProps) -> JSX
-title = mkTrivialComponent titleComponent
+title = mkComponent titleComponent titleToImpl defaultThemingProps_
 
 title_ :: Array JSX -> JSX
 title_ children = title _ { children = children }
@@ -18,9 +19,8 @@ foreign import titleComponent :: ReactComponent TitlePropsImpl
 type TitleProps =
   ThemingProps
     ( children :: Array JSX
-    , color    :: Maybe DimmedOrColor
     , order    :: Maybe TitleOrder
-    , size     :: Maybe MantineNumberSize
+    | TextPropsRow
     )
 
 data TitleOrder
@@ -43,7 +43,12 @@ instance ToFFI TitleOrder Int where
 type TitlePropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
-    , color    :: Nullable String
     , order    :: Nullable Int
-    , size     :: Nullable MantineNumberSizeImpl
+    | TextPropsImplRow
     )
+
+titleToImpl :: TitleProps -> TitlePropsImpl
+titleToImpl props =
+  let rest = textToImpl <<< dropLocalProps
+      dropLocalProps = delete (Proxy :: Proxy "order")
+   in toNative { order: props.order } `union` rest props

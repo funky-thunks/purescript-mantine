@@ -18,13 +18,13 @@ foreign import badgeComponent :: ReactComponent BadgePropsImpl
 type BadgeProps =
   ThemingProps
     ( children     :: Array JSX
-    , fullWidth    :: Boolean
     , color        :: Maybe MantineColor
-    , size         :: MantineSize
-    , radius       :: MantineNumberSize
-    , variant      :: BadgeVariant
+    , fullWidth    :: Boolean
     , leftSection  :: Maybe JSX
+    , radius       :: MantineNumberSize
     , rightSection :: Maybe JSX
+    , size         :: MantineSize
+    , variant      :: BadgeVariant
     )
 
 data BadgeVariant
@@ -54,14 +54,14 @@ defaultBadgeProps =
 type BadgePropsImpl =
   ThemingPropsImpl
     ( children     :: Array JSX
-    , fullWidth    :: Boolean
     , color        :: Nullable String
-    , size         :: String
-    , radius       :: MantineNumberSizeImpl
-    , variant      :: String
+    , fullWidth    :: Boolean
     , gradient     :: Nullable MantineGradientImpl
     , leftSection  :: Nullable JSX
+    , radius       :: MantineNumberSizeImpl
     , rightSection :: Nullable JSX
+    , size         :: String
+    , variant      :: String
     )
 
 badgeToImpl :: BadgeProps -> BadgePropsImpl

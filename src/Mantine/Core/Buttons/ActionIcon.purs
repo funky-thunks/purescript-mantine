@@ -21,13 +21,13 @@ foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
 type ActionIconProps = ThemingProps ActionIconPropsRow
 
 type ActionIconPropsRow =
-  ( icon     :: ReactIcon
-  , color    :: Maybe MantineColor
+  ( color    :: Maybe MantineColor
   , disabled :: Boolean
+  , icon     :: ReactIcon
   , loading  :: Boolean
   , onClick  :: EventHandler
-  , size     :: Maybe MantineNumberSize
   , radius   :: Maybe MantineNumberSize
+  , size     :: Maybe MantineNumberSize
   , variant  :: ActionIconVariant
   )
 
@@ -44,10 +44,11 @@ type ActionIconPropsImplRow =
   ( children :: Array JSX
   , color    :: Nullable String
   , disabled :: Boolean
+  , gradient :: Nullable MantineGradientImpl
   , loading  :: Boolean
   , onClick  :: EventHandler
-  , size     :: Nullable MantineNumberSizeImpl
   , radius   :: Nullable MantineNumberSizeImpl
+  , size     :: Nullable MantineNumberSizeImpl
   , variant  :: Nullable String
   )
 
@@ -58,23 +59,27 @@ data ActionIconVariant
   | ActionIconDefault
   | ActionIconFilled
   | ActionIconSubtle
-  | ActionIconGradient
+  | ActionIconGradient MantineGradient
 
 instance DefaultValue ActionIconVariant where defaultValue = ActionIconDefault
 
-instance ToFFI ActionIconVariant (Nullable String) where toNative = actionIconVariantNative
+instance ToFFI ActionIconVariant (Nullable String) where
+  toNative = case _ of
+    ActionIconOutline     -> notNull "outline"
+    ActionIconTransparent -> notNull "transparent"
+    ActionIconLight       -> notNull "light"
+    ActionIconDefault     -> null
+    ActionIconFilled      -> notNull "filled"
+    ActionIconSubtle      -> notNull "subtle"
+    ActionIconGradient _  -> notNull "gradient"
 
-actionIconVariantNative :: ActionIconVariant -> Nullable String
-actionIconVariantNative = case _ of
-  ActionIconOutline     -> notNull "outline"
-  ActionIconTransparent -> notNull "transparent"
-  ActionIconLight       -> notNull "light"
-  ActionIconDefault     -> null
-  ActionIconFilled      -> notNull "filled"
-  ActionIconSubtle      -> notNull "subtle"
-  ActionIconGradient    -> notNull "gradient"
+getGradient :: ActionIconVariant -> Maybe MantineGradient
+getGradient = case _ of
+  ActionIconGradient g -> Just g
+  _                    -> Nothing
 
 actionIconToImpl :: ActionIconProps -> ActionIconPropsImpl
 actionIconToImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "icon")
-   in { children: pure (icon_ props.icon) } `union` rest props
+      gradient = toNative (getGradient props.variant)
+   in { children: pure (icon_ props.icon), gradient } `union` rest props

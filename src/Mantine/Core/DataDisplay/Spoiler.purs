@@ -7,6 +7,7 @@ module Mantine.Core.DataDisplay.Spoiler
 
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
+import Web.HTML.HTMLButtonElement (HTMLButtonElement)
 
 spoiler :: (SpoilerProps -> SpoilerProps) -> JSX
 spoiler = mkComponentWithDefault spoilerComponent defaultSpoilerProps
@@ -19,6 +20,7 @@ foreign import spoilerComponent :: ReactComponent SpoilerPropsImpl
 type SpoilerProps =
   ThemingProps
     ( children           :: Array JSX
+    , controlRef         :: Maybe (Ref HTMLButtonElement)
     , hideLabel          :: JSX
     , initialState       :: SpoilerState
     , maxHeight          :: Number
@@ -47,6 +49,7 @@ instance ToFFI SpoilerState Boolean where
 type SpoilerPropsImpl =
   ThemingPropsImpl
     ( children           :: Array JSX
+    , controlRef         :: Nullable (Ref HTMLButtonElement)
     , hideLabel          :: JSX
     , initialState       :: Boolean
     , maxHeight          :: Number

@@ -2,6 +2,7 @@ module Mantine.Core.Common
   ( MantineColor(..)
   , DimmedOrColor(..)
   , MantineSize(..)
+  , MantineShadow
   , MantineNumberSize(..)
   , MantineNumberSizeImpl
   , Orientation(..)
@@ -15,11 +16,15 @@ module Mantine.Core.Common
   , JustifyContent(..)
   , Milliseconds
   , Pixels
+  , Rem
   , Dimension(..)
   , DimensionImpl
+  , MantineTransitionProps
+  , MantineTransitionPropsImpl
   , MantineTransition(..)
   , MantineTransitionTimingFunction(..)
   , TextAlign(..)
+  , FontWeight(..)
 
   , ThemingProps
   , ThemingPropsRow
@@ -27,7 +32,6 @@ module Mantine.Core.Common
   , defaultThemingProps_
   , ThemingPropsImpl
   , ThemingPropsImplRow
-  , themingToImpl
 
   , ValueHandler(..)
   , CheckerHandler(..)
@@ -47,10 +51,12 @@ import Data.Either (Either(..))
 import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe)
+import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Nullable (Nullable)
+import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
+import Data.String (Pattern(..), stripSuffix)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Foreign (Foreign)
@@ -249,18 +255,25 @@ data MantineSize
   | ExtraLarge
 
 data MantineNumberSize
-  = Custom Number
+  = Custom Pixels
+  | InRems Rem
   | Preset MantineSize
+
+type MantineShadow = MantineSize
 
 instance ToFFI MantineNumberSize MantineNumberSizeImpl where
   toNative = case _ of
     Custom n -> asOneOf n
+    InRems r -> asOneOf (show r <> "rem")
     Preset s -> asOneOf (toNative s)
 
 instance FromFFI MantineNumberSizeImpl MantineNumberSize where
   fromNative = toEither1 >>> case _ of
     Left  n -> Custom n
-    Right s -> Preset (fromNative s)
+    Right s ->
+      case stripSuffix (Pattern "rem") s >>= fromString of
+        Just r  -> InRems r
+        Nothing -> Preset (fromNative s)
 
 type MantineNumberSizeImpl = Number |+| String
 
@@ -644,15 +657,23 @@ justifyContentNative = case _ of
 
 type Milliseconds = Number
 type Pixels = Number
+type Rem = Number
 
-data Dimension = Pixels Number | Dimension String
+data Dimension = Pixels Pixels | Rem Rem | Dimension String
 
 instance ToFFI Dimension DimensionImpl where
   toNative = case _ of
     Pixels    p -> asOneOf p
+    Rem       r -> asOneOf (show r <> "rem")
     Dimension n -> asOneOf n
 
 type DimensionImpl = Number |+| String
+
+type MantineTransitionProps =
+  { transition     :: Maybe MantineTransition
+  , duration       :: Maybe Milliseconds
+  , timingFunction :: Maybe MantineTransitionTimingFunction
+  }
 
 data MantineTransition
   = TransitionFade
@@ -706,6 +727,12 @@ transitionTimingFunctionNative = case _ of
   TransitionTimingEase   -> "ease"
   TransitionTimingLinear -> "linear"
 
+type MantineTransitionPropsImpl =
+  { transition     :: Nullable String
+  , duration       :: Nullable Number
+  , timingFunction :: Nullable String
+  }
+
 data TextAlign
   = TextAlignLeft
   | TextAlignRight
@@ -737,26 +764,38 @@ textAlignNative = case _ of
   TextAlignJustify     -> "justify"
   TextAlignMatchParent -> "match-parent"
 
+newtype FontWeight = FontWeight Int
+
+instance ToFFI FontWeight Number where
+  toNative (FontWeight fw) = toNative fw
+
 type ThemingProps r = Record (ThemingPropsRow + r)
 
 type ThemingPropsRow r =
-  ( m  :: Maybe MantineSize
-  , mt :: Maybe MantineSize
-  , mb :: Maybe MantineSize
-  , ml :: Maybe MantineSize
-  , mr :: Maybe MantineSize
-  , mx :: Maybe MantineSize
-  , my :: Maybe MantineSize
-  , p  :: Maybe MantineSize
-  , pt :: Maybe MantineSize
-  , pb :: Maybe MantineSize
-  , pl :: Maybe MantineSize
-  , pr :: Maybe MantineSize
-  , px :: Maybe MantineSize
-  , py :: Maybe MantineSize
-  , bg :: Maybe MantineColor
-  , c  :: Maybe MantineColor
-  , sx :: Style
+  ( m   :: Maybe MantineSize
+  , mt  :: Maybe MantineSize
+  , mb  :: Maybe MantineSize
+  , ml  :: Maybe MantineSize
+  , mr  :: Maybe MantineSize
+  , mx  :: Maybe MantineSize
+  , my  :: Maybe MantineSize
+  , p   :: Maybe MantineSize
+  , pt  :: Maybe MantineSize
+  , pb  :: Maybe MantineSize
+  , pl  :: Maybe MantineSize
+  , pr  :: Maybe MantineSize
+  , px  :: Maybe MantineSize
+  , py  :: Maybe MantineSize
+  , w   :: Maybe MantineSize
+  , miw :: Maybe MantineSize
+  , maw :: Maybe MantineSize
+  , h   :: Maybe MantineSize
+  , mih :: Maybe MantineSize
+  , mah :: Maybe MantineSize
+  , fw  :: Maybe FontWeight
+  , bg  :: Maybe MantineColor
+  , c   :: Maybe MantineColor
+  , sx  :: Style
   | r
   )
 
@@ -792,34 +831,32 @@ defaultThemingProps_ = defaultThemingPropsGeneral defaultValue
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 
 type ThemingPropsImplRow r =
-  ( m  :: Nullable String
-  , mt :: Nullable String
-  , mb :: Nullable String
-  , ml :: Nullable String
-  , mr :: Nullable String
-  , mx :: Nullable String
-  , my :: Nullable String
-  , p  :: Nullable String
-  , pt :: Nullable String
-  , pb :: Nullable String
-  , pl :: Nullable String
-  , pr :: Nullable String
-  , px :: Nullable String
-  , py :: Nullable String
-  , bg :: Nullable String
-  , c  :: Nullable String
-  , sx :: Style
+  ( m   :: Nullable String
+  , mt  :: Nullable String
+  , mb  :: Nullable String
+  , ml  :: Nullable String
+  , mr  :: Nullable String
+  , mx  :: Nullable String
+  , my  :: Nullable String
+  , p   :: Nullable String
+  , pt  :: Nullable String
+  , pb  :: Nullable String
+  , pl  :: Nullable String
+  , pr  :: Nullable String
+  , px  :: Nullable String
+  , py  :: Nullable String
+  , w   :: Nullable String
+  , miw :: Nullable String
+  , maw :: Nullable String
+  , h   :: Nullable String
+  , mih :: Nullable String
+  , mah :: Nullable String
+  , fw  :: Nullable Number
+  , bg  :: Nullable String
+  , c   :: Nullable String
+  , sx  :: Style
   | r
   )
-
-themingToImpl :: forall otherProps otherPropsImpl
-               . Nub (ThemingPropsImplRow otherPropsImpl)
-                     (ThemingPropsImplRow otherPropsImpl)
-              => (ThemingProps otherProps -> Record                      otherPropsImpl)
-              ->  ThemingProps otherProps -> Record (ThemingPropsImplRow otherPropsImpl)
-themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx } =
-  toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx }
-    `merge` f props
 
 newtype ValueHandler value = ValueHandler (value -> Effect Unit)
 derive instance Newtype (ValueHandler value) _

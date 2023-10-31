@@ -14,15 +14,16 @@ foreign import dialogComponent :: ReactComponent DialogPropsImpl
 type DialogProps =
   ThemingProps
     ( children                 :: Array JSX
+    , keepMounted              :: Boolean
     , onClose                  :: Effect Unit
     , opened                   :: Maybe Boolean
     , position                 :: Maybe DialogPosition
     , radius                   :: Maybe MantineNumberSize
- -- , shadow -- TODO
+    , shadow                   :: Maybe MantineShadow
     , size                     :: Maybe Dimension
     , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Number
-    , transitionTimingFunction :: Maybe String
+    , transitionDuration       :: Maybe Milliseconds
+    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
     , withBorder               :: Maybe Boolean
     , withCloseButton          :: Maybe Boolean
     , zIndex                   :: Maybe Number
@@ -41,11 +42,12 @@ defaultDialogProps = defaultThemingProps { onClose: pure unit }
 type DialogPropsImpl =
   ThemingPropsImpl
     ( children                 :: Array JSX
+    , keepMounted              :: Boolean
     , onClose                  :: Effect Unit
     , opened                   :: Nullable Boolean
     , position                 :: Nullable DialogPositionImpl
     , radius                   :: Nullable MantineNumberSizeImpl
- -- , shadow -- TODO
+    , shadow                   :: Nullable String
     , size                     :: Nullable DimensionImpl
     , transition               :: Nullable String
     , transitionDuration       :: Nullable Number

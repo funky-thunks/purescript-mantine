@@ -1,5 +1,6 @@
 module Mantine.Core.Inputs.NumberInput
   ( numberInput
+  , NumberInput(..)
   , NumberInputProps
   , NumberInputHandlers
   , NumberFormat
@@ -11,9 +12,11 @@ module Mantine.Core.Inputs.NumberInput
   , module Mantine.Core.Inputs.Input
   ) where
 
-import Mantine.Core.Prelude
+import Data.Either (Either(..))
+import Data.Maybe (fromMaybe)
 import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
-import Untagged.Union (maybeToUor, uorToMaybe)
+import Mantine.Core.Prelude
+import Untagged.Union (toEither1)
 
 numberInput :: (NumberInputProps -> NumberInputProps) -> JSX
 numberInput = mkComponent numberInputComponent toNumberImpl defaultThemingProps_
@@ -23,7 +26,6 @@ foreign import numberInputComponent :: ReactComponent NumberInputPropsImpl
 -- Not supported properties:
 -- { descriptionProps  :: Record<string, any>
 -- , errorProps        :: Record<string, any>
--- , inputContainer    :: (children: ReactNode) => ReactNode
 -- , labelProps        :: Record<string, any>
 -- , rightSectionProps :: Record<string, any>
 -- , wrapperProps      :: Record<string, any>
@@ -32,7 +34,7 @@ foreign import numberInputComponent :: ReactComponent NumberInputPropsImpl
 type NumberInputProps =
   ThemingProps
     ( decimalSeparator    :: Maybe String
-    , defaultValue        :: Maybe Number
+    , defaultValue        :: Maybe NumberInput
     , description         :: Maybe JSX
     , disabled            :: Boolean
     , error               :: Maybe JSX
@@ -41,12 +43,13 @@ type NumberInputProps =
     , hideControls        :: Boolean
     , icon                :: Maybe JSX
     , iconWidth           :: Maybe Pixels
+    , inputContainer      :: Maybe (JSX -> JSX)
     , inputWrapperOrder   :: Maybe (Array InputWrapperOrder)
     , label               :: Maybe JSX
     , max                 :: Maybe Number
     , min                 :: Maybe Number
     , noClampOnBlur       :: Boolean
-    , onChange            :: ValueHandler Number
+    , onChange            :: ValueHandler NumberInput
     , placeholder         :: Maybe String
     , precision           :: Maybe Number
     , radius              :: Maybe MantineNumberSize
@@ -59,11 +62,26 @@ type NumberInputProps =
     , step                :: Maybe Number
     , stepHoldDelay       :: Maybe Milliseconds
     , stepHoldInterval    :: Maybe StepHoldInterval
+    , thousandsSeparator  :: Maybe String
     , type                :: NumberInputType
-    , value               :: Maybe Number
+    , value               :: Maybe NumberInput
     , variant             :: InputVariant
     , withAsterisk        :: Boolean
     )
+
+data NumberInput = ValidInput Number | Invalid
+
+type NumberInputImpl = Number |+| String
+
+instance ToFFI NumberInput NumberInputImpl where
+  toNative = case _ of
+    ValidInput n -> asOneOf n
+    Invalid      -> asOneOf ""
+
+instance FromFFI NumberInputImpl NumberInput where
+  fromNative = toEither1 >>> case _ of
+    Left  n -> ValidInput n
+    Right _ -> Invalid
 
 type NumberInputHandlers =
   { increment :: Effect Unit
@@ -101,7 +119,7 @@ instance ToFFI NumberInputType String where
 type NumberInputPropsImpl =
   ThemingPropsImpl
     ( decimalSeparator    :: Nullable String
-    , defaultValue        :: Nullable Number
+    , defaultValue        :: Nullable (Number |+| String)
     , description         :: Nullable JSX
     , disabled            :: Boolean
     , error               :: Nullable JSX
@@ -110,12 +128,13 @@ type NumberInputPropsImpl =
     , hideControls        :: Boolean
     , icon                :: Nullable JSX
     , iconWidth           :: Nullable Number
+    , inputContainer      :: Nullable (JSX -> JSX)
     , inputWrapperOrder   :: Nullable (Array String)
     , label               :: Nullable JSX
     , max                 :: Nullable Number
     , min                 :: Nullable Number
     , noClampOnBlur       :: Boolean
-    , onChange            :: EffectFn1 Number Unit
+    , onChange            :: EffectFn1 (Number |+| String) Unit
     , parser              :: Nullable NumberParserImpl
     , placeholder         :: Nullable String
     , precision           :: Nullable Number
@@ -129,27 +148,27 @@ type NumberInputPropsImpl =
     , step                :: Nullable Number
     , stepHoldDelay       :: Nullable Number
     , stepHoldInterval    :: Nullable StepHoldIntervalImpl
+    , thousandsSeparator  :: Nullable String
     , type                :: String
-    , value               :: Nullable Number
+    , value               :: Nullable (Number |+| String)
     , variant             :: String
     , withAsterisk        :: Boolean
     )
 
-type NumberFormatterImpl = UndefinedOr String -> String
+type NumberFormatterImpl = String -> String
 
 formatterToNative :: NumberFormatter -> NumberFormatterImpl
-formatterToNative f = toNative <<< f <<< undefinedableToMaybe
+formatterToNative f = f <<< nonEmptyString
 
-type NumberParserImpl = UndefinedOr String -> UndefinedOr String
+type NumberParserImpl = String -> String
 
 parserToNative :: NumberParser -> NumberParserImpl
-parserToNative f = maybeToUndefinedable <<< f <<< undefinedableToMaybe
+parserToNative f = fromMaybe "" <<< f <<< nonEmptyString
 
-maybeToUndefinedable :: forall js purs. ToFFI purs js => Maybe purs -> UndefinedOr js
-maybeToUndefinedable = maybeToUor <<< map toNative
-
-undefinedableToMaybe :: forall js purs. FromFFI js purs => UndefinedOr js -> Maybe purs
-undefinedableToMaybe = map fromNative <<< uorToMaybe
+nonEmptyString :: String -> Maybe String
+nonEmptyString = case _ of
+  "" -> Nothing
+  s  -> Just s
 
 toNumberImpl :: NumberInputProps -> NumberInputPropsImpl
 toNumberImpl props =

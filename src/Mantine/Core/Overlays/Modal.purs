@@ -2,7 +2,11 @@ module Mantine.Core.Overlays.Modal
   ( modal
   , modal_
   , ModalProps
-  , ModalOverflow(..)
+  , ModalOverlayProps
+  , ModalTransitionProps
+
+  , ModalOverlayPropsImpl
+  , ModalTransitionPropsImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -15,38 +19,52 @@ modal_ children = modal _ { children = children }
 
 foreign import modalComponent :: ReactComponent ModalPropsImpl
 
+-- Not supported properties
+--    { closeButtonProps :: ModalBaseCloseButtonProps
+--    , target           :: string | HTMLElement
+--    , xOffset          :: MarginLeft<string | number>
+--    , yOffset          :: MarginTop<string | number>
+--    }
+
 type ModalProps =
   ThemingProps
-    ( children                 :: Array JSX
-    , centered                 :: Boolean
-    , closeButtonLabel         :: Maybe String
-    , closeOnClickOutside      :: Boolean
-    , closeOnEscape            :: Boolean
-    , exitTransitionDuration   :: Maybe Milliseconds
-    , fullScreen               :: Boolean
-    , id                       :: Maybe String
-    , lockScroll               :: Boolean
-    , onClose                  :: Effect Unit
-    , opened                   :: Boolean
-    , overflow                 :: ModalOverflow
-    , overlayBlur              :: Maybe Number
-    , overlayColor             :: Maybe String
-    , overlayOpacity           :: Maybe Number
-    , padding                  :: Maybe MantineNumberSize
-    , radius                   :: Maybe MantineNumberSize
-    -- , shadow -- TODO
-    , size                     :: Maybe Dimension
-    -- , target -- TODO
-    , title                    :: Maybe JSX
-    , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
-    , trapFocus                :: Boolean
-    , withCloseButton          :: Boolean
-    , withFocusReturn          :: Boolean
-    , withinPortal             :: Boolean
-    , zIndex                   :: Maybe Number
+    ( centered            :: Boolean
+    , children            :: Array JSX
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , fullScreen          :: Boolean
+    , id                  :: Maybe String
+    , keepMounted         :: Boolean
+    , lockScroll          :: Boolean
+    , onClose             :: Effect Unit
+    , opened              :: Boolean
+    , overlayProps        :: ModalOverlayProps
+    , padding             :: Maybe MantineNumberSize
+    , radius              :: Maybe MantineNumberSize
+    , returnFocus         :: Boolean
+    , shadow              :: Maybe MantineShadow
+    , size                :: Maybe Dimension
+    , title               :: Maybe JSX
+    , transitionProps     :: ModalTransitionProps
+    , trapFocus           :: Boolean
+    , withCloseButton     :: Boolean
+    , withOverlay         :: Boolean
+    , withinPortal        :: Boolean
+    , zIndex              :: Maybe Number
     )
+
+type ModalOverlayProps =
+  { blur    :: Maybe Number
+  , color   :: Maybe String
+  , opacity :: Maybe Number
+  }
+
+type ModalTransitionProps =
+  { exitDuration   :: Maybe Milliseconds
+  , transition     :: Maybe MantineTransition
+  , duration       :: Maybe Milliseconds
+  , timingFunction :: Maybe MantineTransitionTimingFunction
+  }
 
 defaultModalProps :: ModalProps
 defaultModalProps =
@@ -55,51 +73,48 @@ defaultModalProps =
     , closeOnEscape:       true
     , lockScroll:          true
     , onClose:             pure unit
+    , returnFocus:         true
     , withCloseButton:     true
-    , withFocusReturn:     true
+    , withOverlay:         true
     , withinPortal:        true
     }
 
-data ModalOverflow
-  = ModalOverflowInside
-  | ModalOverflowOutside
-
-instance DefaultValue ModalOverflow where defaultValue = ModalOverflowInside
-
-instance ToFFI ModalOverflow String where
-  toNative = case _ of
-    ModalOverflowInside  -> "inside"
-    ModalOverflowOutside -> "outside"
-
 type ModalPropsImpl =
   ThemingPropsImpl
-    ( children                 :: Array JSX
-    , centered                 :: Boolean
-    , closeButtonLabel         :: Nullable String
-    , closeOnClickOutside      :: Boolean
-    , closeOnEscape            :: Boolean
-    , exitTransitionDuration   :: Nullable Number
-    , fullScreen               :: Boolean
-    , id                       :: Nullable String
-    , lockScroll               :: Boolean
-    , onClose                  :: Effect Unit
-    , opened                   :: Boolean
-    , overflow                 :: String
-    , overlayBlur              :: Nullable Number
-    , overlayColor             :: Nullable String
-    , overlayOpacity           :: Nullable Number
-    , padding                  :: Nullable MantineNumberSizeImpl
-    , radius                   :: Nullable MantineNumberSizeImpl
-    -- , shadow -- TODO
-    , size                     :: Nullable DimensionImpl
-    -- , target -- TODO
-    , title                    :: Nullable JSX
-    , transition               :: Nullable String
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
-    , trapFocus                :: Boolean
-    , withCloseButton          :: Boolean
-    , withFocusReturn          :: Boolean
-    , withinPortal             :: Boolean
-    , zIndex                   :: Nullable Number
+    ( centered            :: Boolean
+    , children            :: Array JSX
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , fullScreen          :: Boolean
+    , id                  :: Nullable String
+    , keepMounted         :: Boolean
+    , lockScroll          :: Boolean
+    , onClose             :: Effect Unit
+    , opened              :: Boolean
+    , overlayProps        :: ModalOverlayPropsImpl
+    , padding             :: Nullable MantineNumberSizeImpl
+    , radius              :: Nullable MantineNumberSizeImpl
+    , returnFocus         :: Boolean
+    , shadow              :: Nullable String
+    , size                :: Nullable DimensionImpl
+    , title               :: Nullable JSX
+    , transitionProps     :: ModalTransitionPropsImpl
+    , trapFocus           :: Boolean
+    , withCloseButton     :: Boolean
+    , withOverlay         :: Boolean
+    , withinPortal        :: Boolean
+    , zIndex              :: Nullable Number
     )
+
+type ModalOverlayPropsImpl =
+  { blur    :: Nullable Number
+  , color   :: Nullable String
+  , opacity :: Nullable Number
+  }
+
+type ModalTransitionPropsImpl =
+  { exitDuration   :: Nullable Number
+  , transition     :: Nullable String
+  , duration       :: Nullable Number
+  , timingFunction :: Nullable String
+  }

@@ -65,6 +65,9 @@ instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
 instance ToFFI abstract native => ToFFI (Object abstract) (Object native) where
   toNative = map toNative
 
+instance ToFFI (JSX -> JSX) (JSX -> JSX) where
+  toNative = identity
+
 instance ToFFI JSX JSX where
   toNative = identity
 
@@ -75,6 +78,9 @@ instance ToFFI File File where
   toNative = identity
 
 instance ToFFI Style Style where
+  toNative = identity
+
+instance ToFFI (Style -> JSX) (Style -> JSX) where
   toNative = identity
 
 instance ToFFI EventHandler EventHandler where

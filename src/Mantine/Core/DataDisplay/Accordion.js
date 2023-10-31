@@ -10,10 +10,12 @@ function removeEmpty(obj) {
 }
 
 export function accordionComponent(props) {
+  props.multiple = false;
   return React.createElement(Accordion, removeEmpty(props), props.children);
 }
 
 export function multipleAccordionComponent(props) {
+  props.multiple = true;
   return React.createElement(Accordion, removeEmpty(props), props.children);
 }
 

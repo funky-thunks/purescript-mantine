@@ -6,9 +6,9 @@ module Mantine.Core.Inputs.ColorInput
   , module Mantine.Core.Inputs.Input
   ) where
 
-import Mantine.Core.Prelude
 import Mantine.Core.Inputs.ColorPicker (ColorFormat, ColorFormula)
-import Mantine.Core.Inputs.Input (InputVariant(..))
+import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
+import Mantine.Core.Prelude
 
 colorInput :: (ColorInputProps -> ColorInputProps) -> JSX
 colorInput = mkComponentWithDefault colorInputComponent defaultColorInputProps
@@ -16,14 +16,13 @@ colorInput = mkComponentWithDefault colorInputComponent defaultColorInputProps
 foreign import colorInputComponent :: ReactComponent ColorInputPropsImpl
 
 -- Not supported properties
--- descriptionProps         :: Record<string, any>
--- errorProps               :: Record<string, any>
--- inputContainer           :: (children: ReactNode) => ReactNode
--- inputWrapperOrder        :: ("input" | "label" | "error" | "description")[]
--- labelProps               :: Record<string, any>
--- rightSectionProps        :: Record<string, any>
--- shadow                   :: MantineShadow
--- wrapperProps             :: Record<string, any>
+--   { descriptionProps         :: Record<string, any>
+--   , errorProps               :: Record<string, any>
+--   , labelProps               :: Record<string, any>
+--   , portalProps              :: Omit<PortalProps, "children" | "withinPortal">
+--   , rightSectionProps        :: Record<string, any>
+--   , wrapperProps             :: Record<string, any>
+--   }
 
 type ColorInputProps =
   ThemingProps
@@ -35,10 +34,13 @@ type ColorInputProps =
     , dropdownZIndex           :: Maybe Number
     , error                    :: Maybe JSX
     , eyeDropperIcon           :: Maybe JSX
+    , eyeDropperLabel          :: Maybe String
     , fixOnBlur                :: Boolean
     , format                   :: ColorFormat
     , icon                     :: Maybe JSX
     , iconWidth                :: Maybe Pixels
+    , inputContainer           :: Maybe (JSX -> JSX)
+    , inputWrapperOrder        :: Maybe (Array InputWrapperOrder)
     , label                    :: Maybe JSX
     , onChange                 :: ValueHandler ColorFormula
     , onChangeEnd              :: ValueHandler ColorFormula
@@ -46,12 +48,11 @@ type ColorInputProps =
     , required                 :: Boolean
     , rightSection             :: Maybe JSX
     , rightSectionWidth        :: Maybe Pixels
+    , shadow                   :: Maybe MantineShadow
     , size                     :: MantineSize
     , swatches                 :: Maybe (Array ColorFormula)
     , swatchesPerRow           :: Int
-    , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , transitionProps          :: MantineTransitionProps
     , value                    :: Maybe ColorFormula
     , variant                  :: InputVariant
     , withAsterisk             :: Boolean
@@ -78,10 +79,13 @@ type ColorInputPropsImpl =
     , dropdownZIndex           :: Nullable Number
     , error                    :: Nullable JSX
     , eyeDropperIcon           :: Nullable JSX
+    , eyeDropperLabel          :: Nullable String
     , fixOnBlur                :: Boolean
     , format                   :: String
     , icon                     :: Nullable JSX
     , iconWidth                :: Nullable Number
+    , inputContainer           :: Nullable (JSX -> JSX)
+    , inputWrapperOrder        :: Nullable (Array String)
     , label                    :: Nullable JSX
     , onChange                 :: EffectFn1 String Unit
     , onChangeEnd              :: EffectFn1 String Unit
@@ -89,12 +93,11 @@ type ColorInputPropsImpl =
     , required                 :: Boolean
     , rightSection             :: Nullable JSX
     , rightSectionWidth        :: Nullable Number
+    , shadow                   :: Nullable String
     , size                     :: String
     , swatches                 :: Nullable (Array String)
     , swatchesPerRow           :: Number
-    , transition               :: Nullable String
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
+    , transitionProps          :: MantineTransitionPropsImpl
     , value                    :: Nullable String
     , variant                  :: String
     , withAsterisk             :: Boolean

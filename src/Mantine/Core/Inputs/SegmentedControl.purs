@@ -23,6 +23,7 @@ type SegmentedControlProps =
     , onChange                 :: ValueHandler String
     , orientation              :: SegmentedControlOrientation
     , radius                   :: Maybe MantineNumberSize
+    , readOnly                 :: Boolean
     , size                     :: Maybe MantineSize
     , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
@@ -58,6 +59,7 @@ type SegmentedControlPropsImpl =
     , onChange                 :: EffectFn1 String Unit
     , orientation              :: String
     , radius                   :: Nullable MantineNumberSizeImpl
+    , readOnly                 :: Boolean
     , size                     :: Nullable String
     , transitionDuration       :: Number
     , transitionTimingFunction :: Nullable String

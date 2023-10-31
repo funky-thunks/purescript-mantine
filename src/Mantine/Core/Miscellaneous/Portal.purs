@@ -1,10 +1,29 @@
 module Mantine.Core.Miscellaneous.Portal
-  ( portal_
+  ( portal
+  , portal_
+  , PortalProps
   ) where
 
-import React.Basic (JSX, ReactComponent, element)
+import Mantine.Core.Prelude
+import Web.HTML.HTMLDivElement (HTMLDivElement)
+import Web.HTML.HTMLElement (HTMLElement)
+
+portal :: (PortalProps -> PortalProps) -> JSX
+portal = mkComponent portalComponent toNative defaultValue
 
 portal_ :: Array JSX -> JSX
-portal_ children = element portalComponent { children }
+portal_ children = portal _ { children = children }
 
-foreign import portalComponent :: ReactComponent { children :: Array JSX }
+foreign import portalComponent :: ReactComponent PortalPropsImpl
+
+type PortalProps =
+  { children :: Array JSX
+  , innerRef :: Maybe (Ref HTMLDivElement)
+  , target   :: Maybe HTMLElement
+  }
+
+type PortalPropsImpl =
+  { children :: Array JSX
+  , innerRef :: Nullable (Ref HTMLDivElement)
+  , target   :: Nullable HTMLElement
+  }

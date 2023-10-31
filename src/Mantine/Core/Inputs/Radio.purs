@@ -5,8 +5,11 @@ module Mantine.Core.Inputs.Radio
 
   , radioGroup
   , RadioGroupProps
+
+  , module Mantine.Core.Inputs.Input
   ) where
 
+import Mantine.Core.Inputs.Input (InputWrapperOrder(..))
 import Mantine.Core.Prelude
 
 radio :: (RadioProps -> RadioProps) -> JSX
@@ -16,11 +19,12 @@ foreign import radioComponent :: ReactComponent RadioPropsImpl
 
 type RadioProps =
   ThemingProps
-    ( children           :: Array JSX
-    , checked            :: Maybe Boolean
+    ( checked            :: Maybe Boolean
     , color              :: Maybe MantineColor
     , defaultChecked     :: Maybe Boolean
+    , description        :: Maybe JSX
     , error              :: Maybe JSX
+    , icon               :: Maybe JSX
     , id                 :: Maybe String
     , label              :: Maybe JSX
     , labelPosition      :: Maybe RadioLabelPosition
@@ -35,11 +39,12 @@ defaultRadioProps = defaultThemingProps { size: Small }
 
 type RadioPropsImpl =
   ThemingPropsImpl
-    ( children           :: Array JSX
-    , checked            :: Nullable Boolean
+    ( checked            :: Nullable Boolean
     , color              :: Nullable String
     , defaultChecked     :: Nullable Boolean
+    , description        :: Nullable JSX
     , error              :: Nullable JSX
+    , icon               :: Nullable JSX
     , id                 :: Nullable String
     , label              :: Nullable JSX
     , labelPosition      :: Nullable String
@@ -65,43 +70,37 @@ foreign import radioGroupComponent :: ReactComponent RadioGroupPropsImpl
 
 type RadioGroupProps =
   ThemingProps
-    ( children     :: Array JSX
-    , defaultValue :: Maybe String
-    , description  :: Maybe JSX
-    , error        :: Maybe JSX
-    , label        :: Maybe JSX
-    , name         :: Maybe String
-    , offset       :: Maybe MantineNumberSize
-    , onChange     :: ValueHandler String
-    , orientation  :: Orientation
-    , required     :: Boolean
-    , size         :: MantineSize
-    , spacing      :: Maybe MantineNumberSize
-    , value        :: Maybe String
-    , withAsterisk :: Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Maybe String
+    , description       :: Maybe JSX
+    , error             :: Maybe JSX
+    , inputContainer    :: Maybe (JSX -> JSX)
+    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
+    , label             :: Maybe JSX
+    , name              :: Maybe String
+    , onChange          :: ValueHandler String
+    , required          :: Boolean
+    , size              :: MantineSize
+    , value             :: Maybe String
+    , withAsterisk      :: Boolean
     )
 
 defaultRadioGroupProps :: RadioGroupProps
-defaultRadioGroupProps =
-  defaultThemingProps
-    { orientation:  Horizontal
-    , size:         Small
-    }
+defaultRadioGroupProps = defaultThemingProps { size: Small }
 
 type RadioGroupPropsImpl =
   ThemingPropsImpl
-    ( children     :: Array JSX
-    , defaultValue :: Nullable String
-    , description  :: Nullable JSX
-    , error        :: Nullable JSX
-    , label        :: Nullable JSX
-    , name         :: Nullable String
-    , offset       :: Nullable MantineNumberSizeImpl
-    , onChange     :: EffectFn1 String Unit
-    , orientation  :: String
-    , required     :: Boolean
-    , size         :: String
-    , spacing      :: Nullable MantineNumberSizeImpl
-    , value        :: Nullable String
-    , withAsterisk :: Boolean
+    ( children          :: Array JSX
+    , defaultValue      :: Nullable String
+    , description       :: Nullable JSX
+    , error             :: Nullable JSX
+    , inputContainer    :: Nullable (JSX -> JSX)
+    , inputWrapperOrder :: Nullable (Array String)
+    , label             :: Nullable JSX
+    , name              :: Nullable String
+    , onChange          :: EffectFn1 String Unit
+    , required          :: Boolean
+    , size              :: String
+    , value             :: Nullable String
+    , withAsterisk      :: Boolean
     )

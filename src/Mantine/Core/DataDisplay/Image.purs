@@ -5,6 +5,7 @@ module Mantine.Core.DataDisplay.Image
   ) where
 
 import Mantine.Core.Prelude
+import Web.HTML.HTMLImageElement (HTMLImageElement)
 
 image :: (ImageProps -> ImageProps) -> JSX
 image = mkTrivialComponent imageComponent
@@ -13,14 +14,16 @@ foreign import imageComponent :: ReactComponent ImagePropsImpl
 
 type ImageProps =
   ThemingProps
-    ( alt         :: Maybe String
-    , caption     :: Maybe JSX
-    , fit         :: Maybe ImageFit
-    , height      :: Maybe Dimension
-    , placeholder :: Maybe JSX
-    , radius      :: Maybe MantineNumberSize
-    , src         :: Maybe String
-    , width       :: Maybe Dimension
+    ( alt             :: Maybe String
+    , caption         :: Maybe JSX
+    , fit             :: Maybe ImageFit
+    , height          :: Maybe Dimension
+    , imageRef        :: Maybe (Ref HTMLImageElement)
+    , placeholder     :: Maybe JSX
+    , radius          :: Maybe MantineNumberSize
+    , src             :: Maybe String
+    , width           :: Maybe Dimension
+    , withPlaceholder :: Boolean
     )
 
 data ImageFit
@@ -50,12 +53,14 @@ instance ToFFI ImageFit String where
 
 type ImagePropsImpl =
   ThemingPropsImpl
-    ( alt         :: Nullable String
-    , caption     :: Nullable JSX
-    , fit         :: Nullable String
-    , height      :: Nullable DimensionImpl
-    , placeholder :: Nullable JSX
-    , src         :: Nullable String
-    , width       :: Nullable DimensionImpl
-    , radius      :: Nullable MantineNumberSizeImpl
+    ( alt             :: Nullable String
+    , caption         :: Nullable JSX
+    , fit             :: Nullable String
+    , height          :: Nullable DimensionImpl
+    , imageRef        :: Nullable (Ref HTMLImageElement)
+    , placeholder     :: Nullable JSX
+    , radius          :: Nullable MantineNumberSizeImpl
+    , src             :: Nullable String
+    , width           :: Nullable DimensionImpl
+    , withPlaceholder :: Boolean
     )

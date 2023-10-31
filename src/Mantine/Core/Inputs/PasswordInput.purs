@@ -7,7 +7,7 @@ module Mantine.Core.Inputs.PasswordInput
 
 import Prelude (negate)
 import Mantine.Core.Prelude
-import Mantine.Core.Inputs.Input (InputVariant(..))
+import Mantine.Core.Inputs.Input (InputType(..), InputVariant(..), InputWrapperOrder(..))
 
 passwordInput :: (PasswordInputProps -> PasswordInputProps) -> JSX
 passwordInput = mkComponent passwordInputComponent passwordInputToImpl defaultThemingProps_
@@ -23,15 +23,16 @@ type PasswordInputProps =
     , icon                  :: Maybe JSX
     , iconWidth             :: Maybe Pixels
     , id                    :: Maybe String
+    , inputContainer        :: Maybe (JSX -> JSX)
+    , inputWrapperOrder     :: Maybe (Array InputWrapperOrder)
     , label                 :: Maybe JSX
     , onChange              :: InputHandler
     , onVisibilityChange    :: ValueHandler Boolean
     , radius                :: Maybe MantineNumberSize
     , required              :: Boolean
-    , rightSection          :: Maybe JSX
-    , rightSectionWidth     :: Maybe Pixels
     , size                  :: Maybe MantineSize
     , toggleFocusable       :: Boolean
+    , type                  :: Maybe InputType
     , value                 :: Maybe String
     , variant               :: InputVariant
     , visibilityToggleIcon  :: Maybe ({ reveal :: Boolean, size :: Number } -> JSX)
@@ -49,15 +50,16 @@ type PasswordInputPropsImpl =
     , icon                  :: Nullable JSX
     , iconWidth             :: Nullable Number
     , id                    :: Nullable String
+    , inputContainer        :: Nullable (JSX -> JSX)
+    , inputWrapperOrder     :: Nullable (Array String)
     , label                 :: Nullable JSX
     , onChange              :: EffectFn1 SyntheticEvent Unit
     , onVisibilityChange    :: EffectFn1 Boolean Unit
     , radius                :: Nullable MantineNumberSizeImpl
     , required              :: Boolean
-    , rightSection          :: Nullable JSX
-    , rightSectionWidth     :: Nullable Number
     , size                  :: Nullable String
     , toggleTabIndex        :: Number
+    , type                  :: Nullable String
     , value                 :: Nullable String
     , variant               :: String
     , visibilityToggleIcon  :: Nullable ({ reveal :: Boolean, size :: Number } -> JSX)
