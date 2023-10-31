@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Select } from '@mantine/core';
+import { Fieldset } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -9,6 +9,6 @@ function removeEmpty(obj) {
   );
 }
 
-export function selectComponent(props) {
-  return React.createElement(Select, removeEmpty(props), props.children);
+export function fieldsetComponent(props) {
+  return React.createElement(Fieldset, removeEmpty(props), props.children);
 }

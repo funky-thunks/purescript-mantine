@@ -39,6 +39,20 @@ cardSection = mkComponent cardSectionComponent toNative defaultThemingProps_
 
 foreign import cardSectionComponent :: ReactComponent CardSectionPropsImpl
 
-type CardSectionProps = ThemingProps (Polymorphic (children :: Array  JSX))
+type CardSectionProps =
+  ThemingProps (
+    Polymorphic
+      ( children       :: Array JSX
+      , inheritPadding :: Boolean
+      , withBorder     :: Boolean
+      )
+  )
 
-type CardSectionPropsImpl = ThemingPropsImpl (PolymorphicImpl (children :: Array JSX))
+type CardSectionPropsImpl =
+  ThemingPropsImpl (
+    PolymorphicImpl
+      ( children       :: Array JSX
+      , inheritPadding :: Boolean
+      , withBorder     :: Boolean
+      )
+  )

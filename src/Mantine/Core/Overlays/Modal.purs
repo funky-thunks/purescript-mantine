@@ -2,13 +2,12 @@ module Mantine.Core.Overlays.Modal
   ( modal
   , modal_
   , ModalProps
-  , ModalOverlayProps
   , ModalTransitionProps
 
-  , ModalOverlayPropsImpl
   , ModalTransitionPropsImpl
   ) where
 
+import Mantine.Core.Overlays.Overlay (OverlayProps, OverlayPropsImpl)
 import Mantine.Core.Prelude
 
 modal :: (ModalProps -> ModalProps) -> JSX
@@ -20,10 +19,11 @@ modal_ children = modal _ { children = children }
 foreign import modalComponent :: ReactComponent ModalPropsImpl
 
 -- Not supported properties
---    { closeButtonProps :: ModalBaseCloseButtonProps
---    , target           :: string | HTMLElement
---    , xOffset          :: MarginLeft<string | number>
---    , yOffset          :: MarginTop<string | number>
+--    { closeButtonProps    :: ModalBaseCloseButtonProps
+--    , portalProps         :: Omit<PortalProps, "children">
+--    , scrollAreaComponent :: ScrollAreaComponent
+--    , xOffset             :: MarginLeft<string | number>
+--    , yOffset             :: MarginTop<string | number>
 --    }
 
 type ModalProps =
@@ -38,7 +38,7 @@ type ModalProps =
     , lockScroll          :: Boolean
     , onClose             :: Effect Unit
     , opened              :: Boolean
-    , overlayProps        :: ModalOverlayProps
+    , overlayProps        :: OverlayProps
     , padding             :: Maybe MantineNumberSize
     , radius              :: Maybe MantineNumberSize
     , returnFocus         :: Boolean
@@ -52,19 +52,6 @@ type ModalProps =
     , withinPortal        :: Boolean
     , zIndex              :: Maybe Number
     )
-
-type ModalOverlayProps =
-  { blur    :: Maybe Number
-  , color   :: Maybe String
-  , opacity :: Maybe Number
-  }
-
-type ModalTransitionProps =
-  { exitDuration   :: Maybe Milliseconds
-  , transition     :: Maybe MantineTransition
-  , duration       :: Maybe Milliseconds
-  , timingFunction :: Maybe MantineTransitionTimingFunction
-  }
 
 defaultModalProps :: ModalProps
 defaultModalProps =
@@ -91,7 +78,7 @@ type ModalPropsImpl =
     , lockScroll          :: Boolean
     , onClose             :: Effect Unit
     , opened              :: Boolean
-    , overlayProps        :: ModalOverlayPropsImpl
+    , overlayProps        :: OverlayPropsImpl
     , padding             :: Nullable MantineNumberSizeImpl
     , radius              :: Nullable MantineNumberSizeImpl
     , returnFocus         :: Boolean
@@ -106,15 +93,5 @@ type ModalPropsImpl =
     , zIndex              :: Nullable Number
     )
 
-type ModalOverlayPropsImpl =
-  { blur    :: Nullable Number
-  , color   :: Nullable String
-  , opacity :: Nullable Number
-  }
-
-type ModalTransitionPropsImpl =
-  { exitDuration   :: Nullable Number
-  , transition     :: Nullable String
-  , duration       :: Nullable Number
-  , timingFunction :: Nullable String
-  }
+type ModalTransitionProps     = MantineTransitionBase     (exitDuration :: Maybe    Milliseconds)
+type ModalTransitionPropsImpl = MantineTransitionBaseImpl (exitDuration :: Nullable Number      )

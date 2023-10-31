@@ -12,3 +12,11 @@ function removeEmpty(obj) {
 export function progressComponent(props) {
   return React.createElement(Progress, removeEmpty(props), props.children);
 }
+
+export function progressRootComponent(props) {
+  return React.createElement(Progress.Root, removeEmpty(props), props.children);
+}
+
+export function progressSectionComponent(props) {
+  return React.createElement(Progress.Section, removeEmpty(props), props.children);
+}

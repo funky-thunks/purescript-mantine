@@ -21,16 +21,14 @@ foreign import sliderComponent :: ReactComponent SliderPropsImpl
 
 type SliderProps =
   ThemingProps
-    ( SliderCommonProps Number +
-        ( thumbLabel :: Maybe String
-        )
+    ( thumbLabel :: Maybe String
+    | SliderCommonProps Number
     )
 
 type SliderPropsImpl =
   ThemingPropsImpl
-    ( SliderCommonPropsImpl Number +
-        ( thumbLabel :: Nullable String
-        )
+    ( thumbLabel :: Nullable String
+    | SliderCommonPropsImpl Number
     )
 
 rangeSlider :: (RangeSliderProps -> RangeSliderProps) -> JSX
@@ -54,50 +52,49 @@ instance FromFFI (Array Number) SliderRange where
 
 type RangeSliderProps =
   ThemingProps
-    ( SliderCommonProps SliderRange +
-        ( maxRange       :: Maybe Number
-        , minRange       :: Maybe Number
-        , thumbFromLabel :: Maybe String
-        , thumbToLabel   :: Maybe String
-        )
+    ( maxRange       :: Maybe Number
+    , minRange       :: Maybe Number
+    , thumbFromLabel :: Maybe String
+    , thumbToLabel   :: Maybe String
+    | SliderCommonProps SliderRange
     )
 
 type RangeSliderPropsImpl =
   ThemingPropsImpl
-    ( SliderCommonPropsImpl (Array Number) +
-        ( maxRange       :: Nullable Number
-        , minRange       :: Nullable Number
-        , thumbFromLabel :: Nullable String
-        , thumbToLabel   :: Nullable String
-        )
+    ( maxRange       :: Nullable Number
+    , minRange       :: Nullable Number
+    , thumbFromLabel :: Nullable String
+    , thumbToLabel   :: Nullable String
+    | SliderCommonPropsImpl (Array Number)
     )
 
-type SliderCommonProps value r =
-  ( color                         :: Maybe MantineColor
-  , defaultValue                  :: Maybe value
-  , disabled                      :: Boolean
-  , inverted                      :: Boolean
-  , label                         :: Maybe LabelFormatter
-  , labelAlwaysOn                 :: Boolean
-  , labelTransition               :: Maybe MantineTransition
-  , labelTransitionDuration       :: Maybe Milliseconds
-  , labelTransitionTimingFunction :: Maybe MantineTransitionTimingFunction
-  , marks                         :: Array SliderMark
-  , max                           :: Maybe Number
-  , min                           :: Maybe Number
-  , name                          :: Maybe String
-  , onChange                      :: ValueHandler value
-  , onChangeEnd                   :: ValueHandler value
-  , precision                     :: Maybe Number
-  , radius                        :: Maybe MantineNumberSize
-  , scale                         :: ScaleFunction
-  , showLabelOnHover              :: Boolean
-  , size                          :: Maybe MantineNumberSize
-  , step                          :: Maybe Number
-  , thumbChildren                 :: Maybe JSX
-  , thumbSize                     :: Maybe Pixels
-  , value                         :: Maybe value
-  | r
+-- Not supported properties
+--   { hiddenInputProps :: Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "ref">
+--   }
+
+type SliderCommonProps value =
+  ( color                :: Maybe MantineColor
+  , defaultValue         :: Maybe value
+  , disabled             :: Boolean
+  , inverted             :: Boolean
+  , label                :: Maybe LabelFormatter
+  , labelAlwaysOn        :: Boolean
+  , labelTransitionProps :: MantineTransitionProps
+  , marks                :: Array SliderMark
+  , max                  :: Maybe Number
+  , min                  :: Maybe Number
+  , name                 :: Maybe String
+  , onChange             :: ValueHandler value
+  , onChangeEnd          :: ValueHandler value
+  , precision            :: Maybe Number
+  , radius               :: Maybe MantineNumberSize
+  , scale                :: ScaleFunction
+  , showLabelOnHover     :: Boolean
+  , size                 :: Maybe MantineNumberSize
+  , step                 :: Maybe Number
+  , thumbChildren        :: Maybe JSX
+  , thumbSize            :: Maybe Pixels
+  , value                :: Maybe value
   )
 
 type SliderMark =
@@ -118,32 +115,29 @@ instance DefaultValue ScaleFunction where
 instance ToFFI ScaleFunction (Number -> Number) where
   toNative (ScaleFunction sf) = sf
 
-type SliderCommonPropsImpl value r =
-  ( color                         :: Nullable String
-  , defaultValue                  :: Nullable value
-  , disabled                      :: Boolean
-  , inverted                      :: Boolean
-  , label                         :: Nullable (Number -> JSX)
-  , labelAlwaysOn                 :: Boolean
-  , labelTransition               :: Nullable String
-  , labelTransitionDuration       :: Nullable Number
-  , labelTransitionTimingFunction :: Nullable String
-  , marks                         :: Array SliderMarkImpl
-  , max                           :: Nullable Number
-  , min                           :: Nullable Number
-  , name                          :: Nullable String
-  , onChange                      :: EffectFn1 value Unit
-  , onChangeEnd                   :: EffectFn1 value Unit
-  , precision                     :: Nullable Number
-  , radius                        :: Nullable MantineNumberSizeImpl
-  , scale                         :: Number -> Number
-  , showLabelOnHover              :: Boolean
-  , size                          :: Nullable MantineNumberSizeImpl
-  , step                          :: Nullable Number
-  , thumbChildren                 :: Nullable JSX
-  , thumbSize                     :: Nullable Number
-  , value                         :: Nullable value
-  | r
+type SliderCommonPropsImpl value =
+  ( color                :: Nullable String
+  , defaultValue         :: Nullable value
+  , disabled             :: Boolean
+  , inverted             :: Boolean
+  , label                :: Nullable (Number -> JSX)
+  , labelAlwaysOn        :: Boolean
+  , labelTransitionProps :: MantineTransitionPropsImpl
+  , marks                :: Array SliderMarkImpl
+  , max                  :: Nullable Number
+  , min                  :: Nullable Number
+  , name                 :: Nullable String
+  , onChange             :: EffectFn1 value Unit
+  , onChangeEnd          :: EffectFn1 value Unit
+  , precision            :: Nullable Number
+  , radius               :: Nullable MantineNumberSizeImpl
+  , scale                :: Number -> Number
+  , showLabelOnHover     :: Boolean
+  , size                 :: Nullable MantineNumberSizeImpl
+  , step                 :: Nullable Number
+  , thumbChildren        :: Nullable JSX
+  , thumbSize            :: Nullable Number
+  , value                :: Nullable value
   )
 
 type SliderMarkImpl =

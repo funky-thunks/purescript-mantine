@@ -13,7 +13,7 @@ foreign import ringProgressComponent :: ReactComponent RingProgressPropsImpl
 
 type RingProgressProps =
   ThemingProps
-    ( label     :: Maybe String
+    ( label     :: Maybe JSX
     , rootColor :: Maybe MantineColor
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSection
@@ -31,7 +31,7 @@ type RingProgressSection =
 
 type RingProgressPropsImpl =
   ThemingPropsImpl
-    ( label     :: Nullable String
+    ( label     :: Nullable JSX
     , rootColor :: Nullable String
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSectionImpl

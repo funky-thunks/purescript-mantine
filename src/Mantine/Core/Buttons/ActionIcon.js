@@ -12,3 +12,7 @@ function removeEmpty(obj) {
 export function actionIconComponent(props) {
   return React.createElement(ActionIcon, removeEmpty(props), props.children);
 }
+
+export function actionIconGroupComponent(props) {
+  return React.createElement(ActionIcon.Group, removeEmpty(props), props.children);
+}

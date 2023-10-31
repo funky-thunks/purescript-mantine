@@ -7,7 +7,7 @@ module Mantine.Core.Layout.Group
 import Mantine.Core.Prelude
 
 group :: (GroupProps -> GroupProps) -> JSX
-group = mkComponentWithDefault groupComponent defaultGroupProps
+group = mkTrivialComponent groupComponent
 
 group_ :: Array JSX -> JSX
 group_ children = group _ { children = children }
@@ -16,23 +16,22 @@ foreign import groupComponent :: ReactComponent GroupPropsImpl
 
 type GroupProps =
   ThemingProps
-    ( align    :: Maybe AlignItems
-    , children :: Array JSX
-    , grow     :: Boolean
-    , noWrap   :: Boolean
-    , position :: Maybe Position
-    , spacing  :: Maybe MantineNumberSize
+    ( align               :: Maybe AlignItems
+    , children            :: Array JSX
+    , gap                 :: Maybe MantineNumberSize
+    , grow                :: Boolean
+    , justify             :: Maybe JustifyContent
+    , preventGrowOverflow :: Boolean
+    , wrap                :: FlexWrap
     )
-
-defaultGroupProps :: GroupProps
-defaultGroupProps = defaultThemingProps { noWrap: true }
 
 type GroupPropsImpl =
   ThemingPropsImpl
-    ( align    :: Nullable String
-    , children :: Array JSX
-    , grow     :: Boolean
-    , noWrap   :: Boolean
-    , position :: Nullable String
-    , spacing  :: Nullable MantineNumberSizeImpl
+    ( align               :: Nullable String
+    , children            :: Array JSX
+    , gap                 :: Nullable MantineNumberSizeImpl
+    , grow                :: Boolean
+    , justify             :: Nullable String
+    , preventGrowOverflow :: Boolean
+    , wrap                :: String
     )

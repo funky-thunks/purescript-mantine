@@ -14,6 +14,8 @@ module Mantine.Core.Common
   , MantineGradientImpl
   , Degrees(..)
   , JustifyContent(..)
+  , FlexWrap(..)
+  , FlexDirection(..)
   , Milliseconds
   , Pixels
   , Rem
@@ -21,10 +23,18 @@ module Mantine.Core.Common
   , DimensionImpl
   , MantineTransitionProps
   , MantineTransitionPropsImpl
+  , MantineTransitionBase
+  , MantineTransitionBaseImpl
   , MantineTransition(..)
   , MantineTransitionTimingFunction(..)
   , TextAlign(..)
+  , TableLayout(..)
   , FontWeight(..)
+  , PointerEvents(..)
+  , MantineSpacing
+  , MantineSpacingImpl
+  , PopoverMiddlewares
+  , PopoverMiddlewaresImpl
 
   , ThemingProps
   , ThemingPropsRow
@@ -43,6 +53,11 @@ module Mantine.Core.Common
 
   , Polymorphic
   , PolymorphicImpl
+
+  , Responsive
+  , ResponsiveImpl
+  , FixedOrResponsive
+  , FixedOrResponsiveImpl
   ) where
 
 import Prelude hiding (bind)
@@ -64,8 +79,8 @@ import Foreign.Object (Object)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import Prim.RowList (class RowToList)
 import React.Basic (ReactComponent, element)
-import React.Basic.Emotion (Style)
 import React.Basic.Events (EventHandler, handler)
+import React.Basic.DOM (CSS)
 import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
@@ -655,6 +670,52 @@ justifyContentNative = case _ of
   JustifyContentRevertLayer  -> "revert-layer"
   JustifyContentUnset        -> "unset"
 
+data FlexWrap
+  = FlexWrapNowrap
+  | FlexWrapWrap
+  | FlexWrapWrapReverse
+  | FlexWrapInherit
+  | FlexWrapInitial
+  | FlexWrapRevert
+  | FlexWrapRevertLayer
+  | FlexWrapUnset
+
+instance ToFFI FlexWrap String where
+  toNative = case _ of
+    FlexWrapNowrap       -> "nowrap"
+    FlexWrapWrap         -> "wrap"
+    FlexWrapWrapReverse  -> "wrap-reverse"
+    FlexWrapInherit      -> "inherit"
+    FlexWrapInitial      -> "initial"
+    FlexWrapRevert       -> "revert"
+    FlexWrapRevertLayer  -> "revert-layer"
+    FlexWrapUnset        -> "unset"
+
+instance DefaultValue FlexWrap where defaultValue = FlexWrapNowrap
+
+data FlexDirection
+  = FlexDirectionRow
+  | FlexDirectionRowReverse
+  | FlexDirectionColumn
+  | FlexDirectionColumnReverse
+  | FlexDirectionInherit
+  | FlexDirectionInitial
+  | FlexDirectionRevert
+  | FlexDirectionRevertLayer
+  | FlexDirectionUnset
+
+instance ToFFI FlexDirection String where
+  toNative = case _ of
+    FlexDirectionRow           -> "row"
+    FlexDirectionRowReverse    -> "row-reverse"
+    FlexDirectionColumn        -> "column"
+    FlexDirectionColumnReverse -> "column-reverse"
+    FlexDirectionInherit       -> "inherit"
+    FlexDirectionInitial       -> "initial"
+    FlexDirectionRevert        -> "revert"
+    FlexDirectionRevertLayer   -> "revert-layer"
+    FlexDirectionUnset         -> "unset"
+
 type Milliseconds = Number
 type Pixels = Number
 type Rem = Number
@@ -669,10 +730,12 @@ instance ToFFI Dimension DimensionImpl where
 
 type DimensionImpl = Number |+| String
 
-type MantineTransitionProps =
+type MantineTransitionProps = MantineTransitionBase ()
+type MantineTransitionBase rest =
   { transition     :: Maybe MantineTransition
   , duration       :: Maybe Milliseconds
   , timingFunction :: Maybe MantineTransitionTimingFunction
+  | rest
   }
 
 data MantineTransition
@@ -727,10 +790,12 @@ transitionTimingFunctionNative = case _ of
   TransitionTimingEase   -> "ease"
   TransitionTimingLinear -> "linear"
 
-type MantineTransitionPropsImpl =
+type MantineTransitionPropsImpl = MantineTransitionBaseImpl ()
+type MantineTransitionBaseImpl rest =
   { transition     :: Nullable String
   , duration       :: Nullable Number
   , timingFunction :: Nullable String
+  | rest
   }
 
 data TextAlign
@@ -764,38 +829,91 @@ textAlignNative = case _ of
   TextAlignJustify     -> "justify"
   TextAlignMatchParent -> "match-parent"
 
+data TableLayout
+  = TableLayoutAuto
+  | TableLayoutFixed
+  | TableLayoutInherit
+  | TableLayoutInitial
+  | TableLayoutRevert
+  | TableLayoutRevertLayer
+  | TableLayoutUnset
+
+instance DefaultValue TableLayout where
+  defaultValue = TableLayoutAuto
+
+instance ToFFI TableLayout String where
+  toNative = case _ of
+    TableLayoutAuto        -> "auto"
+    TableLayoutFixed       -> "fixed"
+    TableLayoutInherit     -> "inherit"
+    TableLayoutInitial     -> "initial"
+    TableLayoutRevert      -> "revert"
+    TableLayoutRevertLayer -> "revert-layer"
+    TableLayoutUnset       -> "unset"
+
 newtype FontWeight = FontWeight Int
 
 instance ToFFI FontWeight Number where
   toNative (FontWeight fw) = toNative fw
 
+data PointerEvents
+  = PointerEventsAuto
+  | PointerEventsBoundingBox
+  | PointerEventsVisiblePainted
+  | PointerEventsVisibleFill
+  | PointerEventsVisibleStroke
+  | PointerEventsVisible
+  | PointerEventsPainted
+  | PointerEventsFill
+  | PointerEventsStroke
+  | PointerEventsAll
+  | PointerEventsNone
+
+instance ToFFI PointerEvents String where
+  toNative = case _ of
+    PointerEventsAuto           -> "auto"
+    PointerEventsBoundingBox    -> "bounding-box"
+    PointerEventsVisiblePainted -> "visiblePainted"
+    PointerEventsVisibleFill    -> "visibleFill"
+    PointerEventsVisibleStroke  -> "visibleStroke"
+    PointerEventsVisible        -> "visible"
+    PointerEventsPainted        -> "painted"
+    PointerEventsFill           -> "fill"
+    PointerEventsStroke         -> "stroke"
+    PointerEventsAll            -> "all"
+    PointerEventsNone           -> "none"
+
+type MantineSpacing     = MantineNumberSize
+type MantineSpacingImpl = MantineNumberSizeImpl
+
 type ThemingProps r = Record (ThemingPropsRow + r)
 
 type ThemingPropsRow r =
-  ( m   :: Maybe MantineSize
-  , mt  :: Maybe MantineSize
-  , mb  :: Maybe MantineSize
-  , ml  :: Maybe MantineSize
-  , mr  :: Maybe MantineSize
-  , mx  :: Maybe MantineSize
-  , my  :: Maybe MantineSize
-  , p   :: Maybe MantineSize
-  , pt  :: Maybe MantineSize
-  , pb  :: Maybe MantineSize
-  , pl  :: Maybe MantineSize
-  , pr  :: Maybe MantineSize
-  , px  :: Maybe MantineSize
-  , py  :: Maybe MantineSize
-  , w   :: Maybe MantineSize
-  , miw :: Maybe MantineSize
-  , maw :: Maybe MantineSize
-  , h   :: Maybe MantineSize
-  , mih :: Maybe MantineSize
-  , mah :: Maybe MantineSize
-  , fw  :: Maybe FontWeight
-  , bg  :: Maybe MantineColor
-  , c   :: Maybe MantineColor
-  , sx  :: Style
+  ( m         :: Maybe MantineSize
+  , mt        :: Maybe MantineSize
+  , mb        :: Maybe MantineSize
+  , ml        :: Maybe MantineSize
+  , mr        :: Maybe MantineSize
+  , mx        :: Maybe MantineSize
+  , my        :: Maybe MantineSize
+  , p         :: Maybe MantineSize
+  , pt        :: Maybe MantineSize
+  , pb        :: Maybe MantineSize
+  , pl        :: Maybe MantineSize
+  , pr        :: Maybe MantineSize
+  , px        :: Maybe MantineSize
+  , py        :: Maybe MantineSize
+  , w         :: Maybe MantineSize
+  , miw       :: Maybe MantineSize
+  , maw       :: Maybe MantineSize
+  , h         :: Maybe MantineSize
+  , mih       :: Maybe MantineSize
+  , mah       :: Maybe MantineSize
+  , fw        :: Maybe FontWeight
+  , bg        :: Maybe MantineColor
+  , c         :: Maybe MantineColor
+  , className :: Maybe String
+  , style     :: Maybe CSS
   | r
   )
 
@@ -806,7 +924,7 @@ defaultThemingPropsGeneral
   => Record otherProps -> ThemingProps otherProps
 defaultThemingPropsGeneral =
   let baseProps :: ThemingProps ()
-      baseProps = { sx: mempty } `union` defaultValue
+      baseProps = defaultValue
    in merge baseProps
 
 defaultThemingProps
@@ -831,30 +949,31 @@ defaultThemingProps_ = defaultThemingPropsGeneral defaultValue
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 
 type ThemingPropsImplRow r =
-  ( m   :: Nullable String
-  , mt  :: Nullable String
-  , mb  :: Nullable String
-  , ml  :: Nullable String
-  , mr  :: Nullable String
-  , mx  :: Nullable String
-  , my  :: Nullable String
-  , p   :: Nullable String
-  , pt  :: Nullable String
-  , pb  :: Nullable String
-  , pl  :: Nullable String
-  , pr  :: Nullable String
-  , px  :: Nullable String
-  , py  :: Nullable String
-  , w   :: Nullable String
-  , miw :: Nullable String
-  , maw :: Nullable String
-  , h   :: Nullable String
-  , mih :: Nullable String
-  , mah :: Nullable String
-  , fw  :: Nullable Number
-  , bg  :: Nullable String
-  , c   :: Nullable String
-  , sx  :: Style
+  ( m         :: Nullable String
+  , mt        :: Nullable String
+  , mb        :: Nullable String
+  , ml        :: Nullable String
+  , mr        :: Nullable String
+  , mx        :: Nullable String
+  , my        :: Nullable String
+  , p         :: Nullable String
+  , pt        :: Nullable String
+  , pb        :: Nullable String
+  , pl        :: Nullable String
+  , pr        :: Nullable String
+  , px        :: Nullable String
+  , py        :: Nullable String
+  , w         :: Nullable String
+  , miw       :: Nullable String
+  , maw       :: Nullable String
+  , h         :: Nullable String
+  , mih       :: Nullable String
+  , mah       :: Nullable String
+  , fw        :: Nullable Number
+  , bg        :: Nullable String
+  , c         :: Nullable String
+  , className :: Nullable String
+  , style     :: Nullable CSS
   | r
   )
 
@@ -912,3 +1031,44 @@ type PolymorphicImpl rest =
   , polymorphicProps :: Object Foreign
   | rest
   )
+
+type Responsive value =
+  { base :: value
+  , xs   :: Maybe value
+  , sm   :: Maybe value
+  , md   :: Maybe value
+  , lg   :: Maybe value
+  , xl   :: Maybe value
+  }
+
+type ResponsiveImpl value =
+  { base :: value
+  , xs   :: Nullable value
+  , sm   :: Nullable value
+  , md   :: Nullable value
+  , lg   :: Nullable value
+  , xl   :: Nullable value
+  }
+
+data FixedOrResponsive value
+  = Fixed value
+  | Responsive (Responsive value)
+
+type FixedOrResponsiveImpl value = value |+| ResponsiveImpl value
+
+instance ToFFI ps js => ToFFI (FixedOrResponsive ps) (FixedOrResponsiveImpl js) where
+  toNative = case _ of
+    Fixed      f -> asOneOf (toNative f)
+    Responsive r -> asOneOf (toNative r)
+
+type PopoverMiddlewares =
+  { shift  :: Boolean
+  , flip   :: Boolean
+  , inline :: Maybe Boolean
+  }
+
+type PopoverMiddlewaresImpl =
+  { shift  :: Boolean
+  , flip   :: Boolean
+  , inline :: Nullable Boolean
+  }

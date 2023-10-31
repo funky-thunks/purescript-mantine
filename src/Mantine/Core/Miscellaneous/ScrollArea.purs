@@ -4,9 +4,9 @@ module Mantine.Core.Miscellaneous.ScrollArea
   , scrollAreaAutosize
   , scrollAreaAutosize_
   , ScrollAreaProps
+  , OffsetScrollbars(..)
   , ScrollPosition
   , ScrollbarType(..)
-  , ReadingDirection(..)
   ) where
 
 import Mantine.Core.Prelude
@@ -28,24 +28,33 @@ scrollAreaAutosize_ children = scrollArea _ { children = children }
 
 foreign import scrollAreaAutosizeComponent :: ReactComponent ScrollAreaPropsImpl
 
+-- Not supported properties
+--   { viewportProps :: React.ComponentPropsWithoutRef<"div">
+--   }
+
 type ScrollAreaProps =
   ThemingProps
     ( children               :: Array JSX
-    , dir                    :: Maybe ReadingDirection
-    , offsetScrollbars       :: Maybe Boolean
-    , onScrollPositionChange :: Maybe (ScrollPosition -> Effect Unit)
+    , offsetScrollbars       :: Maybe OffsetScrollbars
+    , onScrollPositionChange :: ValueHandler ScrollPosition
     , scrollHideDelay        :: Maybe Milliseconds
     , scrollbarSize          :: Maybe Pixels
     , type                   :: Maybe ScrollbarType
     , viewportRef            :: Maybe (Ref HTMLDivElement)
     )
 
-data ReadingDirection = LTR | RTL
+data OffsetScrollbars
+  = OffsetScrollbarsAllDirection
+  | OffsetScrollbarsXAxis
+  | OffsetScrollbarsYAxis
 
-instance ToFFI ReadingDirection String where
+type OffsetScrollbarsImpl = Boolean |+| String
+
+instance ToFFI OffsetScrollbars OffsetScrollbarsImpl where
   toNative = case _ of
-    LTR -> "ltr"
-    RTL -> "rtl"
+    OffsetScrollbarsAllDirection -> asOneOf true
+    OffsetScrollbarsXAxis        -> asOneOf "x"
+    OffsetScrollbarsYAxis        -> asOneOf "y"
 
 type ScrollPosition =
   { x :: Number
@@ -70,9 +79,8 @@ instance ToFFI ScrollbarType String where
 type ScrollAreaPropsImpl =
   ThemingPropsImpl
     ( children               :: Array JSX
-    , dir                    :: Nullable String
-    , offsetScrollbars       :: Nullable Boolean
-    , onScrollPositionChange :: Nullable (EffectFn1 ScrollPosition Unit)
+    , offsetScrollbars       :: Nullable OffsetScrollbarsImpl
+    , onScrollPositionChange :: EffectFn1 ScrollPosition Unit
     , scrollHideDelay        :: Nullable Milliseconds
     , scrollbarSize          :: Nullable Pixels
     , type                   :: Nullable String

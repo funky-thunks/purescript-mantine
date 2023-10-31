@@ -19,18 +19,18 @@ type NavLinkProps =
     , children                    :: Array JSX
     , childrenOffset              :: Maybe MantineNumberSize
     , color                       :: Maybe MantineColor
+    , content                     :: NavLink
     , defaultOpened               :: Boolean
     , description                 :: Maybe JSX
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
-    , icon                        :: Maybe JSX
     , label                       :: JSX
+    , leftSection                 :: Maybe JSX
     , noWrap                      :: Boolean
     , onChange                    :: ValueHandler Boolean
     , opened                      :: Boolean
     , rightSection                :: Maybe JSX
     , variant                     :: NavLinkVariant
-    , content                     :: NavLink
     )
 
 type MandatoryNavLinkProps =
@@ -53,8 +53,8 @@ type NavLinkPropsImpl =
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
     , href                        :: Nullable String
-    , icon                        :: Nullable JSX
     , label                       :: JSX
+    , leftSection                 :: Nullable JSX
     , noWrap                      :: Boolean
     , onChange                    :: EffectFn1 Boolean Unit
     , onClick                     :: Nullable EventHandler

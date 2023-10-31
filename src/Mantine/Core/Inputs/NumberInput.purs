@@ -1,73 +1,66 @@
 module Mantine.Core.Inputs.NumberInput
   ( numberInput
+  , NumberClampBehavior(..)
   , NumberInput(..)
   , NumberInputProps
   , NumberInputHandlers
-  , NumberFormat
-  , NumberFormatter
-  , NumberParser
   , NumberInputType(..)
-  , StepHoldInterval(..)
-
-  , module Mantine.Core.Inputs.Input
+  , ThousandsGroupStyle(..)
   ) where
 
 import Data.Either (Either(..))
-import Data.Maybe (fromMaybe)
-import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
+import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
 import Mantine.Core.Prelude
 import Untagged.Union (toEither1)
 
 numberInput :: (NumberInputProps -> NumberInputProps) -> JSX
-numberInput = mkComponent numberInputComponent toNumberImpl defaultThemingProps_
+numberInput = mkTrivialComponent numberInputComponent
 
 foreign import numberInputComponent :: ReactComponent NumberInputPropsImpl
 
 -- Not supported properties:
--- { descriptionProps  :: Record<string, any>
--- , errorProps        :: Record<string, any>
--- , labelProps        :: Record<string, any>
--- , rightSectionProps :: Record<string, any>
--- , wrapperProps      :: Record<string, any>
+-- { descriptionProps :: Record<string, any>
+-- , isAllowed        :: NumberFormatValues -> Boolean
+-- , onValueChange    :: OnValueChange -- Called when value changes with react-number-format payload
 -- }
 
 type NumberInputProps =
-  ThemingProps
-    ( decimalSeparator    :: Maybe String
-    , defaultValue        :: Maybe NumberInput
-    , description         :: Maybe JSX
-    , disabled            :: Boolean
-    , error               :: Maybe JSX
-    , format              :: Maybe NumberFormat
-    , handlersRef         :: Maybe (Ref NumberInputHandlers)
-    , hideControls        :: Boolean
-    , icon                :: Maybe JSX
-    , iconWidth           :: Maybe Pixels
-    , inputContainer      :: Maybe (JSX -> JSX)
-    , inputWrapperOrder   :: Maybe (Array InputWrapperOrder)
-    , label               :: Maybe JSX
-    , max                 :: Maybe Number
-    , min                 :: Maybe Number
-    , noClampOnBlur       :: Boolean
-    , onChange            :: ValueHandler NumberInput
-    , placeholder         :: Maybe String
-    , precision           :: Maybe Number
-    , radius              :: Maybe MantineNumberSize
-    , removeTrailingZeros :: Boolean
-    , required            :: Boolean
-    , rightSection        :: Maybe JSX
-    , rightSectionWidth   :: Maybe Pixels
-    , size                :: Maybe MantineSize
-    , startValue          :: Maybe Number
-    , step                :: Maybe Number
-    , stepHoldDelay       :: Maybe Milliseconds
-    , stepHoldInterval    :: Maybe StepHoldInterval
-    , thousandsSeparator  :: Maybe String
-    , type                :: NumberInputType
-    , value               :: Maybe NumberInput
-    , variant             :: InputVariant
-    , withAsterisk        :: Boolean
+  InputComponent
+    ( allowDecimal             :: Boolean
+    , allowLeadingZeros        :: Boolean
+    , allowNegative            :: Boolean
+    , allowedDecimalSeparators :: Maybe (Array String)
+    , clampBehavior            :: Maybe NumberClampBehavior
+    , decimalScale             :: Maybe Number
+    , decimalSeparator         :: Maybe String
+    , defaultValue             :: Maybe NumberInput
+    , fixedDecimalScale        :: Boolean
+    , handlersRef              :: Maybe (Ref NumberInputHandlers)
+    , hideControls             :: Boolean
+    , max                      :: Maybe Number
+    , min                      :: Maybe Number
+    , onChange                 :: ValueHandler NumberInput
+    , prefix                   :: Maybe String
+    , startValue               :: Maybe Number
+    , step                     :: Maybe Number
+    , suffix                   :: Maybe String
+    , thousandSeparator        :: Maybe String
+    , thousandsGroupStyle      :: Maybe ThousandsGroupStyle
+    , type                     :: NumberInputType
+    , value                    :: Maybe NumberInput
+    , valueIsNumericString     :: Boolean
     )
+
+data NumberClampBehavior
+  = NumberClampBehaviorNone
+  | NumberClampBehaviorBlur
+  | NumberClampBehaviorStrict
+
+instance ToFFI NumberClampBehavior String where
+  toNative = case _ of
+    NumberClampBehaviorNone   -> "none"
+    NumberClampBehaviorBlur   -> "blur"
+    NumberClampBehaviorStrict -> "strict"
 
 data NumberInput = ValidInput Number | Invalid
 
@@ -88,24 +81,18 @@ type NumberInputHandlers =
   , decrement :: Effect Unit
   }
 
-type NumberFormat =
-  { formatter :: NumberFormatter
-  , parser    :: NumberParser
-  }
+data ThousandsGroupStyle
+  = ThousandsGroupStyleNone
+  | ThousandsGroupStyleThousand
+  | ThousandsGroupStyleLakh
+  | ThousandsGroupStyleWan
 
-type NumberFormatter = Maybe String -> String
-
-type NumberParser = Maybe String -> Maybe String
-
-data StepHoldInterval = StepHoldIntervalStatic Milliseconds
-                      | StepHoldIntervalDynamic (Number -> Milliseconds)
-
-type StepHoldIntervalImpl = Milliseconds |+| (Number -> Milliseconds)
-
-instance ToFFI StepHoldInterval StepHoldIntervalImpl where
+instance ToFFI ThousandsGroupStyle String where
   toNative = case _ of
-    StepHoldIntervalStatic  s -> asOneOf s
-    StepHoldIntervalDynamic f -> asOneOf f
+    ThousandsGroupStyleNone     -> "none"
+    ThousandsGroupStyleThousand -> "thousand"
+    ThousandsGroupStyleLakh     -> "lakh"
+    ThousandsGroupStyleWan      -> "wan"
 
 data NumberInputType = NumberInputTypeText | NumberInputTypeNumber
 
@@ -117,62 +104,28 @@ instance ToFFI NumberInputType String where
     NumberInputTypeNumber -> "number"
 
 type NumberInputPropsImpl =
-  ThemingPropsImpl
-    ( decimalSeparator    :: Nullable String
-    , defaultValue        :: Nullable (Number |+| String)
-    , description         :: Nullable JSX
-    , disabled            :: Boolean
-    , error               :: Nullable JSX
-    , formatter           :: Nullable NumberFormatterImpl
-    , handlersRef         :: Nullable (Ref NumberInputHandlers)
-    , hideControls        :: Boolean
-    , icon                :: Nullable JSX
-    , iconWidth           :: Nullable Number
-    , inputContainer      :: Nullable (JSX -> JSX)
-    , inputWrapperOrder   :: Nullable (Array String)
-    , label               :: Nullable JSX
-    , max                 :: Nullable Number
-    , min                 :: Nullable Number
-    , noClampOnBlur       :: Boolean
-    , onChange            :: EffectFn1 (Number |+| String) Unit
-    , parser              :: Nullable NumberParserImpl
-    , placeholder         :: Nullable String
-    , precision           :: Nullable Number
-    , radius              :: Nullable MantineNumberSizeImpl
-    , removeTrailingZeros :: Boolean
-    , required            :: Boolean
-    , rightSection        :: Nullable JSX
-    , rightSectionWidth   :: Nullable Number
-    , size                :: Nullable String
-    , startValue          :: Nullable Number
-    , step                :: Nullable Number
-    , stepHoldDelay       :: Nullable Number
-    , stepHoldInterval    :: Nullable StepHoldIntervalImpl
-    , thousandsSeparator  :: Nullable String
-    , type                :: String
-    , value               :: Nullable (Number |+| String)
-    , variant             :: String
-    , withAsterisk        :: Boolean
+  InputComponentImpl
+    ( allowDecimal             :: Boolean
+    , allowLeadingZeros        :: Boolean
+    , allowNegative            :: Boolean
+    , allowedDecimalSeparators :: Nullable (Array String)
+    , clampBehavior            :: Nullable String
+    , decimalScale             :: Nullable Number
+    , decimalSeparator         :: Nullable String
+    , defaultValue             :: Nullable (Number |+| String)
+    , fixedDecimalScale        :: Boolean
+    , handlersRef              :: Nullable (Ref NumberInputHandlers)
+    , hideControls             :: Boolean
+    , max                      :: Nullable Number
+    , min                      :: Nullable Number
+    , onChange                 :: EffectFn1 (Number |+| String) Unit
+    , prefix                   :: Nullable String
+    , startValue               :: Nullable Number
+    , step                     :: Nullable Number
+    , suffix                   :: Nullable String
+    , thousandSeparator        :: Nullable String
+    , thousandsGroupStyle      :: Nullable String
+    , type                     :: String
+    , value                    :: Nullable (Number |+| String)
+    , valueIsNumericString     :: Boolean
     )
-
-type NumberFormatterImpl = String -> String
-
-formatterToNative :: NumberFormatter -> NumberFormatterImpl
-formatterToNative f = f <<< nonEmptyString
-
-type NumberParserImpl = String -> String
-
-parserToNative :: NumberParser -> NumberParserImpl
-parserToNative f = fromMaybe "" <<< f <<< nonEmptyString
-
-nonEmptyString :: String -> Maybe String
-nonEmptyString = case _ of
-  "" -> Nothing
-  s  -> Just s
-
-toNumberImpl :: NumberInputProps -> NumberInputPropsImpl
-toNumberImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "format")
-      formatter = toNullable $ formatterToNative <<< _.formatter <$> props.format
-      parser    = toNullable $ parserToNative    <<< _.parser    <$> props.format
-   in { formatter, parser } `union` rest props

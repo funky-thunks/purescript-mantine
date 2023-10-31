@@ -1,11 +1,9 @@
 module Mantine.Core.Inputs.JsonInput
   ( jsonInput
   , JsonInputProps
-
-  , module Mantine.Core.Inputs.Input
   ) where
 
-import Mantine.Core.Inputs.Input (InputVariant(..), InputWrapperOrder(..))
+import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
 import Mantine.Core.Prelude
 
 jsonInput :: (JsonInputProps -> JsonInputProps) -> JSX
@@ -19,59 +17,25 @@ foreign import jsonInputComponent :: ReactComponent JsonInputPropsImpl
 --   }
 
 type JsonInputProps =
-  ThemingProps
-    ( autosize          :: Boolean
-    , defaultValue      :: Maybe String
-    , description       :: Maybe JSX
-    , disabled          :: Boolean
-    , error             :: Maybe JSX
-    , formatOnBlur      :: Boolean
-    , icon              :: Maybe JSX
-    , iconWidth         :: Maybe Pixels
-    , id                :: Maybe String
-    , inputContainer    :: Maybe (JSX -> JSX)
-    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
-    , label             :: Maybe JSX
-    , maxRows           :: Maybe Int
-    , minRows           :: Maybe Int
-    , onChange          :: InputHandler
-    , placeholder       :: Maybe String
-    , radius            :: Maybe MantineNumberSize
-    , required          :: Boolean
-    , rightSection      :: Maybe JSX
-    , rightSectionWidth :: Maybe Pixels
-    , size              :: Maybe MantineNumberSize
-    , validationError   :: Maybe JSX
-    , value             :: Maybe String
-    , variant           :: InputVariant
-    , withAsterisk      :: Boolean
+  InputComponent
+    ( autosize        :: Boolean
+    , defaultValue    :: Maybe String
+    , formatOnBlur    :: Boolean
+    , maxRows         :: Maybe Int
+    , minRows         :: Maybe Int
+    , onChange        :: InputHandler
+    , validationError :: Maybe JSX
+    , value           :: Maybe String
     )
 
 type JsonInputPropsImpl =
-  ThemingPropsImpl
-    ( autosize          :: Boolean
-    , defaultValue      :: Nullable String
-    , description       :: Nullable JSX
-    , disabled          :: Boolean
-    , error             :: Nullable JSX
-    , formatOnBlur      :: Boolean
-    , icon              :: Nullable JSX
-    , iconWidth         :: Nullable Number
-    , id                :: Nullable String
-    , inputContainer    :: Nullable (JSX -> JSX)
-    , inputWrapperOrder :: Nullable (Array String)
-    , label             :: Nullable JSX
-    , maxRows           :: Nullable Number
-    , minRows           :: Nullable Number
-    , onChange          :: EffectFn1 SyntheticEvent Unit
-    , placeholder       :: Nullable String
-    , radius            :: Nullable MantineNumberSizeImpl
-    , required          :: Boolean
-    , rightSection      :: Nullable JSX
-    , rightSectionWidth :: Nullable Number
-    , size              :: Nullable MantineNumberSizeImpl
-    , validationError   :: Nullable JSX
-    , value             :: Nullable String
-    , variant           :: String
-    , withAsterisk      :: Boolean
+  InputComponentImpl
+    ( autosize        :: Boolean
+    , defaultValue    :: Nullable String
+    , formatOnBlur    :: Boolean
+    , maxRows         :: Nullable Number
+    , minRows         :: Nullable Number
+    , onChange        :: EffectFn1 SyntheticEvent Unit
+    , validationError :: Nullable JSX
+    , value           :: Nullable String
     )

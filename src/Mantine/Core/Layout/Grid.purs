@@ -26,22 +26,16 @@ type GridProps =
     , children :: Array JSX
     , columns  :: Int
     , grow     :: Boolean
-    , gutter   :: MantineNumberSize
-    , gutterLg :: Maybe MantineNumberSize
-    , gutterMd :: Maybe MantineNumberSize
-    , gutterSm :: Maybe MantineNumberSize
-    , gutterXl :: Maybe MantineNumberSize
-    , gutterXs :: Maybe MantineNumberSize
+    , gutter   :: Maybe (FixedOrResponsive MantineNumberSize)
     , justify  :: JustifyContent
     )
 
 defaultGridProps :: GridProps
 defaultGridProps =
   defaultThemingProps
-    { align:    AlignContentStretch
-    , columns:  12
-    , gutter:   Preset Medium
-    , justify:  JustifyContentFlexStart
+    { align:   AlignContentStretch
+    , columns: 12
+    , justify: JustifyContentFlexStart
     }
 
 type GridPropsImpl =
@@ -50,17 +44,12 @@ type GridPropsImpl =
     , children :: Array JSX
     , columns  :: Number
     , grow     :: Boolean
-    , gutter   :: MantineNumberSizeImpl
-    , gutterLg :: Nullable MantineNumberSizeImpl
-    , gutterMd :: Nullable MantineNumberSizeImpl
-    , gutterSm :: Nullable MantineNumberSizeImpl
-    , gutterXl :: Nullable MantineNumberSizeImpl
-    , gutterXs :: Nullable MantineNumberSizeImpl
+    , gutter   :: Nullable (FixedOrResponsiveImpl MantineNumberSizeImpl)
     , justify  :: String
     )
 
 gridCol :: (GridColProps -> GridColProps) -> JSX
-gridCol = mkComponent gridColComponent gridColToImpl defaultThemingProps_
+gridCol = mkTrivialComponent gridColComponent
 
 gridCol_ :: Array JSX -> JSX
 gridCol_ children = gridCol _ { children = children }
@@ -69,28 +58,10 @@ foreign import gridColComponent :: ReactComponent GridColPropsImpl
 
 type GridColProps =
   ThemingProps
-    ( children  :: Array JSX
-
-    , span      :: Maybe GridColSpan
-    , spanXs    :: Maybe GridColSpan
-    , spanSm    :: Maybe GridColSpan
-    , spanMd    :: Maybe GridColSpan
-    , spanLg    :: Maybe GridColSpan
-    , spanXl    :: Maybe GridColSpan
-
-    , order     :: Maybe Int
-    , orderXs   :: Maybe Int
-    , orderSm   :: Maybe Int
-    , orderMd   :: Maybe Int
-    , orderLg   :: Maybe Int
-    , orderXl   :: Maybe Int
-
-    , offset    :: Maybe Pixels
-    , offsetXs  :: Maybe Pixels
-    , offsetSm  :: Maybe Pixels
-    , offsetMd  :: Maybe Pixels
-    , offsetLg  :: Maybe Pixels
-    , offsetXl  :: Maybe Pixels
+    ( children :: Array JSX
+    , span     :: Maybe (FixedOrResponsive GridColSpan)
+    , order    :: Maybe (FixedOrResponsive Int)
+    , offset   :: Maybe (FixedOrResponsive Pixels)
     )
 
 data GridColSpan
@@ -109,33 +80,7 @@ instance ToFFI GridColSpan ColSpanImpl where
 type GridColPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
-
-    , span     :: Nullable ColSpanImpl
-    , xs       :: Nullable ColSpanImpl
-    , sm       :: Nullable ColSpanImpl
-    , md       :: Nullable ColSpanImpl
-    , lg       :: Nullable ColSpanImpl
-    , xl       :: Nullable ColSpanImpl
-
-    , order    :: Nullable Number
-    , orderXs  :: Nullable Number
-    , orderSm  :: Nullable Number
-    , orderMd  :: Nullable Number
-    , orderLg  :: Nullable Number
-    , orderXl  :: Nullable Number
-
-    , offset   :: Nullable Pixels
-    , offsetXs :: Nullable Pixels
-    , offsetSm :: Nullable Pixels
-    , offsetMd :: Nullable Pixels
-    , offsetLg :: Nullable Pixels
-    , offsetXl :: Nullable Pixels
+    , span     :: Nullable (FixedOrResponsiveImpl ColSpanImpl)
+    , order    :: Nullable (FixedOrResponsiveImpl Number)
+    , offset   :: Nullable (FixedOrResponsiveImpl Pixels)
     )
-
-gridColToImpl :: GridColProps -> GridColPropsImpl
-gridColToImpl = toNative
-            <<< rename (Proxy :: Proxy "spanXs") (Proxy :: Proxy "xs")
-            <<< rename (Proxy :: Proxy "spanSm") (Proxy :: Proxy "sm")
-            <<< rename (Proxy :: Proxy "spanMd") (Proxy :: Proxy "md")
-            <<< rename (Proxy :: Proxy "spanLg") (Proxy :: Proxy "lg")
-            <<< rename (Proxy :: Proxy "spanXl") (Proxy :: Proxy "xl")

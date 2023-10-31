@@ -27,7 +27,9 @@ type TimelineProps =
     , reverseActive :: Boolean
     )
 
-data TimelineAlign = TimelineAlignLeft | TimelineAlignRight
+data TimelineAlign
+  = TimelineAlignLeft
+  | TimelineAlignRight
 
 instance DefaultValue TimelineAlign where defaultValue = TimelineAlignLeft
 
@@ -55,15 +57,10 @@ foreign import timelineItemComponent :: ReactComponent TimelineItemPropsImpl
 
 type TimelineItemProps =
   ThemingProps
-    ( active      :: Boolean
-    , align       :: TimelineAlign
-    , bullet      :: Maybe JSX
-    , bulletSize  :: Maybe Pixels
+    ( bullet      :: Maybe JSX
     , children    :: Array JSX
     , color       :: Maybe MantineColor
-    , lineActive  :: Boolean
     , lineVariant :: TimelineLineVariant
-    , lineWidth   :: Maybe Pixels
     , radius      :: Maybe MantineNumberSize
     , title       :: Maybe JSX
     )
@@ -83,15 +80,10 @@ instance DefaultValue TimelineLineVariant where defaultValue = TimelineLineVaria
 
 type TimelineItemPropsImpl =
   ThemingPropsImpl
-    ( active      :: Boolean
-    , align       :: String
-    , bullet      :: Nullable JSX
-    , bulletSize  :: Nullable Number
+    ( bullet      :: Nullable JSX
     , children    :: Array JSX
     , color       :: Nullable String
-    , lineActive  :: Boolean
     , lineVariant :: String
-    , lineWidth   :: Nullable Number
     , radius      :: Nullable MantineNumberSizeImpl
     , title       :: Nullable JSX
     )

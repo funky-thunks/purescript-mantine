@@ -15,10 +15,14 @@ affix_ children = affix _ { children = children }
 
 foreign import affixComponent :: ReactComponent AffixPropsImpl
 
+-- Not supported properties
+--   { portalProps :: Omit<PortalProps, "children">
+--   }
+
 type AffixProps =
   ThemingProps
     ( children     :: Array JSX
-    , position     :: AffixPosition
+    , position     :: Maybe AffixPosition
     , withinPortal :: Boolean
     , zIndex       :: Maybe Number
     )
@@ -36,7 +40,7 @@ defaultAffixProps = defaultThemingProps { withinPortal: true }
 type AffixPropsImpl =
   ThemingPropsImpl
     ( children     :: Array JSX
-    , position     :: AffixPositionImpl
+    , position     :: Nullable AffixPositionImpl
     , withinPortal :: Boolean
     , zIndex       :: Nullable Number
     )

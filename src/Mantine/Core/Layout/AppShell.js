@@ -13,22 +13,26 @@ export function appShellComponent(props) {
   return React.createElement(AppShell, removeEmpty(props), props.children);
 }
 
-export function navbarComponent(props) {
-  return React.createElement(Navbar, removeEmpty(props), props.children);
+export function appShellMainComponent(props) {
+  return React.createElement(AppShell.Main, removeEmpty(props), props.children);
 }
 
-export function navbarSectionComponent(props) {
-  return React.createElement(Navbar.Section, removeEmpty(props), props.children);
+export function appShellNavbarComponent(props) {
+  return React.createElement(AppShell.Navbar, removeEmpty(props), props.children);
 }
 
-export function headerComponent(props) {
-  return React.createElement(Header, removeEmpty(props), props.children);
+export function appShellSectionComponent(props) {
+  return React.createElement(AppShell.Section, removeEmpty(props), props.children);
 }
 
-export function asideComponent(props) {
-  return React.createElement(Aside, removeEmpty(props), props.children);
+export function appShellHeaderComponent(props) {
+  return React.createElement(AppShell.Header, removeEmpty(props), props.children);
 }
 
-export function footerComponent(props) {
-  return React.createElement(Footer, removeEmpty(props), props.children);
+export function appShellAsideComponent(props) {
+  return React.createElement(AppShell.Aside, removeEmpty(props), props.children);
+}
+
+export function appShellFooterComponent(props) {
+  return React.createElement(AppShell.Footer, removeEmpty(props), props.children);
 }

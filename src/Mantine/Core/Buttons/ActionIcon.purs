@@ -3,12 +3,18 @@ module Mantine.Core.Buttons.ActionIcon
   , ActionIconProps
   , ActionIconVariant(..)
 
+  , actionIconGroup
+  , actionIconGroup_
+  , ActionIconGroupOrientation(..)
+  , ActionIconGroupProps
+
   , defaultActionIconProps
   , actionIconToImpl
   , ActionIconPropsRow
   , ActionIconPropsImplRow
   ) where
 
+import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
 import Mantine.Core.Prelude
 import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
@@ -21,35 +27,36 @@ foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
 type ActionIconProps = ThemingProps ActionIconPropsRow
 
 type ActionIconPropsRow =
-  ( color    :: Maybe MantineColor
-  , disabled :: Boolean
-  , icon     :: ReactIcon
-  , loading  :: Boolean
-  , onClick  :: EventHandler
-  , radius   :: Maybe MantineNumberSize
-  , size     :: Maybe MantineNumberSize
-  , variant  :: ActionIconVariant
+  ( color       :: Maybe MantineColor
+  , disabled    :: Boolean
+  , icon        :: ReactIcon
+  , loading     :: Boolean
+  , loaderProps :: Maybe LoaderProps
+  , onClick     :: Maybe EventHandler
+  , radius      :: Maybe MantineNumberSize
+  , size        :: Maybe MantineNumberSize
+  , variant     :: ActionIconVariant
   )
 
 defaultActionIconProps :: ReactIcon -> ActionIconProps
 defaultActionIconProps icon =
   defaultThemingProps
     { icon
-    , onClick: handler_ (pure unit)
     }
 
 type ActionIconPropsImpl = ThemingPropsImpl ActionIconPropsImplRow
 
 type ActionIconPropsImplRow =
-  ( children :: Array JSX
-  , color    :: Nullable String
-  , disabled :: Boolean
-  , gradient :: Nullable MantineGradientImpl
-  , loading  :: Boolean
-  , onClick  :: EventHandler
-  , radius   :: Nullable MantineNumberSizeImpl
-  , size     :: Nullable MantineNumberSizeImpl
-  , variant  :: Nullable String
+  ( children    :: Array JSX
+  , color       :: Nullable String
+  , disabled    :: Boolean
+  , gradient    :: Nullable MantineGradientImpl
+  , loading     :: Boolean
+  , loaderProps :: Nullable LoaderPropsImpl
+  , onClick     :: Nullable EventHandler
+  , radius      :: Nullable MantineNumberSizeImpl
+  , size        :: Nullable MantineNumberSizeImpl
+  , variant     :: Nullable String
   )
 
 data ActionIconVariant
@@ -83,3 +90,37 @@ actionIconToImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "icon")
       gradient = toNative (getGradient props.variant)
    in { children: pure (icon_ props.icon), gradient } `union` rest props
+
+actionIconGroup :: (ActionIconGroupProps -> ActionIconGroupProps) -> JSX
+actionIconGroup = mkTrivialComponent actionIconGroupComponent
+
+actionIconGroup_ :: Array JSX -> JSX
+actionIconGroup_ children = actionIconGroup _ { children = children }
+
+foreign import actionIconGroupComponent :: ReactComponent ActionIconGroupPropsImpl
+
+type ActionIconGroupProps =
+  ThemingProps
+    ( borderWidth :: Maybe MantineNumberSize
+    , children    :: Array JSX
+    , orientation :: ActionIconGroupOrientation
+    )
+
+data ActionIconGroupOrientation
+  = ActionIconGroupOrientationHorizontal
+  | ActionIconGroupOrientationVertical
+
+instance DefaultValue ActionIconGroupOrientation where
+  defaultValue = ActionIconGroupOrientationHorizontal
+
+instance ToFFI ActionIconGroupOrientation String where
+  toNative = case _ of
+    ActionIconGroupOrientationHorizontal -> "horizontal"
+    ActionIconGroupOrientationVertical   -> "vertical"
+
+type ActionIconGroupPropsImpl =
+  ThemingPropsImpl
+    ( borderWidth :: Nullable MantineNumberSizeImpl
+    , children    :: Array JSX
+    , orientation :: String
+    )

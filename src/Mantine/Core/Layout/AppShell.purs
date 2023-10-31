@@ -1,218 +1,215 @@
 module Mantine.Core.Layout.AppShell
   ( appShell
   , AppShellProps
+  , AppShellCollapse
+  , AppShellHorizontalConfiguration
+  , AppShellLayout(..)
+  , AppShellPadding(..)
+  , AppShellResponsiveSize
+  , AppShellRules(..)
+  , AppShellSize(..)
+  , AppShellVerticalConfiguration
 
-  , navbar
-  , navbar_
-  , aside
-  , aside_
-  , HorizontalSectionProps
-  , HorizontalSectionHeight(..)
-  , HorizontalSectionPosition
-  , navbarSection
-  , navbarSection_
-  , NavbarSectionProps
+  , appShellMain
+  , AppShellMainProps
 
-  , header
-  , footer
-  , VerticalSectionProps
-  , VerticalSectionHeight(..)
-  , VerticalSectionPosition
-  , Rules(..)
+  , appShellSection
+  , appShellSection_
+  , AppShellSectionProps
+
+  -- AppShell Components
+  , AppShellComponentProps
+  , appShellNavbar
+  , appShellNavbar_
+
+  , appShellHeader
+  , appShellHeader_
+
+  , appShellAside
+  , appShellAside_
+
+  , appShellFooter
+  , appShellFooter_
   ) where
 
 import Mantine.Core.Prelude
 
 appShell :: (AppShellProps -> AppShellProps) -> JSX
-appShell = mkComponent appShellComponent appShellToImpl defaultThemingProps_
+appShell = mkTrivialComponent appShellComponent
 
 foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
 type AppShellProps =
   ThemingProps
-    ( alternativeLayout      :: Boolean
-    , aside                  :: Maybe JSX
-    , asideOffsetBreakpoint  :: Maybe MantineNumberSize
-    , children               :: Array JSX
-    , fixed                  :: Boolean
-    , footer                 :: Maybe JSX
-    , header                 :: Maybe JSX
-    , hidden                 :: Boolean
-    , navbar                 :: Maybe JSX
-    , navbarOffsetBreakpoint :: Maybe MantineNumberSize
-    , padding                :: Maybe MantineNumberSize
-    , zIndex                 :: Maybe Number
+    ( aside                    :: Maybe AppShellVerticalConfiguration
+    , disabled                 :: Maybe Boolean
+    , footer                   :: Maybe AppShellHorizontalConfiguration
+    , header                   :: Maybe AppShellHorizontalConfiguration
+    , layout                   :: Maybe AppShellLayout
+    , navbar                   :: Maybe AppShellVerticalConfiguration
+    , padding                  :: Maybe AppShellPadding
+    , transitionDuration       :: Maybe Milliseconds
+    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , withBorder               :: Boolean
+    , zIndex                   :: Maybe Number
     )
+
+data AppShellLayout
+  = AppShellLayoutDefault
+  | AppShellLayoutAlt
+
+instance ToFFI AppShellLayout String where
+  toNative = case _ of
+    AppShellLayoutDefault -> "default"
+    AppShellLayoutAlt     -> "alt"
+
+data AppShellPadding
+  = FixedPadding MantineNumberSize
+  | ResponsivePadding AppShellResponsiveSize
+
+type AppShellPaddingImpl = MantineNumberSizeImpl |+| AppShellResponsiveSize
+
+instance ToFFI AppShellPadding AppShellPaddingImpl where
+  toNative = case _ of
+    FixedPadding      f -> asOneOf (toNative f)
+    ResponsivePadding r -> asOneOf r
+
+type AppShellHorizontalConfiguration =
+  { height    :: AppShellSize
+  , collapsed :: Boolean
+  , offset    :: Boolean
+  }
+
+data AppShellSize
+  = AppShellSizeFixed      Pixels
+  | AppShellSizeResponsive AppShellResponsiveSize
+
+type AppShellResponsiveSize = Object Number
+
+type AppShellSizeImpl = Number |+| AppShellResponsiveSize
+
+instance ToFFI AppShellSize AppShellSizeImpl where
+  toNative = case _ of
+    AppShellSizeFixed      s  -> asOneOf s
+    AppShellSizeResponsive rs -> asOneOf rs
+
+type AppShellVerticalConfiguration =
+  { width      :: AppShellSize
+  , breakpoint :: Maybe MantineNumberSize
+  , collapsed  :: Maybe AppShellCollapse
+  }
+
+type AppShellCollapse = { desktop :: Boolean, mobile :: Boolean }
 
 type AppShellPropsImpl =
   ThemingPropsImpl
-    ( aside                  :: Nullable JSX
-    , asideOffsetBreakpoint  :: Nullable MantineNumberSizeImpl
-    , children               :: Array JSX
-    , fixed                  :: Boolean
-    , footer                 :: Nullable JSX
-    , header                 :: Nullable JSX
-    , hidden                 :: Boolean
-    , layout                 :: String
-    , navbar                 :: Nullable JSX
-    , navbarOffsetBreakpoint :: Nullable MantineNumberSizeImpl
-    , padding                :: Nullable MantineNumberSizeImpl
-    , zIndex                 :: Nullable Number
+    ( aside                    :: Nullable AppShellVerticalConfigurationImpl
+    , disabled                 :: Nullable Boolean
+    , footer                   :: Nullable AppShellHorizontalConfigurationImpl
+    , header                   :: Nullable AppShellHorizontalConfigurationImpl
+    , layout                   :: Nullable String
+    , navbar                   :: Nullable AppShellVerticalConfigurationImpl
+    , padding                  :: Nullable AppShellPaddingImpl
+    , transitionDuration       :: Nullable Number
+    , transitionTimingFunction :: Nullable String
+    , withBorder               :: Boolean
+    , zIndex                   :: Nullable Number
     )
 
-appShellToImpl :: AppShellProps -> AppShellPropsImpl
-appShellToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "alternativeLayout")
-   in { layout: if props.alternativeLayout then "alt" else "default" } `union` rest props
-
-navbar :: (NavbarProps -> NavbarProps) -> JSX
-navbar = mkTrivialComponent navbarComponent
-
-navbar_ :: Array JSX -> JSX
-navbar_ children = navbar _ { children = children }
-
-aside :: (AsideProps -> AsideProps) -> JSX
-aside = mkTrivialComponent asideComponent
-
-aside_ :: Array JSX -> JSX
-aside_ children = aside _ { children = children }
-
-foreign import navbarComponent :: ReactComponent HorizontalSectionPropsImpl
-foreign import asideComponent  :: ReactComponent HorizontalSectionPropsImpl
-
-type NavbarProps = HorizontalSectionProps
-type AsideProps = HorizontalSectionProps
-
-data HorizontalSectionHeight
-  = HorizontalSectionHeightNumeric Number
-  | HorizontalSectionHeightString  String
-
-instance ToFFI HorizontalSectionHeight (Number |+| String) where
-  toNative = case _ of
-    HorizontalSectionHeightNumeric nr -> asOneOf nr
-    HorizontalSectionHeightString  s  -> asOneOf s
-
-type HorizontalSectionProps =
-  ThemingProps
-    ( children         :: Array JSX
-    , fixed            :: Boolean
-    , height           :: Maybe HorizontalSectionHeight
-    , hidden           :: Boolean
-    , hiddenBreakpoint :: Maybe MantineNumberSize
-    , position         :: Maybe HorizontalSectionPosition
-    , width            :: Rules
-    , withBorder       :: Boolean
-    , zIndex           :: Maybe Number
-    )
-
-type HorizontalSectionPosition =
-  { left :: Maybe Number
-  , top  :: Maybe Number
+type AppShellHorizontalConfigurationImpl =
+  { height    :: AppShellSizeImpl
+  , collapsed :: Boolean
+  , offset    :: Boolean
   }
 
-newtype Rules = Rules (Array (String /\ Either String Number))
+type AppShellVerticalConfigurationImpl =
+  { width      :: AppShellSizeImpl
+  , breakpoint :: Nullable MantineNumberSizeImpl
+  , collapsed  :: Nullable AppShellCollapse
+  }
 
-instance DefaultValue Rules where defaultValue = Rules []
+newtype AppShellRules = AppShellRules (Array (String /\ Either String Number))
 
-instance ToFFI Rules (Object (String |+| Number)) where
-  toNative (Rules rs) =
+instance DefaultValue AppShellRules where defaultValue = AppShellRules []
+
+type AppShellRulesImpl = Object (String |+| Number)
+
+instance ToFFI AppShellRules AppShellRulesImpl where
+  toNative (AppShellRules rs) =
     let f = either asOneOf asOneOf
      in fromFoldable (map f <$> rs)
 
-type HorizontalSectionPropsImpl =
-  ThemingPropsImpl
-    ( children         :: Array JSX
-    , fixed            :: Boolean
-    , height           :: Nullable MantineNumberSizeImpl
-    , hidden           :: Boolean
-    , hiddenBreakpoint :: Nullable MantineNumberSizeImpl
-    , position         :: Nullable HorizontalSectionPositionImpl
-    , width            :: Object (String |+| Number)
-    , withBorder       :: Boolean
-    , zIndex           :: Nullable Number
-    )
+appShellSection :: (AppShellSectionProps -> AppShellSectionProps) -> JSX
+appShellSection = mkTrivialComponent appShellSectionComponent
 
-type HorizontalSectionPositionImpl =
-  { left :: Nullable Number
-  , top  :: Nullable Number
-  }
+appShellSection_ :: Array JSX -> JSX
+appShellSection_ children = appShellSection _ { children = children }
 
-navbarSection :: (NavbarSectionProps -> NavbarSectionProps) -> JSX
-navbarSection = mkTrivialComponent navbarSectionComponent
+foreign import appShellSectionComponent :: ReactComponent AppShellSectionPropsImpl
 
-navbarSection_ :: Array JSX -> JSX
-navbarSection_ children = navbarSection _ { children = children }
-
-foreign import navbarSectionComponent :: ReactComponent NavbarSectionPropsImpl
-
-type NavbarSectionProps =
+type AppShellSectionProps =
   ThemingProps
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
-type NavbarSectionPropsImpl =
+type AppShellSectionPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
-header :: (HeaderProps -> HeaderProps) -> JSX
-header = mkTrivialComponent headerComponent
+appShellMain :: (AppShellMainProps -> AppShellMainProps) -> JSX
+appShellMain = mkTrivialComponent appShellMainComponent
 
-footer :: (FooterProps -> FooterProps) -> JSX
-footer = mkTrivialComponent footerComponent
+foreign import appShellMainComponent :: ReactComponent AppShellMainPropsImpl
 
-foreign import headerComponent :: ReactComponent VerticalSectionPropsImpl
-foreign import footerComponent :: ReactComponent VerticalSectionPropsImpl
+type AppShellMainProps = ThemingProps (children :: Array JSX)
 
-type HeaderProps = VerticalSectionProps
-type FooterProps = VerticalSectionProps
+type AppShellMainPropsImpl = ThemingPropsImpl (children :: Array JSX)
 
-type VerticalSectionProps =
+appShellNavbar :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
+appShellNavbar = mkTrivialComponent appShellNavbarComponent
+
+appShellNavbar_ :: Array JSX -> JSX
+appShellNavbar_ children = appShellNavbar _ { children = children }
+
+foreign import appShellNavbarComponent :: ReactComponent AppShellComponentPropsImpl
+
+appShellHeader :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
+appShellHeader = mkTrivialComponent appShellHeaderComponent
+
+appShellHeader_ :: Array JSX -> JSX
+appShellHeader_ children = appShellHeader _ { children = children }
+
+foreign import appShellHeaderComponent :: ReactComponent AppShellComponentPropsImpl
+
+appShellAside :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
+appShellAside = mkTrivialComponent appShellAsideComponent
+
+appShellAside_ :: Array JSX -> JSX
+appShellAside_ children = appShellAside _ { children = children }
+
+foreign import appShellAsideComponent  :: ReactComponent AppShellComponentPropsImpl
+
+appShellFooter :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
+appShellFooter = mkTrivialComponent appShellFooterComponent
+
+appShellFooter_ :: Array JSX -> JSX
+appShellFooter_ children = appShellFooter _ { children = children }
+
+foreign import appShellFooterComponent :: ReactComponent AppShellComponentPropsImpl
+
+type AppShellComponentProps =
   ThemingProps
-    ( children   :: Array JSX
-    , fixed      :: Boolean
-    , height     :: Maybe VerticalSectionHeight
-    , position   :: Maybe VerticalSectionPosition
-    , withBorder :: Boolean
-    , zIndex     :: Maybe Number
+    ( boolean  :: Boolean
+    , children :: Array JSX
+    , zIndex   :: Maybe Number
     )
 
-data VerticalSectionHeight
-  = VerticalSectionHeightNumeric Number
-  | VerticalSectionHeightString String
-  | VerticalSectionHeightRules Rules
-
--- number | string | Partial<Record<string, string | number>>
-type VerticalSectionHeightImpl = Number |+| String |+| Object (String |+| Number)
-
-instance ToFFI VerticalSectionHeight VerticalSectionHeightImpl where
-  toNative = case _ of
-    VerticalSectionHeightNumeric nr -> asOneOf nr
-    VerticalSectionHeightString  s  -> asOneOf s
-    VerticalSectionHeightRules   rs -> asOneOf (toNative rs)
-
-type VerticalSectionPosition =
-  { bottom :: Maybe Number
-  , left   :: Maybe Number
-  , right  :: Maybe Number
-  , top    :: Maybe Number
-  }
-
-type VerticalSectionPropsImpl =
+type AppShellComponentPropsImpl =
   ThemingPropsImpl
-    ( children   :: Array JSX
-    , fixed      :: Boolean
-    , height     :: Nullable VerticalSectionHeightImpl
-    , position   :: Nullable VerticalSectionPositionImpl
-    , withBorder :: Boolean
-    , zIndex     :: Nullable Number
+    ( boolean  :: Boolean
+    , children :: Array JSX
+    , zIndex   :: Nullable Number
     )
-
-type VerticalSectionPositionImpl =
-  { bottom :: Nullable Number
-  , left   :: Nullable Number
-  , right  :: Nullable Number
-  , top    :: Nullable Number
-  }
