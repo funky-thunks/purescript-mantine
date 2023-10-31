@@ -21,6 +21,7 @@ module Mantine.Core.Common
   , MantineTransition(..)
   , MantineTransitionTimingFunction(..)
   , TextAlign(..)
+  , FontWeight(..)
 
   , ThemingProps
   , ThemingPropsRow
@@ -747,26 +748,38 @@ textAlignNative = case _ of
   TextAlignJustify     -> "justify"
   TextAlignMatchParent -> "match-parent"
 
+newtype FontWeight = FontWeight Int
+
+instance ToFFI FontWeight Number where
+  toNative (FontWeight fw) = toNative fw
+
 type ThemingProps r = Record (ThemingPropsRow + r)
 
 type ThemingPropsRow r =
-  ( m  :: Maybe MantineSize
-  , mt :: Maybe MantineSize
-  , mb :: Maybe MantineSize
-  , ml :: Maybe MantineSize
-  , mr :: Maybe MantineSize
-  , mx :: Maybe MantineSize
-  , my :: Maybe MantineSize
-  , p  :: Maybe MantineSize
-  , pt :: Maybe MantineSize
-  , pb :: Maybe MantineSize
-  , pl :: Maybe MantineSize
-  , pr :: Maybe MantineSize
-  , px :: Maybe MantineSize
-  , py :: Maybe MantineSize
-  , bg :: Maybe MantineColor
-  , c  :: Maybe MantineColor
-  , sx :: Style
+  ( m   :: Maybe MantineSize
+  , mt  :: Maybe MantineSize
+  , mb  :: Maybe MantineSize
+  , ml  :: Maybe MantineSize
+  , mr  :: Maybe MantineSize
+  , mx  :: Maybe MantineSize
+  , my  :: Maybe MantineSize
+  , p   :: Maybe MantineSize
+  , pt  :: Maybe MantineSize
+  , pb  :: Maybe MantineSize
+  , pl  :: Maybe MantineSize
+  , pr  :: Maybe MantineSize
+  , px  :: Maybe MantineSize
+  , py  :: Maybe MantineSize
+  , w   :: Maybe MantineSize
+  , miw :: Maybe MantineSize
+  , maw :: Maybe MantineSize
+  , h   :: Maybe MantineSize
+  , mih :: Maybe MantineSize
+  , mah :: Maybe MantineSize
+  , fw  :: Maybe FontWeight
+  , bg  :: Maybe MantineColor
+  , c   :: Maybe MantineColor
+  , sx  :: Style
   | r
   )
 
@@ -802,23 +815,30 @@ defaultThemingProps_ = defaultThemingPropsGeneral defaultValue
 type ThemingPropsImpl otherProps = Record (ThemingPropsImplRow + otherProps)
 
 type ThemingPropsImplRow r =
-  ( m  :: Nullable String
-  , mt :: Nullable String
-  , mb :: Nullable String
-  , ml :: Nullable String
-  , mr :: Nullable String
-  , mx :: Nullable String
-  , my :: Nullable String
-  , p  :: Nullable String
-  , pt :: Nullable String
-  , pb :: Nullable String
-  , pl :: Nullable String
-  , pr :: Nullable String
-  , px :: Nullable String
-  , py :: Nullable String
-  , bg :: Nullable String
-  , c  :: Nullable String
-  , sx :: Style
+  ( m   :: Nullable String
+  , mt  :: Nullable String
+  , mb  :: Nullable String
+  , ml  :: Nullable String
+  , mr  :: Nullable String
+  , mx  :: Nullable String
+  , my  :: Nullable String
+  , p   :: Nullable String
+  , pt  :: Nullable String
+  , pb  :: Nullable String
+  , pl  :: Nullable String
+  , pr  :: Nullable String
+  , px  :: Nullable String
+  , py  :: Nullable String
+  , w   :: Nullable String
+  , miw :: Nullable String
+  , maw :: Nullable String
+  , h   :: Nullable String
+  , mih :: Nullable String
+  , mah :: Nullable String
+  , fw  :: Nullable Number
+  , bg  :: Nullable String
+  , c   :: Nullable String
+  , sx  :: Style
   | r
   )
 
@@ -827,8 +847,8 @@ themingToImpl :: forall otherProps otherPropsImpl
                      (ThemingPropsImplRow otherPropsImpl)
               => (ThemingProps otherProps -> Record                      otherPropsImpl)
               ->  ThemingProps otherProps -> Record (ThemingPropsImplRow otherPropsImpl)
-themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx } =
-  toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, bg, c, sx }
+themingToImpl f props@{ m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, w, miw, maw, h, mih, mah, fw, bg, c, sx } =
+  toNative { m, mt, mb, ml, mr, mx, my, p, pt, pb, pl, pr, px, py, w, miw, maw, h, mih, mah, fw, bg, c, sx }
     `merge` f props
 
 newtype ValueHandler value = ValueHandler (value -> Effect Unit)
