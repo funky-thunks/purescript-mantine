@@ -7,7 +7,7 @@ import Mantine.Core.Prelude
 import React.Basic.Emotion (Style)
 
 transition :: (Style -> JSX) -> (TransitionProps -> TransitionProps) -> JSX
-transition = mkComponent transitionComponent transitionPropsToImpl <<< defaultTransitionProps
+transition = mkComponentWithDefault transitionComponent <<< defaultTransitionProps
 
 foreign import transitionComponent :: ReactComponent TransitionPropsImpl
 
@@ -47,8 +47,3 @@ type TransitionPropsImpl =
   , timingFunction :: Nullable String
   , transition     :: Nullable String
   }
-
-transitionPropsToImpl :: TransitionProps -> TransitionPropsImpl
-transitionPropsToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "children")
-   in { children: props.children } `union` rest props

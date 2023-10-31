@@ -80,6 +80,9 @@ instance ToFFI File File where
 instance ToFFI Style Style where
   toNative = identity
 
+instance ToFFI (Style -> JSX) (Style -> JSX) where
+  toNative = identity
+
 instance ToFFI EventHandler EventHandler where
   toNative = identity
 
