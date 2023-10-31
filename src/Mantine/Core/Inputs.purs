@@ -33,7 +33,7 @@ import Mantine.Core.Inputs.FileInput (CaptureMode(..), FileInputProps, fileInput
 import Mantine.Core.Inputs.Input (InputDescriptionProps, InputErrorProps, InputLabelProps, InputProps, InputPropsRow, InputType(..), InputVariant(..), InputWrapperElement(..), InputWrapperOrder(..), InputWrapperProps, input, inputDescription, inputError, inputLabel, inputWrapper)
 import Mantine.Core.Inputs.JsonInput (JsonInputProps, jsonInput)
 import Mantine.Core.Inputs.NativeSelect (NativeSelectProps, nativeSelect)
-import Mantine.Core.Inputs.NumberInput (NumberClampBehavior(..), NumberInput(..), NumberInputHandlers, NumberInputProps, NumberInputType(..), ThousandsGroupStyle(..), numberInput)
+import Mantine.Core.Inputs.NumberInput (NumberClampBehavior(..), NumberInput(..), NumberInputHandlers, NumberInputProps, NumberInputType(..), ThousandSeparator(..), ThousandsGroupStyle(..), numberInput)
 import Mantine.Core.Inputs.PasswordInput (PasswordInputProps, passwordInput)
 import Mantine.Core.Inputs.PinInput (PinInputMode(..), PinInputProps, PinInputType(..), pinInput)
 import Mantine.Core.Inputs.Radio (RadioGroupProps, RadioProps, radio, radioGroup, radioGroup_)

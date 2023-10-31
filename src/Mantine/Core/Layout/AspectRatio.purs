@@ -11,16 +11,16 @@ aspectRatio = mkComponentWithDefault aspectRatioComponent defaultAspectRatioProp
 foreign import aspectRatioComponent :: ReactComponent AspectRatioPropsImpl
 
 type AspectRatioProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , ratio    :: Number
     )
 
 defaultAspectRatioProps :: AspectRatioProps
-defaultAspectRatioProps = defaultThemingProps { ratio: 1.0 }
+defaultAspectRatioProps = defaultMantineComponent { ratio: 1.0 }
 
 type AspectRatioPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , ratio    :: Number
     )

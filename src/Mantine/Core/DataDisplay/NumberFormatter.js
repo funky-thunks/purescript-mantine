@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TransferList } from '@mantine/core';
+import { NumberFormmatter } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -9,6 +9,6 @@ function removeEmpty(obj) {
   );
 }
 
-export function transferListComponent(props) {
-  return React.createElement(TransferList, removeEmpty(props), null);
+export function numberFormatterComponent(props) {
+  return React.createElement(NumberFormmatter, removeEmpty(props), props.children);
 }

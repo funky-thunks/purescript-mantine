@@ -11,7 +11,7 @@ module Mantine.Core.Layout
   , module Mantine.Core.Layout.Stack
   ) where
 
-import Mantine.Core.Layout.AppShell (AppShellCollapse, AppShellComponentProps, AppShellHorizontalConfiguration, AppShellLayout(..), AppShellMainProps, AppShellPadding(..), AppShellProps, AppShellResponsiveSize, AppShellRules(..), AppShellSectionProps, AppShellSize(..), AppShellVerticalConfiguration, appShell, appShellAside, appShellAside_, appShellFooter, appShellFooter_, appShellHeader, appShellHeader_, appShellMain, appShellNavbar, appShellNavbar_, appShellSection, appShellSection_)
+import Mantine.Core.Layout.AppShell (AppShellCollapse, AppShellComponentProps, AppShellHorizontalConfiguration, AppShellLayout(..), AppShellMainProps, AppShellPadding(..), AppShellProps, AppShellResponsiveSize, AppShellRules(..), AppShellSectionProps, AppShellSize(..), AppShellVerticalConfiguration, appShell, appShellAside, appShellAside_, appShellFooter, appShellFooter_, appShellHeader, appShellHeader_, appShellMain, appShellNavbar, appShellNavbar_, appShellScrollableSection, appShellScrollableSection_, appShellSection, appShellSection_)
 import Mantine.Core.Layout.AspectRatio (AspectRatioProps, aspectRatio)
 import Mantine.Core.Layout.Center (CenterProps, center, center_)
 import Mantine.Core.Layout.Container (ContainerProps, container, container_)

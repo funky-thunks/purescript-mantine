@@ -32,9 +32,14 @@ module Mantine.Core.Combobox.Combobox
   , EventsTargetType(..)
 
   , ComboboxPropsImpl
+  , ComboboxArrowPositionImpl
+  , ComboboxFloatingPositionImpl
+  , ComboboxPopoverWidthImpl
   , FloatingAxesOffsetsImpl
   , OffsetImpl
   , ComboboxStoreImpl
+  , ComboboxDropdownEventSourceImpl
+  , ComboboxSelectedOptionImpl
   ) where
 
 import Effect.Uncurried (EffectFn2)
@@ -49,7 +54,7 @@ foreign import comboboxComponent :: ReactComponent ComboboxPropsImpl
 
 defaultComboboxProps :: ComboboxProps
 defaultComboboxProps =
-  defaultThemingProps
+  defaultMantineComponent
     { onClose: pure unit
     , onOpen:  pure unit
     , onOptionSubmit: const (const (pure unit))
@@ -61,7 +66,7 @@ defaultComboboxProps =
 --   }
 
 type ComboboxProps =
-  ThemingProps
+  MantineComponent
     ( arrowOffset                 :: Maybe Pixels
     , arrowPosition               :: Maybe ComboboxArrowPosition
     , arrowRadius                 :: Maybe Pixels
@@ -81,36 +86,36 @@ type ComboboxProps =
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , size                        :: Maybe MantineSize
     , shadow                      :: Maybe MantineShadow
+    , size                        :: Maybe MantineSize
     , store                       :: Maybe ComboboxStore
     , transitionProps             :: MantineTransitionProps
     , width                       :: Maybe ComboboxPopoverWidth
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: Maybe Number
+    , zIndex                      :: Maybe ZIndex
     )
 
 type ComboboxStore =
-  { dropdownOpened            :: Boolean
-  , openDropdown              :: ValueHandler ComboboxDropdownEventSource
+  { clickSelectedOption       :: Effect Unit
   , closeDropdown             :: ValueHandler ComboboxDropdownEventSource
-  , toggleDropdown            :: ValueHandler ComboboxDropdownEventSource
-  , selectedOptionIndex       :: Maybe Number
-  , selectOption              :: ValueHandler Number
+  , dropdownOpened            :: Boolean
+  , focusSearchInput          :: Effect Unit
+  , focusTarget               :: Effect Unit
+  , listId                    :: Maybe String
+  , openDropdown              :: ValueHandler ComboboxDropdownEventSource
+  , resetSelectedOption       :: Effect Unit
+  , searchRef                 :: Maybe (Ref HTMLInputElement)
   , selectActiveOption        :: Effect (Maybe String)
   , selectFirstOption         :: Effect (Maybe String)
   , selectNextOption          :: Effect (Maybe String)
+  , selectOption              :: ValueHandler Number
   , selectPreviousOption      :: Effect (Maybe String)
-  , resetSelectedOption       :: Effect Unit
-  , clickSelectedOption       :: Effect Unit
-  , updateSelectedOptionIndex :: ValueHandler ComboboxSelectedOption
-  , listId                    :: Maybe String
+  , selectedOptionIndex       :: Maybe Number
   , setListId                 :: ValueHandler String
-  , searchRef                 :: Maybe (Ref HTMLInputElement)
-  , focusSearchInput          :: Effect Unit
   , targetRef                 :: Maybe (Ref HTMLElement)
-  , focusTarget               :: Effect Unit
+  , toggleDropdown            :: ValueHandler ComboboxDropdownEventSource
+  , updateSelectedOptionIndex :: ValueHandler ComboboxSelectedOption
   }
 
 data ComboboxDropdownEventSource
@@ -118,14 +123,16 @@ data ComboboxDropdownEventSource
   | ComboboxDropdownEventSourceMouse
   | ComboboxDropdownEventSourceUnknown
 
-instance FromFFI String ComboboxDropdownEventSource where
+instance FromFFI ComboboxDropdownEventSourceImpl ComboboxDropdownEventSource where
   fromNative = case _ of
     "keyboard" -> ComboboxDropdownEventSourceKeyboard
     "mouse"    -> ComboboxDropdownEventSourceMouse
     "unknown"  -> ComboboxDropdownEventSourceUnknown
     _          -> ComboboxDropdownEventSourceUnknown
 
-instance ToFFI ComboboxDropdownEventSource String where
+type ComboboxDropdownEventSourceImpl = String
+
+instance ToFFI ComboboxDropdownEventSource ComboboxDropdownEventSourceImpl where
   toNative = case _ of
     ComboboxDropdownEventSourceKeyboard -> "keyboard"
     ComboboxDropdownEventSourceMouse    -> "mouse"
@@ -135,36 +142,38 @@ data ComboboxSelectedOption
   = ComboboxSelectedOptionActive
   | ComboboxSelectedOptionSelected
 
-instance ToFFI ComboboxSelectedOption String where
+type ComboboxSelectedOptionImpl = String
+
+instance ToFFI ComboboxSelectedOption ComboboxSelectedOptionImpl where
   toNative = case _ of
     ComboboxSelectedOptionActive   -> "active"
     ComboboxSelectedOptionSelected -> "selected"
 
-instance FromFFI String ComboboxSelectedOption where
+instance FromFFI ComboboxSelectedOptionImpl ComboboxSelectedOption where
   fromNative = case _ of
     "active" -> ComboboxSelectedOptionActive
     _        -> ComboboxSelectedOptionSelected
 
 type ComboboxStoreImpl =
-  { dropdownOpened            :: Boolean
-  , openDropdown              :: EffectFn1 String Unit
-  , closeDropdown             :: EffectFn1 String Unit
-  , toggleDropdown            :: EffectFn1 String Unit
-  , selectedOptionIndex       :: Nullable Number
-  , selectOption              :: EffectFn1 Number Unit
+  { clickSelectedOption       :: Effect Unit
+  , closeDropdown             :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
+  , dropdownOpened            :: Boolean
+  , focusSearchInput          :: Effect Unit
+  , focusTarget               :: Effect Unit
+  , listId                    :: Nullable String
+  , openDropdown              :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
+  , resetSelectedOption       :: Effect Unit
+  , searchRef                 :: Nullable (Ref HTMLInputElement)
   , selectActiveOption        :: Effect (Nullable String)
   , selectFirstOption         :: Effect (Nullable String)
   , selectNextOption          :: Effect (Nullable String)
+  , selectOption              :: ValueHandlerImpl Number
   , selectPreviousOption      :: Effect (Nullable String)
-  , resetSelectedOption       :: Effect Unit
-  , clickSelectedOption       :: Effect Unit
-  , updateSelectedOptionIndex :: EffectFn1 String Unit
-  , listId                    :: Nullable String
-  , setListId                 :: EffectFn1 String Unit
-  , searchRef                 :: Nullable (Ref HTMLInputElement)
-  , focusSearchInput          :: Effect Unit
+  , selectedOptionIndex       :: Nullable Number
+  , setListId                 :: ValueHandlerImpl String
   , targetRef                 :: Nullable (Ref HTMLElement)
-  , focusTarget               :: Effect Unit
+  , toggleDropdown            :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
+  , updateSelectedOptionIndex :: ValueHandlerImpl ComboboxSelectedOptionImpl
   }
 
 data Offset
@@ -194,7 +203,9 @@ data ComboboxPopoverWidth
   = ComboboxPopoverWidthTarget
   | ComboboxPopoverWidthNative String
 
-instance ToFFI ComboboxPopoverWidth String where
+type ComboboxPopoverWidthImpl = String
+
+instance ToFFI ComboboxPopoverWidth ComboboxPopoverWidthImpl where
   toNative = case _ of
     ComboboxPopoverWidthTarget   -> "target"
     ComboboxPopoverWidthNative n -> n
@@ -213,9 +224,12 @@ data ComboboxFloatingPosition
   | ComboboxFloatingPositionBottomEnd
   | ComboboxFloatingPositionLeftEnd
 
-instance DefaultValue ComboboxFloatingPosition where defaultValue = ComboboxFloatingPositionBottom
+instance DefaultValue ComboboxFloatingPosition where
+  defaultValue = ComboboxFloatingPositionBottom
 
-instance ToFFI ComboboxFloatingPosition String where
+type ComboboxFloatingPositionImpl = String
+
+instance ToFFI ComboboxFloatingPosition ComboboxFloatingPositionImpl where
   toNative = case _ of
     ComboboxFloatingPositionTop         -> "top"
     ComboboxFloatingPositionRight       -> "right"
@@ -250,17 +264,19 @@ data ComboboxArrowPosition
   = ComboboxArrowPositionCenter
   | ComboboxArrowPositionSide
 
-instance ToFFI ComboboxArrowPosition String where
+type ComboboxArrowPositionImpl = String
+
+instance ToFFI ComboboxArrowPosition ComboboxArrowPositionImpl where
   toNative = case _ of
     ComboboxArrowPositionCenter -> "center"
     ComboboxArrowPositionSide   -> "side"
 
 type ComboboxPropsImpl =
-  ThemingPropsImpl
-    ( arrowOffset                 :: Nullable Number
-    , arrowPosition               :: Nullable String
-    , arrowRadius                 :: Nullable Number
-    , arrowSize                   :: Nullable Number
+  MantineComponentImpl
+    ( arrowOffset                 :: Nullable PixelsImpl
+    , arrowPosition               :: Nullable ComboboxArrowPositionImpl
+    , arrowRadius                 :: Nullable PixelsImpl
+    , arrowSize                   :: Nullable PixelsImpl
     , children                    :: Array JSX
     , disabled                    :: Boolean
     , dropdownPadding             :: Nullable Number
@@ -270,20 +286,20 @@ type ComboboxPropsImpl =
     , onClose                     :: Effect Unit
     , onOpen                      :: Effect Unit
     , onOptionSubmit              :: EffectFn2 String ComboboxOptionProps Unit
-    , onPositionChange            :: EffectFn1 String Unit
-    , position                    :: String
+    , onPositionChange            :: ValueHandlerImpl ComboboxFloatingPositionImpl
+    , position                    :: ComboboxFloatingPositionImpl
     , radius                      :: Nullable MantineNumberSizeImpl
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , size                        :: Nullable String
-    , shadow                      :: Nullable String
+    , shadow                      :: Nullable MantineShadowImpl
+    , size                        :: Nullable MantineSizeImpl
     , store                       :: Nullable ComboboxStoreImpl
     , transitionProps             :: MantineTransitionPropsImpl
-    , width                       :: Nullable String
+    , width                       :: Nullable ComboboxPopoverWidthImpl
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: Nullable Number
+    , zIndex                      :: Nullable ZIndexImpl
     )
 
 comboboxOption :: (ComboboxOptionProps -> ComboboxOptionProps) -> JSX
@@ -292,7 +308,7 @@ comboboxOption = mkTrivialComponent comboboxOptionComponent
 foreign import comboboxOptionComponent :: ReactComponent ComboboxOptionPropsImpl
 
 type ComboboxOptionProps =
-  ThemingProps
+  MantineComponent
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
@@ -300,7 +316,7 @@ type ComboboxOptionProps =
     )
 
 type ComboboxOptionPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
@@ -313,7 +329,7 @@ comboboxTarget = mkTrivialComponent comboboxTargetComponent
 foreign import comboboxTargetComponent :: ReactComponent ComboboxTargetPropsImpl
 
 type ComboboxTargetProps =
-  ThemingProps
+  MantineComponent
     ( children               :: Array JSX
     , refProp                :: Maybe String
     , targetType             :: EventsTargetType
@@ -323,10 +339,10 @@ type ComboboxTargetProps =
     )
 
 type ComboboxTargetPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children               :: Array JSX
     , refProp                :: Nullable String
-    , targetType             :: String
+    , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
@@ -338,13 +354,13 @@ comboboxDropdownTarget = mkTrivialComponent comboboxDropdownTargetComponent
 foreign import comboboxDropdownTargetComponent :: ReactComponent ComboboxDropdownTargetPropsImpl
 
 type ComboboxDropdownTargetProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , refProp  :: Maybe String
     )
 
 type ComboboxDropdownTargetPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , refProp  :: Nullable String
     )
@@ -355,7 +371,7 @@ comboboxEventsTarget = mkTrivialComponent comboboxEventsTargetComponent
 foreign import comboboxEventsTargetComponent :: ReactComponent ComboboxEventsTargetPropsImpl
 
 type ComboboxEventsTargetProps =
-  ThemingProps
+  MantineComponent
     ( children               :: Array JSX
     , refProp                :: Maybe String
     , targetType             :: EventsTargetType
@@ -365,10 +381,10 @@ type ComboboxEventsTargetProps =
     )
 
 type ComboboxEventsTargetPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children               :: Array JSX
     , refProp                :: Nullable String
-    , targetType             :: String
+    , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
@@ -379,36 +395,27 @@ comboboxDropdown = mkTrivialComponent comboboxDropdownComponent
 
 foreign import comboboxDropdownComponent :: ReactComponent ComboboxDropdownPropsImpl
 
-type ComboboxDropdownProps =
-  ThemingProps
-    ( hidden :: Boolean
-    )
-
-type ComboboxDropdownPropsImpl =
-  ThemingPropsImpl
-    ( hidden :: Boolean
-    )
+type ComboboxDropdownProps     = MantineComponent     ( hidden :: Boolean )
+type ComboboxDropdownPropsImpl = MantineComponentImpl ( hidden :: Boolean )
 
 comboboxGroup :: (ComboboxGroupProps -> ComboboxGroupProps) -> JSX
 comboboxGroup = mkTrivialComponent comboboxGroupComponent
 
 foreign import comboboxGroupComponent :: ReactComponent ComboboxGroupPropsImpl
 
-type ComboboxGroupProps =
-  ThemingProps
-    ( label :: Maybe JSX
-    )
+type ComboboxGroupProps     = MantineComponent     ( label :: Maybe    JSX )
+type ComboboxGroupPropsImpl = MantineComponentImpl ( label :: Nullable JSX )
 
-type ComboboxGroupPropsImpl =
-  ThemingPropsImpl
-    ( label :: Nullable JSX
-    )
+data EventsTargetType
+  = EventsTargetTypeInput
+  | EventsTargetTypeButton
 
-data EventsTargetType = EventsTargetTypeInput | EventsTargetTypeButton
+instance DefaultValue EventsTargetType where
+  defaultValue = EventsTargetTypeInput
 
-instance ToFFI EventsTargetType String where
+type EventsTargetTypeImpl = String
+
+instance ToFFI EventsTargetType EventsTargetTypeImpl where
   toNative = case _ of
     EventsTargetTypeInput  -> "input"
     EventsTargetTypeButton -> "button"
-
-instance DefaultValue EventsTargetType where defaultValue = EventsTargetTypeInput

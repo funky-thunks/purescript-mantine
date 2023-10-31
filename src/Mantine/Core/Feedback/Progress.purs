@@ -29,17 +29,17 @@ progressSection = mkTrivialComponent progressSectionComponent
 foreign import progressSectionComponent :: ReactComponent ProgressSectionPropsImpl
 
 type ProgressProps =
-  ThemingProps (ProgressSectionPropsRow ProgressRootPropsRow)
+  MantineComponent (ProgressSectionPropsRow ProgressRootPropsRow)
 
 type ProgressRootPropsRow =
   ( radius :: Maybe MantineNumberSize
   , size   :: Maybe MantineNumberSize
   )
 
-type ProgressRootProps = ThemingProps ProgressRootPropsRow
+type ProgressRootProps = MantineComponent ProgressRootPropsRow
 
 type ProgressSectionProps =
-  ThemingProps
+  MantineComponent
     ( ProgressSectionPropsRow
       ( onMouseEnter :: Maybe EventHandler
       , onMouseLeave :: Maybe EventHandler
@@ -56,17 +56,17 @@ type ProgressSectionPropsRow rest =
   )
 
 type ProgressPropsImpl =
-  ThemingPropsImpl (ProgressSectionPropsImplRow ProgressRootPropsImplRow)
+  MantineComponentImpl (ProgressSectionPropsImplRow ProgressRootPropsImplRow)
 
 type ProgressRootPropsImplRow =
   ( radius :: Nullable MantineNumberSizeImpl
   , size   :: Nullable MantineNumberSizeImpl
   )
 
-type ProgressRootPropsImpl = ThemingPropsImpl ProgressRootPropsImplRow
+type ProgressRootPropsImpl = MantineComponentImpl ProgressRootPropsImplRow
 
 type ProgressSectionPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( ProgressSectionPropsImplRow
       ( onMouseEnter :: Nullable EventHandler
       , onMouseLeave :: Nullable EventHandler
@@ -76,7 +76,7 @@ type ProgressSectionPropsImpl =
 
 type ProgressSectionPropsImplRow rest =
   ( animated :: Boolean
-  , color    :: Nullable String
+  , color    :: Nullable MantineColorImpl
   , striped  :: Boolean
   , value    :: Number
   | rest

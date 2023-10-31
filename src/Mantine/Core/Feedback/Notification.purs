@@ -16,7 +16,7 @@ notification_ children = notification _ { children = children }
 foreign import notificationComponent :: ReactComponent NotificationPropsImpl
 
 type NotificationProps =
-  ThemingProps
+  MantineComponent
     ( children         :: JSX
     , closeButtonProps :: Maybe CloseButtonProps
     , color            :: Maybe MantineColor
@@ -31,16 +31,16 @@ type NotificationProps =
 
 defaultNotificationProps :: NotificationProps
 defaultNotificationProps =
-   defaultThemingProps
+   defaultMantineComponent
      { children: mempty
      , onClose: pure unit
      }
 
 type NotificationPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children         :: JSX
     , closeButtonProps :: Nullable CloseButtonPropsImpl
-    , color            :: Nullable String
+    , color            :: Nullable MantineColorImpl
     , icon             :: Nullable JSX
     , loading          :: Boolean
     , onClose          :: Effect Unit

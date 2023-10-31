@@ -15,7 +15,7 @@ flex_ children = flex _ { children = children }
 foreign import flexComponent :: ReactComponent FlexPropsImpl
 
 type FlexProps =
-  ThemingProps
+  MantineComponent
     ( align     :: Maybe AlignItems
     , children  :: Array JSX
     , columnGap :: Maybe MantineSize
@@ -27,13 +27,13 @@ type FlexProps =
     )
 
 type FlexPropsImpl =
-  ThemingPropsImpl
-    ( align     :: Nullable String
+  MantineComponentImpl
+    ( align     :: Nullable AlignItemsImpl
     , children  :: Array JSX
-    , columnGap :: Nullable String
-    , direction :: Nullable String
-    , gap       :: Nullable String
-    , justify   :: Nullable String
-    , rowGap    :: Nullable String
-    , wrap      :: String
+    , columnGap :: Nullable MantineSizeImpl
+    , direction :: Nullable FlexDirectionImpl
+    , gap       :: Nullable MantineSizeImpl
+    , justify   :: Nullable JustifyContentImpl
+    , rowGap    :: Nullable MantineSizeImpl
+    , wrap      :: FlexWrapImpl
     )

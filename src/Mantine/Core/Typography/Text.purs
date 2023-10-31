@@ -20,10 +20,11 @@ text_ children = text _ { children = children }
 
 foreign import textComponent :: ReactComponent TextPropsImpl
 
-type TextProps = ThemingProps (TextSpecificPropsRow + TextPropsRow)
+type TextProps = MantineComponent (TextSpecificPropsRow + TextPropsRow)
 
 type TextSpecificPropsRow r =
   ( children :: Array JSX
+  , color    :: Maybe MantineColor
   , span     :: Boolean
   | r
   )
@@ -32,7 +33,7 @@ type TextPropsRow =
   ( gradient  :: Maybe MantineGradient
   , inherit   :: Boolean
   , inline    :: Boolean
-  , lineClamp :: Maybe Number
+  , lineClamp :: Maybe Int
   , size      :: Maybe MantineNumberSize
   , truncate  :: Maybe TextTruncate
   )
@@ -50,7 +51,14 @@ instance ToFFI TextTruncate TextTruncateImpl where
     TextTruncateStart -> asOneOf "start"
     TextTruncateEnd   -> asOneOf "end"
 
-type TextPropsImpl = ThemingPropsImpl (TextSpecificPropsRow + TextPropsImplRow)
+type TextPropsImpl = MantineComponentImpl (TextSpecificPropsImplRow + TextPropsImplRow)
+
+type TextSpecificPropsImplRow r =
+  ( children :: Array JSX
+  , color    :: Nullable MantineColorImpl
+  , span     :: Boolean
+  | r
+  )
 
 type TextPropsImplRow =
   ( gradient  :: Nullable MantineGradientImpl

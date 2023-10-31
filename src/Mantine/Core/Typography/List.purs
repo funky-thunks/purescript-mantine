@@ -20,11 +20,11 @@ list_ children = list _ { children = children }
 foreign import listComponent :: ReactComponent ListPropsImpl
 
 type ListProps =
-  ThemingProps
+  MantineComponent
     ( center        :: Boolean
     , children      :: Array JSX
     , icon          :: Maybe JSX
-    , listStyleType :: Maybe String
+    , listStyleType :: Maybe ListStyleType
     , size          :: Maybe MantineNumberSize
     , spacing       :: Maybe MantineNumberSize
     , type          :: ListType
@@ -37,20 +37,22 @@ data ListType
 
 instance DefaultValue ListType where defaultValue = ListTypeUnordered
 
-instance ToFFI ListType String where
+type ListTypeImpl = String
+
+instance ToFFI ListType ListTypeImpl where
   toNative = case _ of
     ListTypeOrdered   -> "ordered"
     ListTypeUnordered -> "unordered"
 
 type ListPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( center        :: Boolean
     , children      :: Array JSX
     , icon          :: Nullable JSX
-    , listStyleType :: Nullable String
+    , listStyleType :: Nullable ListStyleTypeImpl
     , size          :: Nullable MantineNumberSizeImpl
     , spacing       :: Nullable MantineNumberSizeImpl
-    , type          :: String
+    , type          :: ListTypeImpl
     , withPadding   :: Boolean
     )
 
@@ -63,13 +65,13 @@ listItem_ children = listItem _ { children = children }
 foreign import listItemComponent :: ReactComponent ListItemPropsImpl
 
 type ListItemProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , icon     :: Maybe JSX
     )
 
 type ListItemPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , icon     :: Nullable JSX
     )

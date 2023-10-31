@@ -13,15 +13,15 @@ foreign import transitionComponent :: ReactComponent TransitionPropsImpl
 
 type TransitionProps =
   { children       :: Style -> JSX
-  , duration       :: Maybe Number
-  , exitDuration   :: Maybe Number
+  , duration       :: Maybe Milliseconds
+  , exitDuration   :: Maybe Milliseconds
   , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
   , onExit         :: Effect Unit
   , onExited       :: Effect Unit
-  , timingFunction :: Maybe String
+  , timingFunction :: Maybe MantineTransitionTimingFunction
   , transition     :: Maybe MantineTransition
   }
 
@@ -36,14 +36,14 @@ defaultTransitionProps children =
 
 type TransitionPropsImpl =
   { children       :: Style -> JSX
-  , duration       :: Nullable Number
-  , exitDuration   :: Nullable Number
+  , duration       :: Nullable MillisecondsImpl
+  , exitDuration   :: Nullable MillisecondsImpl
   , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
   , onExit         :: Effect Unit
   , onExited       :: Effect Unit
-  , timingFunction :: Nullable String
-  , transition     :: Nullable String
+  , timingFunction :: Nullable MantineTransitionTimingFunctionImpl
+  , transition     :: Nullable MantineTransitionImpl
   }

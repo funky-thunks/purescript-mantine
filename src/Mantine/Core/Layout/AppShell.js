@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppShell, Navbar, Header, Aside, Footer } from '@mantine/core';
+import { AppShell, Navbar, Header, Aside, Footer, ScrollArea } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -22,6 +22,11 @@ export function appShellNavbarComponent(props) {
 }
 
 export function appShellSectionComponent(props) {
+  return React.createElement(AppShell.Section, removeEmpty(props), props.children);
+}
+
+export function appShellScrollableSectionComponent(props) {
+  props.component = ScrollArea;
   return React.createElement(AppShell.Section, removeEmpty(props), props.children);
 }
 

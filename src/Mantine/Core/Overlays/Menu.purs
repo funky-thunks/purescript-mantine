@@ -39,7 +39,7 @@ foreign import menuComponent :: ReactComponent MenuPropsImpl
 --   }
 
 type MenuProps =
-  ThemingProps
+  MantineComponent
     ( arrowOffset         :: Maybe Pixels
     , arrowPosition       :: Maybe MenuArrowPosition
     , arrowRadius         :: Maybe Pixels
@@ -72,12 +72,12 @@ type MenuProps =
     , width               :: Maybe MenuPopoverWidth
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Maybe Number
+    , zIndex              :: Maybe ZIndex
     )
 
 defaultMenuProps :: MenuProps
 defaultMenuProps =
-  defaultThemingProps
+  defaultMantineComponent
     { closeOnClickOutside: true
     , closeOnEscape:       true
     , closeOnItemClick:    true
@@ -87,14 +87,14 @@ defaultMenuProps =
     }
 
 type MenuPropsImpl =
-  ThemingPropsImpl
-    ( arrowOffset         :: Nullable Number
-    , arrowPosition       :: Nullable String
-    , arrowRadius         :: Nullable Number
-    , arrowSize           :: Nullable Number
+  MantineComponentImpl
+    ( arrowOffset         :: Nullable PixelsImpl
+    , arrowPosition       :: Nullable MenuArrowPositionImpl
+    , arrowRadius         :: Nullable PixelsImpl
+    , arrowSize           :: Nullable PixelsImpl
     , children            :: Array JSX
     , clickOutsideEvents  :: Nullable (Array String)
-    , closeDelay          :: Nullable Number
+    , closeDelay          :: Nullable MillisecondsImpl
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
     , closeOnItemClick    :: Boolean
@@ -104,30 +104,32 @@ type MenuPropsImpl =
     , keepMounted         :: Boolean
     , loop                :: Boolean
     , middlewares         :: PopoverMiddlewaresImpl
-    , offset              :: Nullable Number
-    , onChange            :: EffectFn1 Boolean Unit
+    , offset              :: Nullable PixelsImpl
+    , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
-    , onPositionChange    :: EffectFn1 String Unit
-    , openDelay           :: Nullable Number
+    , onPositionChange    :: ValueHandlerImpl MenuFloatingPositionImpl
+    , openDelay           :: Nullable MillisecondsImpl
     , opened              :: Nullable Boolean
-    , position            :: String
+    , position            :: MenuFloatingPositionImpl
     , radius              :: Nullable MantineNumberSizeImpl
     , returnFocus         :: Boolean
-    , shadow              :: Nullable String
+    , shadow              :: Nullable MantineShadowImpl
     , transitionProps     :: MantineTransitionPropsImpl
-    , trigger             :: Nullable String
-    , width               :: Nullable String
+    , trigger             :: Nullable MenuTriggerImpl
+    , width               :: Nullable MenuPopoverWidthImpl
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Nullable Number
+    , zIndex              :: Nullable ZIndexImpl
     )
 
 data MenuPopoverWidth
   = MenuPopoverWidthTarget
   | MenuPopoverWidthNative String
 
-instance ToFFI MenuPopoverWidth String where
+type MenuPopoverWidthImpl = String
+
+instance ToFFI MenuPopoverWidth MenuPopoverWidthImpl where
   toNative = case _ of
     MenuPopoverWidthTarget -> "target"
     MenuPopoverWidthNative n -> n
@@ -136,7 +138,9 @@ data MenuTrigger
   = MenuTriggerClick
   | MenuTriggerHover
 
-instance ToFFI MenuTrigger String where
+type MenuTriggerImpl = String
+
+instance ToFFI MenuTrigger MenuTriggerImpl where
   toNative = case _ of
     MenuTriggerClick -> "click"
     MenuTriggerHover -> "hover"
@@ -155,9 +159,12 @@ data MenuFloatingPosition
   | MenuFloatingPositionBottomEnd
   | MenuFloatingPositionLeftEnd
 
-instance DefaultValue MenuFloatingPosition where defaultValue = MenuFloatingPositionBottom
+instance DefaultValue MenuFloatingPosition where
+  defaultValue = MenuFloatingPositionBottom
 
-instance ToFFI MenuFloatingPosition String where
+type MenuFloatingPositionImpl = String
+
+instance ToFFI MenuFloatingPosition MenuFloatingPositionImpl where
   toNative = case _ of
     MenuFloatingPositionTop         -> "top"
     MenuFloatingPositionRight       -> "right"
@@ -192,7 +199,9 @@ data MenuArrowPosition
   = MenuArrowPositionCenter
   | MenuArrowPositionSide
 
-instance ToFFI MenuArrowPosition String where
+type MenuArrowPositionImpl = String
+
+instance ToFFI MenuArrowPosition MenuArrowPositionImpl where
   toNative = case _ of
     MenuArrowPositionCenter -> "center"
     MenuArrowPositionSide   -> "side"
@@ -208,7 +217,7 @@ menuItem_ onClick children = (menuItem onClick) _ { children = pure children }
 foreign import menuItemComponent :: ReactComponent MenuItemPropsImpl
 
 type MenuItemProps =
-  ThemingProps
+  MantineComponent
     ( children         :: Array JSX
     , closeMenuOnClick :: Maybe Boolean
     , color            :: Maybe MantineColor
@@ -219,13 +228,13 @@ type MenuItemProps =
     )
 
 defaultMenuItemProps :: Effect Unit -> MenuItemProps
-defaultMenuItemProps onClick = defaultThemingProps { onClick }
+defaultMenuItemProps onClick = defaultMantineComponent { onClick }
 
 type MenuItemPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children         :: Array JSX
     , closeMenuOnClick :: Nullable Boolean
-    , color            :: Nullable String
+    , color            :: Nullable MantineColorImpl
     , disabled         :: Boolean
     , leftSection      :: Nullable JSX
     , onClick          :: EventHandler
@@ -253,13 +262,13 @@ menuTarget_ target = menuTarget _ { children = pure target }
 foreign import menuTargetComponent :: ReactComponent MenuTargetPropsImpl
 
 type MenuTargetProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , refProp  :: Maybe String
     )
 
 type MenuTargetPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , refProp  :: Nullable String
     )

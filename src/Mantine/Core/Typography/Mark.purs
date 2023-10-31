@@ -11,13 +11,13 @@ mark = mkTrivialComponent markComponent
 foreign import markComponent :: ReactComponent MarkPropsImpl
 
 type MarkProps =
-  ThemingProps
+  MantineComponent
     ( children :: String
     , color    :: Maybe MantineColor
     )
 
 type MarkPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: String
-    , color    :: Nullable String
+    , color    :: Nullable MantineColorImpl
     )

@@ -15,18 +15,18 @@ collapse_ children = collapse _ { children = children }
 foreign import collapseComponent :: ReactComponent CollapsePropsImpl
 
 type CollapseProps =
-  ThemingProps
+  MantineComponent
     ( animateOpacity           :: Boolean
     , children                 :: Array JSX
     , onTransitionEnd          :: Effect Unit
     , opened                   :: Boolean
-    , transitionDuration       :: Number
+    , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: MantineTransitionTimingFunction
     )
 
 defaultCollapseProps :: CollapseProps
 defaultCollapseProps =
-  defaultThemingProps
+  defaultMantineComponent
     { animateOpacity:           true
     , onTransitionEnd:          pure unit
     , transitionDuration:       200.0
@@ -34,13 +34,13 @@ defaultCollapseProps =
     }
 
 type CollapsePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( animateOpacity           :: Boolean
     , children                 :: Array JSX
     , in                       :: Boolean
     , onTransitionEnd          :: Effect Unit
-    , transitionDuration       :: Number
-    , transitionTimingFunction :: String
+    , transitionDuration       :: MillisecondsImpl
+    , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
     )
 
 collapseToImpl :: CollapseProps -> CollapsePropsImpl

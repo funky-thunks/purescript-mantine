@@ -20,7 +20,7 @@ foreign import drawerComponent :: ReactComponent DrawerPropsImpl
 --   }
 
 type DrawerProps =
-  ThemingProps
+  MantineComponent
     ( children            :: Array JSX
     , closeButtonProps    :: Maybe CloseButtonProps
     , closeOnClickOutside :: Boolean
@@ -42,11 +42,11 @@ type DrawerProps =
     , withCloseButton     :: Boolean
     , withOverlay         :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Maybe Number
+    , zIndex              :: Maybe ZIndex
     )
 
 defaultDrawerProps :: DrawerProps
-defaultDrawerProps = defaultThemingProps { onClose: pure unit }
+defaultDrawerProps = defaultMantineComponent { onClose: pure unit }
 
 data DrawerPosition
   = DrawerPositionBottom
@@ -54,9 +54,12 @@ data DrawerPosition
   | DrawerPositionRight
   | DrawerPositionTop
 
-instance DefaultValue DrawerPosition where defaultValue = DrawerPositionLeft
+instance DefaultValue DrawerPosition where
+  defaultValue = DrawerPositionLeft
 
-instance ToFFI DrawerPosition String where
+type DrawerPositionImpl = String
+
+instance ToFFI DrawerPosition DrawerPositionImpl where
   toNative = case _ of
     DrawerPositionBottom -> "bottom"
     DrawerPositionLeft   -> "left"
@@ -64,7 +67,7 @@ instance ToFFI DrawerPosition String where
     DrawerPositionTop    -> "top"
 
 type DrawerPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children            :: Array JSX
     , closeButtonProps    :: Nullable CloseButtonPropsImpl
     , closeOnClickOutside :: Boolean
@@ -76,9 +79,9 @@ type DrawerPropsImpl =
     , opened              :: Boolean
     , overlayProps        :: OverlayPropsImpl
     , padding             :: Nullable MantineNumberSizeImpl
-    , position            :: String
+    , position            :: DrawerPositionImpl
     , returnFocus         :: Boolean
-    , shadow              :: Nullable String
+    , shadow              :: Nullable MantineShadowImpl
     , size                :: Nullable MantineNumberSizeImpl
     , title               :: Nullable JSX
     , transitionProps     :: ModalTransitionPropsImpl
@@ -86,5 +89,5 @@ type DrawerPropsImpl =
     , withCloseButton     :: Boolean
     , withOverlay         :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Nullable Number
+    , zIndex              :: Nullable ZIndexImpl
     )

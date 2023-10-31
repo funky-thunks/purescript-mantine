@@ -49,6 +49,10 @@ table_ children = table _ { children = children }
 
 foreign import tableComponent :: ReactComponent TablePropsImpl
 
+-- Not supported properties
+--   { data :: TableData
+--   }
+
 type TableProps =
   WithChildren
     ( borderColor           :: Maybe MantineColor
@@ -57,6 +61,8 @@ type TableProps =
     , highlightOnHoverColor :: Maybe MantineColor
     , horizontalSpacing     :: MantineNumberSize
     , layout                :: TableLayout
+    , stickyHeader          :: Boolean
+    , stickyHeaderOffset    :: Maybe MantineNumberSize
     , striped               :: Boolean
     , stripedColor          :: Maybe MantineColor
     , verticalSpacing       :: MantineNumberSize
@@ -67,7 +73,7 @@ type TableProps =
 
 defaultTableProps :: TableProps
 defaultTableProps =
-  defaultThemingProps
+  defaultMantineComponent
     { horizontalSpacing: Preset ExtraSmall
     , verticalSpacing:   Custom 7.0
     , withRowBorders:    true
@@ -79,21 +85,25 @@ data TableCaptionSide
 
 instance DefaultValue TableCaptionSide where defaultValue = TableCaptionSideTop
 
-instance ToFFI TableCaptionSide String where
+type TableCaptionSideImpl = String
+
+instance ToFFI TableCaptionSide TableCaptionSideImpl where
   toNative = case _ of
     TableCaptionSideBottom -> "bottom"
     TableCaptionSideTop    -> "top"
 
 type TablePropsImpl =
   WithChildrenImpl
-    ( borderColor           :: Nullable String
-    , captionSide           :: String
+    ( borderColor           :: Nullable MantineColorImpl
+    , captionSide           :: TableCaptionSideImpl
     , highlightOnHover      :: Boolean
-    , highlightOnHoverColor :: Nullable String
+    , highlightOnHoverColor :: Nullable MantineColorImpl
     , horizontalSpacing     :: MantineNumberSizeImpl
-    , layout                :: String
+    , layout                :: TableLayoutImpl
+    , stickyHeader          :: Boolean
+    , stickyHeaderOffset    :: Nullable MantineNumberSizeImpl
     , striped               :: Boolean
-    , stripedColor          :: Nullable String
+    , stripedColor          :: Nullable MantineColorImpl
     , verticalSpacing       :: MantineNumberSizeImpl
     , withColumnBorders     :: Boolean
     , withRowBorders        :: Boolean
@@ -189,7 +199,7 @@ type TableTrProps     = WithChildren     ( key :: String )
 type TableTrPropsImpl = WithChildrenImpl ( key :: String )
 
 defaultTableTr :: String -> TableTrProps
-defaultTableTr key = defaultThemingProps { key }
+defaultTableTr key = defaultMantineComponent { key }
 
-type WithChildren     rest = ThemingProps     ( children :: Array JSX | rest )
-type WithChildrenImpl rest = ThemingPropsImpl ( children :: Array JSX | rest )
+type WithChildren     rest = MantineComponent     ( children :: Array JSX | rest )
+type WithChildrenImpl rest = MantineComponentImpl ( children :: Array JSX | rest )

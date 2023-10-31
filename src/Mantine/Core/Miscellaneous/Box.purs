@@ -10,6 +10,5 @@ box = mkTrivialComponent boxComponent
 
 foreign import boxComponent :: ReactComponent BoxPropsImpl
 
-type BoxProps = ThemingProps (children :: Array JSX)
-
-type BoxPropsImpl = ThemingPropsImpl (children :: Array JSX)
+type BoxProps     = MantineComponent     ( children :: Array JSX )
+type BoxPropsImpl = MantineComponentImpl ( children :: Array JSX )

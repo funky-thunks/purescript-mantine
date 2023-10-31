@@ -58,7 +58,7 @@ type FileInputPropsImpl =
     , form             :: String
     , multiple         :: Boolean
     , name             :: String
-    , onChange         :: EffectFn1 File Unit
+    , onChange         :: ValueHandlerImpl File
     , readOnly         :: Boolean
     , value            :: Nullable File
     )

@@ -29,7 +29,7 @@ tabs_ children = tabs _ { children = children }
 foreign import tabsComponent :: ReactComponent TabsPropsImpl
 
 type TabsProps =
-  ThemingProps
+  MantineComponent
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
@@ -39,7 +39,7 @@ type TabsProps =
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onChange                :: Maybe (String -> Effect Unit)
+    , onChange                :: ValueHandler String
     , orientation             :: Maybe Orientation
     , placement               :: Maybe TabsPlacement
     , radius                  :: Maybe MantineNumberSize
@@ -51,7 +51,9 @@ data TabsPlacement
   = TabsPlacementLeft
   | TabsPlacementRight
 
-instance ToFFI TabsPlacement String where
+type TabsPlacementImpl = String
+
+instance ToFFI TabsPlacement TabsPlacementImpl where
   toNative = case _ of
     TabsPlacementLeft  -> "left"
     TabsPlacementRight -> "right"
@@ -61,29 +63,31 @@ data TabsVariant
   | TabsVariantDefault
   | TabsVariantPills
 
-instance ToFFI TabsVariant String where
+type TabsVariantImpl = String
+
+instance ToFFI TabsVariant TabsVariantImpl where
   toNative = case _ of
     TabsVariantOutline -> "outline"
     TabsVariantDefault -> "default"
     TabsVariantPills   -> "pills"
 
 type TabsPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
-    , color                   :: Nullable String
+    , color                   :: Nullable MantineColorImpl
     , defaultValue            :: Nullable String
     , id                      :: Nullable String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onChange                :: Nullable (EffectFn1 String Unit)
-    , orientation             :: Nullable String
-    , placement               :: Nullable String
+    , onChange                :: ValueHandlerImpl String
+    , orientation             :: Nullable OrientationImpl
+    , placement               :: Nullable TabsPlacementImpl
     , radius                  :: Nullable MantineNumberSizeImpl
     , value                   :: Nullable String
-    , variant                 :: Nullable String
+    , variant                 :: Nullable TabsVariantImpl
     )
 
 tab :: (TabsTabProps -> TabsTabProps) -> JSX
@@ -95,7 +99,7 @@ tab_ children = tab _ { children = children}
 foreign import tabComponent :: ReactComponent TabsTabPropsImpl
 
 type TabsTabProps =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , color        :: Maybe MantineColor
     , leftSection  :: Maybe JSX
@@ -105,9 +109,9 @@ type TabsTabProps =
     )
 
 type TabsTabPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children     :: Array JSX
-    , color        :: Nullable String
+    , color        :: Nullable MantineColorImpl
     , leftSection  :: Nullable JSX
     , rightSection :: Nullable JSX
     , size         :: Nullable MantineNumberSizeImpl
@@ -123,17 +127,17 @@ tabList_ children = tabList _ { children = children }
 foreign import tabListComponent :: ReactComponent TabListPropsImpl
 
 type TabListProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , grow     :: Boolean
     , justify  :: Maybe JustifyContent
     )
 
 type TabListPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , grow     :: Boolean
-    , justify  :: Nullable String
+    , justify  :: Nullable JustifyContentImpl
     )
 
 tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX
@@ -145,13 +149,13 @@ tabPanel_ children = tabPanel _ { children = children }
 foreign import tabPanelComponent :: ReactComponent TabPanelPropsImpl
 
 type TabPanelProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , value    :: String
     )
 
 type TabPanelPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , value    :: String
     )

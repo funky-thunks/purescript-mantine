@@ -22,5 +22,5 @@ type KbdProps =
 
 type KbdPropsImpl =
   { children :: Array JSX
-  , size     :: Nullable String
+  , size     :: Nullable MantineSizeImpl
   }

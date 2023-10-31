@@ -21,7 +21,7 @@ stepper = mkComponent stepperComponent stepperPropsToImpl defaultStepperProps
 foreign import stepperComponent :: ReactComponent StepperPropsImpl
 
 type StepperProps =
-  ThemingProps
+  MantineComponent
     ( active               :: Maybe Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
@@ -54,31 +54,36 @@ instance ToFFI StepFragmentComponent StepFragmentComponentImpl where
     Constant      jsx     -> asOneOf jsx
     StepDependent builder -> asOneOf (stepFragmentComponent builder)
 
-data StepperIconPosition = StepperIconPositionLeft | StepperIconPositionRight
+data StepperIconPosition
+  = StepperIconPositionLeft
+  | StepperIconPositionRight
 
-instance DefaultValue StepperIconPosition where defaultValue = StepperIconPositionLeft
+instance DefaultValue StepperIconPosition where
+  defaultValue = StepperIconPositionLeft
 
-instance ToFFI StepperIconPosition String where
+type StepperIconPositionImpl = String
+
+instance ToFFI StepperIconPosition StepperIconPositionImpl where
   toNative = case _ of
     StepperIconPositionLeft  -> "left"
     StepperIconPositionRight -> "right"
 
 type StepperPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( active               :: Nullable Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
-    , color                :: Nullable String
+    , color                :: Nullable MantineColorImpl
     , completedIcon        :: Nullable StepFragmentComponentImpl
     , contentPadding       :: Nullable MantineNumberSizeImpl
     , icon                 :: Nullable StepFragmentComponentImpl
-    , iconPosition         :: String
-    , iconSize             :: Nullable Number
-    , onStepClick          :: EffectFn1 Number Unit
-    , orientation          :: Nullable String
+    , iconPosition         :: StepperIconPositionImpl
+    , iconSize             :: Nullable PixelsImpl
+    , onStepClick          :: ValueHandlerImpl Number
+    , orientation          :: Nullable OrientationImpl
     , progressIcon         :: Nullable StepFragmentComponentImpl
     , radius               :: Nullable MantineNumberSizeImpl
-    , size                 :: Nullable String
+    , size                 :: Nullable MantineSizeImpl
     , wrap                 :: Boolean
     )
 
@@ -91,7 +96,7 @@ stepperStep = mkTrivialComponent stepperStepComponent
 foreign import stepperStepComponent :: ReactComponent StepperStepPropsImpl
 
 type StepperStepProps =
-  ThemingProps
+  MantineComponent
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
@@ -110,30 +115,35 @@ type StepperStepProps =
     , withIcon        :: Boolean
     )
 
-data StepState = StepStateInactive | StepStateProgress | StepStateCompleted
+data StepState
+  = StepStateInactive
+  | StepStateProgress
+  | StepStateCompleted
 
-instance ToFFI StepState String where
+type StepStateImpl = String
+
+instance ToFFI StepState StepStateImpl where
   toNative = case _ of
     StepStateInactive  -> "stepInactive"
     StepStateProgress  -> "stepProgress"
     StepStateCompleted -> "stepCompleted"
 
 type StepperStepPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
-    , color           :: Nullable String
+    , color           :: Nullable MantineColorImpl
     , completedIcon   :: Nullable StepFragmentComponentImpl
     , description     :: Nullable StepFragmentComponentImpl
     , icon            :: Nullable StepFragmentComponentImpl
-    , iconPosition    :: String
-    , iconSize        :: Nullable Number
+    , iconPosition    :: StepperIconPositionImpl
+    , iconSize        :: Nullable PixelsImpl
     , label           :: Nullable StepFragmentComponentImpl
     , loading         :: Boolean
-    , orientation     :: Nullable String
+    , orientation     :: Nullable OrientationImpl
     , progressIcon    :: Nullable StepFragmentComponentImpl
-    , state           :: Nullable String
+    , state           :: Nullable StepStateImpl
     , step            :: Nullable Number
     , withIcon        :: Boolean
     )
@@ -146,5 +156,5 @@ stepperCompleted_ children = stepperCompleted _ { children = children }
 
 foreign import stepperCompletedComponent :: ReactComponent StepperCompletedPropsImpl
 
-type StepperCompletedProps     = ThemingProps     ( children :: Array JSX )
-type StepperCompletedPropsImpl = ThemingPropsImpl ( children :: Array JSX )
+type StepperCompletedProps     = MantineComponent     ( children :: Array JSX )
+type StepperCompletedPropsImpl = MantineComponentImpl ( children :: Array JSX )

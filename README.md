@@ -2,7 +2,7 @@
 
 Bindings to use [Mantine](mantine.dev) components from a Purescript codebase.
 
-Currently supporting mantine v7.
+Currently supporting mantine v7.2.1.
 
 :warning: This is work-in-progress and this is very unstable.
 
@@ -96,6 +96,7 @@ import Mantine.Core
   - [x] [Image](https://mantine.dev/core/image/)
   - [x] [Indicator](https://mantine.dev/core/indicator/)
   - [x] [Kbd](https://mantine.dev/core/kbd/)
+  - [x] [NumberFormatter](https://mantine.dev/core/number-formatter/)
   - [x] [Spoiler](https://mantine.dev/core/spoiler/)
   - [x] [ThemeIcon](https://mantine.dev/core/theme-icon/)
   - [x] [Timeline](https://mantine.dev/core/timeline/)

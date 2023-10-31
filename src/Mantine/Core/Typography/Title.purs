@@ -16,7 +16,7 @@ title_ children = title _ { children = children }
 foreign import titleComponent :: ReactComponent TitlePropsImpl
 
 type TitleProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , order    :: Maybe TitleOrder
     , size     :: Maybe MantineNumberSize
@@ -30,7 +30,9 @@ data TitleOrder
   | Title5
   | Title6
 
-instance ToFFI TitleOrder Int where
+type TitleOrderImpl = Int
+
+instance ToFFI TitleOrder TitleOrderImpl where
   toNative = case _ of
     Title1 -> 1
     Title2 -> 2
@@ -40,8 +42,8 @@ instance ToFFI TitleOrder Int where
     Title6 -> 6
 
 type TitlePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
-    , order    :: Nullable Int
+    , order    :: Nullable TitleOrderImpl
     , size     :: Nullable MantineNumberSizeImpl
     )

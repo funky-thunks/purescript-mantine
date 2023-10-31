@@ -17,11 +17,16 @@ loader_ = loader identity
 
 foreign import loaderComponent :: ReactComponent LoaderPropsImpl
 
+-- Not supported properties
+--   { loaders :: Partial<Record<(string & {}) | "bars" | "dots" | "oval", MantineLoaderComponent>>
+--   }
+
 type LoaderProps =
-  ThemingProps
-    ( color :: Maybe MantineColor
-    , size  :: Maybe MantineNumberSize
-    , type  :: LoaderType
+  MantineComponent
+    ( children :: Maybe JSX
+    , color    :: Maybe MantineColor
+    , size     :: Maybe MantineNumberSize
+    , type     :: LoaderType
     )
 
 data LoaderType
@@ -41,8 +46,9 @@ instance DefaultValue LoaderType where
   defaultValue = LoaderTypeOval
 
 type LoaderPropsImpl =
-  ThemingPropsImpl
-    ( color :: Nullable String
-    , size  :: Nullable MantineNumberSizeImpl
-    , type  :: String
+  MantineComponentImpl
+    ( children :: Nullable JSX
+    , color    :: Nullable String
+    , size     :: Nullable MantineNumberSizeImpl
+    , type     :: String
     )

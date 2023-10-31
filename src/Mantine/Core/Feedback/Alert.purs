@@ -17,7 +17,7 @@ alert_ children = alert _ { children = children }
 foreign import alertComponent :: ReactComponent AlertPropsImpl
 
 type AlertProps =
-  ThemingProps
+  MantineComponent
     ( children  :: JSX
     , closable  :: AlertClosable
     , color     :: Maybe MantineColor
@@ -42,7 +42,9 @@ data AlertVariant
   | AlertVariantWhite
   | AlertVariantDefault
 
-instance ToFFI AlertVariant String where
+type AlertVariantImpl = String
+
+instance ToFFI AlertVariant AlertVariantImpl where
   toNative = case _ of
     AlertVariantFilled      -> "filled"
     AlertVariantLight       -> "light"
@@ -52,20 +54,17 @@ instance ToFFI AlertVariant String where
     AlertVariantDefault     -> "default"
 
 defaultAlertProps :: AlertProps
-defaultAlertProps =
-  defaultThemingProps
-    { children: mempty :: JSX
-    }
+defaultAlertProps = defaultMantineComponent { children: mempty :: JSX }
 
-type AlertPropsImpl = ThemingPropsImpl (CloseProps + AlertPropsRowImpl)
+type AlertPropsImpl = MantineComponentImpl (CloseProps + AlertPropsRowImpl)
 
 type AlertPropsRowImpl =
   ( children :: JSX
-  , color    :: Nullable String
+  , color    :: Nullable MantineColorImpl
   , icon     :: Nullable JSX
   , radius   :: Nullable MantineNumberSizeImpl
   , title    :: Nullable JSX
-  , variant  :: Nullable String
+  , variant  :: Nullable AlertVariantImpl
   )
 
 type CloseProps r =

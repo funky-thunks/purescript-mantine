@@ -19,7 +19,7 @@ foreign import avatarComponent :: ReactComponent AvatarPropsImpl
 --   }
 
 type AvatarProps =
-  ThemingProps
+  MantineComponent
     ( alt      :: Maybe String
     , children :: Array JSX
     , color    :: Maybe MantineColor
@@ -40,7 +40,9 @@ data AvatarVariant
 
 instance DefaultValue AvatarVariant where defaultValue = AvatarVariantLight
 
-instance ToFFI AvatarVariant String where
+type AvatarVariantImpl = String
+
+instance ToFFI AvatarVariant AvatarVariantImpl where
   toNative = case _ of
     AvatarVariantFilled      -> "filled"
     AvatarVariantLight       -> "light"
@@ -52,21 +54,21 @@ instance ToFFI AvatarVariant String where
 
 defaultAvatarProps :: AvatarProps
 defaultAvatarProps =
-  defaultThemingProps
+  defaultMantineComponent
     { size:   Preset Medium
     , radius: Preset Small
     }
 
 type AvatarPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( alt      :: Nullable String
     , children :: Array JSX
-    , color    :: Nullable String
+    , color    :: Nullable MantineColorImpl
     , gradient :: Nullable MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
     , src      :: Nullable String
-    , variant  :: String
+    , variant  :: AvatarVariantImpl
     )
 
 avatarToImpl :: AvatarProps -> AvatarPropsImpl
@@ -83,13 +85,13 @@ avatarGroup = mkTrivialComponent avatarGroupComponent
 foreign import avatarGroupComponent :: ReactComponent AvatarGroupPropsImpl
 
 type AvatarGroupProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , spacing  :: Maybe MantineNumberSize
     )
 
 type AvatarGroupPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , spacing  :: Nullable MantineNumberSizeImpl
     )

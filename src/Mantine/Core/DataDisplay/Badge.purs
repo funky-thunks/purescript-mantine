@@ -16,7 +16,7 @@ badge_ children = badge _ { children = children }
 foreign import badgeComponent :: ReactComponent BadgePropsImpl
 
 type BadgeProps =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , color        :: Maybe MantineColor
     , fullWidth    :: Boolean
@@ -39,7 +39,9 @@ data BadgeVariant
 instance DefaultValue BadgeVariant where
   defaultValue = BadgeVariantFilled
 
-instance ToFFI BadgeVariant String where
+type BadgeVariantImpl = String
+
+instance ToFFI BadgeVariant BadgeVariantImpl where
   toNative = case _ of
     BadgeVariantFilled      -> "filled"
     BadgeVariantLight       -> "light"
@@ -51,22 +53,22 @@ instance ToFFI BadgeVariant String where
 
 defaultBadgeProps :: BadgeProps
 defaultBadgeProps =
-  defaultThemingProps
+  defaultMantineComponent
     { size:   Medium
     , radius: Preset ExtraLarge
     }
 
 type BadgePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children     :: Array JSX
-    , color        :: Nullable String
+    , color        :: Nullable MantineColorImpl
     , fullWidth    :: Boolean
     , gradient     :: Nullable MantineGradientImpl
     , leftSection  :: Nullable JSX
     , radius       :: MantineNumberSizeImpl
     , rightSection :: Nullable JSX
-    , size         :: String
-    , variant      :: String
+    , size         :: MantineSizeImpl
+    , variant      :: BadgeVariantImpl
     )
 
 badgeToImpl :: BadgeProps -> BadgePropsImpl

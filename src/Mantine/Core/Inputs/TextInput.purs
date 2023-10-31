@@ -19,6 +19,6 @@ type TextInputProps =
 
 type TextInputPropsImpl =
   InputComponentImpl
-    ( onChange :: EffectFn1 SyntheticEvent Unit
+    ( onChange :: InputHandlerImpl
     , value    :: Nullable String
     )

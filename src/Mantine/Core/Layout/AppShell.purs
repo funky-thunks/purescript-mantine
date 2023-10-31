@@ -15,6 +15,8 @@ module Mantine.Core.Layout.AppShell
 
   , appShellSection
   , appShellSection_
+  , appShellScrollableSection
+  , appShellScrollableSection_
   , AppShellSectionProps
 
   -- AppShell Components
@@ -40,7 +42,7 @@ appShell = mkTrivialComponent appShellComponent
 foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
 type AppShellProps =
-  ThemingProps
+  MantineComponent
     ( aside                    :: Maybe AppShellVerticalConfiguration
     , disabled                 :: Maybe Boolean
     , footer                   :: Maybe AppShellHorizontalConfiguration
@@ -51,7 +53,7 @@ type AppShellProps =
     , transitionDuration       :: Maybe Milliseconds
     , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
     , withBorder               :: Boolean
-    , zIndex                   :: Maybe Number
+    , zIndex                   :: Maybe ZIndex
     )
 
 data AppShellLayout
@@ -102,7 +104,7 @@ type AppShellVerticalConfiguration =
 type AppShellCollapse = { desktop :: Boolean, mobile :: Boolean }
 
 type AppShellPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( aside                    :: Nullable AppShellVerticalConfigurationImpl
     , disabled                 :: Nullable Boolean
     , footer                   :: Nullable AppShellHorizontalConfigurationImpl
@@ -110,10 +112,10 @@ type AppShellPropsImpl =
     , layout                   :: Nullable String
     , navbar                   :: Nullable AppShellVerticalConfigurationImpl
     , padding                  :: Nullable AppShellPaddingImpl
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
+    , transitionDuration       :: Nullable MillisecondsImpl
+    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
     , withBorder               :: Boolean
-    , zIndex                   :: Nullable Number
+    , zIndex                   :: Nullable ZIndexImpl
     )
 
 type AppShellHorizontalConfigurationImpl =
@@ -147,14 +149,22 @@ appShellSection_ children = appShellSection _ { children = children }
 
 foreign import appShellSectionComponent :: ReactComponent AppShellSectionPropsImpl
 
+appShellScrollableSection :: (AppShellSectionProps -> AppShellSectionProps) -> JSX
+appShellScrollableSection = mkTrivialComponent appShellSectionComponent
+
+appShellScrollableSection_ :: Array JSX -> JSX
+appShellScrollableSection_ children = appShellScrollableSection _ { children = children }
+
+foreign import appShellScrollableSectionComponent :: ReactComponent AppShellSectionPropsImpl
+
 type AppShellSectionProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
 type AppShellSectionPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , grow     :: Boolean
     )
@@ -164,9 +174,8 @@ appShellMain = mkTrivialComponent appShellMainComponent
 
 foreign import appShellMainComponent :: ReactComponent AppShellMainPropsImpl
 
-type AppShellMainProps = ThemingProps (children :: Array JSX)
-
-type AppShellMainPropsImpl = ThemingPropsImpl (children :: Array JSX)
+type AppShellMainProps     = MantineComponent     ( children :: Array JSX )
+type AppShellMainPropsImpl = MantineComponentImpl ( children :: Array JSX )
 
 appShellNavbar :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
 appShellNavbar = mkTrivialComponent appShellNavbarComponent
@@ -201,15 +210,15 @@ appShellFooter_ children = appShellFooter _ { children = children }
 foreign import appShellFooterComponent :: ReactComponent AppShellComponentPropsImpl
 
 type AppShellComponentProps =
-  ThemingProps
-    ( boolean  :: Boolean
-    , children :: Array JSX
-    , zIndex   :: Maybe Number
+  MantineComponent
+    ( children   :: Array JSX
+    , withBorder :: Boolean
+    , zIndex     :: Maybe ZIndex
     )
 
 type AppShellComponentPropsImpl =
-  ThemingPropsImpl
-    ( boolean  :: Boolean
-    , children :: Array JSX
-    , zIndex   :: Nullable Number
+  MantineComponentImpl
+    ( children   :: Array JSX
+    , withBorder :: Boolean
+    , zIndex     :: Nullable ZIndexImpl
     )

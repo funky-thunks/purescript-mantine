@@ -8,6 +8,7 @@ module Mantine.Core.DataDisplay
   , module Mantine.Core.DataDisplay.Image
   , module Mantine.Core.DataDisplay.Indicator
   , module Mantine.Core.DataDisplay.Kbd
+  , module Mantine.Core.DataDisplay.NumberFormatter
   , module Mantine.Core.DataDisplay.Spoiler
   , module Mantine.Core.DataDisplay.ThemeIcon
   , module Mantine.Core.DataDisplay.Timeline
@@ -19,9 +20,10 @@ import Mantine.Core.DataDisplay.BackgroundImage (BackgroundImageProps, backgroun
 import Mantine.Core.DataDisplay.Badge (BadgeProps, BadgeVariant(..), badge, badge_)
 import Mantine.Core.DataDisplay.Card (CardProps, CardSectionProps, card, cardSection)
 import Mantine.Core.DataDisplay.ColorSwatch (ColorSwatchProps, colorSwatch, colorSwatch_)
-import Mantine.Core.DataDisplay.Image (ImageFit(..), ImageProps, image)
+import Mantine.Core.DataDisplay.Image (ImageProps, image)
 import Mantine.Core.DataDisplay.Indicator (IndicatorPosition(..), IndicatorProps, indicator)
 import Mantine.Core.DataDisplay.Kbd (KbdProps, kbd, kbd_)
+import Mantine.Core.DataDisplay.NumberFormatter (NumberFormatterProps, NumberFormatterValue(..), numberFormatter)
 import Mantine.Core.DataDisplay.Spoiler (SpoilerProps, SpoilerState(..), spoiler, spoiler_)
 import Mantine.Core.DataDisplay.ThemeIcon (ThemeIconProps, ThemeIconVariant(..), themeIcon)
 import Mantine.Core.DataDisplay.Timeline (TimelineAlign(..), TimelineItemProps, TimelineLineVariant(..), TimelineProps, timeline, timelineItem)

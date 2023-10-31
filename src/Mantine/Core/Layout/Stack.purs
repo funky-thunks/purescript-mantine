@@ -15,7 +15,7 @@ stack_ children = stack _ { children = children }
 foreign import stackComponent :: ReactComponent StackPropsImpl
 
 type StackProps =
-  ThemingProps
+  MantineComponent
     ( align    :: Maybe AlignItems
     , children :: Array JSX
     , gap      :: Maybe MantineSpacing
@@ -23,9 +23,9 @@ type StackProps =
     )
 
 type StackPropsImpl =
-  ThemingPropsImpl
-    ( align    :: Nullable String
+  MantineComponentImpl
+    ( align    :: Nullable AlignItemsImpl
     , children :: Array JSX
     , gap      :: Nullable MantineSpacingImpl
-    , justify  :: Nullable String
+    , justify  :: Nullable JustifyContentImpl
     )

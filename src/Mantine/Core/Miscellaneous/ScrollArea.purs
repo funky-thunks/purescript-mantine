@@ -33,7 +33,7 @@ foreign import scrollAreaAutosizeComponent :: ReactComponent ScrollAreaPropsImpl
 --   }
 
 type ScrollAreaProps =
-  ThemingProps
+  MantineComponent
     ( children               :: Array JSX
     , offsetScrollbars       :: Maybe OffsetScrollbars
     , onScrollPositionChange :: ValueHandler ScrollPosition
@@ -68,7 +68,9 @@ data ScrollbarType
   | Never
   | Hover
 
-instance ToFFI ScrollbarType String where
+type ScrollbarTypeImpl = String
+
+instance ToFFI ScrollbarType ScrollbarTypeImpl where
   toNative = case _ of
     Auto   -> "auto"
     Scroll -> "scroll"
@@ -77,12 +79,12 @@ instance ToFFI ScrollbarType String where
     Hover  -> "hover"
 
 type ScrollAreaPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children               :: Array JSX
     , offsetScrollbars       :: Nullable OffsetScrollbarsImpl
-    , onScrollPositionChange :: EffectFn1 ScrollPosition Unit
-    , scrollHideDelay        :: Nullable Milliseconds
-    , scrollbarSize          :: Nullable Pixels
-    , type                   :: Nullable String
+    , onScrollPositionChange :: ValueHandlerImpl ScrollPosition
+    , scrollHideDelay        :: Nullable MillisecondsImpl
+    , scrollbarSize          :: Nullable PixelsImpl
+    , type                   :: Nullable ScrollbarTypeImpl
     , viewportRef            :: Nullable (Ref HTMLDivElement)
     )

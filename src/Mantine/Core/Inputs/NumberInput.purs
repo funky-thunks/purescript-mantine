@@ -6,6 +6,10 @@ module Mantine.Core.Inputs.NumberInput
   , NumberInputHandlers
   , NumberInputType(..)
   , ThousandsGroupStyle(..)
+  , ThousandSeparator(..)
+
+  , ThousandSeparatorImpl
+  , ThousandsGroupStyleImpl
   ) where
 
 import Data.Either (Either(..))
@@ -19,9 +23,8 @@ numberInput = mkTrivialComponent numberInputComponent
 foreign import numberInputComponent :: ReactComponent NumberInputPropsImpl
 
 -- Not supported properties:
--- { descriptionProps :: Record<string, any>
--- , isAllowed        :: NumberFormatValues -> Boolean
--- , onValueChange    :: OnValueChange -- Called when value changes with react-number-format payload
+-- { isAllowed     :: NumberFormatValues -> Boolean
+-- , onValueChange :: OnValueChange -- Called when value changes with react-number-format payload
 -- }
 
 type NumberInputProps =
@@ -44,7 +47,7 @@ type NumberInputProps =
     , startValue               :: Maybe Number
     , step                     :: Maybe Number
     , suffix                   :: Maybe String
-    , thousandSeparator        :: Maybe String
+    , thousandSeparator        :: Maybe ThousandSeparator
     , thousandsGroupStyle      :: Maybe ThousandsGroupStyle
     , type                     :: NumberInputType
     , value                    :: Maybe NumberInput
@@ -56,7 +59,9 @@ data NumberClampBehavior
   | NumberClampBehaviorBlur
   | NumberClampBehaviorStrict
 
-instance ToFFI NumberClampBehavior String where
+type NumberClampBehaviorImpl = String
+
+instance ToFFI NumberClampBehavior NumberClampBehaviorImpl where
   toNative = case _ of
     NumberClampBehaviorNone   -> "none"
     NumberClampBehaviorBlur   -> "blur"
@@ -87,18 +92,33 @@ data ThousandsGroupStyle
   | ThousandsGroupStyleLakh
   | ThousandsGroupStyleWan
 
-instance ToFFI ThousandsGroupStyle String where
+type ThousandsGroupStyleImpl = String
+
+instance ToFFI ThousandsGroupStyle ThousandsGroupStyleImpl where
   toNative = case _ of
     ThousandsGroupStyleNone     -> "none"
     ThousandsGroupStyleThousand -> "thousand"
     ThousandsGroupStyleLakh     -> "lakh"
     ThousandsGroupStyleWan      -> "wan"
 
+data ThousandSeparator
+  = DefaultThousandSeparator
+  | CustomThousandSeparator String
+
+type ThousandSeparatorImpl = String |+| Boolean
+
+instance ToFFI ThousandSeparator ThousandSeparatorImpl where
+  toNative = case _ of
+    DefaultThousandSeparator  -> asOneOf true
+    CustomThousandSeparator s -> asOneOf s
+
 data NumberInputType = NumberInputTypeText | NumberInputTypeNumber
 
 instance DefaultValue NumberInputType where defaultValue = NumberInputTypeText
 
-instance ToFFI NumberInputType String where
+type NumberInputTypeImpl = String
+
+instance ToFFI NumberInputType NumberInputTypeImpl where
   toNative = case _ of
     NumberInputTypeText   -> "text"
     NumberInputTypeNumber -> "number"
@@ -109,23 +129,23 @@ type NumberInputPropsImpl =
     , allowLeadingZeros        :: Boolean
     , allowNegative            :: Boolean
     , allowedDecimalSeparators :: Nullable (Array String)
-    , clampBehavior            :: Nullable String
+    , clampBehavior            :: Nullable NumberClampBehaviorImpl
     , decimalScale             :: Nullable Number
     , decimalSeparator         :: Nullable String
-    , defaultValue             :: Nullable (Number |+| String)
+    , defaultValue             :: Nullable NumberInputImpl
     , fixedDecimalScale        :: Boolean
     , handlersRef              :: Nullable (Ref NumberInputHandlers)
     , hideControls             :: Boolean
     , max                      :: Nullable Number
     , min                      :: Nullable Number
-    , onChange                 :: EffectFn1 (Number |+| String) Unit
+    , onChange                 :: ValueHandlerImpl NumberInputImpl
     , prefix                   :: Nullable String
     , startValue               :: Nullable Number
     , step                     :: Nullable Number
     , suffix                   :: Nullable String
-    , thousandSeparator        :: Nullable String
-    , thousandsGroupStyle      :: Nullable String
-    , type                     :: String
-    , value                    :: Nullable (Number |+| String)
+    , thousandSeparator        :: Nullable ThousandSeparatorImpl
+    , thousandsGroupStyle      :: Nullable ThousandsGroupStyleImpl
+    , type                     :: NumberInputTypeImpl
+    , value                    :: Nullable NumberInputImpl
     , valueIsNumericString     :: Boolean
     )

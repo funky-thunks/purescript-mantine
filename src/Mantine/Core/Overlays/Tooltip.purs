@@ -35,13 +35,13 @@ type TooltipProps =
     , inline     :: Boolean
     , label      :: Maybe JSX
     , multiline  :: Boolean
-    , openDelay  :: Maybe Number
+    , openDelay  :: Maybe Milliseconds
     , refProp    :: Maybe String
     )
 
 defaultTooltipProps :: TooltipProps
 defaultTooltipProps =
-  defaultThemingProps
+  defaultMantineComponent
     { events:      { focus: false, hover: true, touch: false }
     , position:    HoverableFloatingPositionTop
     , withinPortal: true
@@ -51,13 +51,13 @@ type TooltipActivationEvents = { hover :: Boolean, focus :: Boolean, touch :: Bo
 
 type TooltipPropsImpl =
   HoverableComponentImpl
-    ( closeDelay :: Nullable Milliseconds
-    , color      :: Nullable String
+    ( closeDelay :: Nullable MillisecondsImpl
+    , color      :: Nullable MantineColorImpl
     , events     :: TooltipActivationEvents
     , inline     :: Boolean
     , label      :: Nullable JSX
     , multiline  :: Boolean
-    , openDelay  :: Nullable Milliseconds
+    , openDelay  :: Nullable MillisecondsImpl
     , refProp    :: Nullable String
     )
 
@@ -66,12 +66,11 @@ tooltipGroup = mkTrivialComponent tooltipGroupComponent
 
 foreign import tooltipGroupComponent :: ReactComponent TooltipGroupPropsImpl
 
-type TooltipGroupProps = ThemingProps TooltipGroupRow
+type TooltipGroupProps     = MantineComponent     TooltipGroupRow
+type TooltipGroupPropsImpl = MantineComponentImpl TooltipGroupRow
 
 type TooltipGroupRow =
   ( children   :: Array JSX
   , closeDelay :: Milliseconds
   , openDelay  :: Milliseconds
   )
-
-type TooltipGroupPropsImpl = ThemingPropsImpl TooltipGroupRow

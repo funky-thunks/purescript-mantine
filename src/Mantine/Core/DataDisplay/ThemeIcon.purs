@@ -12,7 +12,7 @@ themeIcon = mkComponent themeIconComponent themeIconToImpl defaultThemeIconProps
 foreign import themeIconComponent :: ReactComponent ThemeIconPropsImpl
 
 type ThemeIconProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , color    :: Maybe MantineColor
     , radius   :: MantineNumberSize
@@ -22,7 +22,7 @@ type ThemeIconProps =
 
 defaultThemeIconProps :: ThemeIconProps
 defaultThemeIconProps =
-  defaultThemingProps
+  defaultMantineComponent
     { size:   Preset Medium
     , radius: Preset Small
     }
@@ -38,7 +38,9 @@ data ThemeIconVariant
 instance DefaultValue ThemeIconVariant where
   defaultValue = ThemeIconFilled
 
-instance ToFFI ThemeIconVariant (Nullable String) where
+type ThemeIconVariantImpl = Nullable String
+
+instance ToFFI ThemeIconVariant ThemeIconVariantImpl where
   toNative = toNative <<< case _ of
     ThemeIconFilled     -> Nothing
     ThemeIconLight      -> Just "light"
@@ -48,13 +50,13 @@ instance ToFFI ThemeIconVariant (Nullable String) where
     ThemeIconGradient _ -> Just "gradient"
 
 type ThemeIconPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
-    , color    :: Nullable String
+    , color    :: Nullable MantineColorImpl
     , gradient :: Nullable MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
-    , variant  :: Nullable String
+    , variant  :: ThemeIconVariantImpl
     )
 
 themeIconToImpl :: ThemeIconProps -> ThemeIconPropsImpl

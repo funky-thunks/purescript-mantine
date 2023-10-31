@@ -8,17 +8,17 @@ module Mantine.Core.Inputs.SegmentedControl
 import Mantine.Core.Prelude
 
 segmentedControl :: (SegmentedControlProps -> SegmentedControlProps) -> JSX
-segmentedControl = mkComponent segmentedControlComponent segmentedControlToImpl defaultThemingProps_
+segmentedControl = mkComponent segmentedControlComponent segmentedControlToImpl defaultMantineComponent_
 
 foreign import segmentedControlComponent :: ReactComponent SegmentedControlPropsImpl
 
 type SegmentedControlProps =
-  ThemingProps
+  MantineComponent
     ( color                    :: Maybe MantineColor
-    , items                    :: Array SegmentedControlItem
     , defaultValue             :: Maybe String
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
+    , items                    :: Array SegmentedControlItem
     , name                     :: Maybe String
     , onChange                 :: ValueHandler String
     , orientation              :: SegmentedControlOrientation
@@ -43,26 +43,28 @@ data SegmentedControlOrientation
 instance DefaultValue SegmentedControlOrientation where
   defaultValue = SegmentedControlOrientationHorizontal
 
-instance ToFFI SegmentedControlOrientation String where
+type SegmentedControlOrientationImpl = String
+
+instance ToFFI SegmentedControlOrientation SegmentedControlOrientationImpl where
   toNative = case _ of
     SegmentedControlOrientationHorizontal -> "horizontal"
     SegmentedControlOrientationVertical   -> "vertical"
 
 type SegmentedControlPropsImpl =
-  ThemingPropsImpl
-    ( color                    :: Nullable String
+  MantineComponentImpl
+    ( color                    :: Nullable MantineColorImpl
     , data                     :: Array SegmentedControlItemImpl
     , defaultValue             :: Nullable String
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
     , name                     :: Nullable String
-    , onChange                 :: EffectFn1 String Unit
-    , orientation              :: String
+    , onChange                 :: ValueHandlerImpl String
+    , orientation              :: SegmentedControlOrientationImpl
     , radius                   :: Nullable MantineNumberSizeImpl
     , readOnly                 :: Boolean
-    , size                     :: Nullable String
-    , transitionDuration       :: Number
-    , transitionTimingFunction :: Nullable String
+    , size                     :: Nullable MantineSizeImpl
+    , transitionDuration       :: MillisecondsImpl
+    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
     , value                    :: Nullable String
     )
 

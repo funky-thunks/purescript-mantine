@@ -15,7 +15,7 @@ skeleton_ = skeleton identity
 foreign import skeletonComponent :: ReactComponent SkeletonPropsImpl
 
 type SkeletonProps =
-  ThemingProps
+  MantineComponent
     ( animate :: Boolean
     , circle  :: Boolean
     , height  :: Dimension
@@ -26,14 +26,14 @@ type SkeletonProps =
 
 defaultSkeletonProps :: SkeletonProps
 defaultSkeletonProps =
-  defaultThemingProps
+  defaultMantineComponent
     { animate: true
     , height:  Dimension "auto"
     , visible: true
     }
 
 type SkeletonPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( animate :: Boolean
     , circle  :: Boolean
     , height  :: DimensionImpl

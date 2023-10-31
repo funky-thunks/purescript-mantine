@@ -13,7 +13,7 @@ closeButton = mkTrivialComponent closeButtonComponent
 foreign import closeButtonComponent :: ReactComponent CloseButtonPropsImpl
 
 type CloseButtonProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , disabled :: Boolean
     , iconSize :: Maybe MantineNumberSize
@@ -23,7 +23,7 @@ type CloseButtonProps =
     )
 
 type CloseButtonPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , disabled :: Boolean
     , iconSize :: Nullable MantineNumberSizeImpl

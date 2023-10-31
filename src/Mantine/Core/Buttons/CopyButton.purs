@@ -8,13 +8,13 @@ module Mantine.Core.Buttons.CopyButton
 import Mantine.Core.Prelude
 
 copyButton :: CopyButtonMandatoryProps -> (CopyButtonProps -> CopyButtonProps) -> JSX
-copyButton = mkComponent copyButtonComponent copyButtonPropsToImpl <<< defaultThemingProps
+copyButton = mkComponent copyButtonComponent copyButtonPropsToImpl <<< defaultMantineComponent
 
 foreign import copyButtonComponent :: ReactComponent CopyButtonPropsImpl
 
 type CopyButtonProps =
-  ThemingProps
-    ( timeout  :: Maybe Number
+  MantineComponent
+    ( timeout :: Maybe Number
     | CopyButtonMandatoryPropsRow
     )
 
@@ -26,7 +26,7 @@ type CopyButtonMandatoryPropsRow =
   )
 
 type CopyButtonPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
     , timeout  :: Nullable Number
     , value    :: String

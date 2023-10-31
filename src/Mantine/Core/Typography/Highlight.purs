@@ -9,12 +9,12 @@ import React.Basic.DOM as DOM
 import React.Basic.Emotion (Style)
 
 highlight :: (HighlightProps -> HighlightProps) -> JSX
-highlight = mkComponent highlightComponent highlightToImpl defaultThemingProps_
+highlight = mkComponent highlightComponent highlightToImpl defaultMantineComponent_
 
 foreign import highlightComponent :: ReactComponent HighlightPropsImpl
 
 type HighlightProps =
-  ThemingProps
+  MantineComponent
     ( children        :: String
     , color           :: Maybe MantineColor
     , highlight       :: Array String
@@ -24,9 +24,9 @@ type HighlightProps =
     )
 
 type HighlightPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children        :: Array JSX
-    , color           :: Nullable String
+    , color           :: Nullable MantineColorImpl
     , highlight       :: Array String
     , highlightStyles :: Nullable Style
     , span            :: Boolean

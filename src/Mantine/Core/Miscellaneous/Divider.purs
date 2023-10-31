@@ -17,7 +17,7 @@ divider_ = divider identity
 foreign import dividerComponent :: ReactComponent DividerPropsImpl
 
 type DividerProps =
-  ThemingProps
+  MantineComponent
     ( color         :: Maybe MantineColor
     , label         :: Maybe JSX
     , labelPosition :: Maybe DividerLabelPosition
@@ -27,14 +27,16 @@ type DividerProps =
     )
 
 defaultDividerProps :: DividerProps
-defaultDividerProps = defaultThemingProps { orientation: Horizontal }
+defaultDividerProps = defaultMantineComponent { orientation: Horizontal }
 
 data DividerLabelPosition
   = DividerLabelPositionLeft
   | DividerLabelPositionCenter
   | DividerLabelPositionRight
 
-instance ToFFI DividerLabelPosition String where
+type DividerLabelPositionImpl = String
+
+instance ToFFI DividerLabelPosition DividerLabelPositionImpl where
   toNative = case _ of
     DividerLabelPositionLeft   -> "left"
     DividerLabelPositionCenter -> "center"
@@ -45,18 +47,20 @@ data DividerVariant
   | DividerVariantDotted
   | DividerVariantSolid
 
-instance ToFFI DividerVariant String where
+type DividerVariantImpl = String
+
+instance ToFFI DividerVariant DividerVariantImpl where
   toNative = case _ of
     DividerVariantDashed -> "dashed"
     DividerVariantDotted -> "dotted"
     DividerVariantSolid  -> "solid"
 
 type DividerPropsImpl =
-  ThemingPropsImpl
-    ( color         :: Nullable String
+  MantineComponentImpl
+    ( color         :: Nullable MantineColorImpl
     , label         :: Nullable JSX
-    , labelPosition :: Nullable String
-    , orientation   :: String
+    , labelPosition :: Nullable DividerLabelPositionImpl
+    , orientation   :: OrientationImpl
     , size          :: Nullable MantineNumberSizeImpl
-    , variant       :: Nullable String
+    , variant       :: Nullable DividerVariantImpl
     )

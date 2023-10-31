@@ -8,7 +8,7 @@ module Mantine.Core.Inputs.PinInput
   ) where
 
 import Data.String.Regex (Regex)
-import Mantine.Core.Inputs.Input (InputType(..))
+import Mantine.Core.Inputs.Input (InputType(..), InputTypeImpl)
 import Mantine.Core.Prelude
 
 pinInput :: (PinInputProps -> PinInputProps) -> JSX
@@ -21,7 +21,7 @@ foreign import pinInputComponent :: ReactComponent PinInputPropsImpl
 --   }
 
 type PinInputProps =
-  ThemingProps
+  MantineComponent
     ( ariaLabel    :: Maybe String
     , autoFocus    :: Boolean
     , defaultValue :: Maybe String
@@ -57,7 +57,9 @@ data PinInputMode
   | PinInputModeNumeric
   | PinInputModeDecimal
 
-instance ToFFI PinInputMode String where
+type PinInputModeImpl = String
+
+instance ToFFI PinInputMode PinInputModeImpl where
   toNative = case _ of
     PinInputModeText    -> "text"
     PinInputModeNone    -> "none"
@@ -84,7 +86,7 @@ instance ToFFI PinInputType PinInputTypeImpl where
     PinInputTypeRegExp r     -> asOneOf r
 
 type PinInputPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( ariaLabel    :: Nullable String
     , autoFocus    :: Boolean
     , defaultValue :: Nullable String
@@ -93,19 +95,19 @@ type PinInputPropsImpl =
     , form         :: Nullable String
     , gap          :: Nullable MantineSpacingImpl
     , id           :: Nullable String
-    , inputMode    :: Nullable String
-    , inputType    :: Nullable String
+    , inputMode    :: Nullable PinInputModeImpl
+    , inputType    :: Nullable InputTypeImpl
     , length       :: Number
     , manageFocus  :: Boolean
     , mask         :: Boolean
     , name         :: Nullable String
-    , onChange     :: EffectFn1 String Unit
-    , onComplete   :: EffectFn1 String Unit
+    , onChange     :: ValueHandlerImpl String
+    , onComplete   :: ValueHandlerImpl String
     , oneTimeCode  :: Boolean
     , placeholder  :: Nullable String
     , radius       :: Nullable MantineNumberSizeImpl
     , readOnly     :: Boolean
-    , size         :: Nullable String
+    , size         :: Nullable MantineSizeImpl
     , type         :: PinInputTypeImpl
     , value        :: Nullable String
     )

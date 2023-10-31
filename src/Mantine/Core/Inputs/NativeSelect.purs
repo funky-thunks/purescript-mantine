@@ -22,6 +22,6 @@ type NativeSelectProps =
 type NativeSelectPropsImpl =
   InputComponentImpl
     ( data     :: Array SelectItemImpl
-    , onChange :: EffectFn1 SyntheticEvent Unit
+    , onChange :: InputHandlerImpl
     , value    :: Nullable String
     )

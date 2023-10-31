@@ -12,6 +12,7 @@ module Mantine.Core.Buttons.ActionIcon
   , actionIconToImpl
   , ActionIconPropsRow
   , ActionIconPropsImplRow
+  , ActionIconVariantImpl
   ) where
 
 import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
@@ -24,7 +25,7 @@ actionIcon = mkComponent actionIconComponent actionIconToImpl <<< defaultActionI
 
 foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
 
-type ActionIconProps = ThemingProps ActionIconPropsRow
+type ActionIconProps = MantineComponent ActionIconPropsRow
 
 type ActionIconPropsRow =
   ( color       :: Maybe MantineColor
@@ -39,24 +40,21 @@ type ActionIconPropsRow =
   )
 
 defaultActionIconProps :: ReactIcon -> ActionIconProps
-defaultActionIconProps icon =
-  defaultThemingProps
-    { icon
-    }
+defaultActionIconProps icon = defaultMantineComponent { icon }
 
-type ActionIconPropsImpl = ThemingPropsImpl ActionIconPropsImplRow
+type ActionIconPropsImpl = MantineComponentImpl ActionIconPropsImplRow
 
 type ActionIconPropsImplRow =
   ( children    :: Array JSX
-  , color       :: Nullable String
+  , color       :: Nullable MantineColorImpl
   , disabled    :: Boolean
   , gradient    :: Nullable MantineGradientImpl
-  , loading     :: Boolean
   , loaderProps :: Nullable LoaderPropsImpl
+  , loading     :: Boolean
   , onClick     :: Nullable EventHandler
   , radius      :: Nullable MantineNumberSizeImpl
   , size        :: Nullable MantineNumberSizeImpl
-  , variant     :: Nullable String
+  , variant     :: ActionIconVariantImpl
   )
 
 data ActionIconVariant
@@ -70,7 +68,9 @@ data ActionIconVariant
 
 instance DefaultValue ActionIconVariant where defaultValue = ActionIconDefault
 
-instance ToFFI ActionIconVariant (Nullable String) where
+type ActionIconVariantImpl = Nullable String
+
+instance ToFFI ActionIconVariant ActionIconVariantImpl where
   toNative = case _ of
     ActionIconOutline     -> notNull "outline"
     ActionIconTransparent -> notNull "transparent"
@@ -100,7 +100,7 @@ actionIconGroup_ children = actionIconGroup _ { children = children }
 foreign import actionIconGroupComponent :: ReactComponent ActionIconGroupPropsImpl
 
 type ActionIconGroupProps =
-  ThemingProps
+  MantineComponent
     ( borderWidth :: Maybe MantineNumberSize
     , children    :: Array JSX
     , orientation :: ActionIconGroupOrientation
@@ -113,14 +113,16 @@ data ActionIconGroupOrientation
 instance DefaultValue ActionIconGroupOrientation where
   defaultValue = ActionIconGroupOrientationHorizontal
 
-instance ToFFI ActionIconGroupOrientation String where
+type ActionIconGroupOrientationImpl = String
+
+instance ToFFI ActionIconGroupOrientation ActionIconGroupOrientationImpl where
   toNative = case _ of
     ActionIconGroupOrientationHorizontal -> "horizontal"
     ActionIconGroupOrientationVertical   -> "vertical"
 
 type ActionIconGroupPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( borderWidth :: Nullable MantineNumberSizeImpl
     , children    :: Array JSX
-    , orientation :: String
+    , orientation :: ActionIconGroupOrientationImpl
     )
