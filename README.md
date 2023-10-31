@@ -33,7 +33,7 @@ import Mantine.Core
   - [x] [CopyButton](https://v6.mantine.dev/core/copy-button/)
   - [x] [FileButton](https://v6.mantine.dev/core/file-button/)
   - [x] [UnstyledButton](https://v6.mantine.dev/core/unstyled-button)
-- [ ] Inputs
+- [x] Inputs
   - [x] [Autocomplete](https://v6.mantine.dev/core/autocomplete/)
   - [x] [Checkbox](https://v6.mantine.dev/core/checkbox/)
   - [x] [Chip](https://v6.mantine.dev/core/chip/)
@@ -46,7 +46,7 @@ import Mantine.Core
   - [x] [NativeSelect](https://v6.mantine.dev/core/native-select/)
   - [x] [NumberInput](https://v6.mantine.dev/core/number-input/)
   - [x] [PasswordInput](https://v6.mantine.dev/core/password-input/)
-  - [ ] [PinInput](https://v6.mantine.dev/core/password-input/)
+  - [x] [PinInput](https://v6.mantine.dev/core/password-input/)
   - [x] [Radio](https://v6.mantine.dev/core/radio/)
   - [x] [Rating](https://v6.mantine.dev/core/rating/)
   - [x] [SegmentedControl](https://v6.mantine.dev/core/segmented-control/)
