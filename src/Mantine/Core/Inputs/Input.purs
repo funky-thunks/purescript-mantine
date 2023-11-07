@@ -5,6 +5,19 @@ module Mantine.Core.Inputs.Input
 
   , input
   , InputProps
+  , InputPropsRow
+  , InputPropsRow_
+  , InputGroupPropsRow
+  , InputGroupPropsRow_
+  , InputBasePropsRow
+  , InputBasePropsRow_
+
+  , InputPropsRowImpl
+  , InputPropsRowImpl_
+  , InputGroupPropsRowImpl
+  , InputGroupPropsRowImpl_
+  , InputBasePropsRowImpl
+  , InputBasePropsRowImpl_
 
   , inputWrapper
   , InputWrapperProps
@@ -18,6 +31,13 @@ module Mantine.Core.Inputs.Input
 
   , inputError
   , InputErrorProps
+
+  , InputComponent
+  , InputComponentImpl
+  , InputGroupComponent
+  , InputGroupComponentImpl
+  , WithInputContainer
+  , WithInputContainerImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -29,11 +49,11 @@ data InputVariant
 
 instance DefaultValue InputVariant where defaultValue = InputVariantDefault
 
-instance ToFFI InputVariant String where
-  toNative = case _ of
-    InputVariantDefault  -> "default"
-    InputVariantUnstyled -> "unstyled"
-    InputVariantFilled   -> "filled"
+instance ToFFI InputVariant (Nullable String) where
+  toNative = toNative <<< case _ of
+    InputVariantDefault  -> Nothing
+    InputVariantUnstyled -> Just "unstyled"
+    InputVariantFilled   -> Just "filled"
 
 data InputWrapperOrder
   = InputWrapperOrderInput
@@ -102,57 +122,130 @@ input = mkTrivialComponent inputComponent
 
 foreign import inputComponent :: ReactComponent InputPropsImpl
 
-type InputProps =
-  ThemingProps
-    ( disabled          :: Boolean
-    , error             :: Maybe JSX
-    , icon              :: Maybe JSX
-    , iconWidth         :: Maybe Pixels
-    , multiline         :: Boolean
-    , pointer           :: Boolean
-    , radius            :: Maybe MantineNumberSize
-    , required          :: Boolean
-    , rightSection      :: Maybe JSX
-    , rightSectionWidth :: Maybe Pixels
-    , size              :: Maybe MantineSize
-    , variant           :: InputVariant
-    )
+type InputProps = ThemingProps InputPropsRow
 
-type InputPropsImpl =
-  ThemingPropsImpl
-    ( disabled          :: Boolean
-    , error             :: Nullable JSX
-    , icon              :: Nullable JSX
-    , iconWidth         :: Nullable Number
-    , multiline         :: Boolean
-    , pointer           :: Boolean
-    , radius            :: Nullable MantineNumberSizeImpl
-    , required          :: Boolean
-    , rightSection      :: Nullable JSX
-    , rightSectionWidth :: Nullable Number
-    , size              :: Nullable String
-    , variant           :: String
-    )
+-- Not supported properties
+--   { descriptionProps  :: Record<string, any>
+--   , errorProps        :: Record<string, any>
+--   , labelProps        :: Record<string, any>
+--   , leftSectionProps  :: Record<string, any>
+--   , rightSectionProps :: Record<string, any>
+--   , wrapperProps      :: Record<string, any>
+--   }
+
+type InputPropsRow = InputPropsRow_ ()
+
+type InputPropsRow_ rest =
+  ( disabled                  :: Boolean
+  , leftSection               :: Maybe JSX
+  , leftSectionPointerEvents  :: Maybe PointerEvents
+  , leftSectionWidth          :: Maybe Pixels
+  , multiline                 :: Boolean
+  , pointer                   :: Boolean
+  , radius                    :: Maybe MantineNumberSize
+  , rightSection              :: Maybe JSX
+  , rightSectionPointerEvents :: Maybe PointerEvents
+  , rightSectionWidth         :: Maybe Pixels
+  , withAria                  :: Boolean
+  , withErrorStyles           :: Maybe Boolean
+  | InputBasePropsRow_ rest
+  )
+
+type InputGroupPropsRow items = InputGroupPropsRow_ items ()
+type InputGroupPropsRow_ items rest =
+  ( children     :: Array JSX
+  , defaultValue :: Maybe items
+  , labelElement :: Maybe InputWrapperElement
+  , onChange     :: ValueHandler items
+  , value        :: Maybe items
+  | InputBasePropsRow_ rest
+  )
+
+type InputBasePropsRow = InputBasePropsRow_ ()
+type InputBasePropsRow_ rest =
+  ( description       :: Maybe JSX
+  , error             :: Maybe JSX
+  , id                :: Maybe String
+  , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
+  , label             :: Maybe JSX
+  , placeholder       :: Maybe String
+  , required          :: Boolean
+  , size              :: Maybe MantineSize
+  , variant           :: InputVariant
+  , withAsterisk      :: Boolean
+  | rest
+  )
+
+type InputPropsImpl = ThemingPropsImpl InputPropsRowImpl
+
+type InputPropsRowImpl = InputPropsRowImpl_ ()
+type InputPropsRowImpl_ rest =
+  ( disabled                  :: Boolean
+  , leftSection               :: Nullable JSX
+  , leftSectionPointerEvents  :: Nullable String
+  , leftSectionWidth          :: Nullable Number
+  , multiline                 :: Boolean
+  , pointer                   :: Boolean
+  , radius                    :: Nullable MantineNumberSizeImpl
+  , rightSection              :: Nullable JSX
+  , rightSectionPointerEvents :: Nullable String
+  , rightSectionWidth         :: Nullable Number
+  , withAria                  :: Boolean
+  , withErrorStyles           :: Nullable Boolean
+  | InputBasePropsRowImpl_ rest
+  )
+
+type InputGroupPropsRowImpl items = InputGroupPropsRowImpl_ items ()
+type InputGroupPropsRowImpl_ items rest =
+  ( children     :: Array JSX
+  , defaultValue :: Nullable items
+  , labelElement :: Nullable String
+  , onChange     :: EffectFn1 items Unit
+  , value        :: Nullable items
+  | InputBasePropsRowImpl_ rest
+  )
+
+type InputBasePropsRowImpl = InputBasePropsRowImpl_ ()
+type InputBasePropsRowImpl_ rest =
+  ( description       :: Nullable JSX
+  , error             :: Nullable JSX
+  , id                :: Nullable String
+  , inputWrapperOrder :: Nullable (Array String)
+  , label             :: Nullable JSX
+  , placeholder       :: Nullable String
+  , required          :: Boolean
+  , size              :: Nullable String
+  , variant           :: Nullable String
+  , withAsterisk      :: Boolean
+  | rest
+  )
 
 inputWrapper :: (InputWrapperProps -> InputWrapperProps) -> JSX
 inputWrapper = mkTrivialComponent inputWrapperComponent
 
 foreign import inputWrapperComponent :: ReactComponent InputWrapperPropsImpl
 
+-- Not supported properties
+--   { descriptionProps :: Record<string, any>
+--   , errorProps       :: Record<string, any>
+--   , labelProps       :: Record<string, any>
+--   }
+
 type InputWrapperProps =
-  ThemingProps
-    ( children          :: Array JSX
-    , description       :: Maybe JSX
-    , error             :: Maybe JSX
-    , id                :: Maybe String
-    , inputContainer    :: Maybe (JSX -> JSX)
-    , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
-    , label             :: Maybe JSX
-    , labelElement      :: Maybe InputWrapperElement
-    , required          :: Boolean
-    , size              :: Maybe MantineSize
-    , withAsterisk      :: Boolean
-    )
+  ThemingProps (
+    WithInputContainer
+      ( children          :: Array JSX
+      , description       :: Maybe JSX
+      , error             :: Maybe JSX
+      , id                :: Maybe String
+      , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
+      , label             :: Maybe JSX
+      , labelElement      :: Maybe InputWrapperElement
+      , required          :: Boolean
+      , size              :: Maybe MantineSize
+      , withAsterisk      :: Boolean
+      )
+  )
 
 data InputWrapperElement = InputWrapperDiv | InputWrapperLabel
 
@@ -162,19 +255,20 @@ instance ToFFI InputWrapperElement String where
     InputWrapperLabel -> "label"
 
 type InputWrapperPropsImpl =
-  ThemingPropsImpl
-    ( children          :: Array JSX
-    , description       :: Nullable JSX
-    , error             :: Nullable JSX
-    , id                :: Nullable String
-    , inputContainer    :: Nullable (JSX -> JSX)
-    , inputWrapperOrder :: Nullable (Array String)
-    , label             :: Nullable JSX
-    , labelElement      :: Nullable String
-    , required          :: Boolean
-    , size              :: Nullable String
-    , withAsterisk      :: Boolean
-    )
+  ThemingPropsImpl (
+    WithInputContainerImpl
+      ( children          :: Array JSX
+      , description       :: Nullable JSX
+      , error             :: Nullable JSX
+      , id                :: Nullable String
+      , inputWrapperOrder :: Nullable (Array String)
+      , label             :: Nullable JSX
+      , labelElement      :: Nullable String
+      , required          :: Boolean
+      , size              :: Nullable String
+      , withAsterisk      :: Boolean
+      )
+  )
 
 inputLabel :: (InputLabelProps -> InputLabelProps) -> JSX
 inputLabel = mkTrivialComponent inputLabelComponent
@@ -230,3 +324,25 @@ type InputErrorPropsImpl =
     ( children :: Array JSX
     , size     :: Nullable String
     )
+
+type WithInputContainer rest =
+  ( inputContainer :: Maybe (JSX -> JSX)
+  | rest
+  )
+
+type WithInputContainerImpl rest =
+  ( inputContainer :: Nullable (JSX -> JSX)
+  | rest
+  )
+
+type InputComponent rest =
+  ThemingProps (WithInputContainer + InputPropsRow_ rest)
+
+type InputComponentImpl rest =
+  ThemingPropsImpl (WithInputContainerImpl + InputPropsRowImpl_ rest)
+
+type InputGroupComponent items rest =
+  ThemingProps (WithInputContainer + InputGroupPropsRow_ items rest)
+
+type InputGroupComponentImpl items rest =
+  ThemingPropsImpl (WithInputContainerImpl + InputGroupPropsRowImpl_ items rest)

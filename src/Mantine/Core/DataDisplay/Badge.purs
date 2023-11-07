@@ -28,21 +28,26 @@ type BadgeProps =
     )
 
 data BadgeVariant
-  = BadgeVariantOutline
+  = BadgeVariantFilled
   | BadgeVariantLight
-  | BadgeVariantFilled
+  | BadgeVariantOutline
   | BadgeVariantDot
+  | BadgeVariantTransparent
+  | BadgeVariantDefault
   | BadgeVariantGradient MantineGradient
 
-instance DefaultValue BadgeVariant where defaultValue = BadgeVariantLight
+instance DefaultValue BadgeVariant where
+  defaultValue = BadgeVariantFilled
 
 instance ToFFI BadgeVariant String where
   toNative = case _ of
-    BadgeVariantOutline    -> "outline"
-    BadgeVariantLight      -> "light"
-    BadgeVariantFilled     -> "filled"
-    BadgeVariantDot        -> "dot"
-    BadgeVariantGradient _ -> "gradient"
+    BadgeVariantFilled      -> "filled"
+    BadgeVariantLight       -> "light"
+    BadgeVariantOutline     -> "outline"
+    BadgeVariantDot         -> "dot"
+    BadgeVariantTransparent -> "transparent"
+    BadgeVariantDefault     -> "default"
+    BadgeVariantGradient _  -> "gradient"
 
 defaultBadgeProps :: BadgeProps
 defaultBadgeProps =

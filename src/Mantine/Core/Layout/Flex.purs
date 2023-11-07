@@ -2,8 +2,6 @@ module Mantine.Core.Layout.Flex
   ( flex
   , flex_
   , FlexProps
-  , FlexDirection(..)
-  , FlexWrap(..)
   ) where
 
 import Mantine.Core.Prelude
@@ -18,8 +16,8 @@ foreign import flexComponent :: ReactComponent FlexPropsImpl
 
 type FlexProps =
   ThemingProps
-    ( children  :: Array JSX
-    , align     :: Maybe AlignItems
+    ( align     :: Maybe AlignItems
+    , children  :: Array JSX
     , columnGap :: Maybe MantineSize
     , direction :: Maybe FlexDirection
     , gap       :: Maybe MantineSize
@@ -28,56 +26,10 @@ type FlexProps =
     , wrap      :: FlexWrap
     )
 
-data FlexDirection
-  = FlexDirectionRow
-  | FlexDirectionRowReverse
-  | FlexDirectionColumn
-  | FlexDirectionColumnReverse
-  | FlexDirectionInherit
-  | FlexDirectionInitial
-  | FlexDirectionRevert
-  | FlexDirectionRevertLayer
-  | FlexDirectionUnset
-
-instance ToFFI FlexDirection String where
-  toNative = case _ of
-    FlexDirectionRow           -> "row"
-    FlexDirectionRowReverse    -> "row-reverse"
-    FlexDirectionColumn        -> "column"
-    FlexDirectionColumnReverse -> "column-reverse"
-    FlexDirectionInherit       -> "inherit"
-    FlexDirectionInitial       -> "initial"
-    FlexDirectionRevert        -> "revert"
-    FlexDirectionRevertLayer   -> "revert-layer"
-    FlexDirectionUnset         -> "unset"
-
-data FlexWrap
-  = FlexWrapNowrap
-  | FlexWrapWrap
-  | FlexWrapWrapReverse
-  | FlexWrapInherit
-  | FlexWrapInitial
-  | FlexWrapRevert
-  | FlexWrapRevertLayer
-  | FlexWrapUnset
-
-instance ToFFI FlexWrap String where
-  toNative = case _ of
-    FlexWrapNowrap       -> "nowrap"
-    FlexWrapWrap         -> "wrap"
-    FlexWrapWrapReverse  -> "wrap-reverse"
-    FlexWrapInherit      -> "inherit"
-    FlexWrapInitial      -> "initial"
-    FlexWrapRevert       -> "revert"
-    FlexWrapRevertLayer  -> "revert-layer"
-    FlexWrapUnset        -> "unset"
-
-instance DefaultValue FlexWrap where defaultValue = FlexWrapNowrap
-
 type FlexPropsImpl =
   ThemingPropsImpl
-    ( children  :: Array JSX
-    , align     :: Nullable String
+    ( align     :: Nullable String
+    , children  :: Array JSX
     , columnGap :: Nullable String
     , direction :: Nullable String
     , gap       :: Nullable String

@@ -1,33 +1,45 @@
 module Mantine.Core.Navigation.Anchor
   ( anchor
   , AnchorProps
+  , AnchorUnderline(..)
   ) where
 
+import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
 import Mantine.Core.Prelude
-import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow, textToImpl)
 
 anchor :: (AnchorProps -> AnchorProps) -> JSX
-anchor = mkComponent anchorComponent anchorToImpl defaultThemingProps_
+anchor = mkTrivialComponent anchorComponent
 
 foreign import anchorComponent :: ReactComponent AnchorPropsImpl
 
 type AnchorProps =
   ThemingProps
-    ( children :: Array JSX
-    , href     :: String
-    | TextPropsRow
+    ( children  :: Array JSX
+    , href      :: String
+    , target    :: Maybe String
+    , underline :: AnchorUnderline
+    | Polymorphic TextPropsRow
     )
+
+data AnchorUnderline
+  = AnchorUnderlineAlways
+  | AnchorUnderlineHover
+  | AnchorUnderlineNever
+
+instance DefaultValue AnchorUnderline where
+  defaultValue = AnchorUnderlineHover
+
+instance ToFFI AnchorUnderline String where
+  toNative = case _ of
+   AnchorUnderlineAlways -> "always"
+   AnchorUnderlineHover  -> "hover"
+   AnchorUnderlineNever  -> "never"
 
 type AnchorPropsImpl =
   ThemingPropsImpl
-    ( children :: Array JSX
-    , href     :: String
-    | TextPropsImplRow
+    ( children  :: Array JSX
+    , href      :: String
+    , target    :: Nullable String
+    , underline :: String
+    | PolymorphicImpl TextPropsImplRow
     )
-
-anchorToImpl :: AnchorProps -> AnchorPropsImpl
-anchorToImpl props =
-  let rest = textToImpl <<< dropLocalProps
-      dropLocalProps = delete (Proxy :: Proxy "href")
-      anchorProps = { href: props.href }
-   in anchorProps `union` rest props

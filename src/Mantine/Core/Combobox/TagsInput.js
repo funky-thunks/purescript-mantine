@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MediaQuery } from '@mantine/core';
+import { TagsInput } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -9,6 +9,6 @@ function removeEmpty(obj) {
   );
 }
 
-export function mediaQueryComponent(props) {
-  return React.createElement(MediaQuery, removeEmpty(props), props.children);
+export function tagsInputComponent(props) {
+  return React.createElement(TagsInput, removeEmpty(props), props.children);
 }

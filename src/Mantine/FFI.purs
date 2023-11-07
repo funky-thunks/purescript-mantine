@@ -17,12 +17,13 @@ import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
+import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Prim.Row (class Cons, class Lacks)
 import Prim.RowList (class RowToList, RowList, Cons, Nil)
 import React.Basic (Ref)
+import React.Basic.DOM (CSS)
 import React.Basic.Emotion (Style)
 import React.Basic.Events (EventHandler)
 import React.Basic.Hooks (JSX)
@@ -65,10 +66,13 @@ instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
 instance ToFFI abstract native => ToFFI (Object abstract) (Object native) where
   toNative = map toNative
 
-instance ToFFI (JSX -> JSX) (JSX -> JSX) where
+instance ToFFI CSS CSS where
   toNative = identity
 
 instance ToFFI JSX JSX where
+  toNative = identity
+
+instance ToFFI (JSX -> JSX) (JSX -> JSX) where
   toNative = identity
 
 instance ToFFI HTMLElement HTMLElement where
@@ -94,6 +98,9 @@ instance ToFFI result native => ToFFI (Effect result) (Effect native) where
 
 instance ToFFI (arg0 -> Effect result) (EffectFn1 arg0 result) where
   toNative = mkEffectFn1
+
+instance ToFFI (arg0 -> arg1 -> Effect result) (EffectFn2 arg0 arg1 result) where
+  toNative = mkEffectFn2
 
 instance ( InOneOf nativeRight nativeLeft nativeRight
          , ToFFI abstractLeft  nativeLeft

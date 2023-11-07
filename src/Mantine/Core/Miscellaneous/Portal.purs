@@ -2,6 +2,12 @@ module Mantine.Core.Miscellaneous.Portal
   ( portal
   , portal_
   , PortalProps
+  , PortalComponent
+  , PortalTarget(..)
+
+  , optionalPortal
+  , optionalPortal_
+  , OptionalPortalProps
   ) where
 
 import Mantine.Core.Prelude
@@ -16,14 +22,41 @@ portal_ children = portal _ { children = children }
 
 foreign import portalComponent :: ReactComponent PortalPropsImpl
 
-type PortalProps =
+type PortalProps     = PortalComponent     ()
+type PortalPropsImpl = PortalComponentImpl ()
+
+optionalPortal :: (OptionalPortalProps -> OptionalPortalProps) -> JSX
+optionalPortal = mkComponent optionalPortalComponent toNative defaultValue
+
+optionalPortal_ :: Array JSX -> JSX
+optionalPortal_ children = optionalPortal _ { children = children }
+
+foreign import optionalPortalComponent :: ReactComponent OptionalPortalPropsImpl
+
+type OptionalPortalProps     = PortalComponent     (withinPortal :: Boolean)
+type OptionalPortalPropsImpl = PortalComponentImpl (withinPortal :: Boolean)
+
+type PortalComponent rest =
   { children :: Array JSX
-  , innerRef :: Maybe (Ref HTMLDivElement)
-  , target   :: Maybe HTMLElement
+  , ref      :: Maybe (Ref HTMLDivElement)
+  , target   :: Maybe PortalTarget
+  | rest
   }
 
-type PortalPropsImpl =
+data PortalTarget
+  = PortalTargetSelector String
+  | PortalTargetElement  HTMLElement
+
+type PortalTargetImpl = String |+| HTMLElement
+
+instance ToFFI PortalTarget PortalTargetImpl where
+  toNative = case _ of
+    PortalTargetSelector s -> asOneOf s
+    PortalTargetElement  e -> asOneOf e
+
+type PortalComponentImpl rest =
   { children :: Array JSX
-  , innerRef :: Nullable (Ref HTMLDivElement)
-  , target   :: Nullable HTMLElement
+  , ref      :: Nullable (Ref HTMLDivElement)
+  , target   :: Nullable PortalTargetImpl
+  | rest
   }

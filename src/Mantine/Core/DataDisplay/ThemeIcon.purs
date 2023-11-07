@@ -28,21 +28,24 @@ defaultThemeIconProps =
     }
 
 data ThemeIconVariant
-  = ThemeIconOutline
+  = ThemeIconFilled
   | ThemeIconLight
+  | ThemeIconOutline
   | ThemeIconDefault
-  | ThemeIconFilled
+  | ThemeIconWhite
   | ThemeIconGradient MantineGradient
 
-instance DefaultValue ThemeIconVariant where defaultValue = ThemeIconDefault
+instance DefaultValue ThemeIconVariant where
+  defaultValue = ThemeIconFilled
 
-instance ToFFI ThemeIconVariant String where
-  toNative = case _ of
-    ThemeIconOutline    -> "outline"
-    ThemeIconLight      -> "light"
-    ThemeIconDefault    -> "default"
-    ThemeIconFilled     -> "filled"
-    ThemeIconGradient _ -> "gradient"
+instance ToFFI ThemeIconVariant (Nullable String) where
+  toNative = toNative <<< case _ of
+    ThemeIconFilled     -> Nothing
+    ThemeIconLight      -> Just "light"
+    ThemeIconOutline    -> Just "outline"
+    ThemeIconDefault    -> Just "default"
+    ThemeIconWhite      -> Just "white"
+    ThemeIconGradient _ -> Just "gradient"
 
 type ThemeIconPropsImpl =
   ThemingPropsImpl
@@ -51,7 +54,7 @@ type ThemeIconPropsImpl =
     , gradient :: Nullable MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
-    , variant  :: String
+    , variant  :: Nullable String
     )
 
 themeIconToImpl :: ThemeIconProps -> ThemeIconPropsImpl

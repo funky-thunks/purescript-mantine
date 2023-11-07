@@ -2,7 +2,6 @@ module Mantine.Core.Layout.SimpleGrid
   ( simpleGrid
   , simpleGrid_
   , SimpleGridProps
-  , SimpleGridBreakpoint(..)
   ) where
 
 import Mantine.Core.Prelude
@@ -13,34 +12,20 @@ simpleGrid = mkTrivialComponent simpleGridComponent
 simpleGrid_ :: Array JSX -> JSX
 simpleGrid_ children = simpleGrid _ { children = children }
 
+foreign import simpleGridComponent :: ReactComponent SimpleGridPropsImpl
+
 type SimpleGridProps =
   ThemingProps
-    ( breakpoints     :: Array SimpleGridBreakpoint
-    , children        :: Array JSX
-    , cols            :: Maybe Int
-    , spacing         :: Maybe MantineSize
-    , verticalSpacing :: Maybe MantineSize
+    ( children        :: Array JSX
+    , cols            :: Maybe (FixedOrResponsive Int)
+    , spacing         :: Maybe (FixedOrResponsive MantineSpacing)
+    , verticalSpacing :: Maybe (FixedOrResponsive MantineSpacing)
     )
-
-data SimpleGridBreakpoint
-  = SimpleGridBreakpointMaxWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MantineSize }
-  | SimpleGridBreakpointMinWidth { width :: Number, cols :: Maybe Int, spacing :: Maybe MantineSize }
-
-type SimpleGridBreakpointImpl = { maxWidth :: Number, cols :: Nullable Number, spacing :: Nullable String }
-                            |+| { minWidth :: Number, cols :: Nullable Number, spacing :: Nullable String }
-
-instance ToFFI SimpleGridBreakpoint SimpleGridBreakpointImpl where
-  toNative = case _ of
-    SimpleGridBreakpointMaxWidth { width, cols, spacing } -> asOneOf (toNative { maxWidth: width, cols, spacing })
-    SimpleGridBreakpointMinWidth { width, cols, spacing } -> asOneOf (toNative { minWidth: width, cols, spacing })
 
 type SimpleGridPropsImpl =
   ThemingPropsImpl
-    ( breakpoints     :: Array SimpleGridBreakpointImpl
-    , children        :: Array JSX
-    , cols            :: Nullable Number
-    , spacing         :: Nullable String
-    , verticalSpacing :: Nullable String
+    ( children        :: Array JSX
+    , cols            :: Nullable (FixedOrResponsiveImpl Number)
+    , spacing         :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
+    , verticalSpacing :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
     )
-
-foreign import simpleGridComponent :: ReactComponent SimpleGridPropsImpl

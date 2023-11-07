@@ -12,12 +12,14 @@ foreign import breadcrumbsComponent :: ReactComponent BreadcrumbsPropsImpl
 
 type BreadcrumbsProps =
   ThemingProps
-    ( children  :: Array JSX
-    , separator :: Maybe JSX
+    ( children        :: Array JSX
+    , separator       :: Maybe JSX
+    , separatorMargin :: Maybe MantineSpacing
     )
 
 type BreadcrumbsPropsImpl =
   ThemingPropsImpl
-    ( children  :: Array JSX
-    , separator :: Nullable JSX
+    ( children        :: Array JSX
+    , separator       :: Nullable JSX
+    , separatorMargin :: Nullable MantineSpacingImpl
     )

@@ -2,7 +2,9 @@ module Mantine.Core.Feedback.Loader
   ( loader
   , loader_
   , LoaderProps
-  , LoaderVariant(..)
+  , LoaderType(..)
+
+  , LoaderPropsImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -17,28 +19,30 @@ foreign import loaderComponent :: ReactComponent LoaderPropsImpl
 
 type LoaderProps =
   ThemingProps
-    ( color    :: Maybe MantineColor
-    , size     :: Maybe MantineNumberSize
-    , variant  :: LoaderVariant
+    ( color :: Maybe MantineColor
+    , size  :: Maybe MantineNumberSize
+    , type  :: LoaderType
     )
 
-data LoaderVariant
-  = LoaderVariantBars
-  | LoaderVariantOval
-  | LoaderVariantDots
+data LoaderType
+  = LoaderTypeBars
+  | LoaderTypeOval
+  | LoaderTypeDots
+  | LoaderTypeCustom String
 
-instance ToFFI LoaderVariant String where
+instance ToFFI LoaderType String where
   toNative = case _ of
-    LoaderVariantBars -> "bars"
-    LoaderVariantOval -> "oval"
-    LoaderVariantDots -> "dots"
+    LoaderTypeBars     -> "bars"
+    LoaderTypeOval     -> "oval"
+    LoaderTypeDots     -> "dots"
+    LoaderTypeCustom s -> s
 
-instance DefaultValue LoaderVariant where
-  defaultValue = LoaderVariantOval
+instance DefaultValue LoaderType where
+  defaultValue = LoaderTypeOval
 
 type LoaderPropsImpl =
   ThemingPropsImpl
-    ( color   :: Nullable String
-    , size    :: Nullable MantineNumberSizeImpl
-    , variant :: String
+    ( color :: Nullable String
+    , size  :: Nullable MantineNumberSizeImpl
+    , type  :: String
     )

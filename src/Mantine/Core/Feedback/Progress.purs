@@ -1,7 +1,14 @@
 module Mantine.Core.Feedback.Progress
   ( progress
   , ProgressProps
-  , ProgressSection
+
+  , progressRoot
+  , ProgressRootProps
+  , ProgressRootPropsRow
+
+  , progressSection
+  , ProgressSectionProps
+  , ProgressSectionPropsRow
   ) where
 
 import Mantine.Core.Prelude
@@ -11,44 +18,66 @@ progress = mkTrivialComponent progressComponent
 
 foreign import progressComponent :: ReactComponent ProgressPropsImpl
 
+progressRoot :: (ProgressRootProps -> ProgressRootProps) -> JSX
+progressRoot = mkTrivialComponent progressRootComponent
+
+foreign import progressRootComponent :: ReactComponent ProgressRootPropsImpl
+
+progressSection :: (ProgressSectionProps -> ProgressSectionProps) -> JSX
+progressSection = mkTrivialComponent progressSectionComponent
+
+foreign import progressSectionComponent :: ReactComponent ProgressSectionPropsImpl
+
 type ProgressProps =
+  ThemingProps (ProgressSectionPropsRow ProgressRootPropsRow)
+
+type ProgressRootPropsRow =
+  ( radius :: Maybe MantineNumberSize
+  , size   :: Maybe MantineNumberSize
+  )
+
+type ProgressRootProps = ThemingProps ProgressRootPropsRow
+
+type ProgressSectionProps =
   ThemingProps
-    ( animate  :: Boolean
-    , color    :: Maybe MantineColor
-    , label    :: Maybe String
-    , radius   :: Maybe MantineNumberSize
-    , sections :: Array ProgressSection
-    , size     :: Maybe MantineNumberSize
-    , striped  :: Boolean
-    , value    :: Number
+    ( ProgressSectionPropsRow
+      ( onMouseEnter :: Maybe EventHandler
+      , onMouseLeave :: Maybe EventHandler
+      , withAria     :: Boolean
+      )
     )
 
-type ProgressSection =
-  { color        :: Maybe MantineColor
-  , label        :: Maybe String
-  , onMouseEnter :: EventHandler
-  , onMouseLeave :: EventHandler
-  , tooltip      :: Maybe JSX
-  , value        :: Number
-  }
+type ProgressSectionPropsRow rest =
+  ( animated :: Boolean
+  , color    :: Maybe MantineColor
+  , striped  :: Boolean
+  , value    :: Number
+  | rest
+  )
 
 type ProgressPropsImpl =
+  ThemingPropsImpl (ProgressSectionPropsImplRow ProgressRootPropsImplRow)
+
+type ProgressRootPropsImplRow =
+  ( radius :: Nullable MantineNumberSizeImpl
+  , size   :: Nullable MantineNumberSizeImpl
+  )
+
+type ProgressRootPropsImpl = ThemingPropsImpl ProgressRootPropsImplRow
+
+type ProgressSectionPropsImpl =
   ThemingPropsImpl
-    ( animate  :: Boolean
-    , color    :: Nullable String
-    , label    :: Nullable String
-    , radius   :: Nullable MantineNumberSizeImpl
-    , sections :: Array ProgressSectionImpl
-    , size     :: Nullable MantineNumberSizeImpl
-    , striped  :: Boolean
-    , value    :: Number
+    ( ProgressSectionPropsImplRow
+      ( onMouseEnter :: Nullable EventHandler
+      , onMouseLeave :: Nullable EventHandler
+      , withAria     :: Boolean
+      )
     )
 
-type ProgressSectionImpl =
-  { color        :: Nullable String
-  , label        :: Nullable String
-  , onMouseEnter :: EventHandler
-  , onMouseLeave :: EventHandler
-  , tooltip      :: Nullable JSX
-  , value        :: Number
-  }
+type ProgressSectionPropsImplRow rest =
+  ( animated :: Boolean
+  , color    :: Nullable String
+  , striped  :: Boolean
+  , value    :: Number
+  | rest
+  )

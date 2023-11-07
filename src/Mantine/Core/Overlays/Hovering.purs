@@ -3,18 +3,19 @@ module Mantine.Core.Overlays.Hovering
   , HoverCardProps
   , hoverCardTarget
   , hoverCardDropdown
-  , HoverCardDropdownProps
 
   , popover
   , PopoverProps
   , popoverTarget
   , popoverDropdown
-  , PopoverDropdownProps
 
   , HoveringCommons
+  , HoveringDropdownProps
   , HoveringTargetProps
-  , HoverArrowPosition(..)
-  , HoverFloatingPosition(..)
+  , HoverableArrowPosition(..)
+  , HoverableComponent
+  , HoverableComponentImpl
+  , HoverableFloatingPosition(..)
   , HoverPopoverWidth(..)
   , HoverPopupType(..)
   ) where
@@ -29,11 +30,7 @@ hoverCard = mkComponentWithDefault hoverCardComponent defaultHoverCardProps
 foreign import hoverCardComponent :: ReactComponent HoverCardPropsImpl
 
 defaultHoverCardProps :: HoverCardProps
-defaultHoverCardProps =
-  defaultThemingProps
-    { onClose: pure unit
-    , onOpen:  pure unit
-    }
+defaultHoverCardProps = defaultThemingProps defaultHoveringProps
 
 type HoverCardProps =
   HoveringCommons
@@ -54,17 +51,17 @@ hoverCardTarget = mkHoveringComponent hoverCardTargetComponent
 
 foreign import hoverCardTargetComponent :: ReactComponent HoveringTargetPropsImpl
 
-hoverCardDropdown :: (HoverCardDropdownProps -> HoverCardDropdownProps) -> JSX
+hoverCardDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
 hoverCardDropdown = mkTrivialComponent hoverCardDropdownComponent
 
-foreign import hoverCardDropdownComponent :: ReactComponent HoverCardDropdownPropsImpl
+foreign import hoverCardDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
 
-type HoverCardDropdownProps =
+type HoveringDropdownProps =
   ThemingProps
     ( children :: Array JSX
     )
 
-type HoverCardDropdownPropsImpl =
+type HoveringDropdownPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
     )
@@ -75,40 +72,29 @@ popover = mkComponentWithDefault popoverComponent defaultPopoverProps
 foreign import popoverComponent :: ReactComponent PopoverPropsImpl
 
 defaultPopoverProps :: PopoverProps
-defaultPopoverProps =
-  defaultThemingProps
-    { closeOnClickOutside: true
-    , closeOnEscape:       true
-    , onClose:             pure unit
-    , onOpen:              pure unit
-    , withRoles:           true
-    }
+defaultPopoverProps = defaultThemingProps defaultHoveringProps
 
-type PopoverProps =
-  HoveringCommons
-    ( clickOutsideEvents  :: Array String
-    , closeOnClickOutside :: Boolean
-    , closeOnEscape       :: Boolean
-    , defaultOpened       :: Maybe Boolean
-    , id                  :: Maybe String
-    , onChange            :: ValueHandler Boolean
-    , opened              :: Maybe Boolean
-    , trapFocus           :: Boolean
-    , withRoles           :: Boolean
-    )
+type NonDefaultableHoveringProps =
+  { closeOnClickOutside :: Boolean
+  , closeOnEscape       :: Boolean
+  , onClose             :: Effect Unit
+  , onOpen              :: Effect Unit
+  , withRoles           :: Boolean
+  , withinPortal        :: Boolean
+  }
 
-type PopoverPropsImpl =
-  HoveringCommonsImpl
-    ( clickOutsideEvents  :: Array String
-    , closeOnClickOutside :: Boolean
-    , closeOnEscape       :: Boolean
-    , defaultOpened       :: Nullable Boolean
-    , id                  :: Nullable String
-    , onChange            :: EffectFn1 Boolean Unit
-    , opened              :: Nullable Boolean
-    , trapFocus           :: Boolean
-    , withRoles           :: Boolean
-    )
+defaultHoveringProps :: NonDefaultableHoveringProps
+defaultHoveringProps =
+  { closeOnClickOutside: true
+  , closeOnEscape:       true
+  , onClose:             pure unit
+  , onOpen:              pure unit
+  , withRoles:           true
+  , withinPortal:        true
+  }
+
+type PopoverProps     = HoveringCommons     ()
+type PopoverPropsImpl = HoveringCommonsImpl ()
 
 popoverTarget :: (HoveringTargetProps -> HoveringTargetProps) -> JSX
 popoverTarget = mkHoveringComponent popoverTargetComponent
@@ -118,84 +104,97 @@ mkHoveringComponent cmpt = mkComponent cmpt hoveringTargetToImpl defaultThemingP
 
 foreign import popoverTargetComponent :: ReactComponent HoveringTargetPropsImpl
 
-popoverDropdown :: (PopoverDropdownProps -> PopoverDropdownProps) -> JSX
+popoverDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
 popoverDropdown = mkTrivialComponent popoverDropdownComponent
 
-foreign import popoverDropdownComponent :: ReactComponent PopoverDropdownPropsImpl
+foreign import popoverDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
 
-type PopoverDropdownProps =
+type HoverableComponent rest =
   ThemingProps
-    ( children :: Array JSX
-    )
-
-type PopoverDropdownPropsImpl =
-  ThemingPropsImpl
-    ( children :: Array JSX
-    )
-
-type HoveringCommons rest =
-  ThemingProps
-    ( children             :: Array JSX
-    , arrowOffset          :: Maybe Number
-    , arrowPosition        :: Maybe HoverArrowPosition
+    ( arrowOffset          :: Maybe Number
+    , arrowPosition        :: Maybe HoverableArrowPosition
     , arrowRadius          :: Maybe Number
     , arrowSize            :: Maybe Number
+    , children             :: Array JSX
     , disabled             :: Boolean
     , keepMounted          :: Boolean
- -- , middlewares          :: PopoverMiddlewares -- TODO
     , offset               :: Maybe Number
-    , onClose              :: Effect Unit
-    , onOpen               :: Effect Unit
-    , onPositionChange     :: ValueHandler HoverFloatingPosition
-    , position             :: HoverFloatingPosition
+    , onPositionChange     :: ValueHandler HoverableFloatingPosition
+    , opened               :: Maybe Boolean
+    , position             :: HoverableFloatingPosition
  -- , positionDependencies :: any[] -- TODO
     , radius               :: Maybe MantineNumberSize
-    , returnFocus          :: Boolean
-    , shadow               :: Maybe MantineShadow
     , transitionProps      :: ModalTransitionProps
-    , width                :: HoverPopoverWidth
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
     , zIndex               :: Maybe Number
     | rest
     )
 
-data HoverFloatingPosition
-  = HoverFloatingPositionTop      | HoverFloatingPositionRight      | HoverFloatingPositionBottom      | HoverFloatingPositionLeft
-  | HoverFloatingPositionTopEnd   | HoverFloatingPositionRightEnd   | HoverFloatingPositionBottomEnd   | HoverFloatingPositionLeftEnd
-  | HoverFloatingPositionTopStart | HoverFloatingPositionRightStart | HoverFloatingPositionBottomStart | HoverFloatingPositionLeftStart
+type HoveringCommons rest =
+  HoverableComponent
+    ( clickOutsideEvents  :: Array String
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , defaultOpened       :: Maybe Boolean
+    , id                  :: Maybe String
+ -- , middlewares         :: PopoverMiddlewares -- TODO
+    , onChange            :: ValueHandler Boolean
+    , onClose             :: Effect Unit
+    , onOpen              :: Effect Unit
+    , returnFocus         :: Boolean
+    , shadow              :: Maybe MantineShadow
+    , trapFocus           :: Boolean
+    , width               :: HoverPopoverWidth
+    , withRoles           :: Boolean
+    | rest
+    )
 
-instance DefaultValue HoverFloatingPosition where defaultValue = HoverFloatingPositionBottom
+data HoverableFloatingPosition
+  = HoverableFloatingPositionTop
+  | HoverableFloatingPositionRight
+  | HoverableFloatingPositionBottom
+  | HoverableFloatingPositionLeft
+  | HoverableFloatingPositionTopStart
+  | HoverableFloatingPositionRightStart
+  | HoverableFloatingPositionBottomStart
+  | HoverableFloatingPositionLeftStart
+  | HoverableFloatingPositionTopEnd
+  | HoverableFloatingPositionRightEnd
+  | HoverableFloatingPositionBottomEnd
+  | HoverableFloatingPositionLeftEnd
 
-instance ToFFI HoverFloatingPosition String where
+instance DefaultValue HoverableFloatingPosition where defaultValue = HoverableFloatingPositionBottom
+
+instance ToFFI HoverableFloatingPosition String where
   toNative = case _ of
-    HoverFloatingPositionTop         -> "top"
-    HoverFloatingPositionRight       -> "right"
-    HoverFloatingPositionBottom      -> "bottom"
-    HoverFloatingPositionLeft        -> "left"
-    HoverFloatingPositionTopEnd      -> "top-end"
-    HoverFloatingPositionRightEnd    -> "right-end"
-    HoverFloatingPositionBottomEnd   -> "bottom-end"
-    HoverFloatingPositionLeftEnd     -> "left-end"
-    HoverFloatingPositionTopStart    -> "top-start"
-    HoverFloatingPositionRightStart  -> "right-start"
-    HoverFloatingPositionBottomStart -> "bottom-start"
-    HoverFloatingPositionLeftStart   -> "left-start"
+    HoverableFloatingPositionTop         -> "top"
+    HoverableFloatingPositionRight       -> "right"
+    HoverableFloatingPositionBottom      -> "bottom"
+    HoverableFloatingPositionLeft        -> "left"
+    HoverableFloatingPositionTopStart    -> "top-start"
+    HoverableFloatingPositionRightStart  -> "right-start"
+    HoverableFloatingPositionBottomStart -> "bottom-start"
+    HoverableFloatingPositionLeftStart   -> "left-start"
+    HoverableFloatingPositionTopEnd      -> "top-end"
+    HoverableFloatingPositionRightEnd    -> "right-end"
+    HoverableFloatingPositionBottomEnd   -> "bottom-end"
+    HoverableFloatingPositionLeftEnd     -> "left-end"
 
-instance FromFFI String HoverFloatingPosition where
+instance FromFFI String HoverableFloatingPosition where
   fromNative = case _ of
-    "top"          -> HoverFloatingPositionTop
-    "right"        -> HoverFloatingPositionRight
-    "bottom"       -> HoverFloatingPositionBottom
-    "left"         -> HoverFloatingPositionLeft
-    "top-end"      -> HoverFloatingPositionTopEnd
-    "right-end"    -> HoverFloatingPositionRightEnd
-    "bottom-end"   -> HoverFloatingPositionBottomEnd
-    "left-end"     -> HoverFloatingPositionLeftEnd
-    "top-start"    -> HoverFloatingPositionTopStart
-    "right-start"  -> HoverFloatingPositionRightStart
-    "bottom-start" -> HoverFloatingPositionBottomStart
-    "left-start"   -> HoverFloatingPositionLeftStart
+    "top"          -> HoverableFloatingPositionTop
+    "right"        -> HoverableFloatingPositionRight
+    "bottom"       -> HoverableFloatingPositionBottom
+    "left"         -> HoverableFloatingPositionLeft
+    "top-end"      -> HoverableFloatingPositionTopEnd
+    "right-end"    -> HoverableFloatingPositionRightEnd
+    "bottom-end"   -> HoverableFloatingPositionBottomEnd
+    "left-end"     -> HoverableFloatingPositionLeftEnd
+    "top-start"    -> HoverableFloatingPositionTopStart
+    "right-start"  -> HoverableFloatingPositionRightStart
+    "bottom-start" -> HoverableFloatingPositionBottomStart
+    "left-start"   -> HoverableFloatingPositionLeftStart
     _              -> defaultValue
 
 data HoverPopoverWidth = AsTarget | Fixed Number
@@ -209,46 +208,62 @@ instance ToFFI HoverPopoverWidth HoverPopoverWidthImpl where
     AsTarget -> asOneOf "target"
     Fixed n  -> asOneOf n
 
-type HoveringCommonsImpl rest =
+type HoverableComponentImpl rest =
   ThemingPropsImpl
-    ( children             :: Array JSX
-    , arrowOffset          :: Nullable Number
+    ( arrowOffset          :: Nullable Number
     , arrowPosition        :: Nullable String
     , arrowRadius          :: Nullable Number
     , arrowSize            :: Nullable Number
+    , children             :: Array JSX
     , disabled             :: Boolean
     , keepMounted          :: Boolean
- -- , middlewares          :: PopoverMiddlewares -- TODO
     , offset               :: Nullable Number
-    , onClose              :: Effect Unit
-    , onOpen               :: Effect Unit
     , onPositionChange     :: EffectFn1 String Unit
+    , opened               :: Nullable Boolean
     , position             :: String
  -- , positionDependencies :: any[] -- TODO
     , radius               :: Nullable MantineNumberSizeImpl
-    , returnFocus          :: Boolean
-    , shadow               :: Nullable String
     , transitionProps      :: ModalTransitionPropsImpl
-    , width                :: HoverPopoverWidthImpl
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
     , zIndex               :: Nullable Number
     | rest
     )
 
-data HoverArrowPosition = HoverArrowPositionCenter | HoverArrowPositionSide
+type HoveringCommonsImpl rest =
+  HoverableComponentImpl
+    ( clickOutsideEvents  :: Array String
+    , closeOnClickOutside :: Boolean
+    , closeOnEscape       :: Boolean
+    , defaultOpened       :: Nullable Boolean
+    , id                  :: Nullable String
+ -- , middlewares         :: PopoverMiddlewares -- TODO
+    , onChange            :: EffectFn1 Boolean Unit
+    , onClose             :: Effect Unit
+    , onOpen              :: Effect Unit
+    , returnFocus         :: Boolean
+    , shadow              :: Nullable String
+    , trapFocus           :: Boolean
+    , width               :: HoverPopoverWidthImpl
+    , withRoles           :: Boolean
+    | rest
+    )
 
-instance ToFFI HoverArrowPosition String where
+data HoverableArrowPosition
+  = HoverableArrowPositionCenter
+  | HoverableArrowPositionSide
+
+instance ToFFI HoverableArrowPosition String where
   toNative = case _ of
-    HoverArrowPositionCenter -> "center"
-    HoverArrowPositionSide   -> "side"
+    HoverableArrowPositionCenter -> "center"
+    HoverableArrowPositionSide   -> "side"
 
 type HoveringTargetProps =
   ThemingProps
-    ( children                      :: Array JSX
-    , popupType                     :: HoverPopupType
-    , refProp                       :: Maybe String
-    , shouldOverrideDefaultTargetId :: Boolean
+    ( children              :: Array JSX
+    , eventPropsWrapperName :: Maybe String
+    , popupType             :: HoverPopupType
+    , refProp               :: Maybe String
     )
 
 data HoverPopupType = HoverPopupTypeDialog | HoverPopupTypeCustom String
@@ -262,10 +277,10 @@ instance ToFFI HoverPopupType String where
 
 type HoveringTargetPropsImpl =
   ThemingPropsImpl
-    ( children                      :: Array JSX
-    , popupType                     :: String
-    , refProp                       :: Nullable String
-    , shouldOverrideDefaultTargetId :: Boolean
+    ( children              :: Array JSX
+    , eventPropsWrapperName :: Nullable String
+    , popupType             :: String
+    , refProp               :: Nullable String
     )
 
 hoveringTargetToImpl :: HoveringTargetProps -> HoveringTargetPropsImpl

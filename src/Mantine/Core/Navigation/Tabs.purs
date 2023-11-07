@@ -7,12 +7,11 @@ module Mantine.Core.Navigation.Tabs
 
   , tab
   , tab_
-  , TabProps
+  , TabsTabProps
 
   , tabList
   , tabList_
   , TabListProps
-  , TabAlignment(..)
 
   , tabPanel
   , tabPanel_
@@ -25,7 +24,7 @@ tabs :: (TabsProps -> TabsProps) -> JSX
 tabs = mkTrivialComponent tabsComponent
 
 tabs_ :: Array JSX -> JSX
-tabs_ children = tabs _ { children = children}
+tabs_ children = tabs _ { children = children }
 
 foreign import tabsComponent :: ReactComponent TabsPropsImpl
 
@@ -40,7 +39,7 @@ type TabsProps =
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onTabChange             :: Maybe (String -> Effect Unit)
+    , onChange                :: Maybe (String -> Effect Unit)
     , orientation             :: Maybe Orientation
     , placement               :: Maybe TabsPlacement
     , radius                  :: Maybe MantineNumberSize
@@ -79,7 +78,7 @@ type TabsPropsImpl =
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onTabChange             :: Nullable (EffectFn1 String Unit)
+    , onChange                :: Nullable (EffectFn1 String Unit)
     , orientation             :: Nullable String
     , placement               :: Nullable String
     , radius                  :: Nullable MantineNumberSizeImpl
@@ -87,29 +86,31 @@ type TabsPropsImpl =
     , variant                 :: Nullable String
     )
 
-tab :: (TabProps -> TabProps) -> JSX
+tab :: (TabsTabProps -> TabsTabProps) -> JSX
 tab = mkTrivialComponent tabComponent
 
 tab_ :: Array JSX -> JSX
 tab_ children = tab _ { children = children}
 
-foreign import tabComponent :: ReactComponent TabPropsImpl
+foreign import tabComponent :: ReactComponent TabsTabPropsImpl
 
-type TabProps =
+type TabsTabProps =
   ThemingProps
     ( children     :: Array JSX
     , color        :: Maybe MantineColor
-    , icon         :: Maybe JSX
+    , leftSection  :: Maybe JSX
     , rightSection :: Maybe JSX
+    , size         :: Maybe MantineNumberSize
     , value        :: Maybe String
     )
 
-type TabPropsImpl =
+type TabsTabPropsImpl =
   ThemingPropsImpl
     ( children     :: Array JSX
     , color        :: Nullable String
-    , icon         :: Nullable JSX
+    , leftSection  :: Nullable JSX
     , rightSection :: Nullable JSX
+    , size         :: Nullable MantineNumberSizeImpl
     , value        :: Nullable String
     )
 
@@ -125,27 +126,14 @@ type TabListProps =
   ThemingProps
     ( children :: Array JSX
     , grow     :: Boolean
-    , position :: Maybe TabAlignment
+    , justify  :: Maybe JustifyContent
     )
-
-data TabAlignment
-  = TabAlignmentLeft
-  | TabAlignmentRight
-  | TabAlignmentCenter
-  | TabAlignmentApart
-
-instance ToFFI TabAlignment String where
-  toNative = case _ of
-    TabAlignmentLeft   -> "left"
-    TabAlignmentRight  -> "right"
-    TabAlignmentCenter -> "center"
-    TabAlignmentApart  -> "apart"
 
 type TabListPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
     , grow     :: Boolean
-    , position :: Nullable String
+    , justify  :: Nullable String
     )
 
 tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX
@@ -159,11 +147,11 @@ foreign import tabPanelComponent :: ReactComponent TabPanelPropsImpl
 type TabPanelProps =
   ThemingProps
     ( children :: Array JSX
-    , value    :: Maybe String
+    , value    :: String
     )
 
 type TabPanelPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
-    , value    :: Nullable String
+    , value    :: String
     )

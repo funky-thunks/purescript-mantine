@@ -2,19 +2,22 @@ module Mantine.Core.Overlays.Drawer
   ( drawer
   , DrawerProps
   , DrawerPosition(..)
-  , module Mantine.Core.Overlays.Modal
   ) where
 
-import Mantine.Core.Overlays.Modal (ModalOverlayProps, ModalTransitionProps)
-import Mantine.Core.Overlays.Modal as M
+import Mantine.Core.Overlays.Overlay (OverlayProps, OverlayPropsImpl)
+import Mantine.Core.Overlays.Modal (ModalTransitionProps, ModalTransitionPropsImpl)
 import Mantine.Core.Prelude
-import Web.HTML (HTMLElement)
-import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl, closeButtonPropsToImpl)
+import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl)
 
 drawer :: (DrawerProps -> DrawerProps) -> JSX
-drawer = mkComponent drawerComponent drawerToImpl defaultDrawerProps
+drawer = mkComponentWithDefault drawerComponent defaultDrawerProps
 
 foreign import drawerComponent :: ReactComponent DrawerPropsImpl
+
+-- Not supported properties
+--   { portalProps         :: Omit<PortalProps, "children">
+--   , scrollAreaComponent :: ScrollAreaComponent
+--   }
 
 type DrawerProps =
   ThemingProps
@@ -27,13 +30,12 @@ type DrawerProps =
     , lockScroll          :: Boolean
     , onClose             :: Effect Unit
     , opened              :: Boolean
-    , overlayProps        :: ModalOverlayProps
+    , overlayProps        :: OverlayProps
     , padding             :: Maybe MantineNumberSize
     , position            :: DrawerPosition
     , returnFocus         :: Boolean
     , shadow              :: Maybe MantineShadow
     , size                :: Maybe MantineNumberSize
-    , target              :: Maybe (Either String HTMLElement)
     , title               :: Maybe JSX
     , transitionProps     :: ModalTransitionProps
     , trapFocus           :: Boolean
@@ -46,16 +48,20 @@ type DrawerProps =
 defaultDrawerProps :: DrawerProps
 defaultDrawerProps = defaultThemingProps { onClose: pure unit }
 
-data DrawerPosition = Bottom | Left | Right | Top
+data DrawerPosition
+  = DrawerPositionBottom
+  | DrawerPositionLeft
+  | DrawerPositionRight
+  | DrawerPositionTop
 
-instance DefaultValue DrawerPosition where defaultValue = Left
+instance DefaultValue DrawerPosition where defaultValue = DrawerPositionLeft
 
 instance ToFFI DrawerPosition String where
   toNative = case _ of
-    Bottom -> "bottom"
-    Left   -> "left"
-    Right  -> "right"
-    Top    -> "top"
+    DrawerPositionBottom -> "bottom"
+    DrawerPositionLeft   -> "left"
+    DrawerPositionRight  -> "right"
+    DrawerPositionTop    -> "top"
 
 type DrawerPropsImpl =
   ThemingPropsImpl
@@ -68,24 +74,17 @@ type DrawerPropsImpl =
     , lockScroll          :: Boolean
     , onClose             :: Effect Unit
     , opened              :: Boolean
-    , overlayProps        :: M.ModalOverlayPropsImpl
+    , overlayProps        :: OverlayPropsImpl
     , padding             :: Nullable MantineNumberSizeImpl
     , position            :: String
     , returnFocus         :: Boolean
     , shadow              :: Nullable String
     , size                :: Nullable MantineNumberSizeImpl
-    , target              :: Nullable (String |+| HTMLElement)
     , title               :: Nullable JSX
-    , transitionProps     :: M.ModalTransitionPropsImpl
+    , transitionProps     :: ModalTransitionPropsImpl
     , trapFocus           :: Boolean
     , withCloseButton     :: Boolean
     , withOverlay         :: Boolean
     , withinPortal        :: Boolean
     , zIndex              :: Nullable Number
     )
-
-drawerToImpl :: DrawerProps -> DrawerPropsImpl
-drawerToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "closeButtonProps")
-      closeButtonProps = toNullable (closeButtonPropsToImpl <$> props.closeButtonProps)
-   in { closeButtonProps } `union` rest props

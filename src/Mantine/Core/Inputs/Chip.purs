@@ -7,13 +7,13 @@ module Mantine.Core.Inputs.Chip
   , chipGroup
   , multipleChipGroup
   , ChipGroupProps
-  , ChipGroupPosition(..)
   ) where
 
 import Prelude (class Show)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Mantine.Core.Prelude
+import Web.HTML.HTMLDivElement (HTMLDivElement)
 
 chip :: (ChipProps -> ChipProps) -> JSX
 chip = mkComponentWithDefault chipComponent defaultChipProps
@@ -26,9 +26,11 @@ type ChipProps =
     , children       :: Array JSX
     , color          :: Maybe MantineColor
     , defaultChecked :: Maybe Boolean
+    , icon           :: Maybe JSX
     , id             :: Maybe String
     , onChange       :: CheckerHandler
     , radius         :: Radius
+    , rootRef        :: Maybe (Ref HTMLDivElement)
     , size           :: MantineSize
     , type           :: Maybe ChipType
     , value          :: Maybe String
@@ -48,9 +50,11 @@ type ChipPropsImpl =
     , children       :: Array JSX
     , color          :: Nullable String
     , defaultChecked :: Nullable Boolean
+    , icon           :: Nullable JSX
     , id             :: Nullable String
     , onChange       :: EventHandler
     , radius         :: String
+    , rootRef        :: Nullable (Ref HTMLDivElement)
     , size           :: String
     , type           :: Nullable String
     , value          :: Nullable String
@@ -103,39 +107,16 @@ type MultipleChipGroupProps = ChipGroupProps (Array String)
 
 type ChipGroupProps value =
   ThemingProps
-    ( align        :: Maybe AlignItems
-    , children     :: Array JSX
+    ( children     :: Array JSX
     , defaultValue :: Maybe value
-    , grow         :: Boolean
-    , noWrap       :: Boolean
     , onChange     :: ValueHandler value
-    , position     :: Maybe ChipGroupPosition
-    , spacing      :: Maybe MantineNumberSize
     , value        :: Maybe value
     )
 
-data ChipGroupPosition
-  = ChipGroupPositionLeft
-  | ChipGroupPositionRight
-  | ChipGroupPositionCenter
-  | ChipGroupPositionApart
-
-instance ToFFI ChipGroupPosition String where
- toNative = case _ of
-  ChipGroupPositionLeft   -> "left"
-  ChipGroupPositionRight  -> "right"
-  ChipGroupPositionCenter -> "center"
-  ChipGroupPositionApart  -> "apart"
-
 type ChipGroupPropsImpl value =
   ThemingPropsImpl
-    ( align        :: Nullable String
-    , children     :: Array JSX
+    ( children     :: Array JSX
     , defaultValue :: Nullable value
-    , grow         :: Boolean
-    , noWrap       :: Boolean
     , onChange     :: EffectFn1 value Unit
-    , position     :: Nullable String
-    , spacing      :: Nullable MantineNumberSizeImpl
     , value        :: Nullable value
     )

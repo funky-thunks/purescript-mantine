@@ -18,14 +18,14 @@ type StackProps =
   ThemingProps
     ( align    :: Maybe AlignItems
     , children :: Array JSX
+    , gap      :: Maybe MantineSpacing
     , justify  :: Maybe JustifyContent
-    , spacing  :: Maybe MantineNumberSize
     )
 
 type StackPropsImpl =
   ThemingPropsImpl
     ( align    :: Nullable String
     , children :: Array JSX
+    , gap      :: Nullable MantineSpacingImpl
     , justify  :: Nullable String
-    , spacing  :: Nullable MantineNumberSizeImpl
     )

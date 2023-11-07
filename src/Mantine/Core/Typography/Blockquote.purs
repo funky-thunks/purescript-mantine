@@ -20,6 +20,8 @@ type BlockquoteProps =
     , cite     :: Maybe JSX
     , color    :: Maybe MantineColor
     , icon     :: Maybe JSX
+    , iconSize :: Maybe MantineNumberSize
+    , radius   :: Maybe MantineNumberSize
     )
 
 type BlockquotePropsImpl =
@@ -28,4 +30,6 @@ type BlockquotePropsImpl =
     , cite     :: Nullable JSX
     , color    :: Nullable String
     , icon     :: Nullable JSX
+    , iconSize :: Nullable MantineNumberSizeImpl
+    , radius   :: Nullable MantineNumberSizeImpl
     )

@@ -19,32 +19,37 @@ foreign import alertComponent :: ReactComponent AlertPropsImpl
 type AlertProps =
   ThemingProps
     ( children  :: JSX
+    , closable  :: AlertClosable
     , color     :: Maybe MantineColor
     , icon      :: Maybe JSX
     , radius    :: Maybe MantineNumberSize
     , title     :: Maybe JSX
-    , variant   :: AlertVariant
-    , closable  :: AlertClosable
+    , variant   :: Maybe AlertVariant
     )
 
 data AlertClosable
-  = NotClosable
-  | Closable String (Effect Unit)
+  = AlertNotClosable
+  | AlertClosable String (Effect Unit)
 
-instance DefaultValue AlertClosable where defaultValue = NotClosable
+instance DefaultValue AlertClosable where
+  defaultValue = AlertNotClosable
 
 data AlertVariant
-  = AlertVariantOutline
+  = AlertVariantFilled
   | AlertVariantLight
-  | AlertVariantFilled
-
-instance DefaultValue AlertVariant where defaultValue = AlertVariantLight
+  | AlertVariantOutline
+  | AlertVariantTransparent
+  | AlertVariantWhite
+  | AlertVariantDefault
 
 instance ToFFI AlertVariant String where
   toNative = case _ of
-    AlertVariantOutline -> "outline"
-    AlertVariantLight   -> "light"
-    AlertVariantFilled  -> "filled"
+    AlertVariantFilled      -> "filled"
+    AlertVariantLight       -> "light"
+    AlertVariantOutline     -> "outline"
+    AlertVariantTransparent -> "transparent"
+    AlertVariantWhite       -> "white"
+    AlertVariantDefault     -> "default"
 
 defaultAlertProps :: AlertProps
 defaultAlertProps =
@@ -60,7 +65,7 @@ type AlertPropsRowImpl =
   , icon     :: Nullable JSX
   , radius   :: Nullable MantineNumberSizeImpl
   , title    :: Nullable JSX
-  , variant  :: String
+  , variant  :: Nullable String
   )
 
 type CloseProps r =
@@ -77,12 +82,12 @@ alertToImpl props =
 
 closeProps :: AlertClosable -> { | CloseProps () }
 closeProps = case _ of
-  NotClosable ->
+  AlertNotClosable ->
     { withCloseButton: false
     , closeButtonLabel: null
     , onClose: pure unit
     }
-  Closable message action ->
+  AlertClosable message action ->
     { withCloseButton: true
     , closeButtonLabel: toNullable (pure message)
     , onClose: action

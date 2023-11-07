@@ -2,7 +2,6 @@ module Mantine.Core.Buttons.Button
   ( button
   , button_
   , ButtonProps
-  , ButtonType(..)
   , ButtonVariant(..)
   , LoaderPosition(..)
 
@@ -16,8 +15,8 @@ module Mantine.Core.Buttons.Button
 import Prelude (class Show)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
+import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
 import Mantine.Core.Prelude
-import React.Basic.Emotion as E
 import React.Basic.Events (EventHandler, handler_)
 
 button :: (ButtonProps -> ButtonProps) -> JSX
@@ -29,36 +28,21 @@ button_ child = button _ { children = pure child }
 foreign import buttonComponent :: ReactComponent ButtonPropsImpl
 
 type ButtonProps =
-  -- FIXME it doesn't work well with the Button component
-  -- ThemingProps
-    { children       :: Array JSX
-    , sx             :: E.Style
-    , color          :: Maybe MantineColor
-    , compact        :: Boolean
-    , disabled       :: Boolean
-    , fullWidth      :: Boolean
-    , leftIcon       :: Maybe JSX
-    , loaderPosition :: Maybe LoaderPosition
-    , loading        :: Boolean
-    , onClick        :: EventHandler
-    , radius         :: Maybe Radius
-    , rightIcon      :: Maybe JSX
-    , size           :: MantineSize
-    , type           :: Maybe ButtonType
-    , uppercase      :: Boolean
-    , variant        :: ButtonVariant
-    }
-
-data ButtonType
-  = Button
-  | Reset
-  | Submit
-
-instance ToFFI ButtonType String where
-  toNative = case _ of
-    Button -> "button"
-    Reset  -> "reset"
-    Submit -> "submit"
+  ThemingProps
+    ( children     :: Array JSX
+    , color        :: Maybe MantineColor
+    , disabled     :: Boolean
+    , fullWidth    :: Boolean
+    , justify      :: Maybe JustifyContent
+    , leftSection  :: Maybe JSX
+    , loaderProps  :: Maybe LoaderProps
+    , loading      :: Boolean
+    , onClick      :: EventHandler
+    , radius       :: Maybe Radius
+    , rightSection :: Maybe JSX
+    , size         :: MantineSize
+    , variant      :: ButtonVariant
+    )
 
 data LoaderPosition
   = LoaderPositionLeft
@@ -74,9 +58,10 @@ instance ToFFI LoaderPosition String where
 data ButtonVariant
   = ButtonVariantDefault
   | ButtonVariantFilled
+  | ButtonVariantLight
   | ButtonVariantOutline
   | ButtonVariantSubtle
-  | ButtonVariantLight
+  | ButtonVariantTransparent
   | ButtonVariantWhite
   | ButtonVariantGradient MantineGradient
 
@@ -84,47 +69,42 @@ instance DefaultValue ButtonVariant where defaultValue = ButtonVariantFilled
 
 instance ToFFI ButtonVariant String where
   toNative = case _ of
-    ButtonVariantOutline    -> "outline"
-    ButtonVariantWhite      -> "white"
-    ButtonVariantLight      -> "light"
-    ButtonVariantDefault    -> "default"
-    ButtonVariantFilled     -> "filled"
-    ButtonVariantSubtle     -> "subtle"
-    ButtonVariantGradient _ -> "gradient"
+    ButtonVariantDefault     -> "default"
+    ButtonVariantFilled      -> "filled"
+    ButtonVariantLight       -> "light"
+    ButtonVariantOutline     -> "outline"
+    ButtonVariantSubtle      -> "subtle"
+    ButtonVariantTransparent -> "transparent"
+    ButtonVariantWhite       -> "white"
+    ButtonVariantGradient _  -> "gradient"
 
 derive instance genericVariant :: Generic ButtonVariant _
 instance showVariant :: Show ButtonVariant where show = genericShow
 
 defaultButtonProps :: ButtonProps
 defaultButtonProps =
-  -- FIXME it doesn't work well with the Button component
-  -- defaultThemingProps
-    { sx: E.css {}
-    , onClick: handler_ (pure unit)
+  defaultThemingProps
+    { onClick: handler_ (pure unit)
     , size: Small
-    } `union` defaultValue
+    }
 
 type ButtonPropsImpl =
-  -- FIXME it doesn't work well with the Button component
-  -- ThemingPropsImpl
-    { children       :: Array JSX
-    , sx             :: E.Style
+  ThemingPropsImpl
+    ( children       :: Array JSX
     , color          :: Nullable String
-    , compact        :: Boolean
     , disabled       :: Boolean
     , fullWidth      :: Boolean
     , gradient       :: Nullable MantineGradientImpl
-    , leftIcon       :: Nullable JSX
-    , loaderPosition :: Nullable String
+    , justify        :: Nullable String
+    , leftSection    :: Nullable JSX
+    , loaderProps    :: Nullable LoaderPropsImpl
     , loading        :: Boolean
     , onClick        :: EventHandler
     , radius         :: Nullable String
-    , rightIcon      :: Nullable JSX
+    , rightSection   :: Nullable JSX
     , size           :: String
-    , type           :: Nullable String
-    , uppercase      :: Boolean
     , variant        :: String
-    }
+    )
 
 buttonToImpl :: ButtonProps -> ButtonPropsImpl
 buttonToImpl props =
@@ -139,25 +119,21 @@ buttonGroup = mkComponentWithDefault buttonGroupComponent defaultButtonGroupProp
 foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
 
 type ButtonGroupProps =
-  -- FIXME it doesn't work well with the Button component
-  -- ThemingProps
-    { children    :: Array JSX
+  ThemingProps
+    ( borderWidth :: Maybe MantineNumberSize
+    , children    :: Array JSX
     , orientation :: Orientation
-    }
+    )
 
 defaultButtonGroupProps :: ButtonGroupProps
-defaultButtonGroupProps =
-  -- FIXME it doesn't work well with the Button component
-  -- defaultThemingProps
-    { orientation: Horizontal
-    } `union` defaultValue
+defaultButtonGroupProps = defaultThemingProps { orientation: Horizontal }
 
 type ButtonGroupPropsImpl =
-  -- FIXME it doesn't work well with the Button component
-  -- ThemingPropsImpl
-    { children    :: Array JSX
+  ThemingPropsImpl
+    ( borderWidth :: Nullable MantineNumberSizeImpl
+    , children    :: Array JSX
     , orientation :: String
-    }
+    )
 
 unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
 unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledButtonProps
@@ -168,6 +144,7 @@ type UnstyledButtonProps =
   ThemingProps
     ( children :: Array JSX
     , onClick  :: EventHandler
+    | Polymorphic ()
     )
 
 defaultUnstyledButtonProps :: UnstyledButtonProps
@@ -177,4 +154,5 @@ type UnstyledButtonPropsImpl =
   ThemingPropsImpl
     ( children :: Array JSX
     , onClick  :: EventHandler
+    | PolymorphicImpl ()
     )

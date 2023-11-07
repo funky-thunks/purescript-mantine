@@ -14,6 +14,10 @@ avatar = mkComponent avatarComponent avatarToImpl defaultAvatarProps
 
 foreign import avatarComponent :: ReactComponent AvatarPropsImpl
 
+-- Not supported properties
+--   { imageProps :: React.ComponentPropsWithoutRef<"img">
+--   }
+
 type AvatarProps =
   ThemingProps
     ( alt      :: Maybe String
@@ -26,19 +30,25 @@ type AvatarProps =
     )
 
 data AvatarVariant
-  = AvatarVariantOutline
+  = AvatarVariantFilled
   | AvatarVariantLight
-  | AvatarVariantFilled
+  | AvatarVariantOutline
+  | AvatarVariantTransparent
+  | AvatarVariantWhite
+  | AvatarVariantDefault
   | AvatarVariantGradient MantineGradient
 
 instance DefaultValue AvatarVariant where defaultValue = AvatarVariantLight
 
 instance ToFFI AvatarVariant String where
   toNative = case _ of
-    AvatarVariantOutline    -> "outline"
-    AvatarVariantLight      -> "light"
-    AvatarVariantFilled     -> "filled"
-    AvatarVariantGradient _ -> "gradient"
+    AvatarVariantFilled      -> "filled"
+    AvatarVariantLight       -> "light"
+    AvatarVariantOutline     -> "outline"
+    AvatarVariantTransparent -> "transparent"
+    AvatarVariantWhite       -> "white"
+    AvatarVariantDefault     -> "default"
+    AvatarVariantGradient _  -> "gradient"
 
 defaultAvatarProps :: AvatarProps
 defaultAvatarProps =

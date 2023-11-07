@@ -3,33 +3,31 @@ module Mantine.Core.Buttons.CloseButton
   , CloseButtonProps
 
   , CloseButtonPropsImpl
-  , closeButtonPropsToImpl
   ) where
 
-import Mantine.Core.Buttons.ActionIcon (ActionIconPropsRow, ActionIconPropsImplRow, actionIconToImpl, defaultActionIconProps)
 import Mantine.Core.Prelude
-import React.Icons.Types (ReactIcon)
 
-closeButton :: ReactIcon -> (CloseButtonProps -> CloseButtonProps) -> JSX
-closeButton = mkComponent closeButtonComponent closeButtonPropsToImpl <<< defaultCloseButtonProps
+closeButton :: (CloseButtonProps -> CloseButtonProps) -> JSX
+closeButton = mkTrivialComponent closeButtonComponent
 
 foreign import closeButtonComponent :: ReactComponent CloseButtonPropsImpl
 
 type CloseButtonProps =
   ThemingProps
-    ( iconSize :: Maybe MantineNumberSize
-    | ActionIconPropsRow
+    ( children :: Array JSX
+    , disabled :: Boolean
+    , iconSize :: Maybe MantineNumberSize
+    , onClick  :: Maybe EventHandler
+    , radius   :: Maybe MantineNumberSize
+    , size     :: Maybe MantineNumberSize
     )
-
-defaultCloseButtonProps :: ReactIcon -> CloseButtonProps
-defaultCloseButtonProps icon = defaultActionIconProps icon `union` defaultValue
 
 type CloseButtonPropsImpl =
   ThemingPropsImpl
-    ( iconSize :: Nullable MantineNumberSizeImpl
-    | ActionIconPropsImplRow
+    ( children :: Array JSX
+    , disabled :: Boolean
+    , iconSize :: Nullable MantineNumberSizeImpl
+    , onClick  :: Nullable EventHandler
+    , radius   :: Nullable MantineNumberSizeImpl
+    , size     :: Nullable MantineNumberSizeImpl
     )
-
-closeButtonPropsToImpl :: CloseButtonProps -> CloseButtonPropsImpl
-closeButtonPropsToImpl props = actionIconToImpl (delete (Proxy :: Proxy "iconSize") props)
-  `union` toNative { iconSize: props.iconSize }

@@ -4,6 +4,8 @@ module Mantine.Core.Overlays.LoadingOverlay
   , LoadingOverlayProps
   ) where
 
+import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
+import Mantine.Core.Overlays.Overlay (OverlayProps, OverlayPropsImpl)
 import Mantine.Core.Prelude
 
 loadingOverlay :: (LoadingOverlayProps -> LoadingOverlayProps) -> JSX
@@ -16,28 +18,18 @@ foreign import loadingOverlayComponent :: ReactComponent LoadingOverlayPropsImpl
 
 type LoadingOverlayProps =
   ThemingProps
-    ( exitTransitionDuration :: Maybe Milliseconds
-    , keepMounted            :: Boolean
-    , loader                 :: Maybe JSX
-    , overlayBlur            :: Maybe Number
-    , overlayColor           :: Maybe String
-    , overlayOpacity         :: Maybe Number
-    , radius                 :: Maybe MantineNumberSize
-    , transitionDuration     :: Maybe Milliseconds
-    , visible                :: Boolean
-    , zIndex                 :: Maybe Number
+    ( loaderProps     :: LoaderProps
+    , overlayProps    :: OverlayProps
+    , transitionProps :: MantineTransitionProps
+    , visible         :: Boolean
+    , zIndex          :: Maybe Number
     )
 
 type LoadingOverlayPropsImpl =
   ThemingPropsImpl
-    ( exitTransitionDuration :: Nullable Number
-    , keepMounted            :: Boolean
-    , loader                 :: Nullable JSX
-    , overlayBlur            :: Nullable Number
-    , overlayColor           :: Nullable String
-    , overlayOpacity         :: Nullable Number
-    , radius                 :: Nullable MantineNumberSizeImpl
-    , transitionDuration     :: Nullable Number
-    , visible                :: Boolean
-    , zIndex                 :: Nullable Number
+    ( loaderProps     :: LoaderPropsImpl
+    , overlayProps    :: OverlayPropsImpl
+    , transitionProps :: MantineTransitionPropsImpl
+    , visible         :: Boolean
+    , zIndex          :: Nullable Number
     )

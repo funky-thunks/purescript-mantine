@@ -6,7 +6,6 @@ module Mantine.Core.Overlays.Menu
   , MenuFloatingPosition(..)
   , MenuPopoverWidth(..)
   , MenuTrigger(..)
-  , PopoverMiddlewares
 
   , menuItem
   , menuItem_
@@ -33,6 +32,11 @@ menu_ :: Array JSX -> JSX
 menu_ children = menu _ { children = children }
 
 foreign import menuComponent :: ReactComponent MenuPropsImpl
+
+-- Not supported properties
+--   { portalProps          :: Omit<PortalProps, "children">
+--   , positionDependencies :: any[]
+--   }
 
 type MenuProps =
   ThemingProps
@@ -79,6 +83,7 @@ defaultMenuProps =
     , closeOnItemClick:    true
     , onClose:             pure unit
     , onOpen:              pure unit
+    , withinPortal:        true
     }
 
 type MenuPropsImpl =
@@ -135,18 +140,6 @@ instance ToFFI MenuTrigger String where
   toNative = case _ of
     MenuTriggerClick -> "click"
     MenuTriggerHover -> "hover"
-
-type PopoverMiddlewares =
-  { shift  :: Boolean
-  , flip   :: Boolean
-  , inline :: Maybe Boolean
-  }
-
-type PopoverMiddlewaresImpl =
-  { shift  :: Boolean
-  , flip   :: Boolean
-  , inline :: Nullable Boolean
-  }
 
 data MenuFloatingPosition
   = MenuFloatingPositionTop
@@ -206,11 +199,11 @@ instance ToFFI MenuArrowPosition String where
 
 -- ----------------------------------------------------------------------------
 
-menuItem :: (MenuItemProps -> MenuItemProps) -> JSX
-menuItem = mkComponent menuItemComponent menuItemToImpl defaultMenuItemProps
+menuItem :: Effect Unit -> (MenuItemProps -> MenuItemProps) -> JSX
+menuItem = mkComponent menuItemComponent menuItemToImpl <<< defaultMenuItemProps
 
-menuItem_ :: JSX -> JSX
-menuItem_ children = menuItem _ { children = pure children }
+menuItem_ :: Effect Unit -> JSX -> JSX
+menuItem_ onClick children = (menuItem onClick) _ { children = pure children }
 
 foreign import menuItemComponent :: ReactComponent MenuItemPropsImpl
 
@@ -219,20 +212,22 @@ type MenuItemProps =
     ( children         :: Array JSX
     , closeMenuOnClick :: Maybe Boolean
     , color            :: Maybe MantineColor
-    , icon             :: Maybe JSX
+    , disabled         :: Boolean
+    , leftSection      :: Maybe JSX
     , onClick          :: Effect Unit
     , rightSection     :: Maybe JSX
     )
 
-defaultMenuItemProps :: MenuItemProps
-defaultMenuItemProps = defaultThemingProps { onClick: pure unit }
+defaultMenuItemProps :: Effect Unit -> MenuItemProps
+defaultMenuItemProps onClick = defaultThemingProps { onClick }
 
 type MenuItemPropsImpl =
   ThemingPropsImpl
     ( children         :: Array JSX
     , closeMenuOnClick :: Nullable Boolean
     , color            :: Nullable String
-    , icon             :: Nullable JSX
+    , disabled         :: Boolean
+    , leftSection      :: Nullable JSX
     , onClick          :: EventHandler
     , rightSection     :: Nullable JSX
     )

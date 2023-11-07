@@ -11,22 +11,25 @@ dialog = mkComponentWithDefault dialogComponent defaultDialogProps
 
 foreign import dialogComponent :: ReactComponent DialogPropsImpl
 
+-- Not supported properties
+--   { portalProps :: Omit<PortalProps, "children">
+--   }
+
 type DialogProps =
   ThemingProps
-    ( children                 :: Array JSX
-    , keepMounted              :: Boolean
-    , onClose                  :: Effect Unit
-    , opened                   :: Maybe Boolean
-    , position                 :: Maybe DialogPosition
-    , radius                   :: Maybe MantineNumberSize
-    , shadow                   :: Maybe MantineShadow
-    , size                     :: Maybe Dimension
-    , transition               :: Maybe MantineTransition
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
-    , withBorder               :: Maybe Boolean
-    , withCloseButton          :: Maybe Boolean
-    , zIndex                   :: Maybe Number
+    ( children        :: Array JSX
+    , keepMounted     :: Boolean
+    , onClose         :: Effect Unit
+    , opened          :: Maybe Boolean
+    , position        :: Maybe DialogPosition
+    , radius          :: Maybe MantineNumberSize
+    , shadow          :: Maybe MantineShadow
+    , size            :: Maybe Dimension
+    , transitionProps :: MantineTransitionProps
+    , withBorder      :: Boolean
+    , withCloseButton :: Maybe Boolean
+    , withinPortal    :: Maybe Boolean
+    , zIndex          :: Maybe Number
     )
 
 type DialogPosition =
@@ -41,20 +44,19 @@ defaultDialogProps = defaultThemingProps { onClose: pure unit }
 
 type DialogPropsImpl =
   ThemingPropsImpl
-    ( children                 :: Array JSX
-    , keepMounted              :: Boolean
-    , onClose                  :: Effect Unit
-    , opened                   :: Nullable Boolean
-    , position                 :: Nullable DialogPositionImpl
-    , radius                   :: Nullable MantineNumberSizeImpl
-    , shadow                   :: Nullable String
-    , size                     :: Nullable DimensionImpl
-    , transition               :: Nullable String
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
-    , withBorder               :: Nullable Boolean
-    , withCloseButton          :: Nullable Boolean
-    , zIndex                   :: Nullable Number
+    ( children        :: Array JSX
+    , keepMounted     :: Boolean
+    , onClose         :: Effect Unit
+    , opened          :: Nullable Boolean
+    , position        :: Nullable DialogPositionImpl
+    , radius          :: Nullable MantineNumberSizeImpl
+    , shadow          :: Nullable String
+    , size            :: Nullable DimensionImpl
+    , transitionProps :: MantineTransitionPropsImpl
+    , withBorder      :: Boolean
+    , withCloseButton :: Nullable Boolean
+    , withinPortal    :: Nullable Boolean
+    , zIndex          :: Nullable Number
     )
 
 type DialogPositionImpl =

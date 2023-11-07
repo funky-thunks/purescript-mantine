@@ -16,7 +16,7 @@ import Data.Int (floor)
 import Mantine.Core.Prelude
 
 stepper :: (StepperProps -> StepperProps) -> JSX
-stepper = mkComponent stepperComponent stepperPropsToImpl defaultThemingProps_
+stepper = mkComponent stepperComponent stepperPropsToImpl defaultStepperProps
 
 foreign import stepperComponent :: ReactComponent StepperPropsImpl
 
@@ -24,7 +24,6 @@ type StepperProps =
   ThemingProps
     ( active               :: Maybe Number
     , allowNextStepsSelect :: Boolean
-    , breakpoint           :: Maybe MantineNumberSize
     , children             :: Array JSX
     , color                :: Maybe MantineColor
     , completedIcon        :: Maybe StepFragmentComponent
@@ -37,7 +36,11 @@ type StepperProps =
     , progressIcon         :: Maybe StepFragmentComponent
     , radius               :: Maybe MantineNumberSize
     , size                 :: Maybe MantineSize
+    , wrap                 :: Boolean
     )
+
+defaultStepperProps :: StepperProps
+defaultStepperProps = { wrap: true } `union` defaultValue
 
 data StepFragmentComponent = Constant JSX
                            | StepDependent (Int -> JSX)
@@ -64,7 +67,6 @@ type StepperPropsImpl =
   ThemingPropsImpl
     ( active               :: Nullable Number
     , allowNextStepsSelect :: Boolean
-    , breakpoint           :: Nullable MantineNumberSizeImpl
     , children             :: Array JSX
     , color                :: Nullable String
     , completedIcon        :: Nullable StepFragmentComponentImpl
@@ -77,6 +79,7 @@ type StepperPropsImpl =
     , progressIcon         :: Nullable StepFragmentComponentImpl
     , radius               :: Nullable MantineNumberSizeImpl
     , size                 :: Nullable String
+    , wrap                 :: Boolean
     )
 
 stepperPropsToImpl :: StepperProps -> StepperPropsImpl
@@ -102,8 +105,6 @@ type StepperStepProps =
     , loading         :: Boolean
     , orientation     :: Maybe Orientation
     , progressIcon    :: Maybe StepFragmentComponent
-    , radius          :: Maybe MantineNumberSize
-    , size            :: Maybe MantineSize
     , state           :: Maybe StepState
     , step            :: Maybe Number
     , withIcon        :: Boolean
@@ -132,8 +133,6 @@ type StepperStepPropsImpl =
     , loading         :: Boolean
     , orientation     :: Nullable String
     , progressIcon    :: Nullable StepFragmentComponentImpl
-    , radius          :: Nullable MantineNumberSizeImpl
-    , size            :: Nullable String
     , state           :: Nullable String
     , step            :: Nullable Number
     , withIcon        :: Boolean

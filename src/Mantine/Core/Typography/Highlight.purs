@@ -4,7 +4,7 @@ module Mantine.Core.Typography.Highlight
   ) where
 
 import Mantine.Core.Prelude
-import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow, textToImpl)
+import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
 import React.Basic.DOM as DOM
 import React.Basic.Emotion (Style)
 
@@ -16,32 +16,34 @@ foreign import highlightComponent :: ReactComponent HighlightPropsImpl
 type HighlightProps =
   ThemingProps
     ( children        :: String
+    , color           :: Maybe MantineColor
     , highlight       :: Array String
-    , highlightColor  :: Maybe MantineColor
     , highlightStyles :: Maybe Style
+    , span            :: Boolean
     | TextPropsRow
     )
 
 type HighlightPropsImpl =
   ThemingPropsImpl
     ( children        :: Array JSX
+    , color           :: Nullable String
     , highlight       :: Array String
-    , highlightColor  :: Nullable String
     , highlightStyles :: Nullable Style
+    , span            :: Boolean
     | TextPropsImplRow
     )
 
 highlightToImpl :: HighlightProps -> HighlightPropsImpl
 highlightToImpl props =
-  let rest = textToImpl <<< wrapChildren <<< dropLocalProps
+  let rest = toNative <<< wrapChildren <<< dropLocalProps
       wrapChildren p = p { children = [ DOM.text p.children ] }
       dropLocalProps =
-            delete (Proxy :: Proxy "highlight")
-        <<< delete (Proxy :: Proxy "highlightColor")
+            delete (Proxy :: Proxy "color")
+        <<< delete (Proxy :: Proxy "highlight")
         <<< delete (Proxy :: Proxy "highlightStyles")
       highlightProps =
-        { highlight:       props.highlight
-        , highlightColor:  props.highlightColor
+        { color:           props.color
+        , highlight:       props.highlight
         , highlightStyles: props.highlightStyles
         }
    in toNative highlightProps `union` rest props

@@ -25,7 +25,7 @@ foreign import paginationComponent :: ReactComponent PaginationPropsImpl
 --   { dotsIcon        :: PaginationIcon
 --   , firstIcon       :: PaginationIcon
 --   , getControlProps :: (control: "first" | "last" | "next" | "previous") => Record<string, any>
---   , getItemProp     :: (page: number) => Record<string, any>
+--   , getItemProps    :: (page: number) => Record<string, any>
 --   , lastIcon        :: PaginationIcon
 --   , nextIcon        :: PaginationIcon
 --   , previousIcon    :: PaginationIcon
@@ -33,23 +33,19 @@ foreign import paginationComponent :: ReactComponent PaginationPropsImpl
 
 type PaginationProps =
   ThemingProps
-    ( align          :: Maybe AlignItems
-    , boundaries     :: PageCount
+    ( boundaries     :: PageCount
     , color          :: Maybe MantineColor
     , defaultValue   :: Maybe Page
     , disabled       :: Boolean
-    , grow           :: Boolean
-    , noWrap         :: Boolean
+    , gap            :: Maybe MantineNumberSize
     , onChange       :: ValueHandler Page
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
     , onPreviousPage :: Effect Unit
-    , position       :: Maybe Position
     , radius         :: MantineNumberSize
     , siblings       :: PageCount
     , size           :: MantineNumberSize
-    , spacing        :: Maybe MantineNumberSize
     , total          :: PageCount
     , value          :: Maybe Page
     , withControls   :: Boolean
@@ -96,19 +92,15 @@ instance ToFFI PageCount Number where
 
 type PaginationPropsImpl =
   ThemingPropsImpl
-    ( align          :: Nullable String
-    , boundaries     :: Number
+    ( boundaries     :: Number
     , color          :: Nullable String
     , defaultValue   :: Nullable Number
     , disabled       :: Boolean
-    , grow           :: Boolean
-    , noWrap         :: Boolean
+    , gap            :: Nullable MantineNumberSizeImpl
     , onChange       :: EffectFn1 Number Unit
-    , position       :: Nullable String
     , radius         :: MantineNumberSizeImpl
     , siblings       :: Number
     , size           :: MantineNumberSizeImpl
-    , spacing        :: Nullable MantineNumberSizeImpl
     , total          :: Number
     , value          :: Nullable Number
     , withControls   :: Boolean

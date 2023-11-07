@@ -4,6 +4,7 @@ module Mantine.Core.Feedback.Notification
   , NotificationProps
   ) where
 
+import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl)
 import Mantine.Core.Prelude
 
 notification :: (NotificationProps -> NotificationProps) -> JSX
@@ -16,15 +17,16 @@ foreign import notificationComponent :: ReactComponent NotificationPropsImpl
 
 type NotificationProps =
   ThemingProps
-    ( children        :: JSX
-    , color           :: Maybe MantineColor
-    , icon            :: Maybe JSX
-    , loading         :: Boolean
-    , onClose         :: Effect Unit
-    , radius          :: Maybe MantineNumberSize
-    , title           :: Maybe JSX
-    , withBorder      :: Boolean
-    , withCloseButton :: Boolean
+    ( children         :: JSX
+    , closeButtonProps :: Maybe CloseButtonProps
+    , color            :: Maybe MantineColor
+    , icon             :: Maybe JSX
+    , loading          :: Boolean
+    , onClose          :: Effect Unit
+    , radius           :: Maybe MantineNumberSize
+    , title            :: Maybe JSX
+    , withBorder       :: Boolean
+    , withCloseButton  :: Boolean
     )
 
 defaultNotificationProps :: NotificationProps
@@ -36,13 +38,14 @@ defaultNotificationProps =
 
 type NotificationPropsImpl =
   ThemingPropsImpl
-    ( children        :: JSX
-    , color           :: Nullable String
-    , icon            :: Nullable JSX
-    , loading         :: Boolean
-    , onClose         :: Effect Unit
-    , radius          :: Nullable MantineNumberSizeImpl
-    , title           :: Nullable JSX
-    , withBorder      :: Boolean
-    , withCloseButton :: Boolean
+    ( children         :: JSX
+    , closeButtonProps :: Nullable CloseButtonPropsImpl
+    , color            :: Nullable String
+    , icon             :: Nullable JSX
+    , loading          :: Boolean
+    , onClose          :: Effect Unit
+    , radius           :: Nullable MantineNumberSizeImpl
+    , title            :: Nullable JSX
+    , withBorder       :: Boolean
+    , withCloseButton  :: Boolean
     )

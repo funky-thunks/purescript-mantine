@@ -2,7 +2,6 @@
 , dependencies =
   [ "aff"
   , "aff-promise"
-  , "bifunctors"
   , "console"
   , "contravariant"
   , "default"

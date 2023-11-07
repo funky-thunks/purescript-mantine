@@ -59,18 +59,28 @@ instance ToFFI AccordionChevronPosition String where
     AccordionChevronPositionLeft  -> "left"
     AccordionChevronPositionRight -> "right"
 
-data AccordionVariant = AccordionVariantDefault | AccordionVariantContained | AccordionVariantFilled | AccordionVariantSeparated
+data AccordionVariant
+  = AccordionVariantDefault
+  | AccordionVariantContained
+  | AccordionVariantFilled
+  | AccordionVariantSeparated
 
-instance DefaultValue AccordionVariant where defaultValue = AccordionVariantDefault
+instance DefaultValue AccordionVariant where
+  defaultValue = AccordionVariantDefault
 
-instance ToFFI AccordionVariant String where
-  toNative = case _ of
-    AccordionVariantDefault   -> "default"
-    AccordionVariantContained -> "contained"
-    AccordionVariantFilled    -> "filled"
-    AccordionVariantSeparated -> "separated"
+instance ToFFI AccordionVariant (Nullable String) where
+  toNative = toNative <<< case _ of
+    AccordionVariantDefault   -> Nothing
+    AccordionVariantContained -> Just "contained"
+    AccordionVariantFilled    -> Just "filled"
+    AccordionVariantSeparated -> Just "separated"
 
-data AccordionOrder = AccordionOrder2 | AccordionOrder3 | AccordionOrder4 | AccordionOrder5 | AccordionOrder6
+data AccordionOrder
+  = AccordionOrder2
+  | AccordionOrder3
+  | AccordionOrder4
+  | AccordionOrder5
+  | AccordionOrder6
 
 instance ToFFI AccordionOrder Int where
   toNative = case _ of
@@ -95,7 +105,7 @@ type AccordionPropsImpl accordionValueNative =
     , radius                 :: MantineNumberSizeImpl
     , transitionDuration     :: Nullable Number
     , value                  :: Nullable accordionValueNative
-    , variant                :: String
+    , variant                :: Nullable String
     )
 
 accordionControl :: (AccordionControlProps -> AccordionControlProps) -> JSX

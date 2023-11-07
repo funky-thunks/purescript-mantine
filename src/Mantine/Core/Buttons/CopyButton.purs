@@ -1,27 +1,39 @@
 module Mantine.Core.Buttons.CopyButton
   ( copyButton
   , CopyButtonProps
+  , CopyButtonMandatoryProps
+  , CopyButtonMandatoryPropsRow
   ) where
 
 import Mantine.Core.Prelude
-import React.Basic (element)
 
-copyButton :: CopyButtonProps -> JSX
-copyButton = element copyButtonComponent <<< copyButtonPropsToImpl
+copyButton :: CopyButtonMandatoryProps -> (CopyButtonProps -> CopyButtonProps) -> JSX
+copyButton = mkComponent copyButtonComponent copyButtonPropsToImpl <<< defaultThemingProps
 
 foreign import copyButtonComponent :: ReactComponent CopyButtonPropsImpl
 
 type CopyButtonProps =
-  { children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-  , timeout  :: Maybe Number
+  ThemingProps
+    ( timeout  :: Maybe Number
+    | CopyButtonMandatoryPropsRow
+    )
+
+type CopyButtonMandatoryProps = Record CopyButtonMandatoryPropsRow
+
+type CopyButtonMandatoryPropsRow =
+  ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
   , value    :: String
-  }
+  )
 
 type CopyButtonPropsImpl =
-  { children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-  , timeout  :: Nullable Number
-  , value    :: String
-  }
+  ThemingPropsImpl
+    ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
+    , timeout  :: Nullable Number
+    , value    :: String
+    )
 
 copyButtonPropsToImpl :: CopyButtonProps -> CopyButtonPropsImpl
-copyButtonPropsToImpl props@{ timeout } = props { timeout = toNative timeout }
+copyButtonPropsToImpl props =
+  let rest = toNative
+         <<< delete (Proxy :: Proxy "children")
+   in { children: props.children } `union` rest props
