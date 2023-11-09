@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal } from '@mantine/core';
+import { Drawer, Modal } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -7,6 +7,10 @@ function removeEmpty(obj) {
       .filter(([_, v]) => typeof v === 'function' || v !== null)
       .map(([k, v]) => [k, v])
   );
+}
+
+export function drawerComponent(props) {
+  return React.createElement(Drawer, removeEmpty(props), props.children);
 }
 
 export function modalComponent(props) {
