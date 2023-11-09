@@ -24,7 +24,7 @@ pillsInputField = mkTrivialComponent pillsInputFieldComponent
 foreign import pillsInputFieldComponent :: ReactComponent PillsInputFieldPropsImpl
 
 type PillsInputFieldProps =
-  ThemingProps
+  MantineComponent
     ( placeholder :: Maybe String
     , pointer     :: Boolean
     , type        :: PillsInputFieldType
@@ -38,15 +38,17 @@ data PillsInputFieldType
 instance DefaultValue PillsInputFieldType where
   defaultValue = PillsInputFieldTypeVisible
 
-instance ToFFI PillsInputFieldType String where
+type PillsInputFieldTypeImpl = String
+
+instance ToFFI PillsInputFieldType PillsInputFieldTypeImpl where
   toNative = case _ of
     PillsInputFieldTypeHidden  -> "hidden"
     PillsInputFieldTypeAuto    -> "auto"
     PillsInputFieldTypeVisible -> "visible"
 
 type PillsInputFieldPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( placeholder :: Nullable String
     , pointer     :: Boolean
-    , type        :: String
+    , type        :: PillsInputFieldTypeImpl
     )

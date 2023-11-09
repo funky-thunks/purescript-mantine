@@ -1,44 +1,59 @@
 module Mantine.Core.Inputs.Checkables
   ( CheckableComponent
-  , CheckableComponentImpl
-
+  , CheckableFieldComponent
   , CheckableLabelPosition(..)
+
+  , CheckableComponentImpl
+  , CheckableFieldComponentImpl
+  , CheckableLabelPositionImpl
   ) where
 
 import Mantine.Core.Prelude
 import Web.HTML.HTMLDivElement (HTMLDivElement)
 
 type CheckableComponent rest =
-  ThemingProps
-    ( checked       :: Maybe Boolean
-    , color         :: Maybe MantineColor
-    , description   :: Maybe JSX
-    , error         :: Maybe JSX
-    , id            :: Maybe String
-    , label         :: Maybe JSX
-    , labelPosition :: Maybe CheckableLabelPosition
-    , onChange      :: CheckerHandler
-    , radius        :: Maybe MantineNumberSize
-    , rootRef       :: Maybe (Ref HTMLDivElement)
-    , size          :: Maybe MantineSize
-    , value         :: Maybe String
+  MantineComponent
+    ( checked        :: Maybe Boolean
+    , color          :: Maybe MantineColor
+    , defaultChecked :: Maybe Boolean
+    , id             :: Maybe String
+    , onChange       :: CheckerHandler
+    , radius         :: Maybe MantineNumberSize
+    , rootRef        :: Maybe (Ref HTMLDivElement)
+    , size           :: Maybe MantineSize
+    , value          :: Maybe String
+    | rest
+    )
+
+type CheckableFieldComponent rest =
+  CheckableComponent
+    ( description    :: Maybe JSX
+    , error          :: Maybe JSX
+    , label          :: Maybe JSX
+    , labelPosition  :: Maybe CheckableLabelPosition
     | rest
     )
 
 type CheckableComponentImpl rest =
-  ThemingPropsImpl
-    ( checked       :: Nullable Boolean
-    , color         :: Nullable String
-    , description   :: Nullable JSX
-    , error         :: Nullable JSX
-    , id            :: Nullable String
-    , label         :: Nullable JSX
-    , labelPosition :: Nullable String
-    , onChange      :: EffectFn1 SyntheticEvent Unit
-    , radius        :: Nullable MantineNumberSizeImpl
-    , rootRef       :: Nullable (Ref HTMLDivElement)
-    , size          :: Nullable String
-    , value         :: Nullable String
+  MantineComponentImpl
+    ( checked        :: Nullable Boolean
+    , color          :: Nullable MantineColorImpl
+    , defaultChecked :: Nullable Boolean
+    , id             :: Nullable String
+    , onChange       :: CheckerHandlerImpl
+    , radius         :: Nullable MantineNumberSizeImpl
+    , rootRef        :: Nullable (Ref HTMLDivElement)
+    , size           :: Nullable MantineSizeImpl
+    , value          :: Nullable String
+    | rest
+    )
+
+type CheckableFieldComponentImpl rest =
+  CheckableComponentImpl
+    ( description    :: Nullable JSX
+    , error          :: Nullable JSX
+    , label          :: Nullable JSX
+    , labelPosition  :: Nullable CheckableLabelPositionImpl
     | rest
     )
 
@@ -46,7 +61,9 @@ data CheckableLabelPosition
   = CheckableLabelPositionLeft
   | CheckableLabelPositionRight
 
-instance ToFFI CheckableLabelPosition String where
+type CheckableLabelPositionImpl = String
+
+instance ToFFI CheckableLabelPosition CheckableLabelPositionImpl where
   toNative = case _ of
     CheckableLabelPositionLeft  -> "left"
     CheckableLabelPositionRight -> "right"

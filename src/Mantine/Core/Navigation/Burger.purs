@@ -11,7 +11,7 @@ burger = mkComponentWithDefault burgerComponent defaultBurgerProps
 foreign import burgerComponent :: ReactComponent BurgerPropsImpl
 
 type BurgerProps =
-  ThemingProps
+  MantineComponent
     ( color                    :: Maybe MantineColor
     , onClick                  :: EventHandler
     , opened                   :: Boolean
@@ -21,14 +21,14 @@ type BurgerProps =
     )
 
 defaultBurgerProps :: BurgerProps
-defaultBurgerProps = defaultThemingProps { onClick: handler_ (pure unit) }
+defaultBurgerProps = defaultMantineComponent { onClick: handler_ (pure unit) }
 
 type BurgerPropsImpl =
-  ThemingPropsImpl
-    ( color                    :: Nullable String
+  MantineComponentImpl
+    ( color                    :: Nullable MantineColorImpl
     , onClick                  :: EventHandler
     , opened                   :: Boolean
     , size                     :: Nullable MantineNumberSizeImpl
-    , transitionDuration       :: Nullable Number
-    , transitionTimingFunction :: Nullable String
+    , transitionDuration       :: Nullable MillisecondsImpl
+    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
     )

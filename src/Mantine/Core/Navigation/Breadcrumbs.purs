@@ -11,14 +11,14 @@ breadcrumbs = mkTrivialComponent breadcrumbsComponent
 foreign import breadcrumbsComponent :: ReactComponent BreadcrumbsPropsImpl
 
 type BreadcrumbsProps =
-  ThemingProps
+  MantineComponent
     ( children        :: Array JSX
     , separator       :: Maybe JSX
     , separatorMargin :: Maybe MantineSpacing
     )
 
 type BreadcrumbsPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children        :: Array JSX
     , separator       :: Nullable JSX
     , separatorMargin :: Nullable MantineSpacingImpl

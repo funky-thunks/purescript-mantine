@@ -12,7 +12,7 @@ fieldset = mkTrivialComponent fieldsetComponent
 foreign import fieldsetComponent :: ReactComponent FieldsetPropsImpl
 
 type FieldsetProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , legend   :: Maybe JSX
     , radius   :: Maybe MantineNumberSize
@@ -34,7 +34,7 @@ instance ToFFI FieldsetVariant (Nullable String) where
     FieldsetVariantUnstyled -> Just "unstyled"
 
 type FieldsetPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , legend   :: Nullable JSX
     , radius   :: Nullable MantineNumberSizeImpl

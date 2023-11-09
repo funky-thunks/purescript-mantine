@@ -15,15 +15,15 @@ code_ children = code _ { children = children }
 foreign import codeComponent :: ReactComponent CodePropsImpl
 
 type CodeProps =
-  ThemingProps
+  MantineComponent
     ( block    :: Boolean
     , children :: Array JSX
     , color    :: Maybe MantineColor
     )
 
 type CodePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( block    :: Boolean
     , children :: Array JSX
-    , color    :: Nullable String
+    , color    :: Nullable MantineColorImpl
     )

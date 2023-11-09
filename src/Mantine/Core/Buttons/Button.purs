@@ -28,7 +28,7 @@ button_ child = button _ { children = pure child }
 foreign import buttonComponent :: ReactComponent ButtonPropsImpl
 
 type ButtonProps =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , color        :: Maybe MantineColor
     , disabled     :: Boolean
@@ -67,7 +67,9 @@ data ButtonVariant
 
 instance DefaultValue ButtonVariant where defaultValue = ButtonVariantFilled
 
-instance ToFFI ButtonVariant String where
+type ButtonVariantImpl = String
+
+instance ToFFI ButtonVariant ButtonVariantImpl where
   toNative = case _ of
     ButtonVariantDefault     -> "default"
     ButtonVariantFilled      -> "filled"
@@ -83,27 +85,27 @@ instance showVariant :: Show ButtonVariant where show = genericShow
 
 defaultButtonProps :: ButtonProps
 defaultButtonProps =
-  defaultThemingProps
+  defaultMantineComponent
     { onClick: handler_ (pure unit)
     , size: Small
     }
 
 type ButtonPropsImpl =
-  ThemingPropsImpl
-    ( children       :: Array JSX
-    , color          :: Nullable String
-    , disabled       :: Boolean
-    , fullWidth      :: Boolean
-    , gradient       :: Nullable MantineGradientImpl
-    , justify        :: Nullable String
-    , leftSection    :: Nullable JSX
-    , loaderProps    :: Nullable LoaderPropsImpl
-    , loading        :: Boolean
-    , onClick        :: EventHandler
-    , radius         :: Nullable String
-    , rightSection   :: Nullable JSX
-    , size           :: String
-    , variant        :: String
+  MantineComponentImpl
+    ( children     :: Array JSX
+    , color        :: Nullable MantineColorImpl
+    , disabled     :: Boolean
+    , fullWidth    :: Boolean
+    , gradient     :: Nullable MantineGradientImpl
+    , justify      :: Nullable JustifyContentImpl
+    , leftSection  :: Nullable JSX
+    , loaderProps  :: Nullable LoaderPropsImpl
+    , loading      :: Boolean
+    , onClick      :: EventHandler
+    , radius       :: Nullable RadiusImpl
+    , rightSection :: Nullable JSX
+    , size         :: MantineSizeImpl
+    , variant      :: ButtonVariantImpl
     )
 
 buttonToImpl :: ButtonProps -> ButtonPropsImpl
@@ -119,20 +121,20 @@ buttonGroup = mkComponentWithDefault buttonGroupComponent defaultButtonGroupProp
 foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
 
 type ButtonGroupProps =
-  ThemingProps
+  MantineComponent
     ( borderWidth :: Maybe MantineNumberSize
     , children    :: Array JSX
     , orientation :: Orientation
     )
 
 defaultButtonGroupProps :: ButtonGroupProps
-defaultButtonGroupProps = defaultThemingProps { orientation: Horizontal }
+defaultButtonGroupProps = defaultMantineComponent { orientation: Horizontal }
 
 type ButtonGroupPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( borderWidth :: Nullable MantineNumberSizeImpl
     , children    :: Array JSX
-    , orientation :: String
+    , orientation :: OrientationImpl
     )
 
 unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
@@ -141,17 +143,17 @@ unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledB
 foreign import unstyledButtonComponent :: ReactComponent UnstyledButtonPropsImpl
 
 type UnstyledButtonProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , onClick  :: EventHandler
     | Polymorphic ()
     )
 
 defaultUnstyledButtonProps :: UnstyledButtonProps
-defaultUnstyledButtonProps = defaultThemingProps { onClick: handler_ (pure unit) }
+defaultUnstyledButtonProps = defaultMantineComponent { onClick: handler_ (pure unit) }
 
 type UnstyledButtonPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , onClick  :: EventHandler
     | PolymorphicImpl ()

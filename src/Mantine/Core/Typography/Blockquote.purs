@@ -15,7 +15,7 @@ blockquote_ children = blockquote _ { children = children }
 foreign import blockquoteComponent :: ReactComponent BlockquotePropsImpl
 
 type BlockquoteProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , cite     :: Maybe JSX
     , color    :: Maybe MantineColor
@@ -25,10 +25,10 @@ type BlockquoteProps =
     )
 
 type BlockquotePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , cite     :: Nullable JSX
-    , color    :: Nullable String
+    , color    :: Nullable MantineColorImpl
     , icon     :: Nullable JSX
     , iconSize :: Nullable MantineNumberSizeImpl
     , radius   :: Nullable MantineNumberSizeImpl

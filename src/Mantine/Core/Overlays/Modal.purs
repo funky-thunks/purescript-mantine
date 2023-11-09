@@ -27,7 +27,7 @@ foreign import modalComponent :: ReactComponent ModalPropsImpl
 --    }
 
 type ModalProps =
-  ThemingProps
+  MantineComponent
     ( centered            :: Boolean
     , children            :: Array JSX
     , closeOnClickOutside :: Boolean
@@ -50,12 +50,12 @@ type ModalProps =
     , withCloseButton     :: Boolean
     , withOverlay         :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Maybe Number
+    , zIndex              :: Maybe ZIndex
     )
 
 defaultModalProps :: ModalProps
 defaultModalProps =
-  defaultThemingProps
+  defaultMantineComponent
     { closeOnClickOutside: true
     , closeOnEscape:       true
     , lockScroll:          true
@@ -67,7 +67,7 @@ defaultModalProps =
     }
 
 type ModalPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( centered            :: Boolean
     , children            :: Array JSX
     , closeOnClickOutside :: Boolean
@@ -82,7 +82,7 @@ type ModalPropsImpl =
     , padding             :: Nullable MantineNumberSizeImpl
     , radius              :: Nullable MantineNumberSizeImpl
     , returnFocus         :: Boolean
-    , shadow              :: Nullable String
+    , shadow              :: Nullable MantineShadowImpl
     , size                :: Nullable DimensionImpl
     , title               :: Nullable JSX
     , transitionProps     :: ModalTransitionPropsImpl
@@ -90,7 +90,7 @@ type ModalPropsImpl =
     , withCloseButton     :: Boolean
     , withOverlay         :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Nullable Number
+    , zIndex              :: Nullable ZIndexImpl
     )
 
 type ModalTransitionProps     = MantineTransitionBase     (exitDuration :: Maybe    Milliseconds)

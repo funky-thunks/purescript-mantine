@@ -13,7 +13,7 @@ anchor = mkTrivialComponent anchorComponent
 foreign import anchorComponent :: ReactComponent AnchorPropsImpl
 
 type AnchorProps =
-  ThemingProps
+  MantineComponent
     ( children  :: Array JSX
     , href      :: String
     , target    :: Maybe String
@@ -29,17 +29,19 @@ data AnchorUnderline
 instance DefaultValue AnchorUnderline where
   defaultValue = AnchorUnderlineHover
 
-instance ToFFI AnchorUnderline String where
+type AnchorUnderlineImpl = String
+
+instance ToFFI AnchorUnderline AnchorUnderlineImpl where
   toNative = case _ of
    AnchorUnderlineAlways -> "always"
    AnchorUnderlineHover  -> "hover"
    AnchorUnderlineNever  -> "never"
 
 type AnchorPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children  :: Array JSX
     , href      :: String
     , target    :: Nullable String
-    , underline :: String
+    , underline :: AnchorUnderlineImpl
     | PolymorphicImpl TextPropsImplRow
     )

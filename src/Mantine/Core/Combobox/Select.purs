@@ -32,23 +32,23 @@ import Prim.RowList (class RowToList)
 import Mantine.FFI (class RecordToFFI)
 
 select :: (SelectProps -> SelectProps) -> JSX
-select = mkComponent selectComponent selectToImpl defaultThemingProps_
+select = mkComponent selectComponent selectToImpl defaultMantineComponent_
 
 foreign import selectComponent :: ReactComponent SelectPropsImpl
 
 type SelectProps =
-  ThemingProps
+  MantineComponent
     ( allowDeselect :: Maybe Boolean
     | SelectPropsRow (Maybe String)
     )
 
 multiSelect :: (MultiSelectProps -> MultiSelectProps) -> JSX
-multiSelect = mkComponent multiSelectComponent multiSelectToImpl defaultThemingProps_
+multiSelect = mkComponent multiSelectComponent multiSelectToImpl defaultMantineComponent_
 
 foreign import multiSelectComponent :: ReactComponent MultiSelectPropsImpl
 
 type MultiSelectProps =
-  ThemingProps
+  MantineComponent
     ( hidePickedOptions :: Boolean
     , maxValues         :: Maybe Int
     | SelectPropsRow (Array String)
@@ -76,7 +76,7 @@ type BaseSelectPropsRow items =
     , onDropdownClose           :: Maybe (Effect Unit)
     , onDropdownOpen            :: Maybe (Effect Unit)
     , onOptionSubmit            :: ValueHandler String
-    , onSearchChange            :: Maybe (String -> Effect Unit)
+    , onSearchChange            :: ValueHandler String
     , searchValue               :: Maybe String
     , selectFirstOptionOnChange :: Boolean
     , value                     :: Maybe items
@@ -93,9 +93,12 @@ data CheckIconPosition
   = CheckIconPositionLeft
   | CheckIconPositionRight
 
-instance DefaultValue CheckIconPosition where defaultValue = CheckIconPositionLeft
+instance DefaultValue CheckIconPosition where
+  defaultValue = CheckIconPositionLeft
 
-instance ToFFI CheckIconPosition String where
+type CheckIconPositionImpl = String
+
+instance ToFFI CheckIconPosition CheckIconPositionImpl where
   toNative = case _ of
     CheckIconPositionLeft  -> "left"
     CheckIconPositionRight -> "right"
@@ -114,10 +117,10 @@ data SelectClearable
 instance DefaultValue SelectClearable where defaultValue = SelectNotClearable
 
 type SelectPropsRowImpl items =
-    ( checkIconPosition         :: String
-    , nothingFoundMessage       :: Nullable JSX
-    , searchable                :: Boolean
-    , withCheckIcon             :: Boolean
+    ( checkIconPosition   :: CheckIconPositionImpl
+    , nothingFoundMessage :: Nullable JSX
+    , searchable          :: Boolean
+    , withCheckIcon       :: Boolean
     | BaseSelectPropsRowImpl items
     )
 
@@ -130,12 +133,12 @@ type BaseSelectPropsRowImpl items =
     , dropdownOpened            :: Nullable Boolean
     , filter                    :: Nullable (SelectItemImpl -> Boolean)
     , limit                     :: Nullable Number
-    , maxDropdownHeight         :: Nullable Number
+    , maxDropdownHeight         :: Nullable PixelsImpl
     , onChange                  :: Nullable (EffectFn1 (Nullable items) Unit)
     , onDropdownClose           :: Nullable (Effect Unit)
     , onDropdownOpen            :: Nullable (Effect Unit)
-    , onOptionSubmit            :: EffectFn1 String Unit
-    , onSearchChange            :: Nullable (EffectFn1 String Unit)
+    , onOptionSubmit            :: ValueHandlerImpl String
+    , onSearchChange            :: ValueHandlerImpl String
     , searchValue               :: Nullable String
     , selectFirstOptionOnChange :: Boolean
     , value                     :: Nullable items
@@ -157,7 +160,7 @@ type SelectItemImpl =
   }
 
 type SelectPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( allowDeselect :: Nullable Boolean
     | SelectPropsRowImpl (Nullable String)
     )
@@ -166,7 +169,7 @@ selectToImpl :: SelectProps -> SelectPropsImpl
 selectToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< join <<< map toMaybe <<< toMaybe))
 
 type MultiSelectPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( hidePickedOptions :: Boolean
     , maxValues         :: Nullable Number
     | SelectPropsRowImpl (Array String)
@@ -178,34 +181,29 @@ multiSelectToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< 
 baseSelectToImpl :: forall items itemsImpl otherPropsRow otherPropsRowList otherPropsRowImpl
   . RowToList otherPropsRow otherPropsRowList
   => RecordToFFI otherPropsRowList otherPropsRow otherPropsRowImpl
-  => Lacks "clearable"      otherPropsRow
-  => Lacks "filter"         otherPropsRow
-  => Lacks "onChange"       otherPropsRow
-  => Lacks "onSearchChange" otherPropsRow
+  => Lacks "clearable" otherPropsRow
+  => Lacks "filter"    otherPropsRow
+  => Lacks "onChange"  otherPropsRow
   => ToFFI items itemsImpl
   => ((items -> Effect Unit) -> (EffectFn1 (Nullable itemsImpl) Unit))
   -> { filter         :: Maybe (SelectItem -> Boolean)
      , onChange       :: Maybe (items  -> Effect Unit)
-     , onSearchChange :: Maybe (String -> Effect Unit)
      | ClearablePropsRow + otherPropsRow
      }
   -> { filter         :: Nullable (SelectItemImpl -> Boolean)
      , onChange       :: Nullable (EffectFn1 (Nullable itemsImpl) Unit)
-     , onSearchChange :: Nullable (EffectFn1  String              Unit)
      | ClearablePropsRowImpl + otherPropsRowImpl
      }
 baseSelectToImpl onChangeToNative props =
   let otherProps =
-        { filter:         toNullable $ (\f -> f <<< fromNative) <$> props.filter
-        , onChange:       toNullable $ onChangeToNative <$> props.onChange
-        , onSearchChange: toNullable $ mkEffectFn1 <$> props.onSearchChange
+        { filter:   toNullable $ (\f -> f <<< fromNative) <$> props.filter
+        , onChange: toNullable $ onChangeToNative <$> props.onChange
         }
 
       rest = toNative
          <<< delete (Proxy :: Proxy "clearable")
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "onChange")
-         <<< delete (Proxy :: Proxy "onSearchChange")
 
       clearableProps = toNative $ case props.clearable of
         SelectClearable p  -> { clearable: true,  clearButtonProps: pure p  }

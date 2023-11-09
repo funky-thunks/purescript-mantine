@@ -12,60 +12,37 @@ module Mantine.Core.Inputs.Chip
 import Prelude (class Show)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
+import Mantine.Core.Inputs.Checkables (CheckableComponent, CheckableComponentImpl)
 import Mantine.Core.Prelude
-import Web.HTML.HTMLDivElement (HTMLDivElement)
 
 chip :: (ChipProps -> ChipProps) -> JSX
-chip = mkComponentWithDefault chipComponent defaultChipProps
+chip = mkTrivialComponent chipComponent
 
 foreign import chipComponent :: ReactComponent ChipPropsImpl
 
 type ChipProps =
-  ThemingProps
-    ( checked        :: Maybe Boolean
-    , children       :: Array JSX
-    , color          :: Maybe MantineColor
-    , defaultChecked :: Maybe Boolean
-    , icon           :: Maybe JSX
-    , id             :: Maybe String
-    , onChange       :: CheckerHandler
-    , radius         :: Radius
-    , rootRef        :: Maybe (Ref HTMLDivElement)
-    , size           :: MantineSize
-    , type           :: Maybe ChipType
-    , value          :: Maybe String
-    , variant        :: ChipVariant
+  CheckableComponent
+    ( children :: Array JSX
+    , icon     :: Maybe JSX
+    , type     :: Maybe ChipType
+    , variant  :: ChipVariant
     )
 
-defaultChipProps :: ChipProps
-defaultChipProps =
-  defaultThemingProps
-    { size:   Small
-    , radius: RadiusPreset ExtraLarge
-    }
-
 type ChipPropsImpl =
-  ThemingPropsImpl
-    ( checked        :: Nullable Boolean
-    , children       :: Array JSX
-    , color          :: Nullable String
-    , defaultChecked :: Nullable Boolean
-    , icon           :: Nullable JSX
-    , id             :: Nullable String
-    , onChange       :: EventHandler
-    , radius         :: String
-    , rootRef        :: Nullable (Ref HTMLDivElement)
-    , size           :: String
-    , type           :: Nullable String
-    , value          :: Nullable String
-    , variant        :: String
+  CheckableComponentImpl
+    ( children :: Array JSX
+    , icon     :: Nullable JSX
+    , type     :: Nullable ChipTypeImpl
+    , variant  :: ChipVariantImpl
     )
 
 data ChipType
   = ChipTypeCheckbox
   | ChipTypeRadio
 
-instance ToFFI ChipType String where
+type ChipTypeImpl = String
+
+instance ToFFI ChipType ChipTypeImpl where
   toNative = case _ of
     ChipTypeCheckbox -> "checkbox"
     ChipTypeRadio    -> "radio"
@@ -82,7 +59,9 @@ data ChipVariant
 
 instance DefaultValue ChipVariant where defaultValue = ChipVariantOutline
 
-instance ToFFI ChipVariant String where
+type ChipVariantImpl = String
+
+instance ToFFI ChipVariant ChipVariantImpl where
   toNative = case _ of
     ChipVariantOutline -> "outline"
     ChipVariantFilled  -> "filled"
@@ -106,7 +85,7 @@ foreign import multipleChipGroupComponent :: ReactComponent (ChipGroupPropsImpl 
 type MultipleChipGroupProps = ChipGroupProps (Array String)
 
 type ChipGroupProps value =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , defaultValue :: Maybe value
     , onChange     :: ValueHandler value
@@ -114,9 +93,9 @@ type ChipGroupProps value =
     )
 
 type ChipGroupPropsImpl value =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children     :: Array JSX
     , defaultValue :: Nullable value
-    , onChange     :: EffectFn1 value Unit
+    , onChange     :: ValueHandlerImpl value
     , value        :: Nullable value
     )

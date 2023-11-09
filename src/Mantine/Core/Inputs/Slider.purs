@@ -20,13 +20,13 @@ slider = mkTrivialComponent sliderComponent
 foreign import sliderComponent :: ReactComponent SliderPropsImpl
 
 type SliderProps =
-  ThemingProps
+  MantineComponent
     ( thumbLabel :: Maybe String
     | SliderCommonProps Number
     )
 
 type SliderPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( thumbLabel :: Nullable String
     | SliderCommonPropsImpl Number
     )
@@ -51,7 +51,7 @@ instance FromFFI (Array Number) SliderRange where
     _          -> SliderRange { from: 0.0, to: 0.0 }
 
 type RangeSliderProps =
-  ThemingProps
+  MantineComponent
     ( maxRange       :: Maybe Number
     , minRange       :: Maybe Number
     , thumbFromLabel :: Maybe String
@@ -60,7 +60,7 @@ type RangeSliderProps =
     )
 
 type RangeSliderPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( maxRange       :: Nullable Number
     , minRange       :: Nullable Number
     , thumbFromLabel :: Nullable String
@@ -104,7 +104,9 @@ type SliderMark =
 
 newtype LabelFormatter = LabelFormatter (Number -> JSX)
 
-instance ToFFI LabelFormatter (Number -> JSX) where
+type LabelFormatterImpl = Number -> JSX
+
+instance ToFFI LabelFormatter LabelFormatterImpl where
   toNative (LabelFormatter lf) = lf
 
 newtype ScaleFunction = ScaleFunction (Number -> Number)
@@ -112,31 +114,33 @@ newtype ScaleFunction = ScaleFunction (Number -> Number)
 instance DefaultValue ScaleFunction where
   defaultValue = ScaleFunction identity
 
-instance ToFFI ScaleFunction (Number -> Number) where
+type ScaleFunctionImpl = Number -> Number
+
+instance ToFFI ScaleFunction ScaleFunctionImpl where
   toNative (ScaleFunction sf) = sf
 
 type SliderCommonPropsImpl value =
-  ( color                :: Nullable String
+  ( color                :: Nullable MantineColorImpl
   , defaultValue         :: Nullable value
   , disabled             :: Boolean
   , inverted             :: Boolean
-  , label                :: Nullable (Number -> JSX)
+  , label                :: Nullable LabelFormatterImpl
   , labelAlwaysOn        :: Boolean
   , labelTransitionProps :: MantineTransitionPropsImpl
   , marks                :: Array SliderMarkImpl
   , max                  :: Nullable Number
   , min                  :: Nullable Number
   , name                 :: Nullable String
-  , onChange             :: EffectFn1 value Unit
-  , onChangeEnd          :: EffectFn1 value Unit
+  , onChange             :: ValueHandlerImpl value
+  , onChangeEnd          :: ValueHandlerImpl value
   , precision            :: Nullable Number
   , radius               :: Nullable MantineNumberSizeImpl
-  , scale                :: Number -> Number
+  , scale                :: ScaleFunctionImpl
   , showLabelOnHover     :: Boolean
   , size                 :: Nullable MantineNumberSizeImpl
   , step                 :: Nullable Number
   , thumbChildren        :: Nullable JSX
-  , thumbSize            :: Nullable Number
+  , thumbSize            :: Nullable PixelsImpl
   , value                :: Nullable value
   )
 

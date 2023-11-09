@@ -7,7 +7,7 @@ module Mantine.Core.Inputs.Radio
   , RadioGroupProps
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableComponent, CheckableComponentImpl)
+import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
 import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
@@ -17,15 +17,15 @@ radio = mkTrivialComponent radioComponent
 foreign import radioComponent :: ReactComponent RadioPropsImpl
 
 type RadioProps =
-  CheckableComponent
-    ( defaultChecked :: Maybe Boolean
-    , icon           :: Maybe JSX
+  CheckableFieldComponent
+    ( icon      :: Maybe JSX
+    , iconColor :: Maybe MantineColor
     )
 
 type RadioPropsImpl =
-  CheckableComponentImpl
-    ( defaultChecked :: Nullable Boolean
-    , icon           :: Nullable JSX
+  CheckableFieldComponentImpl
+    ( icon      :: Nullable JSX
+    , iconColor :: Nullable MantineColorImpl
     )
 
 radioGroup :: (RadioGroupProps -> RadioGroupProps) -> JSX

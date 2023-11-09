@@ -21,31 +21,31 @@ grid_ children = grid _ { children = children }
 foreign import gridComponent :: ReactComponent GridPropsImpl
 
 type GridProps =
-  ThemingProps
-    ( align    :: AlignContent
+  MantineComponent
+    ( align    :: AlignItems
     , children :: Array JSX
     , columns  :: Int
     , grow     :: Boolean
-    , gutter   :: Maybe (FixedOrResponsive MantineNumberSize)
+    , gutter   :: Maybe (FixedOrResponsive MantineSpacing)
     , justify  :: JustifyContent
     )
 
 defaultGridProps :: GridProps
 defaultGridProps =
-  defaultThemingProps
-    { align:   AlignContentStretch
+  defaultMantineComponent
+    { align:   AlignItemsStretch
     , columns: 12
     , justify: JustifyContentFlexStart
     }
 
 type GridPropsImpl =
-  ThemingPropsImpl
-    ( align    :: String
+  MantineComponentImpl
+    ( align    :: AlignItemsImpl
     , children :: Array JSX
     , columns  :: Number
     , grow     :: Boolean
-    , gutter   :: Nullable (FixedOrResponsiveImpl MantineNumberSizeImpl)
-    , justify  :: String
+    , gutter   :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
+    , justify  :: JustifyContentImpl
     )
 
 gridCol :: (GridColProps -> GridColProps) -> JSX
@@ -57,11 +57,11 @@ gridCol_ children = gridCol _ { children = children }
 foreign import gridColComponent :: ReactComponent GridColPropsImpl
 
 type GridColProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
-    , span     :: Maybe (FixedOrResponsive GridColSpan)
-    , order    :: Maybe (FixedOrResponsive Int)
     , offset   :: Maybe (FixedOrResponsive Pixels)
+    , order    :: Maybe (FixedOrResponsive Int)
+    , span     :: Maybe (FixedOrResponsive GridColSpan)
     )
 
 data GridColSpan
@@ -78,9 +78,9 @@ instance ToFFI GridColSpan ColSpanImpl where
     ColSpanContent  -> asOneOf "content"
 
 type GridColPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
-    , span     :: Nullable (FixedOrResponsiveImpl ColSpanImpl)
-    , order    :: Nullable (FixedOrResponsiveImpl Number)
     , offset   :: Nullable (FixedOrResponsiveImpl Pixels)
+    , order    :: Nullable (FixedOrResponsiveImpl Number)
+    , span     :: Nullable (FixedOrResponsiveImpl ColSpanImpl)
     )

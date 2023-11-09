@@ -12,7 +12,7 @@ ringProgress = mkTrivialComponent ringProgressComponent
 foreign import ringProgressComponent :: ReactComponent RingProgressPropsImpl
 
 type RingProgressProps =
-  ThemingProps
+  MantineComponent
     ( label     :: Maybe JSX
     , rootColor :: Maybe MantineColor
     , roundCaps :: Boolean
@@ -30,9 +30,9 @@ type RingProgressSection =
   }
 
 type RingProgressPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( label     :: Nullable JSX
-    , rootColor :: Nullable String
+    , rootColor :: Nullable MantineColorImpl
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSectionImpl
     , size      :: Nullable Number
@@ -40,7 +40,7 @@ type RingProgressPropsImpl =
     )
 
 type RingProgressSectionImpl =
-  { color        :: String
+  { color        :: MantineColorImpl
   , onMouseEnter :: EventHandler
   , onMouseLeave :: EventHandler
   , tooltip      :: Nullable JSX

@@ -15,13 +15,13 @@ center_ children = center _ { children = children }
 foreign import centerComponent :: ReactComponent CenterPropsImpl
 
 type CenterProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , inline   :: Boolean
     )
 
 type CenterPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , inline   :: Boolean
     )

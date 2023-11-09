@@ -9,12 +9,12 @@ module Mantine.Core.Navigation.NavLink
 import Mantine.Core.Prelude
 
 navLink :: MandatoryNavLinkProps -> (NavLinkProps -> NavLinkProps) -> JSX
-navLink = mkComponent navLinkComponent navLinkToImpl <<< defaultThemingProps
+navLink = mkComponent navLinkComponent navLinkToImpl <<< defaultMantineComponent
 
 foreign import navLinkComponent :: ReactComponent NavLinkPropsImpl
 
 type NavLinkProps =
-  ThemingProps
+  MantineComponent
     ( active                      :: Boolean
     , children                    :: Array JSX
     , childrenOffset              :: Maybe MantineNumberSize
@@ -38,15 +38,16 @@ type MandatoryNavLinkProps =
   , content :: NavLink
   }
 
-data NavLink = NavLink   String
-             | NavButton EventHandler
+data NavLink
+  = NavLink   String
+  | NavButton EventHandler
 
 type NavLinkPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( active                      :: Boolean
     , children                    :: Array JSX
     , childrenOffset              :: Nullable MantineNumberSizeImpl
-    , color                       :: Nullable String
+    , color                       :: Nullable MantineColorImpl
     , component                   :: String
     , defaultOpened               :: Boolean
     , description                 :: Nullable JSX
@@ -56,11 +57,11 @@ type NavLinkPropsImpl =
     , label                       :: JSX
     , leftSection                 :: Nullable JSX
     , noWrap                      :: Boolean
-    , onChange                    :: EffectFn1 Boolean Unit
+    , onChange                    :: ValueHandlerImpl Boolean
     , onClick                     :: Nullable EventHandler
     , opened                      :: Boolean
     , rightSection                :: Nullable JSX
-    , variant                     :: String
+    , variant                     :: NavLinkVariantImpl
     )
 
 data NavLinkVariant
@@ -70,7 +71,9 @@ data NavLinkVariant
 
 instance DefaultValue NavLinkVariant where defaultValue = NavLinkLight
 
-instance ToFFI NavLinkVariant String where
+type NavLinkVariantImpl = String
+
+instance ToFFI NavLinkVariant NavLinkVariantImpl where
   toNative = case _ of
     NavLinkLight  -> "light"
     NavLinkFilled -> "filled"

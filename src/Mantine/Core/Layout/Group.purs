@@ -15,10 +15,10 @@ group_ children = group _ { children = children }
 foreign import groupComponent :: ReactComponent GroupPropsImpl
 
 type GroupProps =
-  ThemingProps
+  MantineComponent
     ( align               :: Maybe AlignItems
     , children            :: Array JSX
-    , gap                 :: Maybe MantineNumberSize
+    , gap                 :: Maybe MantineSpacing
     , grow                :: Boolean
     , justify             :: Maybe JustifyContent
     , preventGrowOverflow :: Boolean
@@ -26,12 +26,12 @@ type GroupProps =
     )
 
 type GroupPropsImpl =
-  ThemingPropsImpl
-    ( align               :: Nullable String
+  MantineComponentImpl
+    ( align               :: Nullable AlignItemsImpl
     , children            :: Array JSX
-    , gap                 :: Nullable MantineNumberSizeImpl
+    , gap                 :: Nullable MantineSpacingImpl
     , grow                :: Boolean
-    , justify             :: Nullable String
+    , justify             :: Nullable JustifyContentImpl
     , preventGrowOverflow :: Boolean
-    , wrap                :: String
+    , wrap                :: FlexWrapImpl
     )

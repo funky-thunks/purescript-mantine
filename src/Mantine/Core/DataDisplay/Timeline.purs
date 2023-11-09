@@ -16,7 +16,7 @@ timeline = mkTrivialComponent timelineComponent
 foreign import timelineComponent :: ReactComponent TimelinePropsImpl
 
 type TimelineProps =
-  ThemingProps
+  MantineComponent
     ( active        :: Maybe Int
     , align         :: TimelineAlign
     , bulletSize    :: Maybe Pixels
@@ -33,19 +33,21 @@ data TimelineAlign
 
 instance DefaultValue TimelineAlign where defaultValue = TimelineAlignLeft
 
-instance ToFFI TimelineAlign String where
+type TimelineAlignImpl = String
+
+instance ToFFI TimelineAlign TimelineAlignImpl where
   toNative = case _ of
     TimelineAlignLeft  -> "left"
     TimelineAlignRight -> "right"
 
 type TimelinePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( active        :: Nullable Number
-    , align         :: String
-    , bulletSize    :: Nullable Number
+    , align         :: TimelineAlignImpl
+    , bulletSize    :: Nullable PixelsImpl
     , children      :: Array JSX
-    , color         :: Nullable String
-    , lineWidth     :: Nullable Number
+    , color         :: Nullable MantineColorImpl
+    , lineWidth     :: Nullable PixelsImpl
     , radius        :: Nullable MantineNumberSizeImpl
     , reverseActive :: Boolean
     )
@@ -56,7 +58,7 @@ timelineItem = mkTrivialComponent timelineItemComponent
 foreign import timelineItemComponent :: ReactComponent TimelineItemPropsImpl
 
 type TimelineItemProps =
-  ThemingProps
+  MantineComponent
     ( bullet      :: Maybe JSX
     , children    :: Array JSX
     , color       :: Maybe MantineColor
@@ -70,7 +72,9 @@ data TimelineLineVariant
   | TimelineLineVariantDotted
   | TimelineLineVariantSolid
 
-instance ToFFI TimelineLineVariant String where
+type TimelineLineVariantImpl = String
+
+instance ToFFI TimelineLineVariant TimelineLineVariantImpl where
   toNative = case _ of
     TimelineLineVariantDashed -> "dashed"
     TimelineLineVariantDotted -> "dotted"
@@ -79,11 +83,11 @@ instance ToFFI TimelineLineVariant String where
 instance DefaultValue TimelineLineVariant where defaultValue = TimelineLineVariantSolid
 
 type TimelineItemPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( bullet      :: Nullable JSX
     , children    :: Array JSX
-    , color       :: Nullable String
-    , lineVariant :: String
+    , color       :: Nullable MantineColorImpl
+    , lineVariant :: TimelineLineVariantImpl
     , radius      :: Nullable MantineNumberSizeImpl
     , title       :: Nullable JSX
     )

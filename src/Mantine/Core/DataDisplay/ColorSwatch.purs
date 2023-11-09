@@ -15,10 +15,10 @@ colorSwatch_ c = colorSwatch c identity
 foreign import colorSwatchComponent :: ReactComponent ColorSwatchPropsImpl
 
 defaultColorSwatch :: MantineColor -> ColorSwatchProps
-defaultColorSwatch color = defaultThemingProps { color }
+defaultColorSwatch color = defaultMantineComponent { color }
 
 type ColorSwatchProps =
-  ThemingProps (
+  MantineComponent (
     Polymorphic
       ( children   :: Array JSX
       , color      :: MantineColor
@@ -29,12 +29,12 @@ type ColorSwatchProps =
   )
 
 type ColorSwatchPropsImpl =
-  ThemingPropsImpl (
+  MantineComponentImpl (
     PolymorphicImpl
       ( children   :: Array JSX
-      , color      :: String
+      , color      :: MantineColorImpl
       , radius     :: Nullable MantineNumberSizeImpl
-      , size       :: Nullable Pixels
+      , size       :: Nullable PixelsImpl
       , withShadow :: Boolean
       )
   )

@@ -20,11 +20,11 @@ foreign import affixComponent :: ReactComponent AffixPropsImpl
 --   }
 
 type AffixProps =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , position     :: Maybe AffixPosition
     , withinPortal :: Boolean
-    , zIndex       :: Maybe Number
+    , zIndex       :: Maybe ZIndex
     )
 
 type AffixPosition =
@@ -35,14 +35,14 @@ type AffixPosition =
   }
 
 defaultAffixProps :: AffixProps
-defaultAffixProps = defaultThemingProps { withinPortal: true }
+defaultAffixProps = defaultMantineComponent { withinPortal: true }
 
 type AffixPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children     :: Array JSX
     , position     :: Nullable AffixPositionImpl
     , withinPortal :: Boolean
-    , zIndex       :: Nullable Number
+    , zIndex       :: Nullable ZIndexImpl
     )
 
 type AffixPositionImpl =

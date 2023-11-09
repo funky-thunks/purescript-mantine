@@ -15,7 +15,7 @@ paper_ children = paper _ { children = children }
 foreign import paperComponent :: ReactComponent PaperPropsImpl
 
 type PaperProps =
-  ThemingProps
+  MantineComponent
     ( children   :: Array JSX
     , radius     :: Maybe MantineNumberSize
     , shadow     :: Maybe MantineShadow
@@ -23,9 +23,9 @@ type PaperProps =
     )
 
 type PaperPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children   :: Array JSX
     , radius     :: Nullable MantineNumberSizeImpl
-    , shadow     :: Nullable String
+    , shadow     :: Nullable MantineShadowImpl
     , withBorder :: Boolean
     )

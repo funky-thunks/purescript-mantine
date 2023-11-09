@@ -16,7 +16,7 @@ foreign import dialogComponent :: ReactComponent DialogPropsImpl
 --   }
 
 type DialogProps =
-  ThemingProps
+  MantineComponent
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
@@ -29,7 +29,7 @@ type DialogProps =
     , withBorder      :: Boolean
     , withCloseButton :: Maybe Boolean
     , withinPortal    :: Maybe Boolean
-    , zIndex          :: Maybe Number
+    , zIndex          :: Maybe ZIndex
     )
 
 type DialogPosition =
@@ -40,23 +40,23 @@ type DialogPosition =
   }
 
 defaultDialogProps :: DialogProps
-defaultDialogProps = defaultThemingProps { onClose: pure unit }
+defaultDialogProps = defaultMantineComponent { onClose: pure unit }
 
 type DialogPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
     , opened          :: Nullable Boolean
     , position        :: Nullable DialogPositionImpl
     , radius          :: Nullable MantineNumberSizeImpl
-    , shadow          :: Nullable String
+    , shadow          :: Nullable MantineShadowImpl
     , size            :: Nullable DimensionImpl
     , transitionProps :: MantineTransitionPropsImpl
     , withBorder      :: Boolean
     , withCloseButton :: Nullable Boolean
     , withinPortal    :: Nullable Boolean
-    , zIndex          :: Nullable Number
+    , zIndex          :: Nullable ZIndexImpl
     )
 
 type DialogPositionImpl =

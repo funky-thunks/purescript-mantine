@@ -30,10 +30,10 @@ foreign import accordionComponent :: ReactComponent (AccordionPropsImpl String)
 foreign import multipleAccordionComponent :: ReactComponent (AccordionPropsImpl (Array String))
 
 defaultAccordionProps :: forall accordionValue. AccordionProps accordionValue
-defaultAccordionProps = defaultThemingProps { radius: Preset Small }
+defaultAccordionProps = defaultMantineComponent { radius: Preset Small }
 
 type AccordionProps accordionValue =
-  ThemingProps
+  MantineComponent
     ( chevron                :: Maybe JSX
     , chevronPosition        :: AccordionChevronPosition
     , chevronSize            :: Maybe Number
@@ -45,16 +45,21 @@ type AccordionProps accordionValue =
     , onChange               :: ValueHandler accordionValue
     , order                  :: Maybe AccordionOrder
     , radius                 :: MantineNumberSize
-    , transitionDuration     :: Maybe Number
+    , transitionDuration     :: Maybe Milliseconds
     , value                  :: Maybe accordionValue
     , variant                :: AccordionVariant
     )
 
-data AccordionChevronPosition = AccordionChevronPositionLeft | AccordionChevronPositionRight
+data AccordionChevronPosition
+  = AccordionChevronPositionLeft
+  | AccordionChevronPositionRight
 
-instance DefaultValue AccordionChevronPosition where defaultValue = AccordionChevronPositionRight
+instance DefaultValue AccordionChevronPosition where
+  defaultValue = AccordionChevronPositionRight
 
-instance ToFFI AccordionChevronPosition String where
+type AccordionChevronPositionImpl = String
+
+instance ToFFI AccordionChevronPosition AccordionChevronPositionImpl where
   toNative = case _ of
     AccordionChevronPositionLeft  -> "left"
     AccordionChevronPositionRight -> "right"
@@ -68,7 +73,9 @@ data AccordionVariant
 instance DefaultValue AccordionVariant where
   defaultValue = AccordionVariantDefault
 
-instance ToFFI AccordionVariant (Nullable String) where
+type AccordionVariantImpl = Nullable String
+
+instance ToFFI AccordionVariant AccordionVariantImpl where
   toNative = toNative <<< case _ of
     AccordionVariantDefault   -> Nothing
     AccordionVariantContained -> Just "contained"
@@ -82,7 +89,9 @@ data AccordionOrder
   | AccordionOrder5
   | AccordionOrder6
 
-instance ToFFI AccordionOrder Int where
+type AccordionOrderImpl = Int
+
+instance ToFFI AccordionOrder AccordionOrderImpl where
   toNative = case _ of
     AccordionOrder2 -> 2
     AccordionOrder3 -> 3
@@ -90,22 +99,22 @@ instance ToFFI AccordionOrder Int where
     AccordionOrder5 -> 5
     AccordionOrder6 -> 6
 
-type AccordionPropsImpl accordionValueNative =
-  ThemingPropsImpl
+type AccordionPropsImpl accordionValueImpl =
+  MantineComponentImpl
     ( chevron                :: Nullable JSX
-    , chevronPosition        :: String
+    , chevronPosition        :: AccordionChevronPositionImpl
     , chevronSize            :: Nullable Number
     , children               :: Array JSX
-    , defaultValue           :: Nullable accordionValueNative
+    , defaultValue           :: Nullable accordionValueImpl
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , onChange               :: EffectFn1 accordionValueNative Unit
-    , order                  :: Nullable Int
+    , onChange               :: ValueHandlerImpl accordionValueImpl
+    , order                  :: Nullable AccordionOrderImpl
     , radius                 :: MantineNumberSizeImpl
-    , transitionDuration     :: Nullable Number
-    , value                  :: Nullable accordionValueNative
-    , variant                :: Nullable String
+    , transitionDuration     :: Nullable MillisecondsImpl
+    , value                  :: Nullable accordionValueImpl
+    , variant                :: AccordionVariantImpl
     )
 
 accordionControl :: (AccordionControlProps -> AccordionControlProps) -> JSX

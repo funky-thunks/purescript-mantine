@@ -6,12 +6,12 @@ module Mantine.Core.Inputs.Rating
 import Mantine.Core.Prelude
 
 rating :: (RatingProps -> RatingProps) -> JSX
-rating = mkComponent ratingComponent ratingToImpl defaultThemingProps_
+rating = mkComponent ratingComponent ratingToImpl defaultMantineComponent_
 
 foreign import ratingComponent :: ReactComponent RatingPropsImpl
 
 type RatingProps =
-  ThemingProps
+  MantineComponent
     ( color                 :: Maybe MantineColor
     , count                 :: Maybe Number
     , defaultValue          :: Maybe Number
@@ -29,8 +29,8 @@ type RatingProps =
     )
 
 type RatingPropsImpl =
-  ThemingPropsImpl
-    ( color                 :: Nullable String
+  MantineComponentImpl
+    ( color                 :: Nullable MantineColorImpl
     , count                 :: Nullable Number
     , defaultValue          :: Nullable Number
     , emptySymbol           :: Nullable (Int -> JSX)
@@ -39,10 +39,10 @@ type RatingPropsImpl =
     , getSymbolLabel        :: Nullable (Int -> String)
     , highlightSelectedOnly :: Boolean
     , name                  :: Nullable String
-    , onChange              :: EffectFn1 Number Unit
-    , onHover               :: EffectFn1 Number Unit
+    , onChange              :: ValueHandlerImpl Number
+    , onHover               :: ValueHandlerImpl Number
     , readOnly              :: Boolean
-    , size                  :: Nullable String
+    , size                  :: Nullable MantineSizeImpl
     , value                 :: Nullable Number
     )
 

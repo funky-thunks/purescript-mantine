@@ -18,19 +18,19 @@ spoiler_ children = spoiler _ { children = children }
 foreign import spoilerComponent :: ReactComponent SpoilerPropsImpl
 
 type SpoilerProps =
-  ThemingProps
+  MantineComponent
     ( children           :: Array JSX
     , controlRef         :: Maybe (Ref HTMLButtonElement)
     , hideLabel          :: JSX
     , initialState       :: SpoilerState
-    , maxHeight          :: Number
+    , maxHeight          :: Pixels
     , showLabel          :: JSX
-    , transitionDuration :: Maybe Number
+    , transitionDuration :: Maybe Milliseconds
     )
 
 defaultSpoilerProps :: SpoilerProps
 defaultSpoilerProps =
-  defaultThemingProps
+  defaultMantineComponent
     { hideLabel:    DOM.text "hide"
     , initialState: SpoilerFolded
     , maxHeight:    120.0
@@ -41,18 +41,20 @@ data SpoilerState
   = SpoilerFolded
   | SpoilerUnfolded
 
-instance ToFFI SpoilerState Boolean where
+type SpoilerStateImpl = Boolean
+
+instance ToFFI SpoilerState SpoilerStateImpl where
   toNative = case _ of
     SpoilerFolded   -> false
     SpoilerUnfolded -> true
 
 type SpoilerPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children           :: Array JSX
     , controlRef         :: Nullable (Ref HTMLButtonElement)
     , hideLabel          :: JSX
-    , initialState       :: Boolean
-    , maxHeight          :: Number
+    , initialState       :: SpoilerStateImpl
+    , maxHeight          :: PixelsImpl
     , showLabel          :: JSX
-    , transitionDuration :: Nullable Number
+    , transitionDuration :: Nullable MillisecondsImpl
     )

@@ -1,7 +1,10 @@
 module Mantine.Core.Inputs.Input
   ( InputVariant(..)
+  , InputVariantImpl
   , InputWrapperOrder(..)
+  , InputWrapperOrderImpl
   , InputType(..)
+  , InputTypeImpl
 
   , input
   , InputProps
@@ -22,6 +25,7 @@ module Mantine.Core.Inputs.Input
   , inputWrapper
   , InputWrapperProps
   , InputWrapperElement(..)
+  , InputWrapperElementImpl
 
   , inputLabel
   , InputLabelProps
@@ -49,7 +53,9 @@ data InputVariant
 
 instance DefaultValue InputVariant where defaultValue = InputVariantDefault
 
-instance ToFFI InputVariant (Nullable String) where
+type InputVariantImpl = Nullable String
+
+instance ToFFI InputVariant InputVariantImpl where
   toNative = toNative <<< case _ of
     InputVariantDefault  -> Nothing
     InputVariantUnstyled -> Just "unstyled"
@@ -61,7 +67,9 @@ data InputWrapperOrder
   | InputWrapperOrderError
   | InputWrapperOrderDescription
 
-instance ToFFI InputWrapperOrder String where
+type InputWrapperOrderImpl = String
+
+instance ToFFI InputWrapperOrder InputWrapperOrderImpl where
   toNative = case _ of
     InputWrapperOrderInput       -> "input"
     InputWrapperOrderLabel       -> "label"
@@ -92,7 +100,9 @@ data InputType
   | InputTypeUrl
   | InputTypeWeek
 
-instance ToFFI InputType String where
+type InputTypeImpl = String
+
+instance ToFFI InputType InputTypeImpl where
   toNative = case _ of
     InputTypeButton        -> "button"
     InputTypeCheckbox      -> "checkbox"
@@ -122,7 +132,7 @@ input = mkTrivialComponent inputComponent
 
 foreign import inputComponent :: ReactComponent InputPropsImpl
 
-type InputProps = ThemingProps InputPropsRow
+type InputProps = MantineComponent InputPropsRow
 
 -- Not supported properties
 --   { descriptionProps  :: Record<string, any>
@@ -176,20 +186,20 @@ type InputBasePropsRow_ rest =
   | rest
   )
 
-type InputPropsImpl = ThemingPropsImpl InputPropsRowImpl
+type InputPropsImpl = MantineComponentImpl InputPropsRowImpl
 
 type InputPropsRowImpl = InputPropsRowImpl_ ()
 type InputPropsRowImpl_ rest =
   ( disabled                  :: Boolean
   , leftSection               :: Nullable JSX
-  , leftSectionPointerEvents  :: Nullable String
-  , leftSectionWidth          :: Nullable Number
+  , leftSectionPointerEvents  :: Nullable PointerEventsImpl
+  , leftSectionWidth          :: Nullable PixelsImpl
   , multiline                 :: Boolean
   , pointer                   :: Boolean
   , radius                    :: Nullable MantineNumberSizeImpl
   , rightSection              :: Nullable JSX
-  , rightSectionPointerEvents :: Nullable String
-  , rightSectionWidth         :: Nullable Number
+  , rightSectionPointerEvents :: Nullable PointerEventsImpl
+  , rightSectionWidth         :: Nullable PixelsImpl
   , withAria                  :: Boolean
   , withErrorStyles           :: Nullable Boolean
   | InputBasePropsRowImpl_ rest
@@ -199,8 +209,8 @@ type InputGroupPropsRowImpl items = InputGroupPropsRowImpl_ items ()
 type InputGroupPropsRowImpl_ items rest =
   ( children     :: Array JSX
   , defaultValue :: Nullable items
-  , labelElement :: Nullable String
-  , onChange     :: EffectFn1 items Unit
+  , labelElement :: Nullable InputWrapperElementImpl
+  , onChange     :: ValueHandlerImpl items
   , value        :: Nullable items
   | InputBasePropsRowImpl_ rest
   )
@@ -210,12 +220,12 @@ type InputBasePropsRowImpl_ rest =
   ( description       :: Nullable JSX
   , error             :: Nullable JSX
   , id                :: Nullable String
-  , inputWrapperOrder :: Nullable (Array String)
+  , inputWrapperOrder :: Nullable (Array InputWrapperOrderImpl)
   , label             :: Nullable JSX
   , placeholder       :: Nullable String
   , required          :: Boolean
-  , size              :: Nullable String
-  , variant           :: Nullable String
+  , size              :: Nullable MantineSizeImpl
+  , variant           :: InputVariantImpl
   , withAsterisk      :: Boolean
   | rest
   )
@@ -232,7 +242,7 @@ foreign import inputWrapperComponent :: ReactComponent InputWrapperPropsImpl
 --   }
 
 type InputWrapperProps =
-  ThemingProps (
+  MantineComponent (
     WithInputContainer
       ( children          :: Array JSX
       , description       :: Maybe JSX
@@ -249,23 +259,25 @@ type InputWrapperProps =
 
 data InputWrapperElement = InputWrapperDiv | InputWrapperLabel
 
-instance ToFFI InputWrapperElement String where
+type InputWrapperElementImpl = String
+
+instance ToFFI InputWrapperElement InputWrapperElementImpl where
   toNative = case _ of
     InputWrapperDiv   -> "div"
     InputWrapperLabel -> "label"
 
 type InputWrapperPropsImpl =
-  ThemingPropsImpl (
+  MantineComponentImpl (
     WithInputContainerImpl
       ( children          :: Array JSX
       , description       :: Nullable JSX
       , error             :: Nullable JSX
       , id                :: Nullable String
-      , inputWrapperOrder :: Nullable (Array String)
+      , inputWrapperOrder :: Nullable (Array InputWrapperOrderImpl)
       , label             :: Nullable JSX
-      , labelElement      :: Nullable String
+      , labelElement      :: Nullable InputWrapperElementImpl
       , required          :: Boolean
-      , size              :: Nullable String
+      , size              :: Nullable MantineSizeImpl
       , withAsterisk      :: Boolean
       )
   )
@@ -276,7 +288,7 @@ inputLabel = mkTrivialComponent inputLabelComponent
 foreign import inputLabelComponent :: ReactComponent InputLabelPropsImpl
 
 type InputLabelProps =
-  ThemingProps
+  MantineComponent
     ( children     :: Array JSX
     , labelElement :: Maybe InputWrapperElement
     , required     :: Boolean
@@ -284,11 +296,11 @@ type InputLabelProps =
     )
 
 type InputLabelPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children     :: Array JSX
-    , labelElement :: Nullable String
+    , labelElement :: Nullable InputWrapperElementImpl
     , required     :: Boolean
-    , size         :: Nullable String
+    , size         :: Nullable MantineSizeImpl
     )
 
 inputDescription :: (InputDescriptionProps -> InputDescriptionProps) -> JSX
@@ -297,15 +309,15 @@ inputDescription = mkTrivialComponent inputDescriptionComponent
 foreign import inputDescriptionComponent :: ReactComponent InputDescriptionPropsImpl
 
 type InputDescriptionProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , size     :: Maybe MantineSize
     )
 
 type InputDescriptionPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
-    , size     :: Nullable String
+    , size     :: Nullable MantineSizeImpl
     )
 
 inputError :: (InputErrorProps -> InputErrorProps) -> JSX
@@ -314,15 +326,15 @@ inputError = mkTrivialComponent inputErrorComponent
 foreign import inputErrorComponent :: ReactComponent InputErrorPropsImpl
 
 type InputErrorProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , size     :: Maybe MantineSize
     )
 
 type InputErrorPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
-    , size     :: Nullable String
+    , size     :: Nullable MantineSizeImpl
     )
 
 type WithInputContainer rest =
@@ -336,13 +348,13 @@ type WithInputContainerImpl rest =
   )
 
 type InputComponent rest =
-  ThemingProps (WithInputContainer + InputPropsRow_ rest)
+  MantineComponent (WithInputContainer + InputPropsRow_ rest)
 
 type InputComponentImpl rest =
-  ThemingPropsImpl (WithInputContainerImpl + InputPropsRowImpl_ rest)
+  MantineComponentImpl (WithInputContainerImpl + InputPropsRowImpl_ rest)
 
 type InputGroupComponent items rest =
-  ThemingProps (WithInputContainer + InputGroupPropsRow_ items rest)
+  MantineComponent (WithInputContainer + InputGroupPropsRow_ items rest)
 
 type InputGroupComponentImpl items rest =
-  ThemingPropsImpl (WithInputContainerImpl + InputGroupPropsRowImpl_ items rest)
+  MantineComponentImpl (WithInputContainerImpl + InputGroupPropsRowImpl_ items rest)

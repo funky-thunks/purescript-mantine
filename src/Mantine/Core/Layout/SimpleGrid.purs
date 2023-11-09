@@ -15,7 +15,7 @@ simpleGrid_ children = simpleGrid _ { children = children }
 foreign import simpleGridComponent :: ReactComponent SimpleGridPropsImpl
 
 type SimpleGridProps =
-  ThemingProps
+  MantineComponent
     ( children        :: Array JSX
     , cols            :: Maybe (FixedOrResponsive Int)
     , spacing         :: Maybe (FixedOrResponsive MantineSpacing)
@@ -23,7 +23,7 @@ type SimpleGridProps =
     )
 
 type SimpleGridPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children        :: Array JSX
     , cols            :: Nullable (FixedOrResponsiveImpl Number)
     , spacing         :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)

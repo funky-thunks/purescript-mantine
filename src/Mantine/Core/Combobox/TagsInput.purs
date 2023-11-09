@@ -9,12 +9,12 @@ import Mantine.Core.Combobox.Select (BaseSelectPropsRow, BaseSelectPropsRowImpl,
 import Mantine.Core.Prelude
 
 tagsInput :: (TagsInputProps -> TagsInputProps) -> JSX
-tagsInput = mkComponent tagsInputComponent tagsInputPropsToImpl defaultThemingProps_
+tagsInput = mkComponent tagsInputComponent tagsInputPropsToImpl defaultMantineComponent_
 
 foreign import tagsInputComponent :: ReactComponent TagsInputPropsImpl
 
 type TagsInputProps =
-  ThemingProps
+  MantineComponent
     ( allowDuplicates :: Boolean
     , maxTags         :: Maybe Int
     , onDuplicate     :: ValueHandler String
@@ -23,10 +23,10 @@ type TagsInputProps =
     )
 
 type TagsInputPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( allowDuplicates :: Boolean
     , maxTags         :: Nullable Number
-    , onDuplicate     :: EffectFn1 String Unit
+    , onDuplicate     :: ValueHandlerImpl String
     , splitChars      :: Nullable (Array String)
     | BaseSelectPropsRowImpl (Array String)
     )

@@ -15,14 +15,14 @@ container_ children = container _ { children = children }
 foreign import containerComponent :: ReactComponent ContainerPropsImpl
 
 type ContainerProps =
-  ThemingProps
+  MantineComponent
     ( children :: Array JSX
     , fluid    :: Boolean
     , size     :: Maybe MantineNumberSize
     )
 
 type ContainerPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children :: Array JSX
     , fluid    :: Boolean
     , size     :: Nullable MantineNumberSizeImpl

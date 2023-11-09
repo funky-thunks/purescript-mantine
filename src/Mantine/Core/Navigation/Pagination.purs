@@ -32,7 +32,7 @@ foreign import paginationComponent :: ReactComponent PaginationPropsImpl
 --   }
 
 type PaginationProps =
-  ThemingProps
+  MantineComponent
     ( boundaries     :: PageCount
     , color          :: Maybe MantineColor
     , defaultValue   :: Maybe Page
@@ -54,7 +54,7 @@ type PaginationProps =
 
 defaultPaginationProps :: PaginationProps
 defaultPaginationProps =
-  defaultThemingProps
+  defaultMantineComponent
     { boundaries:     PageCount 1
     , onFirstPage:    pure unit
     , onLastPage:     pure unit
@@ -74,10 +74,12 @@ derive newtype instance eqPage   :: Eq   Page
 derive newtype instance ordPage  :: Ord  Page
 derive newtype instance showPage :: Show Page
 
-instance ToFFI Page Number where
+type PageImpl = Number
+
+instance ToFFI Page PageImpl where
   toNative = toNumber <<< unwrap
 
-instance FromFFI Number Page where
+instance FromFFI PageImpl Page where
   fromNative = wrap <<< floor
 
 newtype PageCount = PageCount Int
@@ -87,26 +89,28 @@ derive newtype instance eqPageCount   :: Eq   PageCount
 derive newtype instance ordPageCount  :: Ord  PageCount
 derive newtype instance showPageCount :: Show PageCount
 
-instance ToFFI PageCount Number where
+type PageCountImpl = Number
+
+instance ToFFI PageCount PageCountImpl where
   toNative = toNumber <<< unwrap
 
 type PaginationPropsImpl =
-  ThemingPropsImpl
-    ( boundaries     :: Number
-    , color          :: Nullable String
-    , defaultValue   :: Nullable Number
+  MantineComponentImpl
+    ( boundaries     :: PageCountImpl
+    , color          :: Nullable MantineColorImpl
+    , defaultValue   :: Nullable PageImpl
     , disabled       :: Boolean
     , gap            :: Nullable MantineNumberSizeImpl
-    , onChange       :: EffectFn1 Number Unit
-    , radius         :: MantineNumberSizeImpl
-    , siblings       :: Number
-    , size           :: MantineNumberSizeImpl
-    , total          :: Number
-    , value          :: Nullable Number
-    , withControls   :: Boolean
-    , withEdges      :: Boolean
+    , onChange       :: ValueHandlerImpl PageImpl
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
     , onPreviousPage :: Effect Unit
+    , radius         :: MantineNumberSizeImpl
+    , siblings       :: PageCountImpl
+    , size           :: MantineNumberSizeImpl
+    , total          :: PageCountImpl
+    , value          :: Nullable PageImpl
+    , withControls   :: Boolean
+    , withEdges      :: Boolean
     )

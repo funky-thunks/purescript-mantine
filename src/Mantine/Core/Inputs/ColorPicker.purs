@@ -2,38 +2,47 @@ module Mantine.Core.Inputs.ColorPicker
   ( colorPicker
   , ColorPickerProps
   , ColorFormat(..)
+  , ColorFormatImpl
   , ColorFormula(..)
+  , ColorFormulaImpl
+
+  , ColorPicking
+  , ColorPickingImpl
   ) where
 
 import Mantine.Core.Prelude
 
 colorPicker :: (ColorPickerProps -> ColorPickerProps) -> JSX
-colorPicker = mkComponent colorPickerComponent toNative defaultColorPickerProps
+colorPicker = mkComponentWithDefault colorPickerComponent defaultColorPickerProps
 
 foreign import colorPickerComponent :: ReactComponent ColorPickerPropsImpl
 
+type ColorPicking =
+  ( defaultValue   :: Maybe ColorFormula
+  , format         :: ColorFormat
+  , onChange       :: ValueHandler ColorFormula
+  , onChangeEnd    :: ValueHandler ColorFormula
+  , swatches       :: Maybe (Array ColorFormula)
+  , swatchesPerRow :: Int
+  , value          :: Maybe ColorFormula
+  , withPicker     :: Boolean
+  )
+
 type ColorPickerProps =
-  ThemingProps
+  MantineComponent
     ( alphaLabel         :: Maybe String
-    , defaultValue       :: Maybe ColorFormula
     , focusable          :: Boolean
-    , format             :: ColorFormat
     , fullWidth          :: Boolean
     , hueLabel           :: Maybe String
-    , onChange           :: ValueHandler ColorFormula
-    , onChangeEnd        :: ValueHandler ColorFormula
     , onColorSwatchClick :: ValueHandler ColorFormula
     , saturationLabel    :: Maybe String
     , size               :: MantineSize
-    , swatches           :: Maybe (Array ColorFormula)
-    , swatchesPerRow     :: Int
-    , value              :: Maybe ColorFormula
-    , withPicker         :: Boolean
+    | ColorPicking
     )
 
 defaultColorPickerProps :: ColorPickerProps
 defaultColorPickerProps =
-  defaultThemingProps
+  defaultMantineComponent
     { focusable: true
     , size: Small
     , swatchesPerRow: 10
@@ -47,7 +56,9 @@ data ColorFormat
   | ColorFormatHSL
   | ColorFormatHSLA
 
-instance ToFFI ColorFormat String where
+type ColorFormatImpl = String
+
+instance ToFFI ColorFormat ColorFormatImpl where
   toNative = case _ of
     ColorFormatHex  -> "hex"
     ColorFormatHexA -> "hexa"
@@ -70,25 +81,31 @@ instance DefaultValue ColorFormat where defaultValue = ColorFormatHex
 
 newtype ColorFormula = ColorFormula String
 
-instance ToFFI ColorFormula String where toNative (ColorFormula cf) = cf
+type ColorFormulaImpl = String
+
+instance ToFFI ColorFormula ColorFormulaImpl where toNative (ColorFormula cf) = cf
 
 instance FromFFI String ColorFormula where fromNative = ColorFormula
 
+type ColorPickingImpl =
+  ( defaultValue   :: Nullable ColorFormulaImpl
+  , format         :: ColorFormatImpl
+  , onChange       :: ValueHandlerImpl ColorFormulaImpl
+  , onChangeEnd    :: ValueHandlerImpl ColorFormulaImpl
+  , swatches       :: Nullable (Array ColorFormulaImpl)
+  , swatchesPerRow :: Number
+  , value          :: Nullable ColorFormulaImpl
+  , withPicker     :: Boolean
+  )
+
 type ColorPickerPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( alphaLabel         :: Nullable String
-    , defaultValue       :: Nullable String
     , focusable          :: Boolean
-    , format             :: String
     , fullWidth          :: Boolean
     , hueLabel           :: Nullable String
-    , onChange           :: EffectFn1 String Unit
-    , onChangeEnd        :: EffectFn1 String Unit
-    , onColorSwatchClick :: EffectFn1 String Unit
+    , onColorSwatchClick :: ValueHandlerImpl ColorFormulaImpl
     , saturationLabel    :: Nullable String
-    , size               :: String
-    , swatches           :: Nullable (Array String)
-    , swatchesPerRow     :: Number
-    , value              :: Nullable String
-    , withPicker         :: Boolean
+    , size               :: MantineSizeImpl
+    | ColorPickingImpl
     )

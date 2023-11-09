@@ -17,19 +17,19 @@ loadingOverlay' visible = loadingOverlay _ { visible = visible }
 foreign import loadingOverlayComponent :: ReactComponent LoadingOverlayPropsImpl
 
 type LoadingOverlayProps =
-  ThemingProps
+  MantineComponent
     ( loaderProps     :: LoaderProps
     , overlayProps    :: OverlayProps
     , transitionProps :: MantineTransitionProps
     , visible         :: Boolean
-    , zIndex          :: Maybe Number
+    , zIndex          :: Maybe ZIndex
     )
 
 type LoadingOverlayPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( loaderProps     :: LoaderPropsImpl
     , overlayProps    :: OverlayPropsImpl
     , transitionProps :: MantineTransitionPropsImpl
     , visible         :: Boolean
-    , zIndex          :: Nullable Number
+    , zIndex          :: Nullable ZIndexImpl
     )

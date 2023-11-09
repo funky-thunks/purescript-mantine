@@ -8,7 +8,7 @@ import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
 import Mantine.Core.Prelude
 
 passwordInput :: (PasswordInputProps -> PasswordInputProps) -> JSX
-passwordInput = mkComponent passwordInputComponent passwordInputToImpl defaultThemingProps_
+passwordInput = mkComponent passwordInputComponent passwordInputToImpl defaultMantineComponent_
 
 foreign import passwordInputComponent :: ReactComponent PasswordInputPropsImpl
 
@@ -27,8 +27,8 @@ type PasswordInputProps =
 type PasswordInputPropsImpl =
   InputComponentImpl
     ( defaultVisible              :: Nullable Boolean
-    , onChange                    :: EffectFn1 SyntheticEvent Unit
-    , onVisibilityChange          :: EffectFn1 Boolean Unit
+    , onChange                    :: InputHandlerImpl
+    , onVisibilityChange          :: ValueHandlerImpl Boolean
     , value                       :: Nullable String
     , visibilityToggleButtonProps :: ToggleButtonProps
     , visibilityToggleIcon        :: Nullable ({ reveal :: Boolean, size :: Number } -> JSX)

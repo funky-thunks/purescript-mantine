@@ -25,6 +25,6 @@ type TextareaPropsImpl =
     ( autosize :: Boolean
     , maxRows  :: Nullable Number
     , minRows  :: Nullable Number
-    , onChange :: EffectFn1 SyntheticEvent Unit
+    , onChange :: InputHandlerImpl
     , value    :: Nullable String
     )

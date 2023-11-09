@@ -9,6 +9,7 @@ module Mantine.Core.Prelude
   , module Effect
   , module Effect.Uncurried
   , module Foreign.Object
+  , module Mantine.Core.CSS
   , module Mantine.Core.Common
   , module Mantine.FFI
   , module React.Basic
@@ -30,6 +31,7 @@ import Data.Tuple.Nested (type (/\), (/\))
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
 import Foreign.Object (Object, fromFoldable)
+import Mantine.Core.CSS
 import Mantine.Core.Common
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import React.Basic (ReactComponent, Ref)

@@ -14,7 +14,7 @@ card = mkComponentWithDefault cardComponent defaultCardProps
 foreign import cardComponent :: ReactComponent CardPropsImpl
 
 type CardProps =
-  ThemingProps
+  MantineComponent
     ( children   :: Array JSX
     , padding    :: Maybe MantineNumberSize
     , radius     :: MantineNumberSize
@@ -23,24 +23,24 @@ type CardProps =
     )
 
 defaultCardProps :: CardProps
-defaultCardProps = defaultThemingProps { radius: Preset Small }
+defaultCardProps = defaultMantineComponent { radius: Preset Small }
 
 type CardPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children   :: Array JSX
     , padding    :: Nullable MantineNumberSizeImpl
     , radius     :: MantineNumberSizeImpl
-    , shadow     :: Nullable String
+    , shadow     :: Nullable MantineShadowImpl
     , withBorder :: Boolean
     )
 
 cardSection :: (CardSectionProps -> CardSectionProps) -> JSX
-cardSection = mkComponent cardSectionComponent toNative defaultThemingProps_
+cardSection = mkComponent cardSectionComponent toNative defaultMantineComponent_
 
 foreign import cardSectionComponent :: ReactComponent CardSectionPropsImpl
 
 type CardSectionProps =
-  ThemingProps (
+  MantineComponent (
     Polymorphic
       ( children       :: Array JSX
       , inheritPadding :: Boolean
@@ -49,7 +49,7 @@ type CardSectionProps =
   )
 
 type CardSectionPropsImpl =
-  ThemingPropsImpl (
+  MantineComponentImpl (
     PolymorphicImpl
       ( children       :: Array JSX
       , inheritPadding :: Boolean

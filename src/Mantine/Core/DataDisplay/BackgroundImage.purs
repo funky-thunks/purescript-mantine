@@ -15,20 +15,20 @@ backgroundImage_ src = backgroundImage src identity
 foreign import backgroundImageComponent:: ReactComponent BackgroundImagePropsImpl
 
 type BackgroundImageProps =
-  ThemingProps
+  MantineComponent
     ( radius :: MantineNumberSize
     , src    :: String
     )
 
 defaultBackgroundImageProps :: String -> BackgroundImageProps
 defaultBackgroundImageProps src =
-  defaultThemingProps
+  defaultMantineComponent
     { radius: Preset Small
     , src
     }
 
 type BackgroundImagePropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( radius :: MantineNumberSizeImpl
     , src    :: String
     )

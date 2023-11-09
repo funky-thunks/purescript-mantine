@@ -10,12 +10,12 @@ import Mantine.Core.Prelude
 import Web.File.File (File)
 
 fileButton :: MandatoryFileButtonProps File -> (FileButtonProps File -> FileButtonProps File) -> JSX
-fileButton = mkComponent fileButtonComponent fileButtonPropsToImpl <<< defaultThemingProps
+fileButton = mkComponent fileButtonComponent fileButtonPropsToImpl <<< defaultMantineComponent
 
 foreign import fileButtonComponent :: ReactComponent (FileButtonPropsImpl File)
 
 multipleFileButton :: MandatoryFileButtonProps (Array File) -> (FileButtonProps (Array File) -> FileButtonProps (Array File)) -> JSX
-multipleFileButton = mkComponent multipleFileButtonComponent fileButtonPropsToImpl <<< defaultThemingProps
+multipleFileButton = mkComponent multipleFileButtonComponent fileButtonPropsToImpl <<< defaultMantineComponent
 
 foreign import multipleFileButtonComponent :: ReactComponent (FileButtonPropsImpl (Array File))
 
@@ -30,7 +30,7 @@ type MandatoryFileButtonProps payload =
   }
 
 type FileButtonProps payload =
-  ThemingProps
+  MantineComponent
     ( accept   :: String
     , capture  :: Maybe CaptureMode
     , children :: { onClick :: Effect Unit } -> JSX
@@ -42,14 +42,14 @@ type FileButtonProps payload =
     )
 
 type FileButtonPropsImpl payload =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( accept   :: String
     , capture  :: Nullable CaptureModeImpl
     , children :: { onClick :: Effect Unit } -> JSX
     , disabled :: Boolean
     , form     :: Nullable String
     , name     :: Nullable String
-    , onChange :: EffectFn1 payload Unit
+    , onChange :: ValueHandlerImpl payload
     , resetRef :: Nullable (Ref (Effect Unit))
     )
 

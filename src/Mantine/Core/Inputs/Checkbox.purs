@@ -7,26 +7,28 @@ module Mantine.Core.Inputs.Checkbox
   , CheckboxGroupProps
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableComponent, CheckableComponentImpl)
+import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
 import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
 checkbox :: (CheckboxProps -> CheckboxProps) -> JSX
-checkbox = mkComponent checkboxComponent toNativeCheckbox defaultThemingProps_
+checkbox = mkComponent checkboxComponent toNativeCheckbox defaultMantineComponent_
 
 foreign import checkboxComponent :: ReactComponent CheckboxPropsImpl
 
 type CheckboxProps =
-  CheckableComponent
+  CheckableFieldComponent
     ( disabled      :: Boolean
     , icon          :: Maybe ({ indeterminate :: Boolean, className :: String } -> JSX)
+    , iconColor     :: Maybe MantineColor
     , indeterminate :: Maybe Boolean
     )
 
 type CheckboxPropsImpl =
-  CheckableComponentImpl
+  CheckableFieldComponentImpl
     ( disabled      :: Boolean
     , icon          :: Nullable ({ indeterminate :: Boolean, className :: String } -> JSX)
+    , iconColor     :: Nullable MantineColorImpl
     , indeterminate :: Nullable Boolean
     )
 

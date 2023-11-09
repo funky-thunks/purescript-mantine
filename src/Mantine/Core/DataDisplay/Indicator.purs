@@ -12,19 +12,19 @@ indicator = mkTrivialComponent indicatorComponent
 foreign import indicatorComponent :: ReactComponent IndicatorPropsImpl
 
 type IndicatorProps =
-  ThemingProps
+  MantineComponent
     ( children   :: Array JSX
     , color      :: Maybe MantineColor
     , disabled   :: Boolean
     , inline     :: Boolean
     , label      :: Maybe JSX
-    , offset     :: Maybe Number
+    , offset     :: Maybe Pixels
     , position   :: IndicatorPosition
     , processing :: Boolean
     , radius     :: Maybe MantineNumberSize
     , size       :: Maybe Pixels
     , withBorder :: Boolean
-    , zIndex     :: Maybe Number
+    , zIndex     :: Maybe ZIndex
     )
 
 data IndicatorPosition
@@ -40,7 +40,9 @@ data IndicatorPosition
 
 instance DefaultValue IndicatorPosition where defaultValue = TopEnd
 
-instance ToFFI IndicatorPosition String where
+type IndicatorPositionImpl = String
+
+instance ToFFI IndicatorPosition IndicatorPositionImpl where
   toNative = case _ of
     BottomEnd    -> "bottom-end"
     BottomStart  -> "bottom-start"
@@ -53,17 +55,17 @@ instance ToFFI IndicatorPosition String where
     MiddleStart  -> "middle-start"
 
 type IndicatorPropsImpl =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( children   :: Array JSX
-    , color      :: Nullable String
+    , color      :: Nullable MantineColorImpl
     , disabled   :: Boolean
     , inline     :: Boolean
     , label      :: Nullable JSX
-    , offset     :: Nullable Number
-    , position   :: String
+    , offset     :: Nullable PixelsImpl
+    , position   :: IndicatorPositionImpl
     , processing :: Boolean
     , radius     :: Nullable MantineNumberSizeImpl
-    , size       :: Nullable Number
+    , size       :: Nullable PixelsImpl
     , withBorder :: Boolean
-    , zIndex     :: Nullable Number
+    , zIndex     :: Nullable ZIndexImpl
     )

@@ -35,7 +35,7 @@ type JsonInputPropsImpl =
     , formatOnBlur    :: Boolean
     , maxRows         :: Nullable Number
     , minRows         :: Nullable Number
-    , onChange        :: EffectFn1 SyntheticEvent Unit
+    , onChange        :: InputHandlerImpl
     , validationError :: Nullable JSX
     , value           :: Nullable String
     )

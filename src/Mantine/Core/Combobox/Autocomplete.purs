@@ -41,7 +41,7 @@ type AutocompleteProps =
 
 defaultAutocompleteProps :: AutocompleteProps
 defaultAutocompleteProps =
-  defaultThemingProps
+  defaultMantineComponent
     { onDropdownClose: pure unit
     , onDropdownOpen:  pure unit
     }
@@ -60,10 +60,10 @@ type AutocompletePropsImpl =
     , filter                    :: Nullable (EffectFn2 String AutocompleteItem Boolean)
     , limit                     :: Nullable Number
     , maxDropdownHeight         :: Nullable (String |+| Number)
-    , onChange                  :: EffectFn1 String Unit
+    , onChange                  :: ValueHandlerImpl String
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
-    , onOptionSubmit            :: EffectFn1 String Unit
+    , onOptionSubmit            :: ValueHandlerImpl String
     , selectFirstOptionOnChange :: Boolean
     , value                     :: Nullable String
     , withScrollArea            :: Boolean

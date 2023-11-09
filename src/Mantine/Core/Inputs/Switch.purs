@@ -8,17 +8,17 @@ module Mantine.Core.Inputs.Switch
   , SwitchGroupProps
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableComponent, CheckableComponentImpl)
+import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
 import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
 switch :: (SwitchProps -> SwitchProps) -> JSX
-switch = mkComponent switchComponent switchToImpl defaultThemingProps_
+switch = mkComponent switchComponent switchToImpl defaultMantineComponent_
 
 foreign import switchComponent :: ReactComponent SwitchPropsImpl
 
 type SwitchProps =
-  CheckableComponent
+  CheckableFieldComponent
     ( innerLabels :: Maybe SwitchInnerLabels
     , thumbIcon   :: Maybe JSX
     )
@@ -29,7 +29,7 @@ type SwitchInnerLabels =
   }
 
 type SwitchPropsImpl =
-  CheckableComponentImpl
+  CheckableFieldComponentImpl
     ( offLabel  :: Nullable JSX
     , onLabel   :: Nullable JSX
     , thumbIcon :: Nullable JSX

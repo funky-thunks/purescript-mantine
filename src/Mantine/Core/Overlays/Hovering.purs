@@ -11,11 +11,13 @@ module Mantine.Core.Overlays.Hovering
 
   , HoveringCommons
   , HoveringDropdownProps
-  , HoveringTargetProps
+  , HoveringTarget
   , HoverableArrowPosition(..)
+  , HoverableArrowPositionImpl
   , HoverableComponent
   , HoverableComponentImpl
   , HoverableFloatingPosition(..)
+  , HoverableFloatingPositionImpl
   , HoverPopoverWidth(..)
   , HoverPopupType(..)
   ) where
@@ -23,6 +25,8 @@ module Mantine.Core.Overlays.Hovering
 import Mantine.Core.Overlays.Modal (ModalTransitionProps, ModalTransitionPropsImpl)
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
+import Mantine.FFI (class RecordToFFI)
+import Prim.RowList (class RowToList)
 
 hoverCard :: (HoverCardProps -> HoverCardProps) -> JSX
 hoverCard = mkComponentWithDefault hoverCardComponent defaultHoverCardProps
@@ -30,41 +34,34 @@ hoverCard = mkComponentWithDefault hoverCardComponent defaultHoverCardProps
 foreign import hoverCardComponent :: ReactComponent HoverCardPropsImpl
 
 defaultHoverCardProps :: HoverCardProps
-defaultHoverCardProps = defaultThemingProps defaultHoveringProps
+defaultHoverCardProps = defaultMantineComponent defaultHoveringProps
 
 type HoverCardProps =
   HoveringCommons
-    ( closeDelay      :: Maybe Number
+    ( closeDelay      :: Maybe Milliseconds
     , initiallyOpened :: Maybe Boolean
-    , openDelay       :: Maybe Number
+    , openDelay       :: Maybe Milliseconds
     )
 
 type HoverCardPropsImpl =
   HoveringCommonsImpl
-    ( closeDelay      :: Nullable Number
+    ( closeDelay      :: Nullable MillisecondsImpl
     , initiallyOpened :: Nullable Boolean
-    , openDelay       :: Nullable Number
+    , openDelay       :: Nullable MillisecondsImpl
     )
 
-hoverCardTarget :: (HoveringTargetProps -> HoveringTargetProps) -> JSX
-hoverCardTarget = mkHoveringComponent hoverCardTargetComponent
+hoverCardTarget :: (HoverTargetProps -> HoverTargetProps) -> JSX
+hoverCardTarget = mkComponent hoverCardTargetComponent hoveringTargetToImpl defaultMantineComponent_
 
-foreign import hoverCardTargetComponent :: ReactComponent HoveringTargetPropsImpl
+foreign import hoverCardTargetComponent :: ReactComponent HoverTargetPropsImpl
+
+type HoverTargetProps     = HoveringTarget     (eventPropsWrapperName :: Maybe    String)
+type HoverTargetPropsImpl = HoveringTargetImpl (eventPropsWrapperName :: Nullable String)
 
 hoverCardDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
 hoverCardDropdown = mkTrivialComponent hoverCardDropdownComponent
 
 foreign import hoverCardDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
-
-type HoveringDropdownProps =
-  ThemingProps
-    ( children :: Array JSX
-    )
-
-type HoveringDropdownPropsImpl =
-  ThemingPropsImpl
-    ( children :: Array JSX
-    )
 
 popover :: (PopoverProps -> PopoverProps) -> JSX
 popover = mkComponentWithDefault popoverComponent defaultPopoverProps
@@ -72,7 +69,7 @@ popover = mkComponentWithDefault popoverComponent defaultPopoverProps
 foreign import popoverComponent :: ReactComponent PopoverPropsImpl
 
 defaultPopoverProps :: PopoverProps
-defaultPopoverProps = defaultThemingProps defaultHoveringProps
+defaultPopoverProps = defaultMantineComponent defaultHoveringProps
 
 type NonDefaultableHoveringProps =
   { closeOnClickOutside :: Boolean
@@ -96,13 +93,13 @@ defaultHoveringProps =
 type PopoverProps     = HoveringCommons     ()
 type PopoverPropsImpl = HoveringCommonsImpl ()
 
-popoverTarget :: (HoveringTargetProps -> HoveringTargetProps) -> JSX
-popoverTarget = mkHoveringComponent popoverTargetComponent
+popoverTarget :: (PopoverTargetProps -> PopoverTargetProps) -> JSX
+popoverTarget = mkComponent popoverTargetComponent hoveringTargetToImpl defaultMantineComponent_
 
-mkHoveringComponent :: ReactComponent HoveringTargetPropsImpl -> (HoveringTargetProps -> HoveringTargetProps) -> JSX
-mkHoveringComponent cmpt = mkComponent cmpt hoveringTargetToImpl defaultThemingProps_
+type PopoverTargetProps     = HoveringTarget     ()
+type PopoverTargetPropsImpl = HoveringTargetImpl ()
 
-foreign import popoverTargetComponent :: ReactComponent HoveringTargetPropsImpl
+foreign import popoverTargetComponent :: ReactComponent PopoverTargetPropsImpl
 
 popoverDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
 popoverDropdown = mkTrivialComponent popoverDropdownComponent
@@ -110,7 +107,7 @@ popoverDropdown = mkTrivialComponent popoverDropdownComponent
 foreign import popoverDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
 
 type HoverableComponent rest =
-  ThemingProps
+  MantineComponent
     ( arrowOffset          :: Maybe Number
     , arrowPosition        :: Maybe HoverableArrowPosition
     , arrowRadius          :: Maybe Number
@@ -127,7 +124,7 @@ type HoverableComponent rest =
     , transitionProps      :: ModalTransitionProps
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
-    , zIndex               :: Maybe Number
+    , zIndex               :: Maybe ZIndex
     | rest
     )
 
@@ -164,9 +161,12 @@ data HoverableFloatingPosition
   | HoverableFloatingPositionBottomEnd
   | HoverableFloatingPositionLeftEnd
 
-instance DefaultValue HoverableFloatingPosition where defaultValue = HoverableFloatingPositionBottom
+instance DefaultValue HoverableFloatingPosition where
+  defaultValue = HoverableFloatingPositionBottom
 
-instance ToFFI HoverableFloatingPosition String where
+type HoverableFloatingPositionImpl = String
+
+instance ToFFI HoverableFloatingPosition HoverableFloatingPositionImpl where
   toNative = case _ of
     HoverableFloatingPositionTop         -> "top"
     HoverableFloatingPositionRight       -> "right"
@@ -209,24 +209,24 @@ instance ToFFI HoverPopoverWidth HoverPopoverWidthImpl where
     Fixed n  -> asOneOf n
 
 type HoverableComponentImpl rest =
-  ThemingPropsImpl
+  MantineComponentImpl
     ( arrowOffset          :: Nullable Number
-    , arrowPosition        :: Nullable String
+    , arrowPosition        :: Nullable HoverableArrowPositionImpl
     , arrowRadius          :: Nullable Number
     , arrowSize            :: Nullable Number
     , children             :: Array JSX
     , disabled             :: Boolean
     , keepMounted          :: Boolean
     , offset               :: Nullable Number
-    , onPositionChange     :: EffectFn1 String Unit
+    , onPositionChange     :: ValueHandlerImpl HoverableFloatingPositionImpl
     , opened               :: Nullable Boolean
-    , position             :: String
+    , position             :: HoverableFloatingPositionImpl
  -- , positionDependencies :: any[] -- TODO
     , radius               :: Nullable MantineNumberSizeImpl
     , transitionProps      :: ModalTransitionPropsImpl
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
-    , zIndex               :: Nullable Number
+    , zIndex               :: Nullable ZIndexImpl
     | rest
     )
 
@@ -238,11 +238,11 @@ type HoveringCommonsImpl rest =
     , defaultOpened       :: Nullable Boolean
     , id                  :: Nullable String
  -- , middlewares         :: PopoverMiddlewares -- TODO
-    , onChange            :: EffectFn1 Boolean Unit
+    , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , returnFocus         :: Boolean
-    , shadow              :: Nullable String
+    , shadow              :: Nullable MantineShadowImpl
     , trapFocus           :: Boolean
     , width               :: HoverPopoverWidthImpl
     , withRoles           :: Boolean
@@ -253,37 +253,50 @@ data HoverableArrowPosition
   = HoverableArrowPositionCenter
   | HoverableArrowPositionSide
 
-instance ToFFI HoverableArrowPosition String where
+type HoverableArrowPositionImpl = String
+
+instance ToFFI HoverableArrowPosition HoverableArrowPositionImpl where
   toNative = case _ of
     HoverableArrowPositionCenter -> "center"
     HoverableArrowPositionSide   -> "side"
 
-type HoveringTargetProps =
-  ThemingProps
-    ( children              :: Array JSX
-    , eventPropsWrapperName :: Maybe String
-    , popupType             :: HoverPopupType
-    , refProp               :: Maybe String
+type HoveringTarget rest =
+  MantineComponent
+    ( children  :: Array JSX
+    , popupType :: HoverPopupType
+    , refProp   :: Maybe String
+    | rest
     )
 
-data HoverPopupType = HoverPopupTypeDialog | HoverPopupTypeCustom String
+data HoverPopupType
+  = HoverPopupTypeDialog
+  | HoverPopupTypeCustom String
 
 instance DefaultValue HoverPopupType where defaultValue = HoverPopupTypeDialog
 
-instance ToFFI HoverPopupType String where
+type HoverPopupTypeImpl = String
+
+instance ToFFI HoverPopupType HoverPopupTypeImpl where
   toNative = case _ of
     HoverPopupTypeDialog   -> "dialog"
     HoverPopupTypeCustom s -> s
 
-type HoveringTargetPropsImpl =
-  ThemingPropsImpl
-    ( children              :: Array JSX
-    , eventPropsWrapperName :: Nullable String
-    , popupType             :: String
-    , refProp               :: Nullable String
+type HoveringTargetImpl rest =
+  MantineComponentImpl
+    ( children  :: Array JSX
+    , popupType :: HoverPopupTypeImpl
+    , refProp   :: Nullable String
+    | rest
     )
 
-hoveringTargetToImpl :: HoveringTargetProps -> HoveringTargetPropsImpl
+hoveringTargetToImpl :: forall rest restImpl others
+                      . ToFFI (Record rest) (Record restImpl)
+                     => RecordToFFI others (children :: Array JSX | rest) (children :: Array JSX | restImpl)
+                     => RowToList ( children :: Array JSX | rest) others
+                     => { children :: Array JSX | rest } -> { children :: Array JSX | restImpl }
 hoveringTargetToImpl =
   let wrapChildren props = props { children = [ DOM.div_ props.children ] }
    in toNative >>> wrapChildren
+
+type HoveringDropdownProps     = MantineComponent     (children :: Array JSX)
+type HoveringDropdownPropsImpl = MantineComponentImpl (children :: Array JSX)
