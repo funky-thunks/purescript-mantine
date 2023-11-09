@@ -164,11 +164,8 @@ type InputPropsRow_ rest =
 type InputGroupPropsRow items = InputGroupPropsRow_ items ()
 type InputGroupPropsRow_ items rest =
   ( children     :: Array JSX
-  , defaultValue :: Maybe items
   , labelElement :: Maybe InputWrapperElement
-  , onChange     :: ValueHandler items
-  , value        :: Maybe items
-  | InputBasePropsRow_ rest
+  | Controlled_ items + InputBasePropsRow_ rest
   )
 
 type InputBasePropsRow = InputBasePropsRow_ ()
@@ -208,11 +205,8 @@ type InputPropsRowImpl_ rest =
 type InputGroupPropsRowImpl items = InputGroupPropsRowImpl_ items ()
 type InputGroupPropsRowImpl_ items rest =
   ( children     :: Array JSX
-  , defaultValue :: Nullable items
   , labelElement :: Nullable InputWrapperElementImpl
-  , onChange     :: ValueHandlerImpl items
-  , value        :: Nullable items
-  | InputBasePropsRowImpl_ rest
+  | ControlledImpl_ items + InputBasePropsRowImpl_ rest
   )
 
 type InputBasePropsRowImpl = InputBasePropsRowImpl_ ()

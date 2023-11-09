@@ -35,10 +35,8 @@ type PaginationProps =
   MantineComponent
     ( boundaries     :: PageCount
     , color          :: Maybe MantineColor
-    , defaultValue   :: Maybe Page
     , disabled       :: Boolean
     , gap            :: Maybe MantineNumberSize
-    , onChange       :: ValueHandler Page
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
@@ -47,9 +45,9 @@ type PaginationProps =
     , siblings       :: PageCount
     , size           :: MantineNumberSize
     , total          :: PageCount
-    , value          :: Maybe Page
     , withControls   :: Boolean
     , withEdges      :: Boolean
+    | Controlled Page
     )
 
 defaultPaginationProps :: PaginationProps
@@ -98,10 +96,8 @@ type PaginationPropsImpl =
   MantineComponentImpl
     ( boundaries     :: PageCountImpl
     , color          :: Nullable MantineColorImpl
-    , defaultValue   :: Nullable PageImpl
     , disabled       :: Boolean
     , gap            :: Nullable MantineNumberSizeImpl
-    , onChange       :: ValueHandlerImpl PageImpl
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
@@ -110,7 +106,7 @@ type PaginationPropsImpl =
     , siblings       :: PageCountImpl
     , size           :: MantineNumberSizeImpl
     , total          :: PageCountImpl
-    , value          :: Nullable PageImpl
     , withControls   :: Boolean
     , withEdges      :: Boolean
+    | ControlledImpl PageImpl
     )

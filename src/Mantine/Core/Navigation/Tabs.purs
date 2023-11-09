@@ -34,17 +34,15 @@ type TabsProps =
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
     , color                   :: Maybe MantineColor
-    , defaultValue            :: Maybe String
     , id                      :: Maybe String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onChange                :: ValueHandler String
     , orientation             :: Maybe Orientation
     , placement               :: Maybe TabsPlacement
     , radius                  :: Maybe MantineNumberSize
-    , value                   :: Maybe String
     , variant                 :: Maybe TabsVariant
+    | Controlled String
     )
 
 data TabsPlacement
@@ -77,17 +75,15 @@ type TabsPropsImpl =
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
     , color                   :: Nullable MantineColorImpl
-    , defaultValue            :: Nullable String
     , id                      :: Nullable String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , onChange                :: ValueHandlerImpl String
     , orientation             :: Nullable OrientationImpl
     , placement               :: Nullable TabsPlacementImpl
     , radius                  :: Nullable MantineNumberSizeImpl
-    , value                   :: Nullable String
     , variant                 :: Nullable TabsVariantImpl
+    | ControlledImpl String
     )
 
 tab :: (TabsTabProps -> TabsTabProps) -> JSX

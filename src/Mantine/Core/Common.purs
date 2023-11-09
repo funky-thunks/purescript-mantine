@@ -65,6 +65,11 @@ module Mantine.Core.Common
   , ResponsiveImpl
   , FixedOrResponsive
   , FixedOrResponsiveImpl
+
+  , Controlled
+  , Controlled_
+  , ControlledImpl
+  , ControlledImpl_
   ) where
 
 import Prelude hiding (bind)
@@ -840,3 +845,19 @@ type PopoverMiddlewaresImpl =
   , flip   :: Boolean
   , inline :: Nullable Boolean
   }
+
+type Controlled  value = Controlled_ value ()
+type Controlled_ value rest =
+  ( defaultValue :: Maybe        value
+  , onChange     :: ValueHandler value
+  , value        :: Maybe        value
+  | rest
+  )
+
+type ControlledImpl  value = ControlledImpl_ value ()
+type ControlledImpl_ value rest =
+  ( defaultValue :: Nullable         value
+  , onChange     :: ValueHandlerImpl value
+  , value        :: Nullable         value
+  | rest
+  )

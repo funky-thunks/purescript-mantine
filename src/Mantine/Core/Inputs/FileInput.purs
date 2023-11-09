@@ -29,13 +29,11 @@ type FileInputProps =
     , capture          :: Maybe CaptureMode
     , clearButtonProps :: ClearButtonProps
     , clearable        :: Boolean
-    , defaultValue     :: Maybe File
     , form             :: String
     , multiple         :: Boolean
     , name             :: String
-    , onChange         :: ValueHandler File
     , readOnly         :: Boolean
-    , value            :: Maybe File
+    | Controlled File
     )
 
 data CaptureMode = User | Environment | Explicit Boolean
@@ -54,11 +52,9 @@ type FileInputPropsImpl =
     , capture          :: Nullable CaptureModeImpl
     , clearButtonProps :: ClearButtonPropsImpl
     , clearable        :: Boolean
-    , defaultValue     :: Nullable File
     , form             :: String
     , multiple         :: Boolean
     , name             :: String
-    , onChange         :: ValueHandlerImpl File
     , readOnly         :: Boolean
-    , value            :: Nullable File
+    | ControlledImpl File
     )

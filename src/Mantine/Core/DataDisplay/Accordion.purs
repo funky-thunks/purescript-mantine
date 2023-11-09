@@ -38,16 +38,14 @@ type AccordionProps accordionValue =
     , chevronPosition        :: AccordionChevronPosition
     , chevronSize            :: Maybe Number
     , children               :: Array JSX
-    , defaultValue           :: Maybe accordionValue
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , onChange               :: ValueHandler accordionValue
     , order                  :: Maybe AccordionOrder
     , radius                 :: MantineNumberSize
     , transitionDuration     :: Maybe Milliseconds
-    , value                  :: Maybe accordionValue
     , variant                :: AccordionVariant
+    | Controlled accordionValue
     )
 
 data AccordionChevronPosition
@@ -105,16 +103,14 @@ type AccordionPropsImpl accordionValueImpl =
     , chevronPosition        :: AccordionChevronPositionImpl
     , chevronSize            :: Nullable Number
     , children               :: Array JSX
-    , defaultValue           :: Nullable accordionValueImpl
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , onChange               :: ValueHandlerImpl accordionValueImpl
     , order                  :: Nullable AccordionOrderImpl
     , radius                 :: MantineNumberSizeImpl
     , transitionDuration     :: Nullable MillisecondsImpl
-    , value                  :: Nullable accordionValueImpl
     , variant                :: AccordionVariantImpl
+    | ControlledImpl accordionValueImpl
     )
 
 accordionControl :: (AccordionControlProps -> AccordionControlProps) -> JSX

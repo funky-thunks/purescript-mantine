@@ -36,13 +36,11 @@ type NumberInputProps =
     , clampBehavior            :: Maybe NumberClampBehavior
     , decimalScale             :: Maybe Number
     , decimalSeparator         :: Maybe String
-    , defaultValue             :: Maybe NumberInput
     , fixedDecimalScale        :: Boolean
     , handlersRef              :: Maybe (Ref NumberInputHandlers)
     , hideControls             :: Boolean
     , max                      :: Maybe Number
     , min                      :: Maybe Number
-    , onChange                 :: ValueHandler NumberInput
     , prefix                   :: Maybe String
     , startValue               :: Maybe Number
     , step                     :: Maybe Number
@@ -50,8 +48,8 @@ type NumberInputProps =
     , thousandSeparator        :: Maybe ThousandSeparator
     , thousandsGroupStyle      :: Maybe ThousandsGroupStyle
     , type                     :: NumberInputType
-    , value                    :: Maybe NumberInput
     , valueIsNumericString     :: Boolean
+    | Controlled NumberInput
     )
 
 data NumberClampBehavior
@@ -132,13 +130,11 @@ type NumberInputPropsImpl =
     , clampBehavior            :: Nullable NumberClampBehaviorImpl
     , decimalScale             :: Nullable Number
     , decimalSeparator         :: Nullable String
-    , defaultValue             :: Nullable NumberInputImpl
     , fixedDecimalScale        :: Boolean
     , handlersRef              :: Nullable (Ref NumberInputHandlers)
     , hideControls             :: Boolean
     , max                      :: Nullable Number
     , min                      :: Nullable Number
-    , onChange                 :: ValueHandlerImpl NumberInputImpl
     , prefix                   :: Nullable String
     , startValue               :: Nullable Number
     , step                     :: Nullable Number
@@ -146,6 +142,6 @@ type NumberInputPropsImpl =
     , thousandSeparator        :: Nullable ThousandSeparatorImpl
     , thousandsGroupStyle      :: Nullable ThousandsGroupStyleImpl
     , type                     :: NumberInputTypeImpl
-    , value                    :: Nullable NumberInputImpl
     , valueIsNumericString     :: Boolean
+    | ControlledImpl NumberInputImpl
     )

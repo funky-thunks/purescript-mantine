@@ -22,29 +22,27 @@ foreign import pinInputComponent :: ReactComponent PinInputPropsImpl
 
 type PinInputProps =
   MantineComponent
-    ( ariaLabel    :: Maybe String
-    , autoFocus    :: Boolean
-    , defaultValue :: Maybe String
-    , disabled     :: Boolean
-    , error        :: Boolean
-    , form         :: Maybe String
-    , gap          :: Maybe MantineSpacing
-    , id           :: Maybe String
-    , inputMode    :: Maybe PinInputMode
-    , inputType    :: Maybe InputType
-    , length       :: Number
-    , manageFocus  :: Boolean
-    , mask         :: Boolean
-    , name         :: Maybe String
-    , onChange     :: ValueHandler String
-    , onComplete   :: ValueHandler String
-    , oneTimeCode  :: Boolean
-    , placeholder  :: Maybe String
-    , radius       :: Maybe MantineNumberSize
-    , readOnly     :: Boolean
-    , size         :: Maybe MantineSize
-    , type         :: PinInputType
-    , value        :: Maybe String
+    ( ariaLabel   :: Maybe String
+    , autoFocus   :: Boolean
+    , disabled    :: Boolean
+    , error       :: Boolean
+    , form        :: Maybe String
+    , gap         :: Maybe MantineSpacing
+    , id          :: Maybe String
+    , inputMode   :: Maybe PinInputMode
+    , inputType   :: Maybe InputType
+    , length      :: Number
+    , manageFocus :: Boolean
+    , mask        :: Boolean
+    , name        :: Maybe String
+    , onComplete  :: ValueHandler String
+    , oneTimeCode :: Boolean
+    , placeholder :: Maybe String
+    , radius      :: Maybe MantineNumberSize
+    , readOnly    :: Boolean
+    , size        :: Maybe MantineSize
+    , type        :: PinInputType
+    | Controlled String
     )
 
 data PinInputMode
@@ -87,27 +85,25 @@ instance ToFFI PinInputType PinInputTypeImpl where
 
 type PinInputPropsImpl =
   MantineComponentImpl
-    ( ariaLabel    :: Nullable String
-    , autoFocus    :: Boolean
-    , defaultValue :: Nullable String
-    , disabled     :: Boolean
-    , error        :: Boolean
-    , form         :: Nullable String
-    , gap          :: Nullable MantineSpacingImpl
-    , id           :: Nullable String
-    , inputMode    :: Nullable PinInputModeImpl
-    , inputType    :: Nullable InputTypeImpl
-    , length       :: Number
-    , manageFocus  :: Boolean
-    , mask         :: Boolean
-    , name         :: Nullable String
-    , onChange     :: ValueHandlerImpl String
-    , onComplete   :: ValueHandlerImpl String
-    , oneTimeCode  :: Boolean
-    , placeholder  :: Nullable String
-    , radius       :: Nullable MantineNumberSizeImpl
-    , readOnly     :: Boolean
-    , size         :: Nullable MantineSizeImpl
-    , type         :: PinInputTypeImpl
-    , value        :: Nullable String
+    ( ariaLabel   :: Nullable String
+    , autoFocus   :: Boolean
+    , disabled    :: Boolean
+    , error       :: Boolean
+    , form        :: Nullable String
+    , gap         :: Nullable MantineSpacingImpl
+    , id          :: Nullable String
+    , inputMode   :: Nullable PinInputModeImpl
+    , inputType   :: Nullable InputTypeImpl
+    , length      :: Number
+    , manageFocus :: Boolean
+    , mask        :: Boolean
+    , name        :: Nullable String
+    , onComplete  :: ValueHandlerImpl String
+    , oneTimeCode :: Boolean
+    , placeholder :: Nullable String
+    , radius      :: Nullable MantineNumberSizeImpl
+    , readOnly    :: Boolean
+    , size        :: Nullable MantineSizeImpl
+    , type        :: PinInputTypeImpl
+    | ControlledImpl String
     )

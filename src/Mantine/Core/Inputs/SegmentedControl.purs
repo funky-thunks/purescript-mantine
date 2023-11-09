@@ -15,19 +15,17 @@ foreign import segmentedControlComponent :: ReactComponent SegmentedControlProps
 type SegmentedControlProps =
   MantineComponent
     ( color                    :: Maybe MantineColor
-    , defaultValue             :: Maybe String
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
     , items                    :: Array SegmentedControlItem
     , name                     :: Maybe String
-    , onChange                 :: ValueHandler String
     , orientation              :: SegmentedControlOrientation
     , radius                   :: Maybe MantineNumberSize
     , readOnly                 :: Boolean
     , size                     :: Maybe MantineSize
     , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
-    , value                    :: Maybe String
+    | Controlled String
     )
 
 type SegmentedControlItem =
@@ -54,18 +52,16 @@ type SegmentedControlPropsImpl =
   MantineComponentImpl
     ( color                    :: Nullable MantineColorImpl
     , data                     :: Array SegmentedControlItemImpl
-    , defaultValue             :: Nullable String
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
     , name                     :: Nullable String
-    , onChange                 :: ValueHandlerImpl String
     , orientation              :: SegmentedControlOrientationImpl
     , radius                   :: Nullable MantineNumberSizeImpl
     , readOnly                 :: Boolean
     , size                     :: Nullable MantineSizeImpl
     , transitionDuration       :: MillisecondsImpl
     , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
-    , value                    :: Nullable String
+    | ControlledImpl String
     )
 
 type SegmentedControlItemImpl =

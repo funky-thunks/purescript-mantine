@@ -86,16 +86,12 @@ type MultipleChipGroupProps = ChipGroupProps (Array String)
 
 type ChipGroupProps value =
   MantineComponent
-    ( children     :: Array JSX
-    , defaultValue :: Maybe value
-    , onChange     :: ValueHandler value
-    , value        :: Maybe value
+    ( children :: Array JSX
+    | Controlled value
     )
 
 type ChipGroupPropsImpl value =
   MantineComponentImpl
-    ( children     :: Array JSX
-    , defaultValue :: Nullable value
-    , onChange     :: ValueHandlerImpl value
-    , value        :: Nullable value
+    ( children :: Array JSX
+    | ControlledImpl value
     )

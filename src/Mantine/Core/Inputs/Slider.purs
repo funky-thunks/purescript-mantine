@@ -74,7 +74,6 @@ type RangeSliderPropsImpl =
 
 type SliderCommonProps value =
   ( color                :: Maybe MantineColor
-  , defaultValue         :: Maybe value
   , disabled             :: Boolean
   , inverted             :: Boolean
   , label                :: Maybe LabelFormatter
@@ -84,7 +83,6 @@ type SliderCommonProps value =
   , max                  :: Maybe Number
   , min                  :: Maybe Number
   , name                 :: Maybe String
-  , onChange             :: ValueHandler value
   , onChangeEnd          :: ValueHandler value
   , precision            :: Maybe Number
   , radius               :: Maybe MantineNumberSize
@@ -94,7 +92,7 @@ type SliderCommonProps value =
   , step                 :: Maybe Number
   , thumbChildren        :: Maybe JSX
   , thumbSize            :: Maybe Pixels
-  , value                :: Maybe value
+  | Controlled value
   )
 
 type SliderMark =
@@ -121,7 +119,6 @@ instance ToFFI ScaleFunction ScaleFunctionImpl where
 
 type SliderCommonPropsImpl value =
   ( color                :: Nullable MantineColorImpl
-  , defaultValue         :: Nullable value
   , disabled             :: Boolean
   , inverted             :: Boolean
   , label                :: Nullable LabelFormatterImpl
@@ -131,7 +128,6 @@ type SliderCommonPropsImpl value =
   , max                  :: Nullable Number
   , min                  :: Nullable Number
   , name                 :: Nullable String
-  , onChange             :: ValueHandlerImpl value
   , onChangeEnd          :: ValueHandlerImpl value
   , precision            :: Nullable Number
   , radius               :: Nullable MantineNumberSizeImpl
@@ -141,7 +137,7 @@ type SliderCommonPropsImpl value =
   , step                 :: Nullable Number
   , thumbChildren        :: Nullable JSX
   , thumbSize            :: Nullable PixelsImpl
-  , value                :: Nullable value
+  | ControlledImpl value
   )
 
 type SliderMarkImpl =
