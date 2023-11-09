@@ -8,7 +8,7 @@ Currently supporting mantine v7.2.1.
 
 ## Progress
 
-### Components
+### Core
 
 ```purescript
 import Mantine.Core
@@ -188,3 +188,21 @@ import Mantine.Hooks
   - [ ] [useIsomorphicEffect](https://mantine.dev/hooks/use-isomorphic-effect/)
   - [ ] [useLogger](https://mantine.dev/hooks/use-logger/)
   - [ ] [useShallowEffect](https://mantine.dev/hooks/use-shallow-effect/)
+
+### Dates
+
+```purescript
+import Mantine.Dates
+```
+
+- [x] [DatesProvider](dates/dates-provider/)
+- [x] [Calendar](dates/calendar/)
+- [x] [DateInput](dates/date-input/)
+- [x] [DateTimePicker](dates/date-time-picker/)
+- [x] [DatePicker](dates/date-picker/)
+- [x] [DatePickerInput](dates/date-picker-input/)
+- [x] [MonthPicker](dates/month-picker/)
+- [x] [MonthPickerInput](dates/month-picker-input/)
+- [x] [YearPicker](dates/year-picker/)
+- [x] [YearPickerInput](dates/year-picker-input/)
+- [x] [TimeInput](dates/time-input/)

@@ -10,6 +10,7 @@ module Mantine.Core.Overlays.Hovering
   , popoverDropdown
 
   , HoveringCommons
+  , HoveringCommonsImpl
   , HoveringDropdownProps
   , HoveringTarget
   , HoverableArrowPosition(..)
@@ -19,7 +20,9 @@ module Mantine.Core.Overlays.Hovering
   , HoverableFloatingPosition(..)
   , HoverableFloatingPositionImpl
   , HoverPopoverWidth(..)
+  , HoverPopoverWidthImpl
   , HoverPopupType(..)
+  , PopoverPropsImpl
   ) where
 
 import Mantine.Core.Overlays.Modal (ModalTransitionProps, ModalTransitionPropsImpl)

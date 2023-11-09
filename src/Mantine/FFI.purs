@@ -13,6 +13,7 @@ module Mantine.FFI
 import Prelude (Unit, identity, map, (<<<))
 import Data.Either (Either, either)
 import Data.Int (toNumber)
+import Data.JSDate (JSDate)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
 import Data.Symbol (class IsSymbol)
@@ -101,6 +102,9 @@ instance ToFFI (arg0 -> Effect result) (EffectFn1 arg0 result) where
 
 instance ToFFI (arg0 -> arg1 -> Effect result) (EffectFn2 arg0 arg1 result) where
   toNative = mkEffectFn2
+
+instance ToFFI JSDate JSDate where
+  toNative = identity
 
 instance ( InOneOf nativeRight nativeLeft nativeRight
          , ToFFI abstractLeft  nativeLeft
@@ -193,6 +197,9 @@ instance FromFFI native result => FromFFI (Effect native) (Effect result) where
 
 instance FromFFI (EffectFn1 arg0 result) (arg0 -> Effect result) where
   fromNative = runEffectFn1
+
+instance FromFFI JSDate JSDate where
+  fromNative = identity
 
 instance ( RowToList     nativeFields    nativeFieldList
          , RecordFromFFI nativeFieldList nativeFields    abstractFields
