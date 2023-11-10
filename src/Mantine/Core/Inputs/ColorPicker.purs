@@ -18,14 +18,12 @@ colorPicker = mkComponentWithDefault colorPickerComponent defaultColorPickerProp
 foreign import colorPickerComponent :: ReactComponent ColorPickerPropsImpl
 
 type ColorPicking =
-  ( defaultValue   :: Maybe ColorFormula
-  , format         :: ColorFormat
-  , onChange       :: ValueHandler ColorFormula
+  ( format         :: ColorFormat
   , onChangeEnd    :: ValueHandler ColorFormula
   , swatches       :: Maybe (Array ColorFormula)
   , swatchesPerRow :: Int
-  , value          :: Maybe ColorFormula
   , withPicker     :: Boolean
+  | Controlled ColorFormula
   )
 
 type ColorPickerProps =
@@ -88,14 +86,12 @@ instance ToFFI ColorFormula ColorFormulaImpl where toNative (ColorFormula cf) = 
 instance FromFFI String ColorFormula where fromNative = ColorFormula
 
 type ColorPickingImpl =
-  ( defaultValue   :: Nullable ColorFormulaImpl
-  , format         :: ColorFormatImpl
-  , onChange       :: ValueHandlerImpl ColorFormulaImpl
+  ( format         :: ColorFormatImpl
   , onChangeEnd    :: ValueHandlerImpl ColorFormulaImpl
   , swatches       :: Nullable (Array ColorFormulaImpl)
   , swatchesPerRow :: Number
-  , value          :: Nullable ColorFormulaImpl
   , withPicker     :: Boolean
+  | ControlledImpl ColorFormulaImpl
   )
 
 type ColorPickerPropsImpl =

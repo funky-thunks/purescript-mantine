@@ -7,7 +7,8 @@ module Mantine.Core.Combobox.Select
 
   , CheckIconPosition(..)
   , ClearablePropsRow
-  , SelectClearable(..)
+  , Clearable(..)
+  , ClearableImpl
   , SelectItem
   , SelectPropsRow
   , BaseSelectPropsRow
@@ -85,7 +86,7 @@ type BaseSelectPropsRow items =
     )
 
 type ClearablePropsRow rest =
-  ( clearable :: SelectClearable
+  ( clearable :: Clearable
   | rest
   )
 
@@ -110,11 +111,18 @@ type SelectItem =
   , group    :: Maybe String
   }
 
-data SelectClearable
-  = SelectNotClearable
-  | SelectClearable ClearButtonProps
+data Clearable
+  = NotClearable
+  | Clearable ClearButtonProps
 
-instance DefaultValue SelectClearable where defaultValue = SelectNotClearable
+instance DefaultValue Clearable where defaultValue = NotClearable
+
+type ClearableImpl = { | ClearablePropsRowImpl () }
+
+instance ToFFI Clearable ClearableImpl where
+  toNative = toNative <<< case _ of
+    Clearable p  -> { clearable: true,  clearButtonProps: pure p  }
+    NotClearable -> { clearable: false, clearButtonProps: Nothing }
 
 type SelectPropsRowImpl items =
     ( checkIconPosition   :: CheckIconPositionImpl
@@ -205,8 +213,6 @@ baseSelectToImpl onChangeToNative props =
          <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "onChange")
 
-      clearableProps = toNative $ case props.clearable of
-        SelectClearable p  -> { clearable: true,  clearButtonProps: pure p  }
-        SelectNotClearable -> { clearable: false, clearButtonProps: Nothing }
+      clearableProps = toNative props.clearable
 
    in clearableProps `union` otherProps `union` rest props

@@ -10,6 +10,7 @@ module Mantine.Core.Buttons.ActionIcon
 
   , defaultActionIconProps
   , actionIconToImpl
+  , ActionIconPropsImpl
   , ActionIconPropsRow
   , ActionIconPropsImplRow
   , ActionIconVariantImpl

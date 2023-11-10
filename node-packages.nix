@@ -72,6 +72,15 @@
           sha512 = "vB5nMip/8fm+/9V49C856AGWEGocNzks6+KO/ocz4EKgd665F663Bs8x6cvop2onbZyVxhX/5Zge93ndX4UNFA==";
           };
         };
+      "@mantine/dates-7.2.1" = {
+        name = "_at_mantine_slash_dates";
+        packageName = "@mantine/dates";
+        version = "7.2.1";
+        src = fetchurl {
+          url = "https://registry.npmjs.org/@mantine/dates/-/dates-7.2.1.tgz";
+          sha512 = "wOLbWU0DJGG3kC7GdoIXdUSvCq9ggFjyDfOuHwRLa0rpWoytsgn9X59ab/4kO341tcqvkMa4F9Yq90Vhyj//rA==";
+          };
+        };
       "@mantine/hooks-7.2.1" = {
         name = "_at_mantine_slash_hooks";
         packageName = "@mantine/hooks";
@@ -97,6 +106,15 @@
         src = fetchurl {
           url = "https://registry.npmjs.org/clsx/-/clsx-2.0.0.tgz";
           sha512 = "rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==";
+          };
+        };
+      "dayjs-1.11.10" = {
+        name = "dayjs";
+        packageName = "dayjs";
+        version = "1.11.10";
+        src = fetchurl {
+          url = "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz";
+          sha512 = "vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==";
           };
         };
       "detect-node-es-1.1.0" = {
@@ -337,9 +355,11 @@
         (sources."@floating-ui/react-dom-2.0.2")
         (sources."@floating-ui/utils-0.1.6")
         (sources."@mantine/core-7.2.1")
+        (sources."@mantine/dates-7.2.1")
         (sources."@mantine/hooks-7.2.1")
         (sources."aria-hidden-1.2.3")
         (sources."clsx-2.0.0")
+        (sources."dayjs-1.11.10")
         (sources."detect-node-es-1.1.0")
         (sources."get-nonce-1.0.1")
         (sources."invariant-2.2.4")

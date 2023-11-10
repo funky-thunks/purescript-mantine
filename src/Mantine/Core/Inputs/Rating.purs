@@ -14,36 +14,32 @@ type RatingProps =
   MantineComponent
     ( color                 :: Maybe MantineColor
     , count                 :: Maybe Number
-    , defaultValue          :: Maybe Number
     , emptySymbol           :: Maybe (Int -> JSX)
     , fractions             :: Maybe Number
     , fullSymbol            :: Maybe (Int -> JSX)
     , getSymbolLabel        :: Maybe (Int -> String)
     , highlightSelectedOnly :: Boolean
     , name                  :: Maybe String
-    , onChange              :: ValueHandler Number
     , onHover               :: ValueHandler Number
     , readOnly              :: Boolean
     , size                  :: Maybe MantineSize
-    , value                 :: Maybe Number
+    | Controlled Number
     )
 
 type RatingPropsImpl =
   MantineComponentImpl
     ( color                 :: Nullable MantineColorImpl
     , count                 :: Nullable Number
-    , defaultValue          :: Nullable Number
     , emptySymbol           :: Nullable (Int -> JSX)
     , fractions             :: Nullable Number
     , fullSymbol            :: Nullable (Int -> JSX)
     , getSymbolLabel        :: Nullable (Int -> String)
     , highlightSelectedOnly :: Boolean
     , name                  :: Nullable String
-    , onChange              :: ValueHandlerImpl Number
     , onHover               :: ValueHandlerImpl Number
     , readOnly              :: Boolean
     , size                  :: Nullable MantineSizeImpl
-    , value                 :: Nullable Number
+    | ControlledImpl Number
     )
 
 ratingToImpl :: RatingProps -> RatingPropsImpl

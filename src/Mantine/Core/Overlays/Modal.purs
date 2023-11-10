@@ -2,15 +2,20 @@ module Mantine.Core.Overlays.Modal
   ( modal
   , modal_
   , ModalProps
+  , SubModalProps
+  , ModalProps_
 
   , drawer
   , DrawerProps
   , DrawerPosition(..)
 
   , ModalComponent
+  , ModalComponentImpl
   , ModalNonDefaultable
   , ModalTransitionProps
   , ModalTransitionPropsImpl
+  , SubModalPropsImpl
+  , ModalPropsImpl_
   ) where
 
 import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl)
@@ -33,21 +38,27 @@ foreign import modalComponent :: ReactComponent ModalPropsImpl
 --    , yOffset             :: MarginTop<string | number>
 --    }
 
-type ModalProps =
+type ModalProps = ModalProps_ (children :: Array JSX)
+type SubModalProps = ModalProps_ ()
+type ModalProps_ rest =
   ModalComponent
     ( centered   :: Boolean
     , fullScreen :: Boolean
     , radius     :: Maybe MantineNumberSize
+    | rest
     )
 
 defaultModalProps :: ModalProps
 defaultModalProps = defaultMantineComponent defaultModalComponent
 
-type ModalPropsImpl =
+type ModalPropsImpl = ModalPropsImpl_ (children :: Array JSX)
+type SubModalPropsImpl = ModalPropsImpl_ ()
+type ModalPropsImpl_ rest =
   ModalComponentImpl
     ( centered   :: Boolean
     , fullScreen :: Boolean
     , radius     :: Nullable MantineNumberSizeImpl
+    | rest
     )
 
 drawer :: (DrawerProps -> DrawerProps) -> JSX
@@ -62,7 +73,8 @@ foreign import drawerComponent :: ReactComponent DrawerPropsImpl
 
 type DrawerProps =
   ModalComponent
-    ( closeButtonProps :: Maybe CloseButtonProps
+    ( children         :: Array JSX
+    , closeButtonProps :: Maybe CloseButtonProps
     , position         :: DrawerPosition
     )
 
@@ -89,14 +101,14 @@ instance ToFFI DrawerPosition DrawerPositionImpl where
 
 type DrawerPropsImpl =
   ModalComponentImpl
-    ( closeButtonProps :: Nullable CloseButtonPropsImpl
+    ( children         :: Array JSX
+    , closeButtonProps :: Nullable CloseButtonPropsImpl
     , position         :: DrawerPositionImpl
     )
 
 type ModalComponent rest =
   MantineComponent
-    ( children        :: Array JSX
-    , id              :: Maybe String
+    ( id              :: Maybe String
     , keepMounted     :: Boolean
     , opened          :: Boolean
     , overlayProps    :: OverlayProps
@@ -137,8 +149,7 @@ defaultModalComponent =
 
 type ModalComponentImpl rest =
   MantineComponentImpl
-    ( children        :: Array JSX
-    , id              :: Nullable String
+    ( id              :: Nullable String
     , keepMounted     :: Boolean
     , opened          :: Boolean
     , overlayProps    :: OverlayPropsImpl

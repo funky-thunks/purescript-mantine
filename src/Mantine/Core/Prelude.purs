@@ -29,7 +29,7 @@ import Data.Nullable (Nullable, notNull, null, toMaybe, toNullable)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested (type (/\), (/\))
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1)
+import Effect.Uncurried (EffectFn1, EffectFn2)
 import Foreign.Object (Object, fromFoldable)
 import Mantine.Core.CSS
 import Mantine.Core.Common

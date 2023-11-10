@@ -25,18 +25,16 @@ type AutocompleteProps =
     ( comboboxProps             :: Maybe ComboboxProps
     , data                      :: Array AutocompleteItem
     , defaultDropdownOpened     :: Maybe Boolean
-    , defaultValue              :: Maybe String
     , dropdownOpened            :: Maybe Boolean
     , filter                    :: Maybe (String -> AutocompleteItem -> Effect Boolean)
     , limit                     :: Maybe Int
     , maxDropdownHeight         :: Maybe (String |+| Number)
-    , onChange                  :: ValueHandler String
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandler String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: Maybe String
     , withScrollArea            :: Boolean
+    | Controlled String
     )
 
 defaultAutocompleteProps :: AutocompleteProps
@@ -55,18 +53,16 @@ type AutocompletePropsImpl =
     ( comboboxProps             :: Nullable ComboboxPropsImpl
     , data                      :: Array AutocompleteItem
     , defaultDropdownOpened     :: Nullable Boolean
-    , defaultValue              :: Nullable String
     , dropdownOpened            :: Nullable Boolean
     , filter                    :: Nullable (EffectFn2 String AutocompleteItem Boolean)
     , limit                     :: Nullable Number
     , maxDropdownHeight         :: Nullable (String |+| Number)
-    , onChange                  :: ValueHandlerImpl String
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandlerImpl String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: Nullable String
     , withScrollArea            :: Boolean
+    | ControlledImpl String
     )
 
 autocompleteToImpl :: AutocompleteProps -> AutocompletePropsImpl
