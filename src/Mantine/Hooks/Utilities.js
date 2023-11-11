@@ -7,6 +7,7 @@ export const useFaviconImpl            = hooks.useFavicon;
 export const useHeadroomImpl           = hooks.useHeadroom;
 export const useIdleImpl               = hooks.useIdle;
 export const useNetworkImpl            = hooks.useNetwork;
+export const useOSImpl                 = hooks.useOs;
 export const usePageLeaveImpl          = hooks.usePageLeaveImpl;
 
 export const useHashImpl = () => {

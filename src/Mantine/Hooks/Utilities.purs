@@ -30,6 +30,12 @@ module Mantine.Hooks.Utilities
   , EffectiveType
   , NetworkType
 
+  , useOS
+  , useOS_
+  , UseOS
+  , UseOSOptions
+  , OS(..)
+
   , usePageLeave
   , UsePageLeave
   ) where
@@ -194,6 +200,41 @@ type UseHeadroomOptionsImpl =
 
 useHeadroom :: UseHeadroomOptions -> Hook UseHeadroom Boolean
 useHeadroom = mkHook1 useHeadroomImpl
+
+foreign import useOSImpl :: EffectFn1 (Nullable UseOSOptionsImpl) OSImpl
+foreign import data UseOS :: Type -> Type
+
+data OS
+  = OSUndetermined
+  | OSMacOS
+  | OSIOS
+  | OSWindows
+  | OSAndroid
+  | OSLinux
+
+type OSImpl = String
+
+instance FromFFI OSImpl OS where
+  fromNative = case _ of
+    "undetermined" -> OSUndetermined
+    "macos"        -> OSMacOS
+    "ios"          -> OSIOS
+    "windows"      -> OSWindows
+    "android"      -> OSAndroid
+    "linux"        -> OSLinux
+    _              -> OSUndetermined
+
+type UseOSOptions =
+  { getValueInEffect :: Boolean
+  }
+
+type UseOSOptionsImpl = UseOSOptions
+
+useOS :: Maybe UseOSOptions -> Hook UseOS OS
+useOS = mkHook1 useOSImpl
+
+useOS_ :: Hook UseOS OS
+useOS_ = useOS Nothing
 
 foreign import usePageLeaveImpl :: EffectFn1 (Effect Unit) Unit
 foreign import data UsePageLeave :: Type -> Type
