@@ -2,14 +2,11 @@ module Mantine.Hooks.Theming
   ( useMantineColorScheme
   , MantineColorScheme (..)
   , UseMantineColorScheme
+
+  , MantineColorSchemeImpl
   ) where
 
-import Prelude (Unit)
-import Data.Function.Uncurried (Fn2, mkFn2)
-import Data.Tuple (Tuple(..))
-import Effect (Effect)
-import Effect.Uncurried (EffectFn1, runEffectFn1)
-import React.Basic.Hooks (type (/\), Hook, unsafeHook)
+import Mantine.Hooks.Prelude
 
 foreign import data UseMantineColorScheme :: Type -> Type
 
@@ -17,15 +14,23 @@ data MantineColorScheme
   = MantineColorSchemeDark
   | MantineColorSchemeLight
 
+type MantineColorSchemeImpl = String
+
+instance ToFFI MantineColorScheme MantineColorSchemeImpl where
+  toNative =  case _ of
+    MantineColorSchemeDark  -> "dark"
+    MantineColorSchemeLight -> "light"
+
+instance FromFFI MantineColorSchemeImpl MantineColorScheme where
+  fromNative = case _ of
+    "dark" -> MantineColorSchemeDark
+    _      -> MantineColorSchemeLight
+
 useMantineColorScheme :: Hook UseMantineColorScheme (MantineColorScheme /\ Effect Unit)
 useMantineColorScheme =
-  let wrap scheme = Tuple (decodeScheme scheme)
-      decodeScheme =
-        case _ of
-          "dark" -> MantineColorSchemeDark
-          _      -> MantineColorSchemeLight
-   in unsafeHook (
-        runEffectFn1 useMantineColorScheme_ (mkFn2 wrap)
-      )
+  let picker = mkFn2 (Tuple <<< fromNative)
+   in unsafeHook (runEffectFn1 useMantineColorScheme_ picker)
 
-foreign import useMantineColorScheme_ :: EffectFn1 (Fn2 String (Effect Unit) (MantineColorScheme /\ Effect Unit)) (MantineColorScheme /\ Effect Unit)
+type ColorSchemePicker = Fn2 String (Effect Unit) (MantineColorScheme /\ Effect Unit)
+
+foreign import useMantineColorScheme_ :: EffectFn1 ColorSchemePicker (MantineColorScheme /\ Effect Unit)
