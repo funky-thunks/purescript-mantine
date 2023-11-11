@@ -48,6 +48,13 @@ module Mantine.Hooks.UIDom
   , useViewportSize
   , UseViewportSize
   , ViewportDimensions
+
+  , useWindowEvent
+  , UseWindowEvent
+
+  , useWindowScroll
+  , UseWindowScroll
+  , Position
   ) where
 
 import Mantine.Hooks.Prelude
@@ -242,3 +249,37 @@ foreign import data UseViewportSize :: Type -> Type
 
 useViewportSize :: Hook UseViewportSize ViewportDimensions
 useViewportSize = mkHook0 useViewportSizeImpl
+
+type UseWindowEventOptions =
+  { type     :: String
+  , listener :: Event -> Effect Unit
+  }
+
+type UseWindowEventOptionsImpl =
+  { type     :: String
+  , listener :: EffectFn1 Event Unit
+  }
+
+foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
+foreign import data UseWindowEvent :: Type -> Type
+
+useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
+useWindowEvent = mkHook1 useWindowEventImpl
+
+type UseWindowScrollImpl =
+  { current :: Position
+  , moveTo  :: EffectFn1 Position Unit
+  }
+
+type Position =
+  { x :: Number
+  , y :: Number
+  }
+
+foreign import useWindowScrollImpl :: Effect UseWindowScrollImpl
+foreign import data UseWindowScroll :: Type -> Type
+
+useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
+useWindowScroll =
+  let unpack { current, moveTo } = current /\ moveTo
+   in unpack <$> mkHook0 useWindowScrollImpl

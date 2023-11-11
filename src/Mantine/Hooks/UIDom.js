@@ -11,6 +11,7 @@ export const useMouseImpl         = hooks.useMouse;
 export const useMoveImpl          = hooks.useMove;
 export const useReducedMotionImpl = hooks.useReducedMotion;
 export const useViewportSizeImpl  = hooks.useViewportSize;
+export const useWindowScrollImpl  = hooks.useWindowScroll;
 
 export const useHotkeysImpl = options => {
   hooks.useHotkeys([ options.hotKeyItems, options.tagsToIgnore ]);
@@ -19,4 +20,8 @@ export const useHotkeysImpl = options => {
 export const useResizeObserverImpl = () => {
   const [ref, rect] = hooks.useResizeObserver;
   return { ref, rect };
+};
+
+export const useWindowEventImpl = options => {
+  hooks.useWindowScroll([ options.type, options.listener ]);
 };

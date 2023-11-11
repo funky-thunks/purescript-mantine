@@ -3,22 +3,25 @@ module Mantine.Hooks.Utilities
   , useClipboard_
   , UseClipboard
   , UseClipboardResult
+
   , useDocumentTitle
   , UseDocumentTitle
+
   , useDocumentVisibility
   , UseDocumentVisibility
   , DocumentVisibility(..)
+
   , useFavicon
   , UseFavicon
+
   , useHash
   , UseHash
+
+  , useIdle
+  , UseIdle
+
   , usePageLeave
   , UsePageLeave
-  , useWindowEvent
-  , UseWindowEvent
-  , useWindowScroll
-  , UseWindowScroll
-  , Position
   ) where
 
 import Mantine.Hooks.Prelude
@@ -82,6 +85,13 @@ foreign import data UseFavicon :: Type -> Type
 useFavicon :: String -> Hook UseFavicon Unit
 useFavicon = mkHook1 useFaviconImpl
 
+foreign import useIdleImpl :: EffectFn1 Number Boolean
+
+foreign import data UseIdle :: Type -> Type
+
+useIdle :: Number -> Hook UseIdle Boolean
+useIdle = mkHook1 useIdleImpl
+
 foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
 foreign import data UseHash :: Type -> Type
 
@@ -95,37 +105,3 @@ foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
 usePageLeave = mkHook1 usePageLeaveImpl
-
-type UseWindowEventOptions =
-  { type     :: String
-  , listener :: Event -> Effect Unit
-  }
-
-type UseWindowEventOptionsImpl =
-  { type     :: String
-  , listener :: EffectFn1 Event Unit
-  }
-
-foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
-foreign import data UseWindowEvent :: Type -> Type
-
-useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
-useWindowEvent = mkHook1 useWindowEventImpl
-
-type UseWindowScrollImpl =
-  { current :: Position
-  , moveTo  :: EffectFn1 Position Unit
-  }
-
-type Position =
-  { x :: Number
-  , y :: Number
-  }
-
-foreign import useWindowScrollImpl :: Effect UseWindowScrollImpl
-foreign import data UseWindowScroll :: Type -> Type
-
-useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
-useWindowScroll =
-  let unpack { current, moveTo } = current /\ moveTo
-   in unpack <$> mkHook0 useWindowScrollImpl
