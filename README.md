@@ -177,7 +177,7 @@ import Mantine.Hooks
   - [x] [useIdle](https://mantine.dev/hooks/use-idle/)
   - [ ] [useInterval](https://mantine.dev/hooks/use-interval/)
   - [ ] [useMergedRef](https://mantine.dev/hooks/use-merged-ref/)
-  - [ ] [useNetwork](https://mantine.dev/hooks/use-network/)
+  - [x] [useNetwork](https://mantine.dev/hooks/use-network/)
   - [ ] [useOs](https://mantine.dev/hooks/use-os/)
   - [x] [usePageLeave](https://mantine.dev/hooks/use-page-leave/)
   - [ ] [useTextSelection](https://mantine.dev/hooks/use-text-selection/)

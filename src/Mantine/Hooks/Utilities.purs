@@ -24,6 +24,12 @@ module Mantine.Hooks.Utilities
   , useIdle
   , UseIdle
 
+  , useNetwork
+  , UseNetwork
+  , UseNetworkResult
+  , EffectiveType
+  , NetworkType
+
   , usePageLeave
   , UsePageLeave
   ) where
@@ -95,6 +101,71 @@ foreign import data UseIdle :: Type -> Type
 
 useIdle :: Number -> Hook UseIdle Boolean
 useIdle = mkHook1 useIdleImpl
+
+foreign import useNetworkImpl :: Effect UseNetworkResultImpl
+foreign import data UseNetwork :: Type -> Type
+
+data EffectiveType
+  = EffectiveTypeSlow2G
+  | EffectiveType2G
+  | EffectiveType3G
+  | EffectiveType4G
+
+type EffectiveTypeImpl = String
+
+instance FromFFI EffectiveTypeImpl EffectiveType where
+  fromNative = case _ of
+    "slow-2g" -> EffectiveTypeSlow2G
+    "2g"      -> EffectiveType2G
+    "3g"      -> EffectiveType3G
+    "4g"      -> EffectiveType4G
+    _         -> EffectiveType3G
+
+data NetworkType
+  = NetworkTypeBluetooth
+  | NetworkTypeCellular
+  | NetworkTypeEthernet
+  | NetworkTypeWifi
+  | NetworkTypeWimax
+  | NetworkTypeNone
+  | NetworkTypeOther
+  | NetworkTypeUnknown
+
+type NetworkTypeImpl = String
+
+instance FromFFI NetworkTypeImpl NetworkType where
+  fromNative = case _ of
+    "bluetooth" -> NetworkTypeBluetooth
+    "cellular"  -> NetworkTypeCellular
+    "ethernet"  -> NetworkTypeEthernet
+    "wifi"      -> NetworkTypeWifi
+    "wimax"     -> NetworkTypeWimax
+    "none"      -> NetworkTypeNone
+    "other"     -> NetworkTypeOther
+    _           -> NetworkTypeUnknown
+
+type UseNetworkResult =
+  { online         :: Boolean
+  , downlink       :: Maybe Number
+  , downlinkMax    :: Maybe Number
+  , effectiveType  :: Maybe EffectiveType
+  , rtt            :: Maybe Number
+  , saveData       :: Boolean
+  , type           :: Maybe NetworkType
+  }
+
+type UseNetworkResultImpl =
+  { online         :: Boolean
+  , downlink       :: Nullable Number
+  , downlinkMax    :: Nullable Number
+  , effectiveType  :: Nullable EffectiveTypeImpl
+  , rtt            :: Nullable Number
+  , saveData       :: Boolean
+  , type           :: Nullable NetworkTypeImpl
+  }
+
+useNetwork :: Hook UseNetwork UseNetworkResult
+useNetwork = mkHook0 useNetworkImpl
 
 foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
 foreign import data UseHash :: Type -> Type
