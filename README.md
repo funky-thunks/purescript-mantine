@@ -180,7 +180,7 @@ import Mantine.Hooks
   - [x] [useNetwork](https://mantine.dev/hooks/use-network/)
   - [x] [useOs](https://mantine.dev/hooks/use-os/)
   - [x] [usePageLeave](https://mantine.dev/hooks/use-page-leave/)
-  - [ ] [useTextSelection](https://mantine.dev/hooks/use-text-selection/)
+  - [x] [useTextSelection](https://mantine.dev/hooks/use-text-selection/)
   - [ ] [useTimeout](https://mantine.dev/hooks/use-timeout/)
 - [ ] Lifecycle
   - [ ] [useDidUpdate](https://mantine.dev/hooks/use-did-update/)

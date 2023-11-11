@@ -38,6 +38,11 @@ module Mantine.Hooks.Utilities
 
   , usePageLeave
   , UsePageLeave
+
+  , useTextSelection
+  , UseTextSelection
+  , Selection
+  , getSelectedText
   ) where
 
 import Mantine.Hooks.Prelude
@@ -241,3 +246,18 @@ foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
 usePageLeave = mkHook1 usePageLeaveImpl
+
+foreign import useTextSelectionImpl :: Effect (Nullable Selection)
+foreign import data UseTextSelection :: Type -> Type
+
+useTextSelection :: Hook UseTextSelection (Maybe Selection)
+useTextSelection = mkHook0 useTextSelectionImpl
+
+foreign import data Selection :: Type
+
+instance FromFFI Selection Selection where fromNative = identity
+
+foreign import getSelectedTextImpl :: EffectFn1 Selection String
+
+getSelectedText :: Selection -> Effect String
+getSelectedText = runEffectFn1 getSelectedTextImpl
