@@ -3,12 +3,11 @@ module Mantine.Hooks.StateManagement
   , UseIdle
   ) where
 
-import Effect.Uncurried (EffectFn1, runEffectFn1)
-import React.Basic.Hooks (Hook, unsafeHook)
+import Mantine.Hooks.Prelude
 
 foreign import useIdleImpl :: EffectFn1 Number Boolean
 
 foreign import data UseIdle :: Type -> Type
 
 useIdle :: Number -> Hook UseIdle Boolean
-useIdle n = unsafeHook (runEffectFn1 useIdleImpl n)
+useIdle = mkHook1 useIdleImpl

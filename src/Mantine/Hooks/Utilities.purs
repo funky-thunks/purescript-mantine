@@ -3,7 +3,6 @@ module Mantine.Hooks.Utilities
   , useClipboard_
   , UseClipboard
   , UseClipboardResult
-  , module Effect.Exception
   , useDocumentTitle
   , UseDocumentTitle
   , useDocumentVisibility
@@ -22,15 +21,7 @@ module Mantine.Hooks.Utilities
   , Position
   ) where
 
-import Prelude
-import Data.Either (Either(..))
-import Data.Maybe (Maybe(..))
-import Data.Nullable (Nullable, toMaybe)
-import Effect (Effect)
-import Effect.Exception (Error)
-import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
-import React.Basic.Hooks (type (/\), Hook, (/\), unsafeHook)
-import Web.Event.Event (Event)
+import Mantine.Hooks.Prelude
 
 type UseClipboardResult =
   { copy   :: String -> Effect Unit
@@ -50,14 +41,14 @@ foreign import data UseClipboard :: Type -> Type
 
 useClipboard :: { timeout :: Number } -> Hook UseClipboard (Either Error UseClipboardResult)
 useClipboard options =
-  let toNative result = case toMaybe result.error of
+  let unpackError result = case result.error of
         Just e -> Left e
         Nothing -> Right
-          { copy:   runEffectFn1 result.copy
+          { copy:   result.copy
           , copied: result.copied
           , reset:  result.reset
           }
-   in unsafeHook (toNative <$> runEffectFn1 useClipboardImpl options)
+   in unpackError <$> mkHook1 useClipboardImpl options
 
 useClipboard_ :: Hook UseClipboard (Either Error UseClipboardResult)
 useClipboard_ = useClipboard { timeout: 2000.0 }
@@ -66,41 +57,44 @@ foreign import useDocumentTitleImpl :: EffectFn1 String Unit
 foreign import data UseDocumentTitle :: Type -> Type
 
 useDocumentTitle :: String -> Hook UseDocumentTitle Unit
-useDocumentTitle t = unsafeHook (runEffectFn1 useDocumentTitleImpl t)
+useDocumentTitle = mkHook1 useDocumentTitleImpl
 
 foreign import useDocumentVisibilityImpl :: Effect String
 foreign import data UseDocumentVisibility :: Type -> Type
 
 data DocumentVisibility = DocumentVisible | DocumentHidden
 
+type DocumentVisibilityImpl = String
+
+instance FromFFI DocumentVisibilityImpl DocumentVisibility where
+  fromNative = case _ of
+    "visible" -> DocumentVisible
+    _         -> DocumentHidden
+
 derive instance Eq DocumentVisibility
 
 useDocumentVisibility :: Hook UseDocumentVisibility DocumentVisibility
-useDocumentVisibility =
-  let parseVisibility = case _ of
-        "visible" -> DocumentVisible
-        _         -> DocumentHidden
-   in unsafeHook (parseVisibility <$> useDocumentVisibilityImpl)
+useDocumentVisibility = mkHook0 useDocumentVisibilityImpl
 
-foreign import useFaviconImpl :: String -> Effect Unit
+foreign import useFaviconImpl :: EffectFn1 String Unit
 foreign import data UseFavicon :: Type -> Type
 
 useFavicon :: String -> Hook UseFavicon Unit
-useFavicon t = unsafeHook (useFaviconImpl t)
+useFavicon = mkHook1 useFaviconImpl
 
 foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
 foreign import data UseHash :: Type -> Type
 
 useHash :: Hook UseHash (String /\ (String -> Effect Unit))
 useHash =
-  let fromNative { hash, setHash } = hash /\ runEffectFn1 setHash
-   in unsafeHook (fromNative <$> useHashImpl)
+  let unpack { hash, setHash } = hash /\ setHash
+   in unpack <$> mkHook0 useHashImpl
 
-foreign import usePageLeaveImpl :: Effect Unit -> Effect Unit
+foreign import usePageLeaveImpl :: EffectFn1 (Effect Unit) Unit
 foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
-usePageLeave e = unsafeHook (usePageLeaveImpl e)
+usePageLeave = mkHook1 usePageLeaveImpl
 
 type UseWindowEventOptions =
   { type     :: String
@@ -116,9 +110,7 @@ foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
 foreign import data UseWindowEvent :: Type -> Type
 
 useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
-useWindowEvent options =
-  let nativeOptions = options { listener = mkEffectFn1 options.listener }
-   in unsafeHook (runEffectFn1 useWindowEventImpl nativeOptions)
+useWindowEvent = mkHook1 useWindowEventImpl
 
 type UseWindowScrollImpl =
   { current :: Position
@@ -135,5 +127,5 @@ foreign import data UseWindowScroll :: Type -> Type
 
 useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
 useWindowScroll =
-  let toNative { current, moveTo } = current /\ runEffectFn1 moveTo
-   in unsafeHook (toNative <$> useWindowScrollImpl)
+  let unpack { current, moveTo } = current /\ moveTo
+   in unpack <$> mkHook0 useWindowScrollImpl

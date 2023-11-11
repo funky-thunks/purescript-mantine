@@ -18,6 +18,7 @@ import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
+import Effect.Exception (Error)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
@@ -33,6 +34,8 @@ import Type.Proxy (Proxy(..))
 import Untagged.Union (class InOneOf, type (|+|), asOneOf)
 import Web.File.File (File)
 import Web.HTML (HTMLElement)
+import Control.Promise (Promise, toAff)
+import Effect.Aff (Aff)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
@@ -199,6 +202,12 @@ instance FromFFI (EffectFn1 arg0 result) (arg0 -> Effect result) where
   fromNative = runEffectFn1
 
 instance FromFFI JSDate JSDate where
+  fromNative = identity
+
+instance FromFFI js ps => FromFFI (Promise js) (Aff ps) where
+  fromNative = map fromNative <<< toAff
+
+instance FromFFI Error Error where
   fromNative = identity
 
 instance ( RowToList     nativeFields    nativeFieldList
