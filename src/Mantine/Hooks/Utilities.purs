@@ -17,6 +17,10 @@ module Mantine.Hooks.Utilities
   , useHash
   , UseHash
 
+  , useHeadroom
+  , UseHeadroom
+  , UseHeadroomOptions
+
   , useIdle
   , UseIdle
 
@@ -99,6 +103,26 @@ useHash :: Hook UseHash (String /\ (String -> Effect Unit))
 useHash =
   let unpack { hash, setHash } = hash /\ setHash
    in unpack <$> mkHook0 useHashImpl
+
+foreign import useHeadroomImpl :: EffectFn1 UseHeadroomOptionsImpl Boolean
+foreign import data UseHeadroom :: Type -> Type
+
+type UseHeadroomOptions =
+  { fixedAt   :: Maybe Number
+  , onPin     :: Effect Unit
+  , onFix     :: Effect Unit
+  , onRelease :: Effect Unit
+  }
+
+type UseHeadroomOptionsImpl =
+  { fixedAt   :: Nullable Number
+  , onPin     :: Effect Unit
+  , onFix     :: Effect Unit
+  , onRelease :: Effect Unit
+  }
+
+useHeadroom :: UseHeadroomOptions -> Hook UseHeadroom Boolean
+useHeadroom = mkHook1 useHeadroomImpl
 
 foreign import usePageLeaveImpl :: EffectFn1 (Effect Unit) Unit
 foreign import data UsePageLeave :: Type -> Type

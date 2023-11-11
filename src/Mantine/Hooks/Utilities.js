@@ -4,6 +4,7 @@ export const useClipboardImpl          = hooks.useClipboard;
 export const useDocumentTitleImpl      = hooks.useDocumentTitle;
 export const useDocumentVisibilityImpl = hooks.useDocumentVisibility;
 export const useFaviconImpl            = hooks.useFavicon;
+export const useHeadroomImpl           = hooks.useHeadroom;
 export const useIdleImpl               = hooks.useIdle;
 export const usePageLeaveImpl          = hooks.usePageLeaveImpl;
 

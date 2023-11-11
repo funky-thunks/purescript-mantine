@@ -173,7 +173,7 @@ import Mantine.Hooks
   - [ ] [useEyeDropper](https://mantine.dev/hooks/use-eye-dropper/)
   - [x] [useFavicon](https://mantine.dev/hooks/use-favicon/)
   - [x] [useHash](https://mantine.dev/hooks/use-hash/)
-  - [ ] [useHeadroom](https://mantine.dev/hooks/use-headroom/)
+  - [x] [useHeadroom](https://mantine.dev/hooks/use-headroom/)
   - [x] [useIdle](https://mantine.dev/hooks/use-idle/)
   - [ ] [useInterval](https://mantine.dev/hooks/use-interval/)
   - [ ] [useMergedRef](https://mantine.dev/hooks/use-merged-ref/)
