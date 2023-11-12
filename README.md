@@ -134,7 +134,7 @@ import Mantine.Hooks
   - [x] [useColorScheme](https://mantine.dev/hooks/use-color-scheme/)
   - [x] [useElementSize](https://mantine.dev/hooks/use-element-size/)
   - [ ] [useEventListener](https://mantine.dev/hooks/use-event-listener/)
-  - [ ] [useFocusReturn](https://mantine.dev/hooks/use-focus-return/)
+  - [x] [useFocusReturn](https://mantine.dev/hooks/use-focus-return/)
   - [ ] [useFocusTrap](https://mantine.dev/hooks/use-focus-trap/)
   - [x] [useFocusWithin](https://mantine.dev/hooks/use-focus-within/)
   - [x] [useFullscreen](https://mantine.dev/hooks/use-fullscreen/)

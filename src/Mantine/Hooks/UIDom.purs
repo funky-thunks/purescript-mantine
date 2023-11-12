@@ -8,6 +8,10 @@ module Mantine.Hooks.UIDom
   , useElementSize
   , UseElementSize
 
+  , useFocusReturn
+  , UseFocusReturn
+  , UseFocusReturnOptions
+
   , useFocusWithin
   , UseFocusWithin
 
@@ -83,6 +87,22 @@ foreign import data UseElementSize :: Type -> Type
 
 useElementSize :: Hook UseElementSize { ref :: Ref Node, width :: Number, height :: Number }
 useElementSize = mkHook0 useElementSizeImpl
+
+foreign import useFocusReturnImpl :: EffectFn1 UseFocusReturnOptionsImpl (Effect Unit)
+foreign import data UseFocusReturn :: Type -> Type
+
+type UseFocusReturnOptions =
+  { opened            :: Boolean
+  , shouldReturnFocus :: Maybe Boolean
+  }
+
+type UseFocusReturnOptionsImpl =
+  { opened            :: Boolean
+  , shouldReturnFocus :: Nullable Boolean
+  }
+
+useFocusReturn :: UseFocusReturnOptions -> Hook UseFocusReturn (Effect Unit)
+useFocusReturn = mkHook1 useFocusReturnImpl
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
