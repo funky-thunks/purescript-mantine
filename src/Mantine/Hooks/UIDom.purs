@@ -12,6 +12,9 @@ module Mantine.Hooks.UIDom
   , UseFocusReturn
   , UseFocusReturnOptions
 
+  , useFocusTrap
+  , UseFocusTrap
+
   , useFocusWithin
   , UseFocusWithin
 
@@ -103,6 +106,12 @@ type UseFocusReturnOptionsImpl =
 
 useFocusReturn :: UseFocusReturnOptions -> Hook UseFocusReturn (Effect Unit)
 useFocusReturn = mkHook1 useFocusReturnImpl
+
+foreign import useFocusTrapImpl :: EffectFn1 Boolean (Ref (Nullable Node))
+foreign import data UseFocusTrap :: Type -> Type
+
+useFocusTrap :: Boolean -> Hook UseFocusTrap (Ref (Nullable Node))
+useFocusTrap = mkHook1 useFocusTrapImpl
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit

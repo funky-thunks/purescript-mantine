@@ -4,6 +4,7 @@ export const useClickOutsideImpl   = hooks.useClickOutside;
 export const useColorSchemeImpl    = hooks.useColorScheme;
 export const useElementSizeImpl    = hooks.useElementSize;
 export const useFocusReturnImpl    = hooks.useFocusReturn;
+export const useFocusTrapImpl      = hooks.useFocusTrap;
 export const useFocusWithinImpl    = hooks.useFocusWithin;
 export const useFullscreenImpl     = hooks.useFullscreen;
 export const useHoverImpl          = hooks.useHover;
