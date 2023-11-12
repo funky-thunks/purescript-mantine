@@ -146,7 +146,7 @@ import Mantine.Hooks
   - [x] [useMove](https://mantine.dev/hooks/use-move/)
   - [x] [useReducedMotion](https://mantine.dev/hooks/use-reduced-motion/)
   - [x] [useResizeObserver](https://mantine.dev/hooks/use-resize-observer/)
-  - [ ] [useScrollIntoView](https://mantine.dev/hooks/use-scroll-into-view/)
+  - [x] [useScrollIntoView](https://mantine.dev/hooks/use-scroll-into-view/)
   - [x] [useViewportSize](https://mantine.dev/hooks/use-viewport-size/)
   - [x] [useWindowEvent](https://mantine.dev/hooks/use-window-event/)
   - [x] [useWindowScroll](https://mantine.dev/hooks/use-window-scroll/)

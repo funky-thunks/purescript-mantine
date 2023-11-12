@@ -45,6 +45,11 @@ module Mantine.Hooks.UIDom
   , UseResizeObserver
   , ResizeRectangle
 
+  , useScrollIntoView
+  , UseScrollIntoView
+  , Alignment(..)
+  , Axis(..)
+
   , useViewportSize
   , UseViewportSize
   , ViewportDimensions
@@ -59,6 +64,7 @@ module Mantine.Hooks.UIDom
 
 import Mantine.Hooks.Prelude
 import Mantine.Hooks.Theming (MantineColorScheme, MantineColorSchemeImpl)
+import Mantine.Core.Common (ValueHandler, ValueHandlerImpl)
 
 foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (Nullable (Array String)) (Ref Node)
 foreign import data UseClickOutside :: Type -> Type
@@ -237,6 +243,73 @@ useResizeObserver :: Hook UseResizeObserver (Ref Node /\ ResizeRectangle)
 useResizeObserver =
   let unpack { ref, rect } = ref /\ rect
    in unpack <$> mkHook0 useResizeObserverImpl
+
+foreign import useScrollIntoViewImpl :: EffectFn1 UseScrollIntoViewOptionsImpl UseScrollIntoViewResultImpl
+foreign import data UseScrollIntoView :: Type -> Type
+
+data Axis
+  = AxisX
+  | AxisY
+
+type AxisImpl = String
+
+instance ToFFI Axis AxisImpl where
+  toNative = case _ of
+    AxisX -> "x"
+    AxisY -> "y"
+
+type UseScrollIntoViewOptions =
+  { onScrollFinish :: Effect Unit
+  , duration       :: Maybe Number
+  , axis           :: Maybe Axis
+  , easing         :: Maybe (Number -> Number)
+  , offset         :: Maybe Number
+  , cancelable     :: Maybe Boolean
+  , isList         :: Maybe Boolean
+  }
+
+type UseScrollIntoViewOptionsImpl =
+  { onScrollFinish :: Effect Unit
+  , duration       :: Nullable Number
+  , axis           :: Nullable AxisImpl
+  , easing         :: Nullable (Number -> Number)
+  , offset         :: Nullable Number
+  , cancelable     :: Nullable Boolean
+  , isList         :: Nullable Boolean
+  }
+
+type UseScrollIntoViewResult =
+  { targetRef      :: Ref (Nullable Node)
+  , scrollableRef  :: Ref (Nullable Node)
+  , scrollIntoView :: ValueHandler { alignment :: Maybe Alignment }
+  , cancel         :: Effect Unit
+  }
+
+data Alignment
+  = AlignmentStart
+  | AlignmentEnd
+  | AlignmentCenter
+
+type AlignmentImpl = String
+
+instance ToFFI Alignment AlignmentImpl where
+  toNative = case _ of
+    AlignmentStart   -> "start"
+    AlignmentEnd     -> "end"
+    AlignmentCenter  -> "center"
+
+type UseScrollIntoViewResultImpl =
+  { targetRef      :: Ref (Nullable Node)
+  , scrollableRef  :: Ref (Nullable Node)
+  , scrollIntoView :: ValueHandlerImpl { alignment :: Nullable AlignmentImpl }
+  , cancel         :: Effect Unit
+  }
+
+useScrollIntoView :: UseScrollIntoViewOptions -> Hook UseScrollIntoView UseScrollIntoViewResult
+useScrollIntoView options =
+  let toImpl opts = rest opts `union` { easing: toNullable opts.easing }
+      rest = toNative <<< delete (Proxy :: Proxy "easing")
+   in unsafeHook (fromNative <$> runEffectFn1 useScrollIntoViewImpl (toImpl options))
 
 type ViewportDimensions =
   { height :: Number
