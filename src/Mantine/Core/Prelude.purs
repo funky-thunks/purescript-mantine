@@ -31,8 +31,8 @@ import Data.Tuple.Nested (type (/\), (/\))
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1, EffectFn2)
 import Foreign.Object (Object, fromFoldable)
-import Mantine.Core.CSS
-import Mantine.Core.Common
+import Mantine.Core.CSS (AlignContent(..), AlignContentImpl, AlignItems(..), AlignItemsImpl, FlexDirection(..), FlexDirectionImpl, FlexWrap(..), FlexWrapImpl, FontWeight(..), FontWeightImpl, GlobalValues(..), JustifyContent(..), JustifyContentImpl, ListStyleType(..), ListStyleTypeImpl, ObjectFit(..), ObjectFitImpl, PointerEvents(..), PointerEventsImpl, Position(..), PositionImpl, TableLayout(..), TableLayoutImpl, TextAlign(..), TextAlignImpl)
+import Mantine.Core.Common (CheckerHandler(..), CheckerHandlerImpl, Controlled, ControlledImpl, ControlledImpl_, Controlled_, Degrees(..), DegreesImpl, Dimension(..), DimensionImpl, DimmedOrColor(..), DimmedOrColorImpl, FixedOrResponsive, FixedOrResponsiveImpl, InputHandler(..), InputHandlerImpl, MantineColor(..), MantineColorImpl, MantineComponent, MantineComponentImpl, MantineComponentImplRow, MantineComponentRow, MantineGradient, MantineGradientImpl, MantineNumberSize(..), MantineNumberSizeImpl, MantineShadow, MantineShadowImpl, MantineSize(..), MantineSizeImpl, MantineSpacing, MantineSpacingImpl, MantineTransition(..), MantineTransitionBase, MantineTransitionBaseImpl, MantineTransitionImpl, MantineTransitionProps, MantineTransitionPropsImpl, MantineTransitionTimingFunction(..), MantineTransitionTimingFunctionImpl, Milliseconds, MillisecondsImpl, Orientation(..), OrientationImpl, Pixels, PixelsImpl, Polymorphic, PolymorphicImpl, PopoverMiddlewares, PopoverMiddlewaresImpl, Radius(..), RadiusImpl, Rem, RemImpl, Responsive, ResponsiveImpl, ValueHandler(..), ValueHandlerImpl, ZIndex, ZIndexImpl, defaultMantineComponent, defaultMantineComponent_, mkComponent, mkComponentWithDefault, mkTrivialComponent)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import React.Basic (ReactComponent, Ref)
 import React.Basic.Events (EventHandler, SyntheticEvent, handler, handler_)

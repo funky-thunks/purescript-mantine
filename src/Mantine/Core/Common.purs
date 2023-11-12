@@ -85,7 +85,7 @@ import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1, mkEffectFn1)
+import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight)
@@ -745,6 +745,9 @@ type ValueHandlerImpl nativeValue = EffectFn1 nativeValue Unit
 
 instance FromFFI nativeValue value => ToFFI (ValueHandler value) (ValueHandlerImpl nativeValue) where
   toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
+
+instance ToFFI value nativeValue => FromFFI (ValueHandlerImpl nativeValue) (ValueHandler value) where
+  fromNative vh = ValueHandler (runEffectFn1 vh <<< toNative)
 
 newtype CheckerHandler = CheckerHandler (Boolean -> Effect Unit)
 derive instance Newtype CheckerHandler _

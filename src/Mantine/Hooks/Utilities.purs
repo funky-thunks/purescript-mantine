@@ -3,22 +3,46 @@ module Mantine.Hooks.Utilities
   , useClipboard_
   , UseClipboard
   , UseClipboardResult
+
   , useDocumentTitle
   , UseDocumentTitle
+
   , useDocumentVisibility
   , UseDocumentVisibility
   , DocumentVisibility(..)
+
   , useFavicon
   , UseFavicon
+
   , useHash
   , UseHash
+
+  , useHeadroom
+  , UseHeadroom
+  , UseHeadroomOptions
+
+  , useIdle
+  , UseIdle
+
+  , useNetwork
+  , UseNetwork
+  , UseNetworkResult
+  , EffectiveType
+  , NetworkType
+
+  , useOS
+  , useOS_
+  , UseOS
+  , UseOSOptions
+  , OS(..)
+
   , usePageLeave
   , UsePageLeave
-  , useWindowEvent
-  , UseWindowEvent
-  , useWindowScroll
-  , UseWindowScroll
-  , Position
+
+  , useTextSelection
+  , UseTextSelection
+  , Selection
+  , getSelectedText
   ) where
 
 import Mantine.Hooks.Prelude
@@ -82,6 +106,78 @@ foreign import data UseFavicon :: Type -> Type
 useFavicon :: String -> Hook UseFavicon Unit
 useFavicon = mkHook1 useFaviconImpl
 
+foreign import useIdleImpl :: EffectFn1 Number Boolean
+
+foreign import data UseIdle :: Type -> Type
+
+useIdle :: Number -> Hook UseIdle Boolean
+useIdle = mkHook1 useIdleImpl
+
+foreign import useNetworkImpl :: Effect UseNetworkResultImpl
+foreign import data UseNetwork :: Type -> Type
+
+data EffectiveType
+  = EffectiveTypeSlow2G
+  | EffectiveType2G
+  | EffectiveType3G
+  | EffectiveType4G
+
+type EffectiveTypeImpl = String
+
+instance FromFFI EffectiveTypeImpl EffectiveType where
+  fromNative = case _ of
+    "slow-2g" -> EffectiveTypeSlow2G
+    "2g"      -> EffectiveType2G
+    "3g"      -> EffectiveType3G
+    "4g"      -> EffectiveType4G
+    _         -> EffectiveType3G
+
+data NetworkType
+  = NetworkTypeBluetooth
+  | NetworkTypeCellular
+  | NetworkTypeEthernet
+  | NetworkTypeWifi
+  | NetworkTypeWimax
+  | NetworkTypeNone
+  | NetworkTypeOther
+  | NetworkTypeUnknown
+
+type NetworkTypeImpl = String
+
+instance FromFFI NetworkTypeImpl NetworkType where
+  fromNative = case _ of
+    "bluetooth" -> NetworkTypeBluetooth
+    "cellular"  -> NetworkTypeCellular
+    "ethernet"  -> NetworkTypeEthernet
+    "wifi"      -> NetworkTypeWifi
+    "wimax"     -> NetworkTypeWimax
+    "none"      -> NetworkTypeNone
+    "other"     -> NetworkTypeOther
+    _           -> NetworkTypeUnknown
+
+type UseNetworkResult =
+  { online         :: Boolean
+  , downlink       :: Maybe Number
+  , downlinkMax    :: Maybe Number
+  , effectiveType  :: Maybe EffectiveType
+  , rtt            :: Maybe Number
+  , saveData       :: Boolean
+  , type           :: Maybe NetworkType
+  }
+
+type UseNetworkResultImpl =
+  { online         :: Boolean
+  , downlink       :: Nullable Number
+  , downlinkMax    :: Nullable Number
+  , effectiveType  :: Nullable EffectiveTypeImpl
+  , rtt            :: Nullable Number
+  , saveData       :: Boolean
+  , type           :: Nullable NetworkTypeImpl
+  }
+
+useNetwork :: Hook UseNetwork UseNetworkResult
+useNetwork = mkHook0 useNetworkImpl
+
 foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
 foreign import data UseHash :: Type -> Type
 
@@ -90,42 +186,78 @@ useHash =
   let unpack { hash, setHash } = hash /\ setHash
    in unpack <$> mkHook0 useHashImpl
 
+foreign import useHeadroomImpl :: EffectFn1 UseHeadroomOptionsImpl Boolean
+foreign import data UseHeadroom :: Type -> Type
+
+type UseHeadroomOptions =
+  { fixedAt   :: Maybe Number
+  , onPin     :: Effect Unit
+  , onFix     :: Effect Unit
+  , onRelease :: Effect Unit
+  }
+
+type UseHeadroomOptionsImpl =
+  { fixedAt   :: Nullable Number
+  , onPin     :: Effect Unit
+  , onFix     :: Effect Unit
+  , onRelease :: Effect Unit
+  }
+
+useHeadroom :: UseHeadroomOptions -> Hook UseHeadroom Boolean
+useHeadroom = mkHook1 useHeadroomImpl
+
+foreign import useOSImpl :: EffectFn1 (Nullable UseOSOptionsImpl) OSImpl
+foreign import data UseOS :: Type -> Type
+
+data OS
+  = OSUndetermined
+  | OSMacOS
+  | OSIOS
+  | OSWindows
+  | OSAndroid
+  | OSLinux
+
+type OSImpl = String
+
+instance FromFFI OSImpl OS where
+  fromNative = case _ of
+    "undetermined" -> OSUndetermined
+    "macos"        -> OSMacOS
+    "ios"          -> OSIOS
+    "windows"      -> OSWindows
+    "android"      -> OSAndroid
+    "linux"        -> OSLinux
+    _              -> OSUndetermined
+
+type UseOSOptions =
+  { getValueInEffect :: Boolean
+  }
+
+type UseOSOptionsImpl = UseOSOptions
+
+useOS :: Maybe UseOSOptions -> Hook UseOS OS
+useOS = mkHook1 useOSImpl
+
+useOS_ :: Hook UseOS OS
+useOS_ = useOS Nothing
+
 foreign import usePageLeaveImpl :: EffectFn1 (Effect Unit) Unit
 foreign import data UsePageLeave :: Type -> Type
 
 usePageLeave :: Effect Unit -> Hook UsePageLeave Unit
 usePageLeave = mkHook1 usePageLeaveImpl
 
-type UseWindowEventOptions =
-  { type     :: String
-  , listener :: Event -> Effect Unit
-  }
+foreign import useTextSelectionImpl :: Effect (Nullable Selection)
+foreign import data UseTextSelection :: Type -> Type
 
-type UseWindowEventOptionsImpl =
-  { type     :: String
-  , listener :: EffectFn1 Event Unit
-  }
+useTextSelection :: Hook UseTextSelection (Maybe Selection)
+useTextSelection = mkHook0 useTextSelectionImpl
 
-foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
-foreign import data UseWindowEvent :: Type -> Type
+foreign import data Selection :: Type
 
-useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
-useWindowEvent = mkHook1 useWindowEventImpl
+instance FromFFI Selection Selection where fromNative = identity
 
-type UseWindowScrollImpl =
-  { current :: Position
-  , moveTo  :: EffectFn1 Position Unit
-  }
+foreign import getSelectedTextImpl :: EffectFn1 Selection String
 
-type Position =
-  { x :: Number
-  , y :: Number
-  }
-
-foreign import useWindowScrollImpl :: Effect UseWindowScrollImpl
-foreign import data UseWindowScroll :: Type -> Type
-
-useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
-useWindowScroll =
-  let unpack { current, moveTo } = current /\ moveTo
-   in unpack <$> mkHook0 useWindowScrollImpl
+getSelectedText :: Selection -> Effect String
+getSelectedText = runEffectFn1 getSelectedTextImpl

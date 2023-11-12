@@ -4,14 +4,16 @@ export const useClipboardImpl          = hooks.useClipboard;
 export const useDocumentTitleImpl      = hooks.useDocumentTitle;
 export const useDocumentVisibilityImpl = hooks.useDocumentVisibility;
 export const useFaviconImpl            = hooks.useFavicon;
+export const useHeadroomImpl           = hooks.useHeadroom;
+export const useIdleImpl               = hooks.useIdle;
+export const useNetworkImpl            = hooks.useNetwork;
+export const useOSImpl                 = hooks.useOs;
 export const usePageLeaveImpl          = hooks.usePageLeaveImpl;
-export const useWindowScrollImpl       = hooks.useWindowScroll;
+export const useTextSelectionImpl      = hooks.useTextSelection;
 
 export const useHashImpl = () => {
   const [hash, setHash] = hooks.useHash;
   return { hash, setHash };
 };
 
-export const useWindowEventImpl = options => {
-  hooks.useWindowScroll([ options.type, options.listener ]);
-};
+export const getSelectedTextImpl = selection => () => selection.toString();

@@ -12,6 +12,8 @@ module Mantine.Hooks.Prelude
   , module Mantine.FFI
   , module Prelude
   , module React.Basic.Hooks
+  , module Record
+  , module Type.Proxy
   , module Web.DOM
   , module Web.Event.Event
   , module Web.UIEvent.KeyboardEvent
@@ -34,6 +36,8 @@ import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEff
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import Prelude
 import React.Basic.Hooks (type (/\), Hook, Ref, Render, (/\), unsafeHook)
+import Record (delete, merge, rename, union)
+import Type.Proxy (Proxy(..))
 import Web.DOM (Node)
 import Web.Event.Event (Event)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)

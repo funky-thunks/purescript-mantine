@@ -8,6 +8,13 @@ module Mantine.Hooks.UIDom
   , useElementSize
   , UseElementSize
 
+  , useFocusReturn
+  , UseFocusReturn
+  , UseFocusReturnOptions
+
+  , useFocusTrap
+  , UseFocusTrap
+
   , useFocusWithin
   , UseFocusWithin
 
@@ -45,13 +52,26 @@ module Mantine.Hooks.UIDom
   , UseResizeObserver
   , ResizeRectangle
 
+  , useScrollIntoView
+  , UseScrollIntoView
+  , Alignment(..)
+  , Axis(..)
+
   , useViewportSize
   , UseViewportSize
   , ViewportDimensions
+
+  , useWindowEvent
+  , UseWindowEvent
+
+  , useWindowScroll
+  , UseWindowScroll
+  , Position
   ) where
 
 import Mantine.Hooks.Prelude
 import Mantine.Hooks.Theming (MantineColorScheme, MantineColorSchemeImpl)
+import Mantine.Core.Common (ValueHandler, ValueHandlerImpl)
 
 foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (Nullable (Array String)) (Ref Node)
 foreign import data UseClickOutside :: Type -> Type
@@ -70,6 +90,28 @@ foreign import data UseElementSize :: Type -> Type
 
 useElementSize :: Hook UseElementSize { ref :: Ref Node, width :: Number, height :: Number }
 useElementSize = mkHook0 useElementSizeImpl
+
+foreign import useFocusReturnImpl :: EffectFn1 UseFocusReturnOptionsImpl (Effect Unit)
+foreign import data UseFocusReturn :: Type -> Type
+
+type UseFocusReturnOptions =
+  { opened            :: Boolean
+  , shouldReturnFocus :: Maybe Boolean
+  }
+
+type UseFocusReturnOptionsImpl =
+  { opened            :: Boolean
+  , shouldReturnFocus :: Nullable Boolean
+  }
+
+useFocusReturn :: UseFocusReturnOptions -> Hook UseFocusReturn (Effect Unit)
+useFocusReturn = mkHook1 useFocusReturnImpl
+
+foreign import useFocusTrapImpl :: EffectFn1 Boolean (Ref (Nullable Node))
+foreign import data UseFocusTrap :: Type -> Type
+
+useFocusTrap :: Boolean -> Hook UseFocusTrap (Ref (Nullable Node))
+useFocusTrap = mkHook1 useFocusTrapImpl
 
 type UseFocusWithinHandlers =
   { onFocus :: Effect Unit
@@ -231,6 +273,73 @@ useResizeObserver =
   let unpack { ref, rect } = ref /\ rect
    in unpack <$> mkHook0 useResizeObserverImpl
 
+foreign import useScrollIntoViewImpl :: EffectFn1 UseScrollIntoViewOptionsImpl UseScrollIntoViewResultImpl
+foreign import data UseScrollIntoView :: Type -> Type
+
+data Axis
+  = AxisX
+  | AxisY
+
+type AxisImpl = String
+
+instance ToFFI Axis AxisImpl where
+  toNative = case _ of
+    AxisX -> "x"
+    AxisY -> "y"
+
+type UseScrollIntoViewOptions =
+  { onScrollFinish :: Effect Unit
+  , duration       :: Maybe Number
+  , axis           :: Maybe Axis
+  , easing         :: Maybe (Number -> Number)
+  , offset         :: Maybe Number
+  , cancelable     :: Maybe Boolean
+  , isList         :: Maybe Boolean
+  }
+
+type UseScrollIntoViewOptionsImpl =
+  { onScrollFinish :: Effect Unit
+  , duration       :: Nullable Number
+  , axis           :: Nullable AxisImpl
+  , easing         :: Nullable (Number -> Number)
+  , offset         :: Nullable Number
+  , cancelable     :: Nullable Boolean
+  , isList         :: Nullable Boolean
+  }
+
+type UseScrollIntoViewResult =
+  { targetRef      :: Ref (Nullable Node)
+  , scrollableRef  :: Ref (Nullable Node)
+  , scrollIntoView :: ValueHandler { alignment :: Maybe Alignment }
+  , cancel         :: Effect Unit
+  }
+
+data Alignment
+  = AlignmentStart
+  | AlignmentEnd
+  | AlignmentCenter
+
+type AlignmentImpl = String
+
+instance ToFFI Alignment AlignmentImpl where
+  toNative = case _ of
+    AlignmentStart   -> "start"
+    AlignmentEnd     -> "end"
+    AlignmentCenter  -> "center"
+
+type UseScrollIntoViewResultImpl =
+  { targetRef      :: Ref (Nullable Node)
+  , scrollableRef  :: Ref (Nullable Node)
+  , scrollIntoView :: ValueHandlerImpl { alignment :: Nullable AlignmentImpl }
+  , cancel         :: Effect Unit
+  }
+
+useScrollIntoView :: UseScrollIntoViewOptions -> Hook UseScrollIntoView UseScrollIntoViewResult
+useScrollIntoView options =
+  let toImpl opts = rest opts `union` { easing: toNullable opts.easing }
+      rest = toNative <<< delete (Proxy :: Proxy "easing")
+   in unsafeHook (fromNative <$> runEffectFn1 useScrollIntoViewImpl (toImpl options))
+
 type ViewportDimensions =
   { height :: Number
   , width  :: Number
@@ -242,3 +351,37 @@ foreign import data UseViewportSize :: Type -> Type
 
 useViewportSize :: Hook UseViewportSize ViewportDimensions
 useViewportSize = mkHook0 useViewportSizeImpl
+
+type UseWindowEventOptions =
+  { type     :: String
+  , listener :: Event -> Effect Unit
+  }
+
+type UseWindowEventOptionsImpl =
+  { type     :: String
+  , listener :: EffectFn1 Event Unit
+  }
+
+foreign import useWindowEventImpl :: EffectFn1 UseWindowEventOptionsImpl Unit
+foreign import data UseWindowEvent :: Type -> Type
+
+useWindowEvent :: UseWindowEventOptions -> Hook UseWindowEvent Unit
+useWindowEvent = mkHook1 useWindowEventImpl
+
+type UseWindowScrollImpl =
+  { current :: Position
+  , moveTo  :: EffectFn1 Position Unit
+  }
+
+type Position =
+  { x :: Number
+  , y :: Number
+  }
+
+foreign import useWindowScrollImpl :: Effect UseWindowScrollImpl
+foreign import data UseWindowScroll :: Type -> Type
+
+useWindowScroll :: Hook UseWindowScroll (Position /\ (Position -> Effect Unit))
+useWindowScroll =
+  let unpack { current, moveTo } = current /\ moveTo
+   in unpack <$> mkHook0 useWindowScrollImpl
