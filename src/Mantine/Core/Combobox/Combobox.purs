@@ -42,7 +42,6 @@ module Mantine.Core.Combobox.Combobox
   , ComboboxSelectedOptionImpl
   ) where
 
-import Effect.Uncurried (EffectFn2)
 import Mantine.Core.Prelude
 import Web.HTML.HTMLElement (HTMLElement)
 import Web.HTML.HTMLInputElement (HTMLInputElement)

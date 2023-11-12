@@ -4,7 +4,6 @@ module Mantine.Core.Combobox.Autocomplete
   , AutocompleteItem
   ) where
 
-import Effect.Uncurried (EffectFn2, mkEffectFn2)
 import Mantine.Core.Combobox.Combobox (ComboboxProps, ComboboxPropsImpl)
 import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
 import Mantine.Core.Prelude
@@ -68,10 +67,8 @@ type AutocompletePropsImpl =
 autocompleteToImpl :: AutocompleteProps -> AutocompletePropsImpl
 autocompleteToImpl props =
   let rest = toNative
-         <<< delete (Proxy :: Proxy "filter")
          <<< delete (Proxy :: Proxy "maxDropdownHeight")
       customProps =
-        { filter:            toNullable (mkEffectFn2 <$> props.filter)
-        , maxDropdownHeight: toNullable props.maxDropdownHeight
+        { maxDropdownHeight: toNullable props.maxDropdownHeight
         }
    in customProps `union` rest props
