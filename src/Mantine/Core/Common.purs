@@ -70,6 +70,9 @@ module Mantine.Core.Common
   , Controlled_
   , ControlledImpl
   , ControlledImpl_
+
+  , Breakpoint(..)
+  , BreakpointImpl
   ) where
 
 import Prelude hiding (bind)
@@ -88,7 +91,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
-import Mantine.Core.CSS (FontWeight)
+import Mantine.Core.CSS (FontWeight, FontWeightImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
 import Prim.RowList (class RowToList)
 import React.Basic (ReactComponent, element)
@@ -667,6 +670,8 @@ type MantineComponentRow r =
   , style       :: Maybe CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
+  , hiddenFrom  :: Maybe Breakpoint
+  , visibleFrom :: Maybe Breakpoint
   | r
   )
 
@@ -702,33 +707,35 @@ defaultMantineComponent_ = defaultMantineComponentGeneral defaultValue
 type MantineComponentImpl otherProps = Record (MantineComponentImplRow + otherProps)
 
 type MantineComponentImplRow r =
-  ( m           :: Nullable String
-  , mt          :: Nullable String
-  , mb          :: Nullable String
-  , ml          :: Nullable String
-  , mr          :: Nullable String
-  , mx          :: Nullable String
-  , my          :: Nullable String
-  , p           :: Nullable String
-  , pt          :: Nullable String
-  , pb          :: Nullable String
-  , pl          :: Nullable String
-  , pr          :: Nullable String
-  , px          :: Nullable String
-  , py          :: Nullable String
-  , w           :: Nullable String
-  , miw         :: Nullable String
-  , maw         :: Nullable String
-  , h           :: Nullable String
-  , mih         :: Nullable String
-  , mah         :: Nullable String
-  , fw          :: Nullable Number
-  , bg          :: Nullable String
-  , c           :: Nullable String
+  ( m           :: Nullable MantineSizeImpl
+  , mt          :: Nullable MantineSizeImpl
+  , mb          :: Nullable MantineSizeImpl
+  , ml          :: Nullable MantineSizeImpl
+  , mr          :: Nullable MantineSizeImpl
+  , mx          :: Nullable MantineSizeImpl
+  , my          :: Nullable MantineSizeImpl
+  , p           :: Nullable MantineSizeImpl
+  , pt          :: Nullable MantineSizeImpl
+  , pb          :: Nullable MantineSizeImpl
+  , pl          :: Nullable MantineSizeImpl
+  , pr          :: Nullable MantineSizeImpl
+  , px          :: Nullable MantineSizeImpl
+  , py          :: Nullable MantineSizeImpl
+  , w           :: Nullable MantineSizeImpl
+  , miw         :: Nullable MantineSizeImpl
+  , maw         :: Nullable MantineSizeImpl
+  , h           :: Nullable MantineSizeImpl
+  , mih         :: Nullable MantineSizeImpl
+  , mah         :: Nullable MantineSizeImpl
+  , fw          :: Nullable FontWeightImpl
+  , bg          :: Nullable MantineColorImpl
+  , c           :: Nullable MantineColorImpl
   , className   :: Nullable String
   , style       :: Nullable CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
+  , hiddenFrom  :: Nullable BreakpointImpl
+  , visibleFrom :: Nullable BreakpointImpl
   | r
   )
 
@@ -864,3 +871,20 @@ type ControlledImpl_ value rest =
   , value        :: Nullable         value
   | rest
   )
+
+data Breakpoint
+  = BreakpointExtraSmall
+  | BreakpointSmall
+  | BreakpointMedium
+  | BreakpointLarge
+  | BreakpointExtraLarge
+
+type BreakpointImpl = String
+
+instance ToFFI Breakpoint BreakpointImpl where
+  toNative = case _ of
+    BreakpointExtraSmall -> "xs"
+    BreakpointSmall      -> "sm"
+    BreakpointMedium     -> "md"
+    BreakpointLarge      -> "lg"
+    BreakpointExtraLarge -> "xl"
