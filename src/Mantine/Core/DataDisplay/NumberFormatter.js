@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NumberFormmatter } from '@mantine/core';
+import { NumberFormatter } from '@mantine/core';
 
 function removeEmpty(obj) {
   return Object.fromEntries(
@@ -10,5 +10,5 @@ function removeEmpty(obj) {
 }
 
 export function numberFormatterComponent(props) {
-  return React.createElement(NumberFormmatter, removeEmpty(props), props.children);
+  return React.createElement(NumberFormatter, removeEmpty(props), props.children);
 }

@@ -2,6 +2,7 @@ module Mantine.Core.Buttons.Button
   ( button
   , button_
   , ButtonProps
+  , ButtonSize(..)
   , ButtonVariant(..)
   , LoaderPosition(..)
 
@@ -12,7 +13,7 @@ module Mantine.Core.Buttons.Button
   , UnstyledButtonProps
   ) where
 
-import Prelude (class Show)
+import Prelude (class Show, (<>))
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
@@ -40,9 +41,20 @@ type ButtonProps =
     , onClick      :: EventHandler
     , radius       :: Maybe Radius
     , rightSection :: Maybe JSX
-    , size         :: MantineSize
+    , size         :: ButtonSize
     , variant      :: ButtonVariant
     )
+
+data ButtonSize
+  = Padded  MantineSize
+  | Compact MantineSize
+
+type ButtonSizeImpl = MantineSizeImpl
+
+instance ToFFI ButtonSize ButtonSizeImpl where
+  toNative = case _ of
+    Padded  s -> toNative s
+    Compact s -> "compact-" <> toNative s
 
 data LoaderPosition
   = LoaderPositionLeft
@@ -87,7 +99,7 @@ defaultButtonProps :: ButtonProps
 defaultButtonProps =
   defaultMantineComponent
     { onClick: handler_ (pure unit)
-    , size: Small
+    , size: Padded Small
     }
 
 type ButtonPropsImpl =
@@ -104,7 +116,7 @@ type ButtonPropsImpl =
     , onClick      :: EventHandler
     , radius       :: Nullable RadiusImpl
     , rightSection :: Nullable JSX
-    , size         :: MantineSizeImpl
+    , size         :: ButtonSizeImpl
     , variant      :: ButtonVariantImpl
     )
 

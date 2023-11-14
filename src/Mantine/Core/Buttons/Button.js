@@ -9,10 +9,12 @@ function removeEmpty(obj) {
   );
 }
 
-export const buttonComponent = Button;
+export function buttonComponent(props) {
+  return React.createElement(Button, removeEmpty(props), props.children);
+}
 
 export function buttonGroupComponent(props) {
-  return React.createElement(Button.Group, props, props.children)
+  return React.createElement(Button.Group, removeEmpty(props), props.children);
 }
 
 export function unstyledButtonComponent(props) {
