@@ -413,6 +413,18 @@ let
         installPhase = "ln -s $src $out";
       };
 
+    "naturals" = pkgs.stdenv.mkDerivation {
+        name = "naturals";
+        version = "v3.0.0";
+        src = pkgs.fetchgit {
+          url = "https://github.com/LiamGoodacre/purescript-naturals.git";
+          rev = "53aaa11516cd1bb8429f33032802bf43a5b04644";
+          sha256 = "0jaly95g46rbb7xwfv655pgm2bsp11p1iriasa0w79ryv0p488hi";
+        };
+        phases = "installPhase";
+        installPhase = "ln -s $src $out";
+      };
+
     "newtype" = pkgs.stdenv.mkDerivation {
         name = "newtype";
         version = "v5.0.0";
