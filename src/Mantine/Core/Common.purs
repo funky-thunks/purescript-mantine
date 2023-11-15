@@ -82,6 +82,7 @@ import Data.Foldable (foldMap)
 import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
+import Data.Natural (Natural)
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Nullable (Nullable)
 import Data.Number (fromString)
@@ -268,6 +269,9 @@ data MantineColor
   | Lime9
   | Yellow9
   | Orange9
+
+  | Named        String
+  | NamedVariant String Natural
 
   | Hexa String
 
@@ -516,6 +520,9 @@ instance ToFFI MantineColor MantineColorImpl where
     Lime9   -> "lime.9"
     Yellow9 -> "yellow.9"
     Orange9 -> "orange.9"
+
+    Named        n   -> n
+    NamedVariant n v -> n <> "." <> show v
 
     Hexa h -> "#" <> h
 

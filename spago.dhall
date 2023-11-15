@@ -15,6 +15,7 @@
   , "integers"
   , "js-date"
   , "maybe"
+  , "naturals"
   , "newtype"
   , "nullable"
   , "numbers"
