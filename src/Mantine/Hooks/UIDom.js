@@ -1,4 +1,4 @@
-import hooks from '@mantine/hooks';
+import * as hooks from '@mantine/hooks';
 
 export const useClickOutsideImpl   = hooks.useClickOutside;
 export const useColorSchemeImpl    = hooks.useColorScheme;
