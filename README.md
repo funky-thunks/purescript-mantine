@@ -1,6 +1,6 @@
 # Purescript bindings for mantine
 
-Bindings to use [Mantine](mantine.dev) components from a Purescript codebase.
+Bindings to use [Mantine](https://mantine.dev) components from a Purescript codebase.
 
 Currently supporting mantine v7.2.1.
 
