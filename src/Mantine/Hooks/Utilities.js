@@ -1,4 +1,4 @@
-import hooks from '@mantine/hooks';
+import * as hooks from '@mantine/hooks';
 
 export const useClipboardImpl          = hooks.useClipboard;
 export const useDocumentTitleImpl      = hooks.useDocumentTitle;
@@ -8,7 +8,7 @@ export const useHeadroomImpl           = hooks.useHeadroom;
 export const useIdleImpl               = hooks.useIdle;
 export const useNetworkImpl            = hooks.useNetwork;
 export const useOSImpl                 = hooks.useOs;
-export const usePageLeaveImpl          = hooks.usePageLeaveImpl;
+export const usePageLeaveImpl          = hooks.usePageLeave;
 export const useTextSelectionImpl      = hooks.useTextSelection;
 
 export const useHashImpl = () => {
