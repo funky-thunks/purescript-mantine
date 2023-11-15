@@ -13,6 +13,7 @@
   , "foreign-object"
   , "functions"
   , "integers"
+  , "js-date"
   , "maybe"
   , "newtype"
   , "nullable"
