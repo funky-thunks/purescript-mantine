@@ -162,5 +162,5 @@ type ModalComponentImpl rest =
     | ModalNonDefaultable rest
     )
 
-type ModalTransitionProps     = MantineTransitionBase     (exitDuration :: Maybe    Milliseconds)
-type ModalTransitionPropsImpl = MantineTransitionBaseImpl (exitDuration :: Nullable Number      )
+type ModalTransitionProps     = MantineTransitionBase     (exitDuration :: Optional    Milliseconds)
+type ModalTransitionPropsImpl = MantineTransitionBaseImpl (exitDuration :: UndefinedOr Number      )

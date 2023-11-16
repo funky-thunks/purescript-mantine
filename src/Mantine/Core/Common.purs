@@ -93,7 +93,7 @@ import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
-import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import Mantine.FFI (class FromFFI, class ToFFI, Optional, fromNative, toNative)
 import Prim.RowList (class RowToList)
 import React.Basic (ReactComponent, element)
 import React.Basic.Events (EventHandler, handler)
@@ -102,7 +102,7 @@ import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, class Union, type (+))
-import Untagged.Union (type (|+|), asOneOf, toEither1)
+import Untagged.Union (type (|+|), UndefinedOr, asOneOf, toEither1)
 
 data MantineColor
   = Dark
@@ -578,9 +578,9 @@ type DimensionImpl = Number |+| String
 
 type MantineTransitionProps = MantineTransitionBase ()
 type MantineTransitionBase rest =
-  { transition     :: Maybe MantineTransition
-  , duration       :: Maybe Milliseconds
-  , timingFunction :: Maybe MantineTransitionTimingFunction
+  { transition     :: Optional MantineTransition
+  , duration       :: Optional Milliseconds
+  , timingFunction :: Optional MantineTransitionTimingFunction
   | rest
   }
 
@@ -638,9 +638,9 @@ instance ToFFI MantineTransitionTimingFunction MantineTransitionTimingFunctionIm
 
 type MantineTransitionPropsImpl = MantineTransitionBaseImpl ()
 type MantineTransitionBaseImpl rest =
-  { transition     :: Nullable String
-  , duration       :: Nullable Number
-  , timingFunction :: Nullable String
+  { transition     :: UndefinedOr String
+  , duration       :: UndefinedOr Number
+  , timingFunction :: UndefinedOr String
   | rest
   }
 
@@ -650,35 +650,35 @@ type MantineSpacingImpl = MantineNumberSizeImpl
 type MantineComponent r = Record (MantineComponentRow + r)
 
 type MantineComponentRow r =
-  ( m           :: Maybe MantineSize
-  , mt          :: Maybe MantineSize
-  , mb          :: Maybe MantineSize
-  , ml          :: Maybe MantineSize
-  , mr          :: Maybe MantineSize
-  , mx          :: Maybe MantineSize
-  , my          :: Maybe MantineSize
-  , p           :: Maybe MantineSize
-  , pt          :: Maybe MantineSize
-  , pb          :: Maybe MantineSize
-  , pl          :: Maybe MantineSize
-  , pr          :: Maybe MantineSize
-  , px          :: Maybe MantineSize
-  , py          :: Maybe MantineSize
-  , w           :: Maybe MantineSize
-  , miw         :: Maybe MantineSize
-  , maw         :: Maybe MantineSize
-  , h           :: Maybe MantineSize
-  , mih         :: Maybe MantineSize
-  , mah         :: Maybe MantineSize
-  , fw          :: Maybe FontWeight
-  , bg          :: Maybe MantineColor
-  , c           :: Maybe MantineColor
-  , className   :: Maybe String
-  , style       :: Maybe CSS
+  ( m           :: Optional MantineSize
+  , mt          :: Optional MantineSize
+  , mb          :: Optional MantineSize
+  , ml          :: Optional MantineSize
+  , mr          :: Optional MantineSize
+  , mx          :: Optional MantineSize
+  , my          :: Optional MantineSize
+  , p           :: Optional MantineSize
+  , pt          :: Optional MantineSize
+  , pb          :: Optional MantineSize
+  , pl          :: Optional MantineSize
+  , pr          :: Optional MantineSize
+  , px          :: Optional MantineSize
+  , py          :: Optional MantineSize
+  , w           :: Optional MantineSize
+  , miw         :: Optional MantineSize
+  , maw         :: Optional MantineSize
+  , h           :: Optional MantineSize
+  , mih         :: Optional MantineSize
+  , mah         :: Optional MantineSize
+  , fw          :: Optional FontWeight
+  , bg          :: Optional MantineColor
+  , c           :: Optional MantineColor
+  , className   :: Optional String
+  , style       :: Optional CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
-  , hiddenFrom  :: Maybe Breakpoint
-  , visibleFrom :: Maybe Breakpoint
+  , hiddenFrom  :: Optional Breakpoint
+  , visibleFrom :: Optional Breakpoint
   | r
   )
 
@@ -714,35 +714,35 @@ defaultMantineComponent_ = defaultMantineComponentGeneral defaultValue
 type MantineComponentImpl otherProps = Record (MantineComponentImplRow + otherProps)
 
 type MantineComponentImplRow r =
-  ( m           :: Nullable MantineSizeImpl
-  , mt          :: Nullable MantineSizeImpl
-  , mb          :: Nullable MantineSizeImpl
-  , ml          :: Nullable MantineSizeImpl
-  , mr          :: Nullable MantineSizeImpl
-  , mx          :: Nullable MantineSizeImpl
-  , my          :: Nullable MantineSizeImpl
-  , p           :: Nullable MantineSizeImpl
-  , pt          :: Nullable MantineSizeImpl
-  , pb          :: Nullable MantineSizeImpl
-  , pl          :: Nullable MantineSizeImpl
-  , pr          :: Nullable MantineSizeImpl
-  , px          :: Nullable MantineSizeImpl
-  , py          :: Nullable MantineSizeImpl
-  , w           :: Nullable MantineSizeImpl
-  , miw         :: Nullable MantineSizeImpl
-  , maw         :: Nullable MantineSizeImpl
-  , h           :: Nullable MantineSizeImpl
-  , mih         :: Nullable MantineSizeImpl
-  , mah         :: Nullable MantineSizeImpl
-  , fw          :: Nullable FontWeightImpl
-  , bg          :: Nullable MantineColorImpl
-  , c           :: Nullable MantineColorImpl
-  , className   :: Nullable String
-  , style       :: Nullable CSS
+  ( m           :: UndefinedOr MantineSizeImpl
+  , mt          :: UndefinedOr MantineSizeImpl
+  , mb          :: UndefinedOr MantineSizeImpl
+  , ml          :: UndefinedOr MantineSizeImpl
+  , mr          :: UndefinedOr MantineSizeImpl
+  , mx          :: UndefinedOr MantineSizeImpl
+  , my          :: UndefinedOr MantineSizeImpl
+  , p           :: UndefinedOr MantineSizeImpl
+  , pt          :: UndefinedOr MantineSizeImpl
+  , pb          :: UndefinedOr MantineSizeImpl
+  , pl          :: UndefinedOr MantineSizeImpl
+  , pr          :: UndefinedOr MantineSizeImpl
+  , px          :: UndefinedOr MantineSizeImpl
+  , py          :: UndefinedOr MantineSizeImpl
+  , w           :: UndefinedOr MantineSizeImpl
+  , miw         :: UndefinedOr MantineSizeImpl
+  , maw         :: UndefinedOr MantineSizeImpl
+  , h           :: UndefinedOr MantineSizeImpl
+  , mih         :: UndefinedOr MantineSizeImpl
+  , mah         :: UndefinedOr MantineSizeImpl
+  , fw          :: UndefinedOr FontWeightImpl
+  , bg          :: UndefinedOr MantineColorImpl
+  , c           :: UndefinedOr MantineColorImpl
+  , className   :: UndefinedOr String
+  , style       :: UndefinedOr CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
-  , hiddenFrom  :: Nullable BreakpointImpl
-  , visibleFrom :: Nullable BreakpointImpl
+  , hiddenFrom  :: UndefinedOr BreakpointImpl
+  , visibleFrom :: UndefinedOr BreakpointImpl
   | r
   )
 
