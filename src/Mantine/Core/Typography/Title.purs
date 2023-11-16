@@ -1,17 +1,42 @@
 module Mantine.Core.Typography.Title
   ( title
   , title_
+  , title1
+  , title2
+  , title3
+  , title4
+  , title5
+  , title6
   , TitleProps
   , TitleOrder(..)
   ) where
 
 import Mantine.Core.Prelude
+import React.Basic.DOM as DOM
 
 title :: (TitleProps -> TitleProps) -> JSX
 title = mkTrivialComponent titleComponent
 
-title_ :: Array JSX -> JSX
-title_ children = title _ { children = children }
+title_ :: TitleOrder -> String -> JSX
+title_ order t = title _ { order = pure order, children = [ DOM.text t ] }
+
+title1 :: String -> JSX
+title1  = title_ Title1
+
+title2 :: String -> JSX
+title2  = title_ Title2
+
+title3 :: String -> JSX
+title3  = title_ Title3
+
+title4 :: String -> JSX
+title4  = title_ Title4
+
+title5 :: String -> JSX
+title5  = title_ Title5
+
+title6 :: String -> JSX
+title6  = title_ Title6
 
 foreign import titleComponent :: ReactComponent TitlePropsImpl
 

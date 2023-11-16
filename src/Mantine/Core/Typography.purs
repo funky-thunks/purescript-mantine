@@ -17,5 +17,5 @@ import Mantine.Core.Typography.List (ListItemProps, ListProps, ListType(..), lis
 import Mantine.Core.Typography.Mark (MarkProps, mark)
 import Mantine.Core.Typography.Table (TableCaptionProps, TableCaptionSide(..), TableProps, TableScrollContainerProps, TableTbodyProps, TableTdProps, TableTfootProps, TableThProps, TableTheadProps, TableTrProps, WithChildren, table, tableCaption, tableCaption_, tableScrollContainer, tableScrollContainer_, tableTbody, tableTbody_, tableTd, tableTd_, tableTfoot, tableTfoot_, tableTh, tableTh_, tableThead, tableThead_, tableTr, tableTr_, table_)
 import Mantine.Core.Typography.Text (TextProps, TextPropsImplRow, TextPropsRow, TextSpecificPropsRow, TextTruncate(..), TextTruncateImpl, text, text_)
-import Mantine.Core.Typography.Title (TitleOrder(..), TitleProps, title, title_)
+import Mantine.Core.Typography.Title (TitleOrder(..), TitleProps, title, title_, title1, title2, title3, title4, title5, title6)
 import Mantine.Core.Typography.TypographyStylesProvider (typographyStylesProvider_)
