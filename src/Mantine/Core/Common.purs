@@ -674,8 +674,8 @@ type MantineComponentRow r =
   , c           :: Optional MantineColor
   , className   :: Optional String
   , style       :: Optional CSS
-  , darkHidden  :: Boolean
-  , lightHidden :: Boolean
+  , darkHidden  :: Optional Boolean
+  , lightHidden :: Optional Boolean
   , hiddenFrom  :: Optional Breakpoint
   , visibleFrom :: Optional Breakpoint
   | r
@@ -738,8 +738,8 @@ type MantineComponentImplRow r =
   , c           :: OptionalImpl MantineColorImpl
   , className   :: OptionalImpl String
   , style       :: OptionalImpl CSS
-  , darkHidden  :: Boolean
-  , lightHidden :: Boolean
+  , darkHidden  :: OptionalImpl Boolean
+  , lightHidden :: OptionalImpl Boolean
   , hiddenFrom  :: OptionalImpl BreakpointImpl
   , visibleFrom :: OptionalImpl BreakpointImpl
   | r
