@@ -14,17 +14,17 @@ foreign import textareaComponent :: ReactComponent TextareaPropsImpl
 type TextareaProps =
   InputComponent
     ( autosize :: Boolean
-    , maxRows  :: Maybe Int
-    , minRows  :: Maybe Int
+    , maxRows  :: Optional Int
+    , minRows  :: Optional Int
     , onChange :: InputHandler
-    , value    :: Maybe String
+    , value    :: Optional String
     )
 
 type TextareaPropsImpl =
   InputComponentImpl
     ( autosize :: Boolean
-    , maxRows  :: Nullable Number
-    , minRows  :: Nullable Number
+    , maxRows  :: OptionalImpl Number
+    , minRows  :: OptionalImpl Number
     , onChange :: InputHandlerImpl
-    , value    :: Nullable String
+    , value    :: OptionalImpl String
     )

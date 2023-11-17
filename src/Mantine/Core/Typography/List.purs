@@ -23,10 +23,10 @@ type ListProps =
   MantineComponent
     ( center        :: Boolean
     , children      :: Array JSX
-    , icon          :: Maybe JSX
-    , listStyleType :: Maybe ListStyleType
-    , size          :: Maybe MantineNumberSize
-    , spacing       :: Maybe MantineNumberSize
+    , icon          :: Optional JSX
+    , listStyleType :: Optional ListStyleType
+    , size          :: Optional MantineNumberSize
+    , spacing       :: Optional MantineNumberSize
     , type          :: ListType
     , withPadding   :: Boolean
     )
@@ -48,10 +48,10 @@ type ListPropsImpl =
   MantineComponentImpl
     ( center        :: Boolean
     , children      :: Array JSX
-    , icon          :: Nullable JSX
-    , listStyleType :: Nullable ListStyleTypeImpl
-    , size          :: Nullable MantineNumberSizeImpl
-    , spacing       :: Nullable MantineNumberSizeImpl
+    , icon          :: OptionalImpl JSX
+    , listStyleType :: OptionalImpl ListStyleTypeImpl
+    , size          :: OptionalImpl MantineNumberSizeImpl
+    , spacing       :: OptionalImpl MantineNumberSizeImpl
     , type          :: ListTypeImpl
     , withPadding   :: Boolean
     )
@@ -67,11 +67,11 @@ foreign import listItemComponent :: ReactComponent ListItemPropsImpl
 type ListItemProps =
   MantineComponent
     ( children :: Array JSX
-    , icon     :: Maybe JSX
+    , icon     :: Optional JSX
     )
 
 type ListItemPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , icon     :: Nullable JSX
+    , icon     :: OptionalImpl JSX
     )

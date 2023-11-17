@@ -39,7 +39,7 @@ foreign import selectComponent :: ReactComponent SelectPropsImpl
 
 type SelectProps =
   MantineComponent
-    ( allowDeselect :: Maybe Boolean
+    ( allowDeselect :: Optional Boolean
     | SelectPropsRow (Maybe String)
     )
 
@@ -51,37 +51,37 @@ foreign import multiSelectComponent :: ReactComponent MultiSelectPropsImpl
 type MultiSelectProps =
   MantineComponent
     ( hidePickedOptions :: Boolean
-    , maxValues         :: Maybe Int
+    , maxValues         :: Optional Int
     | SelectPropsRow (Array String)
     )
 
 type SelectPropsRow items =
     ( checkIconPosition   :: CheckIconPosition
-    , nothingFoundMessage :: Maybe JSX
+    , nothingFoundMessage :: Optional JSX
     , searchable          :: Boolean
     , withCheckIcon       :: Boolean
     | BaseSelectPropsRow items
     )
 
 type BaseSelectPropsRow items =
-    ( comboboxProps             :: Maybe ComboboxProps
+    ( comboboxProps             :: Optional ComboboxProps
     , data                      :: Array SelectItem
-    , defaultDropdownOpened     :: Maybe Boolean
-    , defaultSearchValue        :: Maybe String
-    , defaultValue              :: Maybe items
-    , dropdownOpened            :: Maybe Boolean
-    , filter                    :: Maybe (SelectItem -> Boolean)
-    , limit                     :: Maybe Int
-    , maxDropdownHeight         :: Maybe Pixels
-    , onChange                  :: Maybe (items -> Effect Unit)
-    , onDropdownClose           :: Maybe (Effect Unit)
-    , onDropdownOpen            :: Maybe (Effect Unit)
+    , defaultDropdownOpened     :: Optional Boolean
+    , defaultSearchValue        :: Optional String
+    , defaultValue              :: Optional items
+    , dropdownOpened            :: Optional Boolean
+    , filter                    :: Optional (SelectItem -> Boolean)
+    , limit                     :: Optional Int
+    , maxDropdownHeight         :: Optional Pixels
+    , onChange                  :: Optional (items -> Effect Unit)
+    , onDropdownClose           :: Optional (Effect Unit)
+    , onDropdownOpen            :: Optional (Effect Unit)
     , onOptionSubmit            :: ValueHandler String
     , onSearchChange            :: ValueHandler String
-    , searchValue               :: Maybe String
+    , searchValue               :: Optional String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: Maybe items
-    , withScrollArea            :: Maybe Boolean
+    , value                     :: Optional items
+    , withScrollArea            :: Optional Boolean
     | ClearablePropsRow + WithInputContainer + InputPropsRow
     )
 
@@ -106,9 +106,9 @@ instance ToFFI CheckIconPosition CheckIconPositionImpl where
 
 type SelectItem =
   { value    :: String
-  , label    :: Maybe String
-  , disabled :: Maybe Boolean
-  , group    :: Maybe String
+  , label    :: Optional String
+  , disabled :: Optional Boolean
+  , group    :: Optional String
   }
 
 data Clearable
@@ -121,55 +121,55 @@ type ClearableImpl = { | ClearablePropsRowImpl () }
 
 instance ToFFI Clearable ClearableImpl where
   toNative = toNative <<< case _ of
-    Clearable p  -> { clearable: true,  clearButtonProps: pure p  }
-    NotClearable -> { clearable: false, clearButtonProps: Nothing }
+    Clearable p  -> { clearable: true,  clearButtonProps: Optional (pure p) }
+    NotClearable -> { clearable: false, clearButtonProps: Optional  Nothing }
 
 type SelectPropsRowImpl items =
     ( checkIconPosition   :: CheckIconPositionImpl
-    , nothingFoundMessage :: Nullable JSX
+    , nothingFoundMessage :: OptionalImpl JSX
     , searchable          :: Boolean
     , withCheckIcon       :: Boolean
     | BaseSelectPropsRowImpl items
     )
 
 type BaseSelectPropsRowImpl items =
-    ( comboboxProps             :: Nullable ComboboxPropsImpl
+    ( comboboxProps             :: OptionalImpl ComboboxPropsImpl
     , data                      :: Array SelectItemImpl
-    , defaultDropdownOpened     :: Nullable Boolean
-    , defaultSearchValue        :: Nullable String
-    , defaultValue              :: Nullable items
-    , dropdownOpened            :: Nullable Boolean
-    , filter                    :: Nullable (SelectItemImpl -> Boolean)
-    , limit                     :: Nullable Number
-    , maxDropdownHeight         :: Nullable PixelsImpl
-    , onChange                  :: Nullable (EffectFn1 (Nullable items) Unit)
-    , onDropdownClose           :: Nullable (Effect Unit)
-    , onDropdownOpen            :: Nullable (Effect Unit)
+    , defaultDropdownOpened     :: OptionalImpl Boolean
+    , defaultSearchValue        :: OptionalImpl String
+    , defaultValue              :: OptionalImpl items
+    , dropdownOpened            :: OptionalImpl Boolean
+    , filter                    :: OptionalImpl (SelectItemImpl -> Boolean)
+    , limit                     :: OptionalImpl Number
+    , maxDropdownHeight         :: OptionalImpl PixelsImpl
+    , onChange                  :: OptionalImpl (EffectFn1 (Nullable items) Unit)
+    , onDropdownClose           :: OptionalImpl (Effect Unit)
+    , onDropdownOpen            :: OptionalImpl (Effect Unit)
     , onOptionSubmit            :: ValueHandlerImpl String
     , onSearchChange            :: ValueHandlerImpl String
-    , searchValue               :: Nullable String
+    , searchValue               :: OptionalImpl String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: Nullable items
-    , withScrollArea            :: Nullable Boolean
+    , value                     :: OptionalImpl items
+    , withScrollArea            :: OptionalImpl Boolean
     | ClearablePropsRowImpl + WithInputContainerImpl + InputPropsRowImpl
     )
 
 type ClearablePropsRowImpl restImpl =
   ( clearable        :: Boolean
-  , clearButtonProps :: Nullable ClearButtonPropsImpl
+  , clearButtonProps :: OptionalImpl ClearButtonPropsImpl
   | restImpl
   )
 
 type SelectItemImpl =
   { value    :: String
-  , label    :: Nullable String
-  , disabled :: Nullable Boolean
-  , group    :: Nullable String
+  , label    :: OptionalImpl String
+  , disabled :: OptionalImpl Boolean
+  , group    :: OptionalImpl String
   }
 
 type SelectPropsImpl =
   MantineComponentImpl
-    ( allowDeselect :: Nullable Boolean
+    ( allowDeselect :: OptionalImpl Boolean
     | SelectPropsRowImpl (Nullable String)
     )
 
@@ -179,7 +179,7 @@ selectToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< join <<< map toMaybe <
 type MultiSelectPropsImpl =
   MantineComponentImpl
     ( hidePickedOptions :: Boolean
-    , maxValues         :: Nullable Number
+    , maxValues         :: OptionalImpl Number
     | SelectPropsRowImpl (Array String)
     )
 
@@ -194,18 +194,18 @@ baseSelectToImpl :: forall items itemsImpl otherPropsRow otherPropsRowList other
   => Lacks "onChange"  otherPropsRow
   => ToFFI items itemsImpl
   => ((items -> Effect Unit) -> (EffectFn1 (Nullable itemsImpl) Unit))
-  -> { filter         :: Maybe (SelectItem -> Boolean)
-     , onChange       :: Maybe (items  -> Effect Unit)
+  -> { filter   :: Optional (SelectItem -> Boolean)
+     , onChange :: Optional (items  -> Effect Unit)
      | ClearablePropsRow + otherPropsRow
      }
-  -> { filter         :: Nullable (SelectItemImpl -> Boolean)
-     , onChange       :: Nullable (EffectFn1 (Nullable itemsImpl) Unit)
+  -> { filter   :: OptionalImpl (SelectItemImpl -> Boolean)
+     , onChange :: OptionalImpl (EffectFn1 (Nullable itemsImpl) Unit)
      | ClearablePropsRowImpl + otherPropsRowImpl
      }
 baseSelectToImpl onChangeToNative props =
   let otherProps =
-        { filter:   toNullable $ (\f -> f <<< fromNative) <$> props.filter
-        , onChange: toNullable $ onChangeToNative <$> props.onChange
+        { filter:   toOptionalImpl $ (\f -> f <<< fromNative) <$> props.filter
+        , onChange: toOptionalImpl $ onChangeToNative <$> props.onChange
         }
 
       rest = toNative

@@ -19,23 +19,23 @@ foreign import checkboxComponent :: ReactComponent CheckboxPropsImpl
 type CheckboxProps =
   CheckableFieldComponent
     ( disabled      :: Boolean
-    , icon          :: Maybe ({ indeterminate :: Boolean, className :: String } -> JSX)
-    , iconColor     :: Maybe MantineColor
-    , indeterminate :: Maybe Boolean
+    , icon          :: Optional ({ indeterminate :: Boolean, className :: String } -> JSX)
+    , iconColor     :: Optional MantineColor
+    , indeterminate :: Optional Boolean
     )
 
 type CheckboxPropsImpl =
   CheckableFieldComponentImpl
     ( disabled      :: Boolean
-    , icon          :: Nullable ({ indeterminate :: Boolean, className :: String } -> JSX)
-    , iconColor     :: Nullable MantineColorImpl
-    , indeterminate :: Nullable Boolean
+    , icon          :: OptionalImpl ({ indeterminate :: Boolean, className :: String } -> JSX)
+    , iconColor     :: OptionalImpl MantineColorImpl
+    , indeterminate :: OptionalImpl Boolean
     )
 
 toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
 toNativeCheckbox props =
   let rest = toNative <<< delete (Proxy :: Proxy "icon")
-   in { icon: toNullable props.icon } `union` rest props
+   in { icon: toOptionalImpl props.icon } `union` rest props
 
 checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
 checkboxGroup = mkTrivialComponent checkboxGroupComponent

@@ -23,16 +23,16 @@ foreign import chipComponent :: ReactComponent ChipPropsImpl
 type ChipProps =
   CheckableComponent
     ( children :: Array JSX
-    , icon     :: Maybe JSX
-    , type     :: Maybe ChipType
+    , icon     :: Optional JSX
+    , type     :: Optional ChipType
     , variant  :: ChipVariant
     )
 
 type ChipPropsImpl =
   CheckableComponentImpl
     ( children :: Array JSX
-    , icon     :: Nullable JSX
-    , type     :: Nullable ChipTypeImpl
+    , icon     :: OptionalImpl JSX
+    , type     :: OptionalImpl ChipTypeImpl
     , variant  :: ChipVariantImpl
     )
 

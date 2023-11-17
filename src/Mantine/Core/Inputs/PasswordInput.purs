@@ -14,30 +14,30 @@ foreign import passwordInputComponent :: ReactComponent PasswordInputPropsImpl
 
 type PasswordInputProps =
   InputComponent
-    ( defaultVisible        :: Maybe Boolean
+    ( defaultVisible        :: Optional Boolean
     , onChange              :: InputHandler
     , onVisibilityChange    :: ValueHandler Boolean
     , toggleFocusable       :: Boolean
-    , value                 :: Maybe String
-    , visibilityToggleIcon  :: Maybe ({ reveal :: Boolean, size :: Number } -> JSX)
-    , visibilityToggleLabel :: Maybe String
-    , visible               :: Maybe Boolean
+    , value                 :: Optional String
+    , visibilityToggleIcon  :: Optional ({ reveal :: Boolean, size :: Number } -> JSX)
+    , visibilityToggleLabel :: Optional String
+    , visible               :: Optional Boolean
     )
 
 type PasswordInputPropsImpl =
   InputComponentImpl
-    ( defaultVisible              :: Nullable Boolean
+    ( defaultVisible              :: OptionalImpl Boolean
     , onChange                    :: InputHandlerImpl
     , onVisibilityChange          :: ValueHandlerImpl Boolean
-    , value                       :: Nullable String
+    , value                       :: OptionalImpl String
     , visibilityToggleButtonProps :: ToggleButtonProps
-    , visibilityToggleIcon        :: Nullable ({ reveal :: Boolean, size :: Number } -> JSX)
-    , visible                     :: Nullable Boolean
+    , visibilityToggleIcon        :: OptionalImpl ({ reveal :: Boolean, size :: Number } -> JSX)
+    , visible                     :: OptionalImpl Boolean
     )
 
 type ToggleButtonProps =
   { toggleTabIndex        :: Number
-  , visibilityToggleLabel :: Nullable String
+  , visibilityToggleLabel :: OptionalImpl String
   }
 
 passwordInputToImpl :: PasswordInputProps -> PasswordInputPropsImpl
@@ -46,9 +46,9 @@ passwordInputToImpl props =
          <<< delete (Proxy :: Proxy "toggleFocusable")
          <<< delete (Proxy :: Proxy "visibilityToggleIcon")
          <<< delete (Proxy :: Proxy "visibilityToggleLabel")
-      visibilityToggleIcon = toNullable props.visibilityToggleIcon
+      visibilityToggleIcon = toOptionalImpl props.visibilityToggleIcon
       visibilityToggleButtonProps =
         { toggleTabIndex: if props.toggleFocusable then 0.0 else -1.0
-        , visibilityToggleLabel: toNullable props.visibilityToggleLabel
+        , visibilityToggleLabel: toOptionalImpl props.visibilityToggleLabel
         }
    in { visibilityToggleButtonProps, visibilityToggleIcon } `union` rest props

@@ -1,20 +1,12 @@
 import * as React from 'react';
 import { FileButton } from '@mantine/core';
 
-function removeEmpty(obj) {
-  return Object.fromEntries(
-    Object.entries(obj)
-      .filter(([_, v]) => typeof v === 'function' || v !== null)
-      .map(([k, v]) => [k, v])
-  );
-}
-
 export function fileButtonComponent(props) {
-  props.multiple = false;
-  return React.createElement(FileButton, removeEmpty(props), props.children);
+  const props_ = Object.assign({}, props, { multiple: false });
+  return React.createElement(FileButton, props_, props_.children);
 }
 
 export function multipleFileButtonComponent(props) {
-  props.multiple = true;
-  return React.createElement(FileButton, removeEmpty(props), props.children);
+  const props_ = Object.assign({}, props, { multiple: true });
+  return React.createElement(FileButton, props_, props_.children);
 }

@@ -17,19 +17,19 @@ foreign import blockquoteComponent :: ReactComponent BlockquotePropsImpl
 type BlockquoteProps =
   MantineComponent
     ( children :: Array JSX
-    , cite     :: Maybe JSX
-    , color    :: Maybe MantineColor
-    , icon     :: Maybe JSX
-    , iconSize :: Maybe MantineNumberSize
-    , radius   :: Maybe MantineNumberSize
+    , cite     :: Optional JSX
+    , color    :: Optional MantineColor
+    , icon     :: Optional JSX
+    , iconSize :: Optional MantineNumberSize
+    , radius   :: Optional MantineNumberSize
     )
 
 type BlockquotePropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , cite     :: Nullable JSX
-    , color    :: Nullable MantineColorImpl
-    , icon     :: Nullable JSX
-    , iconSize :: Nullable MantineNumberSizeImpl
-    , radius   :: Nullable MantineNumberSizeImpl
+    , cite     :: OptionalImpl JSX
+    , color    :: OptionalImpl MantineColorImpl
+    , icon     :: OptionalImpl JSX
+    , iconSize :: OptionalImpl MantineNumberSizeImpl
+    , radius   :: OptionalImpl MantineNumberSizeImpl
     )

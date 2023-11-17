@@ -16,18 +16,18 @@ type CloseButtonProps =
   MantineComponent
     ( children :: Array JSX
     , disabled :: Boolean
-    , iconSize :: Maybe MantineNumberSize
-    , onClick  :: Maybe EventHandler
-    , radius   :: Maybe MantineNumberSize
-    , size     :: Maybe MantineNumberSize
+    , iconSize :: Optional MantineNumberSize
+    , onClick  :: Optional EventHandler
+    , radius   :: Optional MantineNumberSize
+    , size     :: Optional MantineNumberSize
     )
 
 type CloseButtonPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
     , disabled :: Boolean
-    , iconSize :: Nullable MantineNumberSizeImpl
-    , onClick  :: Nullable EventHandler
-    , radius   :: Nullable MantineNumberSizeImpl
-    , size     :: Nullable MantineNumberSizeImpl
+    , iconSize :: OptionalImpl MantineNumberSizeImpl
+    , onClick  :: OptionalImpl EventHandler
+    , radius   :: OptionalImpl MantineNumberSizeImpl
+    , size     :: OptionalImpl MantineNumberSizeImpl
     )

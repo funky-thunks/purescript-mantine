@@ -19,8 +19,8 @@ foreign import switchComponent :: ReactComponent SwitchPropsImpl
 
 type SwitchProps =
   CheckableFieldComponent
-    ( innerLabels :: Maybe SwitchInnerLabels
-    , thumbIcon   :: Maybe JSX
+    ( innerLabels :: Optional SwitchInnerLabels
+    , thumbIcon   :: Optional JSX
     )
 
 type SwitchInnerLabels =
@@ -30,9 +30,9 @@ type SwitchInnerLabels =
 
 type SwitchPropsImpl =
   CheckableFieldComponentImpl
-    ( offLabel  :: Nullable JSX
-    , onLabel   :: Nullable JSX
-    , thumbIcon :: Nullable JSX
+    ( offLabel  :: OptionalImpl JSX
+    , onLabel   :: OptionalImpl JSX
+    , thumbIcon :: OptionalImpl JSX
     )
 
 switchToImpl :: SwitchProps -> SwitchPropsImpl

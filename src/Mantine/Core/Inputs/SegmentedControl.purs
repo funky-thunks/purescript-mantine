@@ -14,24 +14,24 @@ foreign import segmentedControlComponent :: ReactComponent SegmentedControlProps
 
 type SegmentedControlProps =
   MantineComponent
-    ( color                    :: Maybe MantineColor
+    ( color                    :: Optional MantineColor
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
     , items                    :: Array SegmentedControlItem
-    , name                     :: Maybe String
+    , name                     :: Optional String
     , orientation              :: SegmentedControlOrientation
-    , radius                   :: Maybe MantineNumberSize
+    , radius                   :: Optional MantineNumberSize
     , readOnly                 :: Boolean
-    , size                     :: Maybe MantineSize
+    , size                     :: Optional MantineSize
     , transitionDuration       :: Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
     | Controlled String
     )
 
 type SegmentedControlItem =
   { value    :: String
   , label    :: JSX
-  , disabled :: Maybe Boolean
+  , disabled :: Optional Boolean
   }
 
 data SegmentedControlOrientation
@@ -50,24 +50,24 @@ instance ToFFI SegmentedControlOrientation SegmentedControlOrientationImpl where
 
 type SegmentedControlPropsImpl =
   MantineComponentImpl
-    ( color                    :: Nullable MantineColorImpl
+    ( color                    :: OptionalImpl MantineColorImpl
     , data                     :: Array SegmentedControlItemImpl
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
-    , name                     :: Nullable String
+    , name                     :: OptionalImpl String
     , orientation              :: SegmentedControlOrientationImpl
-    , radius                   :: Nullable MantineNumberSizeImpl
+    , radius                   :: OptionalImpl MantineNumberSizeImpl
     , readOnly                 :: Boolean
-    , size                     :: Nullable MantineSizeImpl
+    , size                     :: OptionalImpl MantineSizeImpl
     , transitionDuration       :: MillisecondsImpl
-    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
+    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
     | ControlledImpl String
     )
 
 type SegmentedControlItemImpl =
   { value    :: String
   , label    :: JSX
-  , disabled :: Nullable Boolean
+  , disabled :: OptionalImpl Boolean
   }
 
 segmentedControlToImpl :: SegmentedControlProps -> SegmentedControlPropsImpl

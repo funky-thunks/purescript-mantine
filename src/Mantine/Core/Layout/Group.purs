@@ -16,22 +16,22 @@ foreign import groupComponent :: ReactComponent GroupPropsImpl
 
 type GroupProps =
   MantineComponent
-    ( align               :: Maybe AlignItems
+    ( align               :: Optional AlignItems
     , children            :: Array JSX
-    , gap                 :: Maybe MantineSpacing
+    , gap                 :: Optional MantineSpacing
     , grow                :: Boolean
-    , justify             :: Maybe JustifyContent
+    , justify             :: Optional JustifyContent
     , preventGrowOverflow :: Boolean
     , wrap                :: FlexWrap
     )
 
 type GroupPropsImpl =
   MantineComponentImpl
-    ( align               :: Nullable AlignItemsImpl
+    ( align               :: OptionalImpl AlignItemsImpl
     , children            :: Array JSX
-    , gap                 :: Nullable MantineSpacingImpl
+    , gap                 :: OptionalImpl MantineSpacingImpl
     , grow                :: Boolean
-    , justify             :: Nullable JustifyContentImpl
+    , justify             :: OptionalImpl JustifyContentImpl
     , preventGrowOverflow :: Boolean
     , wrap                :: FlexWrapImpl
     )

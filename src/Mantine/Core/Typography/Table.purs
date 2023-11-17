@@ -55,16 +55,16 @@ foreign import tableComponent :: ReactComponent TablePropsImpl
 
 type TableProps =
   WithChildren
-    ( borderColor           :: Maybe MantineColor
+    ( borderColor           :: Optional MantineColor
     , captionSide           :: TableCaptionSide
     , highlightOnHover      :: Boolean
-    , highlightOnHoverColor :: Maybe MantineColor
+    , highlightOnHoverColor :: Optional MantineColor
     , horizontalSpacing     :: MantineNumberSize
     , layout                :: TableLayout
     , stickyHeader          :: Boolean
-    , stickyHeaderOffset    :: Maybe MantineNumberSize
+    , stickyHeaderOffset    :: Optional MantineNumberSize
     , striped               :: Boolean
-    , stripedColor          :: Maybe MantineColor
+    , stripedColor          :: Optional MantineColor
     , verticalSpacing       :: MantineNumberSize
     , withColumnBorders     :: Boolean
     , withRowBorders        :: Boolean
@@ -94,16 +94,16 @@ instance ToFFI TableCaptionSide TableCaptionSideImpl where
 
 type TablePropsImpl =
   WithChildrenImpl
-    ( borderColor           :: Nullable MantineColorImpl
+    ( borderColor           :: OptionalImpl MantineColorImpl
     , captionSide           :: TableCaptionSideImpl
     , highlightOnHover      :: Boolean
-    , highlightOnHoverColor :: Nullable MantineColorImpl
+    , highlightOnHoverColor :: OptionalImpl MantineColorImpl
     , horizontalSpacing     :: MantineNumberSizeImpl
     , layout                :: TableLayoutImpl
     , stickyHeader          :: Boolean
-    , stickyHeaderOffset    :: Nullable MantineNumberSizeImpl
+    , stickyHeaderOffset    :: OptionalImpl MantineNumberSizeImpl
     , striped               :: Boolean
-    , stripedColor          :: Nullable MantineColorImpl
+    , stripedColor          :: OptionalImpl MantineColorImpl
     , verticalSpacing       :: MantineNumberSizeImpl
     , withColumnBorders     :: Boolean
     , withRowBorders        :: Boolean

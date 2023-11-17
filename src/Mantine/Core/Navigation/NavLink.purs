@@ -17,19 +17,19 @@ type NavLinkProps =
   MantineComponent
     ( active                      :: Boolean
     , children                    :: Array JSX
-    , childrenOffset              :: Maybe MantineNumberSize
-    , color                       :: Maybe MantineColor
+    , childrenOffset              :: Optional MantineNumberSize
+    , color                       :: Optional MantineColor
     , content                     :: NavLink
     , defaultOpened               :: Boolean
-    , description                 :: Maybe JSX
+    , description                 :: Optional JSX
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
     , label                       :: JSX
-    , leftSection                 :: Maybe JSX
+    , leftSection                 :: Optional JSX
     , noWrap                      :: Boolean
     , onChange                    :: ValueHandler Boolean
     , opened                      :: Boolean
-    , rightSection                :: Maybe JSX
+    , rightSection                :: Optional JSX
     , variant                     :: NavLinkVariant
     )
 
@@ -46,21 +46,21 @@ type NavLinkPropsImpl =
   MantineComponentImpl
     ( active                      :: Boolean
     , children                    :: Array JSX
-    , childrenOffset              :: Nullable MantineNumberSizeImpl
-    , color                       :: Nullable MantineColorImpl
+    , childrenOffset              :: OptionalImpl MantineNumberSizeImpl
+    , color                       :: OptionalImpl MantineColorImpl
     , component                   :: String
     , defaultOpened               :: Boolean
-    , description                 :: Nullable JSX
+    , description                 :: OptionalImpl JSX
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
-    , href                        :: Nullable String
+    , href                        :: OptionalImpl String
     , label                       :: JSX
-    , leftSection                 :: Nullable JSX
+    , leftSection                 :: OptionalImpl JSX
     , noWrap                      :: Boolean
     , onChange                    :: ValueHandlerImpl Boolean
-    , onClick                     :: Nullable EventHandler
+    , onClick                     :: OptionalImpl EventHandler
     , opened                      :: Boolean
-    , rightSection                :: Nullable JSX
+    , rightSection                :: OptionalImpl JSX
     , variant                     :: NavLinkVariantImpl
     )
 
@@ -83,6 +83,6 @@ navLinkToImpl :: NavLinkProps -> NavLinkPropsImpl
 navLinkToImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "content")
       navigationProps = case props.content of
-        NavLink   href    -> { component: "a",      href: Just href, onClick: Nothing      }
-        NavButton onClick -> { component: "button", href: Nothing  , onClick: Just onClick }
+        NavLink   href    -> { component: "a",      href: pure href,        onClick: Optional Nothing }
+        NavButton onClick -> { component: "button", href: Optional Nothing, onClick: pure onClick     }
    in toNative navigationProps `union` rest props

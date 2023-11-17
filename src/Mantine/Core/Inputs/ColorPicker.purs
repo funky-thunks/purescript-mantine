@@ -20,7 +20,7 @@ foreign import colorPickerComponent :: ReactComponent ColorPickerPropsImpl
 type ColorPicking =
   ( format         :: ColorFormat
   , onChangeEnd    :: ValueHandler ColorFormula
-  , swatches       :: Maybe (Array ColorFormula)
+  , swatches       :: Optional (Array ColorFormula)
   , swatchesPerRow :: Int
   , withPicker     :: Boolean
   | Controlled ColorFormula
@@ -28,12 +28,12 @@ type ColorPicking =
 
 type ColorPickerProps =
   MantineComponent
-    ( alphaLabel         :: Maybe String
+    ( alphaLabel         :: Optional String
     , focusable          :: Boolean
     , fullWidth          :: Boolean
-    , hueLabel           :: Maybe String
+    , hueLabel           :: Optional String
     , onColorSwatchClick :: ValueHandler ColorFormula
-    , saturationLabel    :: Maybe String
+    , saturationLabel    :: Optional String
     , size               :: MantineSize
     | ColorPicking
     )
@@ -88,7 +88,7 @@ instance FromFFI String ColorFormula where fromNative = ColorFormula
 type ColorPickingImpl =
   ( format         :: ColorFormatImpl
   , onChangeEnd    :: ValueHandlerImpl ColorFormulaImpl
-  , swatches       :: Nullable (Array ColorFormulaImpl)
+  , swatches       :: OptionalImpl (Array ColorFormulaImpl)
   , swatchesPerRow :: Number
   , withPicker     :: Boolean
   | ControlledImpl ColorFormulaImpl
@@ -96,12 +96,12 @@ type ColorPickingImpl =
 
 type ColorPickerPropsImpl =
   MantineComponentImpl
-    ( alphaLabel         :: Nullable String
+    ( alphaLabel         :: OptionalImpl String
     , focusable          :: Boolean
     , fullWidth          :: Boolean
-    , hueLabel           :: Nullable String
+    , hueLabel           :: OptionalImpl String
     , onColorSwatchClick :: ValueHandlerImpl ColorFormulaImpl
-    , saturationLabel    :: Nullable String
+    , saturationLabel    :: OptionalImpl String
     , size               :: MantineSizeImpl
     | ColorPickingImpl
     )

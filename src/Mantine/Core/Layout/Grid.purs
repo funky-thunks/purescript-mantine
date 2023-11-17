@@ -26,7 +26,7 @@ type GridProps =
     , children :: Array JSX
     , columns  :: Int
     , grow     :: Boolean
-    , gutter   :: Maybe (FixedOrResponsive MantineSpacing)
+    , gutter   :: Optional (FixedOrResponsive MantineSpacing)
     , justify  :: JustifyContent
     )
 
@@ -44,7 +44,7 @@ type GridPropsImpl =
     , children :: Array JSX
     , columns  :: Number
     , grow     :: Boolean
-    , gutter   :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
+    , gutter   :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
     , justify  :: JustifyContentImpl
     )
 
@@ -59,9 +59,9 @@ foreign import gridColComponent :: ReactComponent GridColPropsImpl
 type GridColProps =
   MantineComponent
     ( children :: Array JSX
-    , offset   :: Maybe (FixedOrResponsive Pixels)
-    , order    :: Maybe (FixedOrResponsive Int)
-    , span     :: Maybe (FixedOrResponsive GridColSpan)
+    , offset   :: Optional (FixedOrResponsive Pixels)
+    , order    :: Optional (FixedOrResponsive Int)
+    , span     :: Optional (FixedOrResponsive GridColSpan)
     )
 
 data GridColSpan
@@ -80,7 +80,7 @@ instance ToFFI GridColSpan ColSpanImpl where
 type GridColPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , offset   :: Nullable (FixedOrResponsiveImpl Pixels)
-    , order    :: Nullable (FixedOrResponsiveImpl Number)
-    , span     :: Nullable (FixedOrResponsiveImpl ColSpanImpl)
+    , offset   :: OptionalImpl (FixedOrResponsiveImpl Pixels)
+    , order    :: OptionalImpl (FixedOrResponsiveImpl Number)
+    , span     :: OptionalImpl (FixedOrResponsiveImpl ColSpanImpl)
     )

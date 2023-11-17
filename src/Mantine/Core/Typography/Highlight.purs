@@ -16,9 +16,9 @@ foreign import highlightComponent :: ReactComponent HighlightPropsImpl
 type HighlightProps =
   MantineComponent
     ( children        :: String
-    , color           :: Maybe MantineColor
+    , color           :: Optional MantineColor
     , highlight       :: Array String
-    , highlightStyles :: Maybe Style
+    , highlightStyles :: Optional Style
     , span            :: Boolean
     | TextPropsRow
     )
@@ -26,9 +26,9 @@ type HighlightProps =
 type HighlightPropsImpl =
   MantineComponentImpl
     ( children        :: Array JSX
-    , color           :: Nullable MantineColorImpl
+    , color           :: OptionalImpl MantineColorImpl
     , highlight       :: Array String
-    , highlightStyles :: Nullable Style
+    , highlightStyles :: OptionalImpl Style
     , span            :: Boolean
     | TextPropsImplRow
     )

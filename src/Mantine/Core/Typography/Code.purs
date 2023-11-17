@@ -18,12 +18,12 @@ type CodeProps =
   MantineComponent
     ( block    :: Boolean
     , children :: Array JSX
-    , color    :: Maybe MantineColor
+    , color    :: Optional MantineColor
     )
 
 type CodePropsImpl =
   MantineComponentImpl
     ( block    :: Boolean
     , children :: Array JSX
-    , color    :: Nullable MantineColorImpl
+    , color    :: OptionalImpl MantineColorImpl
     )

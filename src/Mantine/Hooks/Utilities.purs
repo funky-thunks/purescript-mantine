@@ -190,14 +190,14 @@ foreign import useHeadroomImpl :: EffectFn1 UseHeadroomOptionsImpl Boolean
 foreign import data UseHeadroom :: Type -> Type
 
 type UseHeadroomOptions =
-  { fixedAt   :: Maybe Number
+  { fixedAt   :: Optional Number
   , onPin     :: Effect Unit
   , onFix     :: Effect Unit
   , onRelease :: Effect Unit
   }
 
 type UseHeadroomOptionsImpl =
-  { fixedAt   :: Nullable Number
+  { fixedAt   :: OptionalImpl Number
   , onPin     :: Effect Unit
   , onFix     :: Effect Unit
   , onRelease :: Effect Unit
@@ -206,7 +206,7 @@ type UseHeadroomOptionsImpl =
 useHeadroom :: UseHeadroomOptions -> Hook UseHeadroom Boolean
 useHeadroom = mkHook1 useHeadroomImpl
 
-foreign import useOSImpl :: EffectFn1 (Nullable UseOSOptionsImpl) OSImpl
+foreign import useOSImpl :: EffectFn1 (OptionalImpl UseOSOptions) OSImpl
 foreign import data UseOS :: Type -> Type
 
 data OS
@@ -230,13 +230,14 @@ instance FromFFI OSImpl OS where
     _              -> OSUndetermined
 
 type UseOSOptions =
-  { getValueInEffect :: Boolean
-  }
-
-type UseOSOptionsImpl = UseOSOptions
+    { getValueInEffect :: Boolean
+    }
 
 useOS :: Maybe UseOSOptions -> Hook UseOS OS
-useOS = mkHook1 useOSImpl
+useOS = useOS' <<< Optional
+
+useOS' :: Optional UseOSOptions -> Hook UseOS OS
+useOS' = mkHook1 useOSImpl
 
 useOS_ :: Hook UseOS OS
 useOS_ = useOS Nothing

@@ -43,8 +43,8 @@ foreign import titleComponent :: ReactComponent TitlePropsImpl
 type TitleProps =
   MantineComponent
     ( children :: Array JSX
-    , order    :: Maybe TitleOrder
-    , size     :: Maybe MantineNumberSize
+    , order    :: Optional TitleOrder
+    , size     :: Optional MantineNumberSize
     )
 
 data TitleOrder
@@ -69,6 +69,6 @@ instance ToFFI TitleOrder TitleOrderImpl where
 type TitlePropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , order    :: Nullable TitleOrderImpl
-    , size     :: Nullable MantineNumberSizeImpl
+    , order    :: OptionalImpl TitleOrderImpl
+    , size     :: OptionalImpl MantineNumberSizeImpl
     )

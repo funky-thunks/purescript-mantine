@@ -21,13 +21,13 @@ foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
 
 type AutocompleteProps =
   InputComponent
-    ( comboboxProps             :: Maybe ComboboxProps
+    ( comboboxProps             :: Optional ComboboxProps
     , data                      :: Array AutocompleteItem
-    , defaultDropdownOpened     :: Maybe Boolean
-    , dropdownOpened            :: Maybe Boolean
-    , filter                    :: Maybe (String -> AutocompleteItem -> Effect Boolean)
-    , limit                     :: Maybe Int
-    , maxDropdownHeight         :: Maybe (String |+| Number)
+    , defaultDropdownOpened     :: Optional Boolean
+    , dropdownOpened            :: Optional Boolean
+    , filter                    :: Optional (String -> AutocompleteItem -> Effect Boolean)
+    , limit                     :: Optional Int
+    , maxDropdownHeight         :: Optional (String |+| Number)
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandler String
@@ -49,13 +49,13 @@ type AutocompleteItem =
 
 type AutocompletePropsImpl =
   InputComponentImpl
-    ( comboboxProps             :: Nullable ComboboxPropsImpl
+    ( comboboxProps             :: OptionalImpl ComboboxPropsImpl
     , data                      :: Array AutocompleteItem
-    , defaultDropdownOpened     :: Nullable Boolean
-    , dropdownOpened            :: Nullable Boolean
-    , filter                    :: Nullable (EffectFn2 String AutocompleteItem Boolean)
-    , limit                     :: Nullable Number
-    , maxDropdownHeight         :: Nullable (String |+| Number)
+    , defaultDropdownOpened     :: OptionalImpl Boolean
+    , dropdownOpened            :: OptionalImpl Boolean
+    , filter                    :: OptionalImpl (EffectFn2 String AutocompleteItem Boolean)
+    , limit                     :: OptionalImpl Number
+    , maxDropdownHeight         :: OptionalImpl (String |+| Number)
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandlerImpl String
@@ -69,6 +69,6 @@ autocompleteToImpl props =
   let rest = toNative
          <<< delete (Proxy :: Proxy "maxDropdownHeight")
       customProps =
-        { maxDropdownHeight: toNullable props.maxDropdownHeight
+        { maxDropdownHeight: toOptionalImpl props.maxDropdownHeight
         }
    in customProps `union` rest props

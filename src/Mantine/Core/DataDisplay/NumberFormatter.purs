@@ -15,14 +15,14 @@ foreign import numberFormatterComponent :: ReactComponent NumberFormatterPropsIm
 type NumberFormatterProps =
   MantineComponent
     ( allowNegative       :: Boolean
-    , decimalScale        :: Maybe Number
-    , decimalSeparator    :: Maybe String
+    , decimalScale        :: Optional Number
+    , decimalSeparator    :: Optional String
     , fixedDecimalScale   :: Boolean
-    , prefix              :: Maybe String
-    , suffix              :: Maybe String
-    , thousandSeparator   :: Maybe ThousandSeparator
-    , thousandsGroupStyle :: Maybe ThousandsGroupStyle
-    , value               :: Maybe NumberFormatterValue
+    , prefix              :: Optional String
+    , suffix              :: Optional String
+    , thousandSeparator   :: Optional ThousandSeparator
+    , thousandsGroupStyle :: Optional ThousandsGroupStyle
+    , value               :: Optional NumberFormatterValue
     )
 
 data NumberFormatterValue
@@ -39,12 +39,12 @@ instance ToFFI NumberFormatterValue NumberFormatterValueImpl where
 type NumberFormatterPropsImpl =
   MantineComponentImpl
     ( allowNegative       :: Boolean
-    , decimalScale        :: Nullable Number
-    , decimalSeparator    :: Nullable String
+    , decimalScale        :: OptionalImpl Number
+    , decimalSeparator    :: OptionalImpl String
     , fixedDecimalScale   :: Boolean
-    , prefix              :: Nullable String
-    , suffix              :: Nullable String
-    , thousandSeparator   :: Nullable ThousandSeparatorImpl
-    , thousandsGroupStyle :: Nullable ThousandsGroupStyleImpl
-    , value               :: Nullable NumberFormatterValueImpl
+    , prefix              :: OptionalImpl String
+    , suffix              :: OptionalImpl String
+    , thousandSeparator   :: OptionalImpl ThousandSeparatorImpl
+    , thousandsGroupStyle :: OptionalImpl ThousandsGroupStyleImpl
+    , value               :: OptionalImpl NumberFormatterValueImpl
     )

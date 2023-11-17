@@ -14,8 +14,8 @@ foreign import fieldsetComponent :: ReactComponent FieldsetPropsImpl
 type FieldsetProps =
   MantineComponent
     ( children :: Array JSX
-    , legend   :: Maybe JSX
-    , radius   :: Maybe MantineNumberSize
+    , legend   :: Optional JSX
+    , radius   :: Optional MantineNumberSize
     , variant  :: FieldsetVariant
     )
 
@@ -27,8 +27,10 @@ data FieldsetVariant
 instance DefaultValue FieldsetVariant where
   defaultValue = FieldsetVariantDefault
 
-instance ToFFI FieldsetVariant (Nullable String) where
-  toNative = toNative <<< case _ of
+type FieldsetVariantImpl = OptionalImpl String
+
+instance ToFFI FieldsetVariant FieldsetVariantImpl where
+  toNative = toNative <<< Optional <<< case _ of
     FieldsetVariantDefault  -> Nothing
     FieldsetVariantFilled   -> Just "filled"
     FieldsetVariantUnstyled -> Just "unstyled"
@@ -36,7 +38,7 @@ instance ToFFI FieldsetVariant (Nullable String) where
 type FieldsetPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , legend   :: Nullable JSX
-    , radius   :: Nullable MantineNumberSizeImpl
-    , variant  :: Nullable String
+    , legend   :: OptionalImpl JSX
+    , radius   :: OptionalImpl MantineNumberSizeImpl
+    , variant  :: FieldsetVariantImpl
     )

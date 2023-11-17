@@ -6,7 +6,6 @@ module Mantine.Dates.DatesProvider
   ) where
 
 import Mantine.Dates.Prelude
-import Untagged.Union (maybeToUor)
 
 datesProvider :: (DatesProviderProps -> DatesProviderProps) -> JSX
 datesProvider = mkComponent datesProviderComponent datesProviderToImpl defaultValue
@@ -15,10 +14,10 @@ foreign import datesProviderComponent :: ReactComponent DatesProviderPropsImpl
 
 type DatesProviderProps =
   { children       :: Array JSX
-  , locale         :: Maybe Locale
-  , timezone       :: Maybe Timezone
-  , firstDayOfWeek :: Maybe DayOfWeek
-  , weekendDays    :: Maybe (Array DayOfWeek)
+  , locale         :: Optional Locale
+  , timezone       :: Optional Timezone
+  , firstDayOfWeek :: Optional DayOfWeek
+  , weekendDays    :: Optional (Array DayOfWeek)
   }
 
 newtype Locale = Locale String
@@ -37,17 +36,13 @@ type DatesProviderPropsImpl =
   }
 
 type DatesSettingsImpl =
-  { locale         :: UndefinedOr String
-  , firstDayOfWeek :: UndefinedOr Number
-  , weekendDays    :: UndefinedOr (Array Number)
-  , timezone       :: UndefinedOr String
+  { locale         :: OptionalImpl String
+  , firstDayOfWeek :: OptionalImpl Number
+  , weekendDays    :: OptionalImpl (Array Number)
+  , timezone       :: OptionalImpl String
   }
 
 datesProviderToImpl :: DatesProviderProps -> DatesProviderPropsImpl
-datesProviderToImpl { children, locale, firstDayOfWeek, weekendDays, timezone } =
-  let settings = { locale:         maybeToUor (toNative     <$> locale        )
-                 , firstDayOfWeek: maybeToUor (toNative     <$> firstDayOfWeek)
-                 , weekendDays:    maybeToUor (map toNative <$> weekendDays   )
-                 , timezone:       maybeToUor (toNative     <$> timezone      )
-                 }
+datesProviderToImpl props@{ children } =
+  let settings = toNative (delete (Proxy :: Proxy "children") props)
    in { children, settings }

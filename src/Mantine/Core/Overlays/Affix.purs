@@ -22,16 +22,16 @@ foreign import affixComponent :: ReactComponent AffixPropsImpl
 type AffixProps =
   MantineComponent
     ( children     :: Array JSX
-    , position     :: Maybe AffixPosition
+    , position     :: Optional AffixPosition
     , withinPortal :: Boolean
-    , zIndex       :: Maybe ZIndex
+    , zIndex       :: Optional ZIndex
     )
 
 type AffixPosition =
-  { top    :: Maybe Dimension
-  , bottom :: Maybe Dimension
-  , left   :: Maybe Dimension
-  , right  :: Maybe Dimension
+  { top    :: Optional Dimension
+  , bottom :: Optional Dimension
+  , left   :: Optional Dimension
+  , right  :: Optional Dimension
   }
 
 defaultAffixProps :: AffixProps
@@ -40,14 +40,14 @@ defaultAffixProps = defaultMantineComponent { withinPortal: true }
 type AffixPropsImpl =
   MantineComponentImpl
     ( children     :: Array JSX
-    , position     :: Nullable AffixPositionImpl
+    , position     :: OptionalImpl AffixPositionImpl
     , withinPortal :: Boolean
-    , zIndex       :: Nullable ZIndexImpl
+    , zIndex       :: OptionalImpl ZIndexImpl
     )
 
 type AffixPositionImpl =
-  { top    :: Nullable DimensionImpl
-  , bottom :: Nullable DimensionImpl
-  , left   :: Nullable DimensionImpl
-  , right  :: Nullable DimensionImpl
+  { top    :: OptionalImpl DimensionImpl
+  , bottom :: OptionalImpl DimensionImpl
+  , left   :: OptionalImpl DimensionImpl
+  , right  :: OptionalImpl DimensionImpl
   }

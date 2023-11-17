@@ -14,26 +14,26 @@ foreign import overlayComponent :: ReactComponent OverlayPropsImpl
 
 type OverlayProps =
   MantineComponent
-    ( backgroundOpacity :: Maybe Number
-    , blur              :: Maybe Number
+    ( backgroundOpacity :: Optional Number
+    , blur              :: Optional Number
     , center            :: Boolean
     , children          :: Array JSX
-    , color             :: Maybe MantineColor
+    , color             :: Optional MantineColor
     , fixed             :: Boolean
-    , gradient          :: Maybe String
-    , radius            :: Maybe MantineNumberSize
-    , zIndex            :: Maybe ZIndex
+    , gradient          :: Optional String
+    , radius            :: Optional MantineNumberSize
+    , zIndex            :: Optional ZIndex
     )
 
 type OverlayPropsImpl =
   MantineComponentImpl
-    ( backgroundOpacity :: Nullable Number
-    , blur              :: Nullable Number
+    ( backgroundOpacity :: OptionalImpl Number
+    , blur              :: OptionalImpl Number
     , center            :: Boolean
     , children          :: Array JSX
-    , color             :: Nullable MantineColorImpl
+    , color             :: OptionalImpl MantineColorImpl
     , fixed             :: Boolean
-    , gradient          :: Nullable String
-    , radius            :: Nullable MantineNumberSizeImpl
-    , zIndex            :: Nullable ZIndexImpl
+    , gradient          :: OptionalImpl String
+    , radius            :: OptionalImpl MantineNumberSizeImpl
+    , zIndex            :: OptionalImpl ZIndexImpl
     )

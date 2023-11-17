@@ -44,7 +44,7 @@ type ModalProps_ rest =
   ModalComponent
     ( centered   :: Boolean
     , fullScreen :: Boolean
-    , radius     :: Maybe MantineNumberSize
+    , radius     :: Optional MantineNumberSize
     | rest
     )
 
@@ -57,7 +57,7 @@ type ModalPropsImpl_ rest =
   ModalComponentImpl
     ( centered   :: Boolean
     , fullScreen :: Boolean
-    , radius     :: Nullable MantineNumberSizeImpl
+    , radius     :: OptionalImpl MantineNumberSizeImpl
     | rest
     )
 
@@ -74,7 +74,7 @@ foreign import drawerComponent :: ReactComponent DrawerPropsImpl
 type DrawerProps =
   ModalComponent
     ( children         :: Array JSX
-    , closeButtonProps :: Maybe CloseButtonProps
+    , closeButtonProps :: Optional CloseButtonProps
     , position         :: DrawerPosition
     )
 
@@ -102,22 +102,22 @@ instance ToFFI DrawerPosition DrawerPositionImpl where
 type DrawerPropsImpl =
   ModalComponentImpl
     ( children         :: Array JSX
-    , closeButtonProps :: Nullable CloseButtonPropsImpl
+    , closeButtonProps :: OptionalImpl CloseButtonPropsImpl
     , position         :: DrawerPositionImpl
     )
 
 type ModalComponent rest =
   MantineComponent
-    ( id              :: Maybe String
+    ( id              :: Optional String
     , keepMounted     :: Boolean
     , opened          :: Boolean
     , overlayProps    :: OverlayProps
-    , padding         :: Maybe MantineNumberSize
-    , shadow          :: Maybe MantineShadow
-    , size            :: Maybe Dimension
-    , title           :: Maybe JSX
+    , padding         :: Optional MantineNumberSize
+    , shadow          :: Optional MantineShadow
+    , size            :: Optional Dimension
+    , title           :: Optional JSX
     , transitionProps :: ModalTransitionProps
-    , zIndex          :: Maybe ZIndex
+    , zIndex          :: Optional ZIndex
     | ModalNonDefaultable rest
     )
 
@@ -149,16 +149,16 @@ defaultModalComponent =
 
 type ModalComponentImpl rest =
   MantineComponentImpl
-    ( id              :: Nullable String
+    ( id              :: OptionalImpl String
     , keepMounted     :: Boolean
     , opened          :: Boolean
     , overlayProps    :: OverlayPropsImpl
-    , padding         :: Nullable MantineNumberSizeImpl
-    , shadow          :: Nullable MantineShadowImpl
-    , size            :: Nullable DimensionImpl
-    , title           :: Nullable JSX
+    , padding         :: OptionalImpl MantineNumberSizeImpl
+    , shadow          :: OptionalImpl MantineShadowImpl
+    , size            :: OptionalImpl DimensionImpl
+    , title           :: OptionalImpl JSX
     , transitionProps :: ModalTransitionPropsImpl
-    , zIndex          :: Nullable ZIndexImpl
+    , zIndex          :: OptionalImpl ZIndexImpl
     | ModalNonDefaultable rest
     )
 

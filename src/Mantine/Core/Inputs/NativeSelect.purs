@@ -16,12 +16,12 @@ type NativeSelectProps =
   InputComponent
     ( data     :: Array SelectItem
     , onChange :: InputHandler
-    , value    :: Maybe String
+    , value    :: Optional String
     )
 
 type NativeSelectPropsImpl =
   InputComponentImpl
     ( data     :: Array SelectItemImpl
     , onChange :: InputHandlerImpl
-    , value    :: Nullable String
+    , value    :: OptionalImpl String
     )

@@ -22,8 +22,8 @@ type ColorSwatchProps =
     Polymorphic
       ( children   :: Array JSX
       , color      :: MantineColor
-      , radius     :: Maybe MantineNumberSize
-      , size       :: Maybe Pixels
+      , radius     :: Optional MantineNumberSize
+      , size       :: Optional Pixels
       , withShadow :: Boolean
       )
   )
@@ -33,8 +33,8 @@ type ColorSwatchPropsImpl =
     PolymorphicImpl
       ( children   :: Array JSX
       , color      :: MantineColorImpl
-      , radius     :: Nullable MantineNumberSizeImpl
-      , size       :: Nullable PixelsImpl
+      , radius     :: OptionalImpl MantineNumberSizeImpl
+      , size       :: OptionalImpl PixelsImpl
       , withShadow :: Boolean
       )
   )

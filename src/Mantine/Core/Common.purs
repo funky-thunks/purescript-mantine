@@ -84,7 +84,6 @@ import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Natural (Natural)
 import Data.Newtype (class Newtype, unwrap, wrap)
-import Data.Nullable (Nullable)
 import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
@@ -93,7 +92,7 @@ import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
-import Mantine.FFI (class FromFFI, class ToFFI, Optional, fromNative, toNative)
+import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
 import Prim.RowList (class RowToList)
 import React.Basic (ReactComponent, element)
 import React.Basic.Events (EventHandler, handler)
@@ -102,7 +101,7 @@ import React.Basic.DOM.Events (targetChecked, targetValue)
 import React.Basic.Hooks (JSX)
 import Record (merge, union)
 import Type.Row (class Nub, class Union, type (+))
-import Untagged.Union (type (|+|), UndefinedOr, asOneOf, toEither1)
+import Untagged.Union (type (|+|), asOneOf, toEither1)
 
 data MantineColor
   = Dark
@@ -536,7 +535,7 @@ instance ToFFI DimmedOrColor DimmedOrColorImpl where
 type MantineGradient =
   { from  :: MantineColor
   , to    :: MantineColor
-  , angle :: Maybe Degrees
+  , angle :: Optional Degrees
   }
 
 newtype Degrees = Degrees Number
@@ -551,7 +550,7 @@ instance ToFFI Degrees DegreesImpl where toNative = unwrap
 type MantineGradientImpl =
   { from  :: String
   , to    :: String
-  , angle :: Nullable Number
+  , angle :: OptionalImpl Number
   }
 
 type Milliseconds = Number
@@ -638,9 +637,9 @@ instance ToFFI MantineTransitionTimingFunction MantineTransitionTimingFunctionIm
 
 type MantineTransitionPropsImpl = MantineTransitionBaseImpl ()
 type MantineTransitionBaseImpl rest =
-  { transition     :: UndefinedOr String
-  , duration       :: UndefinedOr Number
-  , timingFunction :: UndefinedOr String
+  { transition     :: OptionalImpl String
+  , duration       :: OptionalImpl Number
+  , timingFunction :: OptionalImpl String
   | rest
   }
 
@@ -714,35 +713,35 @@ defaultMantineComponent_ = defaultMantineComponentGeneral defaultValue
 type MantineComponentImpl otherProps = Record (MantineComponentImplRow + otherProps)
 
 type MantineComponentImplRow r =
-  ( m           :: UndefinedOr MantineSizeImpl
-  , mt          :: UndefinedOr MantineSizeImpl
-  , mb          :: UndefinedOr MantineSizeImpl
-  , ml          :: UndefinedOr MantineSizeImpl
-  , mr          :: UndefinedOr MantineSizeImpl
-  , mx          :: UndefinedOr MantineSizeImpl
-  , my          :: UndefinedOr MantineSizeImpl
-  , p           :: UndefinedOr MantineSizeImpl
-  , pt          :: UndefinedOr MantineSizeImpl
-  , pb          :: UndefinedOr MantineSizeImpl
-  , pl          :: UndefinedOr MantineSizeImpl
-  , pr          :: UndefinedOr MantineSizeImpl
-  , px          :: UndefinedOr MantineSizeImpl
-  , py          :: UndefinedOr MantineSizeImpl
-  , w           :: UndefinedOr MantineSizeImpl
-  , miw         :: UndefinedOr MantineSizeImpl
-  , maw         :: UndefinedOr MantineSizeImpl
-  , h           :: UndefinedOr MantineSizeImpl
-  , mih         :: UndefinedOr MantineSizeImpl
-  , mah         :: UndefinedOr MantineSizeImpl
-  , fw          :: UndefinedOr FontWeightImpl
-  , bg          :: UndefinedOr MantineColorImpl
-  , c           :: UndefinedOr MantineColorImpl
-  , className   :: UndefinedOr String
-  , style       :: UndefinedOr CSS
+  ( m           :: OptionalImpl MantineSizeImpl
+  , mt          :: OptionalImpl MantineSizeImpl
+  , mb          :: OptionalImpl MantineSizeImpl
+  , ml          :: OptionalImpl MantineSizeImpl
+  , mr          :: OptionalImpl MantineSizeImpl
+  , mx          :: OptionalImpl MantineSizeImpl
+  , my          :: OptionalImpl MantineSizeImpl
+  , p           :: OptionalImpl MantineSizeImpl
+  , pt          :: OptionalImpl MantineSizeImpl
+  , pb          :: OptionalImpl MantineSizeImpl
+  , pl          :: OptionalImpl MantineSizeImpl
+  , pr          :: OptionalImpl MantineSizeImpl
+  , px          :: OptionalImpl MantineSizeImpl
+  , py          :: OptionalImpl MantineSizeImpl
+  , w           :: OptionalImpl MantineSizeImpl
+  , miw         :: OptionalImpl MantineSizeImpl
+  , maw         :: OptionalImpl MantineSizeImpl
+  , h           :: OptionalImpl MantineSizeImpl
+  , mih         :: OptionalImpl MantineSizeImpl
+  , mah         :: OptionalImpl MantineSizeImpl
+  , fw          :: OptionalImpl FontWeightImpl
+  , bg          :: OptionalImpl MantineColorImpl
+  , c           :: OptionalImpl MantineColorImpl
+  , className   :: OptionalImpl String
+  , style       :: OptionalImpl CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
-  , hiddenFrom  :: UndefinedOr BreakpointImpl
-  , visibleFrom :: UndefinedOr BreakpointImpl
+  , hiddenFrom  :: OptionalImpl BreakpointImpl
+  , visibleFrom :: OptionalImpl BreakpointImpl
   | r
   )
 
@@ -811,33 +810,33 @@ mkTrivialComponent :: forall props foreignProps
 mkTrivialComponent cmpt = mkComponentWithDefault cmpt defaultMantineComponent_
 
 type Polymorphic rest =
-  ( component        :: Maybe String
+  ( component        :: Optional String
   , polymorphicProps :: Object Foreign
   | rest
   )
 
 type PolymorphicImpl rest =
-  ( component        :: Nullable String
+  ( component        :: OptionalImpl String
   , polymorphicProps :: Object Foreign
   | rest
   )
 
 type Responsive value =
   { base :: value
-  , xs   :: Maybe value
-  , sm   :: Maybe value
-  , md   :: Maybe value
-  , lg   :: Maybe value
-  , xl   :: Maybe value
+  , xs   :: Optional value
+  , sm   :: Optional value
+  , md   :: Optional value
+  , lg   :: Optional value
+  , xl   :: Optional value
   }
 
 type ResponsiveImpl value =
   { base :: value
-  , xs   :: Nullable value
-  , sm   :: Nullable value
-  , md   :: Nullable value
-  , lg   :: Nullable value
-  , xl   :: Nullable value
+  , xs   :: OptionalImpl value
+  , sm   :: OptionalImpl value
+  , md   :: OptionalImpl value
+  , lg   :: OptionalImpl value
+  , xl   :: OptionalImpl value
   }
 
 data FixedOrResponsive value
@@ -854,28 +853,28 @@ instance ToFFI ps js => ToFFI (FixedOrResponsive ps) (FixedOrResponsiveImpl js) 
 type PopoverMiddlewares =
   { shift  :: Boolean
   , flip   :: Boolean
-  , inline :: Maybe Boolean
+  , inline :: Optional Boolean
   }
 
 type PopoverMiddlewaresImpl =
   { shift  :: Boolean
   , flip   :: Boolean
-  , inline :: Nullable Boolean
+  , inline :: OptionalImpl Boolean
   }
 
 type Controlled  value = Controlled_ value ()
 type Controlled_ value rest =
-  ( defaultValue :: Maybe        value
+  ( defaultValue :: Optional     value
   , onChange     :: ValueHandler value
-  , value        :: Maybe        value
+  , value        :: Optional     value
   | rest
   )
 
 type ControlledImpl  value = ControlledImpl_ value ()
 type ControlledImpl_ value rest =
-  ( defaultValue :: Nullable         value
+  ( defaultValue :: OptionalImpl     value
   , onChange     :: ValueHandlerImpl value
-  , value        :: Nullable         value
+  , value        :: OptionalImpl     value
   | rest
   )
 

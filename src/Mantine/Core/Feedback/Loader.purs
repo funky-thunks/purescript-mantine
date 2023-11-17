@@ -23,9 +23,9 @@ foreign import loaderComponent :: ReactComponent LoaderPropsImpl
 
 type LoaderProps =
   MantineComponent
-    ( children :: Maybe JSX
-    , color    :: Maybe MantineColor
-    , size     :: Maybe MantineNumberSize
+    ( children :: Optional JSX
+    , color    :: Optional MantineColor
+    , size     :: Optional MantineNumberSize
     , type     :: LoaderType
     )
 
@@ -47,8 +47,8 @@ instance DefaultValue LoaderType where
 
 type LoaderPropsImpl =
   MantineComponentImpl
-    ( children :: Nullable JSX
-    , color    :: Nullable String
-    , size     :: Nullable MantineNumberSizeImpl
+    ( children :: OptionalImpl JSX
+    , color    :: OptionalImpl String
+    , size     :: OptionalImpl MantineNumberSizeImpl
     , type     :: String
     )

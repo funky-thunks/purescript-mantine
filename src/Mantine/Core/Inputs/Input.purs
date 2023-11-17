@@ -53,10 +53,10 @@ data InputVariant
 
 instance DefaultValue InputVariant where defaultValue = InputVariantDefault
 
-type InputVariantImpl = Nullable String
+type InputVariantImpl = OptionalImpl String
 
 instance ToFFI InputVariant InputVariantImpl where
-  toNative = toNative <<< case _ of
+  toNative = toNative <<< Optional <<< case _ of
     InputVariantDefault  -> Nothing
     InputVariantUnstyled -> Just "unstyled"
     InputVariantFilled   -> Just "filled"
@@ -147,37 +147,37 @@ type InputPropsRow = InputPropsRow_ ()
 
 type InputPropsRow_ rest =
   ( disabled                  :: Boolean
-  , leftSection               :: Maybe JSX
-  , leftSectionPointerEvents  :: Maybe PointerEvents
-  , leftSectionWidth          :: Maybe Pixels
+  , leftSection               :: Optional JSX
+  , leftSectionPointerEvents  :: Optional PointerEvents
+  , leftSectionWidth          :: Optional Pixels
   , multiline                 :: Boolean
   , pointer                   :: Boolean
-  , radius                    :: Maybe MantineNumberSize
-  , rightSection              :: Maybe JSX
-  , rightSectionPointerEvents :: Maybe PointerEvents
-  , rightSectionWidth         :: Maybe Pixels
+  , radius                    :: Optional MantineNumberSize
+  , rightSection              :: Optional JSX
+  , rightSectionPointerEvents :: Optional PointerEvents
+  , rightSectionWidth         :: Optional Pixels
   , withAria                  :: Boolean
-  , withErrorStyles           :: Maybe Boolean
+  , withErrorStyles           :: Optional Boolean
   | InputBasePropsRow_ rest
   )
 
 type InputGroupPropsRow items = InputGroupPropsRow_ items ()
 type InputGroupPropsRow_ items rest =
   ( children     :: Array JSX
-  , labelElement :: Maybe InputWrapperElement
+  , labelElement :: Optional InputWrapperElement
   | Controlled_ items + InputBasePropsRow_ rest
   )
 
 type InputBasePropsRow = InputBasePropsRow_ ()
 type InputBasePropsRow_ rest =
-  ( description       :: Maybe JSX
-  , error             :: Maybe JSX
-  , id                :: Maybe String
-  , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
-  , label             :: Maybe JSX
-  , placeholder       :: Maybe String
+  ( description       :: Optional JSX
+  , error             :: Optional JSX
+  , id                :: Optional String
+  , inputWrapperOrder :: Optional (Array InputWrapperOrder)
+  , label             :: Optional JSX
+  , placeholder       :: Optional String
   , required          :: Boolean
-  , size              :: Maybe MantineSize
+  , size              :: Optional MantineSize
   , variant           :: InputVariant
   , withAsterisk      :: Boolean
   | rest
@@ -188,37 +188,37 @@ type InputPropsImpl = MantineComponentImpl InputPropsRowImpl
 type InputPropsRowImpl = InputPropsRowImpl_ ()
 type InputPropsRowImpl_ rest =
   ( disabled                  :: Boolean
-  , leftSection               :: Nullable JSX
-  , leftSectionPointerEvents  :: Nullable PointerEventsImpl
-  , leftSectionWidth          :: Nullable PixelsImpl
+  , leftSection               :: OptionalImpl JSX
+  , leftSectionPointerEvents  :: OptionalImpl PointerEventsImpl
+  , leftSectionWidth          :: OptionalImpl PixelsImpl
   , multiline                 :: Boolean
   , pointer                   :: Boolean
-  , radius                    :: Nullable MantineNumberSizeImpl
-  , rightSection              :: Nullable JSX
-  , rightSectionPointerEvents :: Nullable PointerEventsImpl
-  , rightSectionWidth         :: Nullable PixelsImpl
+  , radius                    :: OptionalImpl MantineNumberSizeImpl
+  , rightSection              :: OptionalImpl JSX
+  , rightSectionPointerEvents :: OptionalImpl PointerEventsImpl
+  , rightSectionWidth         :: OptionalImpl PixelsImpl
   , withAria                  :: Boolean
-  , withErrorStyles           :: Nullable Boolean
+  , withErrorStyles           :: OptionalImpl Boolean
   | InputBasePropsRowImpl_ rest
   )
 
 type InputGroupPropsRowImpl items = InputGroupPropsRowImpl_ items ()
 type InputGroupPropsRowImpl_ items rest =
   ( children     :: Array JSX
-  , labelElement :: Nullable InputWrapperElementImpl
+  , labelElement :: OptionalImpl InputWrapperElementImpl
   | ControlledImpl_ items + InputBasePropsRowImpl_ rest
   )
 
 type InputBasePropsRowImpl = InputBasePropsRowImpl_ ()
 type InputBasePropsRowImpl_ rest =
-  ( description       :: Nullable JSX
-  , error             :: Nullable JSX
-  , id                :: Nullable String
-  , inputWrapperOrder :: Nullable (Array InputWrapperOrderImpl)
-  , label             :: Nullable JSX
-  , placeholder       :: Nullable String
+  ( description       :: OptionalImpl JSX
+  , error             :: OptionalImpl JSX
+  , id                :: OptionalImpl String
+  , inputWrapperOrder :: OptionalImpl (Array InputWrapperOrderImpl)
+  , label             :: OptionalImpl JSX
+  , placeholder       :: OptionalImpl String
   , required          :: Boolean
-  , size              :: Nullable MantineSizeImpl
+  , size              :: OptionalImpl MantineSizeImpl
   , variant           :: InputVariantImpl
   , withAsterisk      :: Boolean
   | rest
@@ -239,14 +239,14 @@ type InputWrapperProps =
   MantineComponent (
     WithInputContainer
       ( children          :: Array JSX
-      , description       :: Maybe JSX
-      , error             :: Maybe JSX
-      , id                :: Maybe String
-      , inputWrapperOrder :: Maybe (Array InputWrapperOrder)
-      , label             :: Maybe JSX
-      , labelElement      :: Maybe InputWrapperElement
+      , description       :: Optional JSX
+      , error             :: Optional JSX
+      , id                :: Optional String
+      , inputWrapperOrder :: Optional (Array InputWrapperOrder)
+      , label             :: Optional JSX
+      , labelElement      :: Optional InputWrapperElement
       , required          :: Boolean
-      , size              :: Maybe MantineSize
+      , size              :: Optional MantineSize
       , withAsterisk      :: Boolean
       )
   )
@@ -264,14 +264,14 @@ type InputWrapperPropsImpl =
   MantineComponentImpl (
     WithInputContainerImpl
       ( children          :: Array JSX
-      , description       :: Nullable JSX
-      , error             :: Nullable JSX
-      , id                :: Nullable String
-      , inputWrapperOrder :: Nullable (Array InputWrapperOrderImpl)
-      , label             :: Nullable JSX
-      , labelElement      :: Nullable InputWrapperElementImpl
+      , description       :: OptionalImpl JSX
+      , error             :: OptionalImpl JSX
+      , id                :: OptionalImpl String
+      , inputWrapperOrder :: OptionalImpl (Array InputWrapperOrderImpl)
+      , label             :: OptionalImpl JSX
+      , labelElement      :: OptionalImpl InputWrapperElementImpl
       , required          :: Boolean
-      , size              :: Nullable MantineSizeImpl
+      , size              :: OptionalImpl MantineSizeImpl
       , withAsterisk      :: Boolean
       )
   )
@@ -284,17 +284,17 @@ foreign import inputLabelComponent :: ReactComponent InputLabelPropsImpl
 type InputLabelProps =
   MantineComponent
     ( children     :: Array JSX
-    , labelElement :: Maybe InputWrapperElement
+    , labelElement :: Optional InputWrapperElement
     , required     :: Boolean
-    , size         :: Maybe MantineSize
+    , size         :: Optional MantineSize
     )
 
 type InputLabelPropsImpl =
   MantineComponentImpl
     ( children     :: Array JSX
-    , labelElement :: Nullable InputWrapperElementImpl
+    , labelElement :: OptionalImpl InputWrapperElementImpl
     , required     :: Boolean
-    , size         :: Nullable MantineSizeImpl
+    , size         :: OptionalImpl MantineSizeImpl
     )
 
 inputDescription :: (InputDescriptionProps -> InputDescriptionProps) -> JSX
@@ -305,13 +305,13 @@ foreign import inputDescriptionComponent :: ReactComponent InputDescriptionProps
 type InputDescriptionProps =
   MantineComponent
     ( children :: Array JSX
-    , size     :: Maybe MantineSize
+    , size     :: Optional MantineSize
     )
 
 type InputDescriptionPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , size     :: Nullable MantineSizeImpl
+    , size     :: OptionalImpl MantineSizeImpl
     )
 
 inputError :: (InputErrorProps -> InputErrorProps) -> JSX
@@ -322,22 +322,22 @@ foreign import inputErrorComponent :: ReactComponent InputErrorPropsImpl
 type InputErrorProps =
   MantineComponent
     ( children :: Array JSX
-    , size     :: Maybe MantineSize
+    , size     :: Optional MantineSize
     )
 
 type InputErrorPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , size     :: Nullable MantineSizeImpl
+    , size     :: OptionalImpl MantineSizeImpl
     )
 
 type WithInputContainer rest =
-  ( inputContainer :: Maybe (JSX -> JSX)
+  ( inputContainer :: Optional (JSX -> JSX)
   | rest
   )
 
 type WithInputContainerImpl rest =
-  ( inputContainer :: Nullable (JSX -> JSX)
+  ( inputContainer :: OptionalImpl (JSX -> JSX)
   | rest
   )
 

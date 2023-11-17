@@ -18,14 +18,14 @@ foreign import radioComponent :: ReactComponent RadioPropsImpl
 
 type RadioProps =
   CheckableFieldComponent
-    ( icon      :: Maybe JSX
-    , iconColor :: Maybe MantineColor
+    ( icon      :: Optional JSX
+    , iconColor :: Optional MantineColor
     )
 
 type RadioPropsImpl =
   CheckableFieldComponentImpl
-    ( icon      :: Nullable JSX
-    , iconColor :: Nullable MantineColorImpl
+    ( icon      :: OptionalImpl JSX
+    , iconColor :: OptionalImpl MantineColorImpl
     )
 
 radioGroup :: (RadioGroupProps -> RadioGroupProps) -> JSX
@@ -36,5 +36,5 @@ radioGroup_ children = radioGroup _ { children = children }
 
 foreign import radioGroupComponent :: ReactComponent RadioGroupPropsImpl
 
-type RadioGroupProps     = InputGroupComponent     String (name :: Maybe    String)
-type RadioGroupPropsImpl = InputGroupComponentImpl String (name :: Nullable String)
+type RadioGroupProps     = InputGroupComponent     String (name :: Optional     String)
+type RadioGroupPropsImpl = InputGroupComponentImpl String (name :: OptionalImpl String)

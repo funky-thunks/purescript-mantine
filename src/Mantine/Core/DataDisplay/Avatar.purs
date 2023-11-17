@@ -20,12 +20,12 @@ foreign import avatarComponent :: ReactComponent AvatarPropsImpl
 
 type AvatarProps =
   MantineComponent
-    ( alt      :: Maybe String
+    ( alt      :: Optional String
     , children :: Array JSX
-    , color    :: Maybe MantineColor
+    , color    :: Optional MantineColor
     , radius   :: MantineNumberSize
     , size     :: MantineNumberSize
-    , src      :: Maybe String
+    , src      :: Optional String
     , variant  :: AvatarVariant
     )
 
@@ -61,21 +61,21 @@ defaultAvatarProps =
 
 type AvatarPropsImpl =
   MantineComponentImpl
-    ( alt      :: Nullable String
+    ( alt      :: OptionalImpl String
     , children :: Array JSX
-    , color    :: Nullable MantineColorImpl
-    , gradient :: Nullable MantineGradientImpl
+    , color    :: OptionalImpl MantineColorImpl
+    , gradient :: OptionalImpl MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
-    , src      :: Nullable String
+    , src      :: OptionalImpl String
     , variant  :: AvatarVariantImpl
     )
 
 avatarToImpl :: AvatarProps -> AvatarPropsImpl
 avatarToImpl props = toNative (props `union` { gradient: getGradient props.variant })
 
-getGradient :: AvatarVariant -> Maybe MantineGradient
-getGradient = case _ of
+getGradient :: AvatarVariant -> Optional MantineGradient
+getGradient = Optional <<< case _ of
   AvatarVariantGradient g -> pure g
   _                       -> Nothing
 
@@ -87,11 +87,11 @@ foreign import avatarGroupComponent :: ReactComponent AvatarGroupPropsImpl
 type AvatarGroupProps =
   MantineComponent
     ( children :: Array JSX
-    , spacing  :: Maybe MantineNumberSize
+    , spacing  :: Optional MantineNumberSize
     )
 
 type AvatarGroupPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , spacing  :: Nullable MantineNumberSizeImpl
+    , spacing  :: OptionalImpl MantineNumberSizeImpl
     )

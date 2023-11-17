@@ -6,11 +6,11 @@ module Mantine.Core.Inputs.ClearButtonProps
 import Mantine.Core.Prelude
 
 type ClearButtonProps =
-  { "aria-label" :: Maybe String
-  , tabIndex     :: Maybe Int
+  { "aria-label" :: Optional String
+  , tabIndex     :: Optional Int
   }
 
 type ClearButtonPropsImpl =
-  { "aria-label" :: Nullable String
-  , tabIndex     :: Nullable Number
+  { "aria-label" :: OptionalImpl String
+  , tabIndex     :: OptionalImpl Number
   }

@@ -5,6 +5,8 @@ module Mantine.FFI
   , recordToNative
 
   , Optional(..)
+  , OptionalImpl
+  , toOptionalImpl
 
   , class FromFFI
   , fromNative
@@ -24,6 +26,7 @@ import Data.Int (toNumber)
 import Data.JSDate (JSDate)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
+import Data.Show (class Show)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
 import Effect.Aff (Aff)
@@ -40,7 +43,7 @@ import React.Basic.Events (EventHandler)
 import React.Basic.Hooks (JSX)
 import Record (delete, get, insert)
 import Type.Proxy (Proxy(..))
-import Untagged.Union (class InOneOf, type (|+|), UndefinedOr, asOneOf, maybeToUor)
+import Untagged.Union (class InOneOf, type (|+|), UndefinedOr, asOneOf, maybeToUor, uorToMaybe)
 import Web.File.File (File)
 import Web.HTML (HTMLElement)
 
@@ -76,6 +79,7 @@ instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
 
 newtype Optional v = Optional (Maybe v)
 
+derive newtype instance Show v => Show (Optional v)
 derive newtype instance Functor       Optional
 derive newtype instance Apply         Optional
 derive newtype instance Applicative   Optional
@@ -83,8 +87,19 @@ derive newtype instance Bind          Optional
 derive newtype instance Monad         Optional
 derive newtype instance DefaultValue (Optional v)
 
-instance ToFFI abstract native => ToFFI (Optional abstract) (UndefinedOr native) where
-  toNative (Optional m) = maybeToUor (map toNative m)
+type OptionalImpl v = UndefinedOr v
+
+toOptionalImpl :: forall v. Optional v -> OptionalImpl v
+toOptionalImpl (Optional m) = maybeToUor m
+
+instance ToFFI abstract native => ToFFI (Optional abstract) (OptionalImpl native) where
+  toNative = toOptionalImpl <<< map toNative
+
+fromOptionalImpl :: forall v. OptionalImpl v -> Optional v
+fromOptionalImpl = Optional <<< uorToMaybe
+
+instance FromFFI native abstract => FromFFI (OptionalImpl native) (Optional abstract) where
+  fromNative = map fromNative <<< fromOptionalImpl
 
 instance ToFFI abstract native => ToFFI (Object abstract) (Object native) where
   toNative = map toNative

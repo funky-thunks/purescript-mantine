@@ -17,15 +17,15 @@ foreign import simpleGridComponent :: ReactComponent SimpleGridPropsImpl
 type SimpleGridProps =
   MantineComponent
     ( children        :: Array JSX
-    , cols            :: Maybe (FixedOrResponsive Int)
-    , spacing         :: Maybe (FixedOrResponsive MantineSpacing)
-    , verticalSpacing :: Maybe (FixedOrResponsive MantineSpacing)
+    , cols            :: Optional (FixedOrResponsive Int)
+    , spacing         :: Optional (FixedOrResponsive MantineSpacing)
+    , verticalSpacing :: Optional (FixedOrResponsive MantineSpacing)
     )
 
 type SimpleGridPropsImpl =
   MantineComponentImpl
     ( children        :: Array JSX
-    , cols            :: Nullable (FixedOrResponsiveImpl Number)
-    , spacing         :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
-    , verticalSpacing :: Nullable (FixedOrResponsiveImpl MantineSpacingImpl)
+    , cols            :: OptionalImpl (FixedOrResponsiveImpl Number)
+    , spacing         :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
+    , verticalSpacing :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
     )

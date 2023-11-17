@@ -27,13 +27,13 @@ foreign import yearPickerComponent :: ReactComponent YearPickerPropsImpl
 type YearPickerProps =
   YearMonthPickerProps
     ( onYearSelect :: ValueHandler JSDate
-    , size         :: Maybe MantineSize
+    , size         :: Optional MantineSize
     )
 
 type YearPickerPropsImpl =
   YearMonthPickerPropsImpl
     ( onYearSelect :: ValueHandlerImpl JSDate
-    , size         :: Nullable MantineSizeImpl
+    , size         :: OptionalImpl MantineSizeImpl
     )
 
 monthPicker :: (MonthPickerProps -> MonthPickerProps) -> JSX
@@ -44,26 +44,26 @@ foreign import monthPickerComponent :: ReactComponent MonthPickerPropsImpl
 type MonthPickerProps =
   MonthPickerBaseProps
     ( onMonthSelect :: ValueHandler JSDate
-    , size          :: Maybe MantineSize
+    , size          :: Optional MantineSize
     )
 
 type MonthPickerPropsImpl =
   MonthPickerBasePropsImpl
     ( onMonthSelect :: ValueHandlerImpl JSDate
-    , size          :: Nullable MantineSizeImpl
+    , size          :: OptionalImpl MantineSizeImpl
     )
 
 type MonthPickerBaseProps rest =
   YearMonthPickerProps
-    ( defaultLevel         :: Maybe MonthPickerLevel
-    , getMonthControlProps :: Maybe (DateFunction PickerControlProps)
-    , level                :: Maybe MonthPickerLevel
-    , maxLevel             :: Maybe MonthPickerLevel
-    , monthsListFormat     :: Maybe String
+    ( defaultLevel         :: Optional MonthPickerLevel
+    , getMonthControlProps :: Optional (DateFunction PickerControlProps)
+    , level                :: Optional MonthPickerLevel
+    , maxLevel             :: Optional MonthPickerLevel
+    , monthsListFormat     :: Optional String
     , onLevelChange        :: ValueHandler MonthPickerLevel
     , onNextYear           :: ValueHandler JSDate
     , onPreviousYear       :: ValueHandler JSDate
-    , yearLabelFormat      :: Maybe DateFormat
+    , yearLabelFormat      :: Optional DateFormat
     | rest
     )
 
@@ -88,39 +88,39 @@ instance FromFFI MonthPickerLevelImpl MonthPickerLevel where
 
 type MonthPickerBasePropsImpl rest =
   YearMonthPickerPropsImpl
-    ( defaultLevel         :: Nullable MonthPickerLevelImpl
-    , getMonthControlProps :: Nullable (DateFunctionImpl PickerControlPropsImpl)
-    , level                :: Nullable MonthPickerLevelImpl
-    , maxLevel             :: Nullable MonthPickerLevelImpl
-    , monthsListFormat     :: Nullable String
+    ( defaultLevel         :: OptionalImpl MonthPickerLevelImpl
+    , getMonthControlProps :: OptionalImpl (DateFunctionImpl PickerControlPropsImpl)
+    , level                :: OptionalImpl MonthPickerLevelImpl
+    , maxLevel             :: OptionalImpl MonthPickerLevelImpl
+    , monthsListFormat     :: OptionalImpl String
     , onLevelChange        :: ValueHandlerImpl MonthPickerLevelImpl
     , onNextYear           :: ValueHandlerImpl JSDate
     , onPreviousYear       :: ValueHandlerImpl JSDate
-    , yearLabelFormat      :: Nullable DateFormatImpl
+    , yearLabelFormat      :: OptionalImpl DateFormatImpl
     | rest
     )
 
 type YearMonthPickerProps rest =
   DateComponent
-    ( allowDeselect          :: Maybe Boolean
-    , allowSingleDateInRange :: Maybe Boolean
-    , defaultDate            :: Maybe JSDate
-    , defaultValue           :: Maybe DateValue
+    ( allowDeselect          :: Optional Boolean
+    , allowSingleDateInRange :: Optional Boolean
+    , defaultDate            :: Optional JSDate
+    , defaultValue           :: Optional DateValue
     , onChange               :: ValueHandler DateValue
     , type                   :: DatePickerType
-    , value                  :: Maybe DateValue
+    , value                  :: Optional DateValue
     | rest
     )
 
 type YearMonthPickerPropsImpl rest =
   DateComponentImpl
-    ( allowDeselect          :: Nullable Boolean
-    , allowSingleDateInRange :: Nullable Boolean
-    , defaultDate            :: Nullable JSDate
-    , defaultValue           :: Nullable DateValueImpl
+    ( allowDeselect          :: OptionalImpl Boolean
+    , allowSingleDateInRange :: OptionalImpl Boolean
+    , defaultDate            :: OptionalImpl JSDate
+    , defaultValue           :: OptionalImpl DateValueImpl
     , onChange               :: ValueHandlerImpl DateValueImpl
     , type                   :: DatePickerTypeImpl
-    , value                  :: Nullable DateValueImpl
+    , value                  :: OptionalImpl DateValueImpl
     | rest
     )
 

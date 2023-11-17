@@ -34,16 +34,16 @@ defaultAccordionProps = defaultMantineComponent { radius: Preset Small }
 
 type AccordionProps accordionValue =
   MantineComponent
-    ( chevron                :: Maybe JSX
+    ( chevron                :: Optional JSX
     , chevronPosition        :: AccordionChevronPosition
-    , chevronSize            :: Maybe Number
+    , chevronSize            :: Optional Number
     , children               :: Array JSX
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , order                  :: Maybe AccordionOrder
+    , order                  :: Optional AccordionOrder
     , radius                 :: MantineNumberSize
-    , transitionDuration     :: Maybe Milliseconds
+    , transitionDuration     :: Optional Milliseconds
     , variant                :: AccordionVariant
     | Controlled accordionValue
     )
@@ -71,10 +71,10 @@ data AccordionVariant
 instance DefaultValue AccordionVariant where
   defaultValue = AccordionVariantDefault
 
-type AccordionVariantImpl = Nullable String
+type AccordionVariantImpl = OptionalImpl String
 
 instance ToFFI AccordionVariant AccordionVariantImpl where
-  toNative = toNative <<< case _ of
+  toNative = toNative <<< Optional <<< case _ of
     AccordionVariantDefault   -> Nothing
     AccordionVariantContained -> Just "contained"
     AccordionVariantFilled    -> Just "filled"
@@ -99,16 +99,16 @@ instance ToFFI AccordionOrder AccordionOrderImpl where
 
 type AccordionPropsImpl accordionValueImpl =
   MantineComponentImpl
-    ( chevron                :: Nullable JSX
+    ( chevron                :: OptionalImpl JSX
     , chevronPosition        :: AccordionChevronPositionImpl
-    , chevronSize            :: Nullable Number
+    , chevronSize            :: OptionalImpl Number
     , children               :: Array JSX
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , order                  :: Nullable AccordionOrderImpl
+    , order                  :: OptionalImpl AccordionOrderImpl
     , radius                 :: MantineNumberSizeImpl
-    , transitionDuration     :: Nullable MillisecondsImpl
+    , transitionDuration     :: OptionalImpl MillisecondsImpl
     , variant                :: AccordionVariantImpl
     | ControlledImpl accordionValueImpl
     )
@@ -122,17 +122,17 @@ accordionControl_ children = accordionControl _ { children = children }
 foreign import accordionControlComponent :: ReactComponent AccordionControlPropsImpl
 
 type AccordionControlProps =
-  { chevron  :: Maybe JSX
+  { chevron  :: Optional JSX
   , children :: Array JSX
   , disabled :: Boolean
-  , icon     :: Maybe JSX
+  , icon     :: Optional JSX
   }
 
 type AccordionControlPropsImpl =
-  { chevron  :: Nullable JSX
+  { chevron  :: OptionalImpl JSX
   , children :: Array JSX
   , disabled :: Boolean
-  , icon     :: Nullable JSX
+  , icon     :: OptionalImpl JSX
   }
 
 accordionItem :: (AccordionItemProps -> AccordionItemProps) -> JSX

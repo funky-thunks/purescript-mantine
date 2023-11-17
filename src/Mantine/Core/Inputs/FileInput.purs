@@ -26,7 +26,7 @@ foreign import fileInputComponent :: ReactComponent FileInputPropsImpl
 type FileInputProps =
   InputComponent
     ( accept           :: String
-    , capture          :: Maybe CaptureMode
+    , capture          :: Optional CaptureMode
     , clearButtonProps :: ClearButtonProps
     , clearable        :: Boolean
     , form             :: String
@@ -49,7 +49,7 @@ instance ToFFI CaptureMode CaptureModeImpl where
 type FileInputPropsImpl =
   InputComponentImpl
     ( accept           :: String
-    , capture          :: Nullable CaptureModeImpl
+    , capture          :: OptionalImpl CaptureModeImpl
     , clearButtonProps :: ClearButtonPropsImpl
     , clearable        :: Boolean
     , form             :: String

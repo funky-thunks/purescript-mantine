@@ -33,7 +33,7 @@ import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Exception (Error)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEffectFn2)
-import Mantine.FFI (class FromFFI, class ToFFI, fromNative, toNative)
+import Mantine.FFI (class FromFFI, class ToFFI, Optional(..), OptionalImpl, toOptionalImpl, fromNative, toNative)
 import Prelude
 import React.Basic.Hooks (type (/\), Hook, Ref, Render, (/\), unsafeHook)
 import Record (delete, merge, rename, union)

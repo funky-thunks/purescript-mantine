@@ -21,10 +21,10 @@ type PillProps =
   MantineComponent
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: Maybe String
+    , key              :: Optional String
     , onRemove         :: Effect Unit
-    , radius           :: Maybe MantineNumberSize
-    , size             :: Maybe MantineSize
+    , radius           :: Optional MantineNumberSize
+    , size             :: Optional MantineSize
     , withRemoveButton :: Boolean
     )
 
@@ -35,10 +35,10 @@ type PillPropsImpl =
   MantineComponentImpl
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: Nullable String
+    , key              :: OptionalImpl String
     , onRemove         :: Effect Unit
-    , radius           :: Nullable MantineNumberSizeImpl
-    , size             :: Nullable MantineSizeImpl
+    , radius           :: OptionalImpl MantineNumberSizeImpl
+    , size             :: OptionalImpl MantineSizeImpl
     , withRemoveButton :: Boolean
     )
 
@@ -51,14 +51,14 @@ type PillGroupProps =
   MantineComponent
     ( children :: Array JSX
     , disabled :: Boolean
-    , gap      :: Maybe MantineNumberSize
-    , size     :: Maybe MantineNumberSize
+    , gap      :: Optional MantineNumberSize
+    , size     :: Optional MantineNumberSize
     )
 
 type PillGroupPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
     , disabled :: Boolean
-    , gap      :: Nullable MantineNumberSizeImpl
-    , size     :: Nullable MantineNumberSizeImpl
+    , gap      :: OptionalImpl MantineNumberSizeImpl
+    , size     :: OptionalImpl MantineNumberSizeImpl
     )

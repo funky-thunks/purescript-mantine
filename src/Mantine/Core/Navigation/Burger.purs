@@ -12,12 +12,12 @@ foreign import burgerComponent :: ReactComponent BurgerPropsImpl
 
 type BurgerProps =
   MantineComponent
-    ( color                    :: Maybe MantineColor
+    ( color                    :: Optional MantineColor
     , onClick                  :: EventHandler
     , opened                   :: Boolean
-    , size                     :: Maybe MantineNumberSize
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    , size                     :: Optional MantineNumberSize
+    , transitionDuration       :: Optional Milliseconds
+    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
     )
 
 defaultBurgerProps :: BurgerProps
@@ -25,10 +25,10 @@ defaultBurgerProps = defaultMantineComponent { onClick: handler_ (pure unit) }
 
 type BurgerPropsImpl =
   MantineComponentImpl
-    ( color                    :: Nullable MantineColorImpl
+    ( color                    :: OptionalImpl MantineColorImpl
     , onClick                  :: EventHandler
     , opened                   :: Boolean
-    , size                     :: Nullable MantineNumberSizeImpl
-    , transitionDuration       :: Nullable MillisecondsImpl
-    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
+    , size                     :: OptionalImpl MantineNumberSizeImpl
+    , transitionDuration       :: OptionalImpl MillisecondsImpl
+    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
     )

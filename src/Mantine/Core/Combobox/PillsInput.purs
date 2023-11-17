@@ -25,7 +25,7 @@ foreign import pillsInputFieldComponent :: ReactComponent PillsInputFieldPropsIm
 
 type PillsInputFieldProps =
   MantineComponent
-    ( placeholder :: Maybe String
+    ( placeholder :: Optional String
     , pointer     :: Boolean
     , type        :: PillsInputFieldType
     )
@@ -48,7 +48,7 @@ instance ToFFI PillsInputFieldType PillsInputFieldTypeImpl where
 
 type PillsInputFieldPropsImpl =
   MantineComponentImpl
-    ( placeholder :: Nullable String
+    ( placeholder :: OptionalImpl String
     , pointer     :: Boolean
     , type        :: PillsInputFieldTypeImpl
     )

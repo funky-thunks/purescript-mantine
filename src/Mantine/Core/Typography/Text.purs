@@ -24,18 +24,18 @@ type TextProps = MantineComponent (TextSpecificPropsRow + TextPropsRow)
 
 type TextSpecificPropsRow r =
   ( children :: Array JSX
-  , color    :: Maybe MantineColor
+  , color    :: Optional MantineColor
   , span     :: Boolean
   | r
   )
 
 type TextPropsRow =
-  ( gradient  :: Maybe MantineGradient
+  ( gradient  :: Optional MantineGradient
   , inherit   :: Boolean
   , inline    :: Boolean
-  , lineClamp :: Maybe Int
-  , size      :: Maybe MantineNumberSize
-  , truncate  :: Maybe TextTruncate
+  , lineClamp :: Optional Int
+  , size      :: Optional MantineNumberSize
+  , truncate  :: Optional TextTruncate
   )
 
 data TextTruncate
@@ -55,16 +55,16 @@ type TextPropsImpl = MantineComponentImpl (TextSpecificPropsImplRow + TextPropsI
 
 type TextSpecificPropsImplRow r =
   ( children :: Array JSX
-  , color    :: Nullable MantineColorImpl
+  , color    :: OptionalImpl MantineColorImpl
   , span     :: Boolean
   | r
   )
 
 type TextPropsImplRow =
-  ( gradient  :: Nullable MantineGradientImpl
+  ( gradient  :: OptionalImpl MantineGradientImpl
   , inherit   :: Boolean
   , inline    :: Boolean
-  , lineClamp :: Nullable Number
-  , size      :: Nullable MantineNumberSizeImpl
-  , truncate  :: Nullable TextTruncateImpl
+  , lineClamp :: OptionalImpl Number
+  , size      :: OptionalImpl MantineNumberSizeImpl
+  , truncate  :: OptionalImpl TextTruncateImpl
   )

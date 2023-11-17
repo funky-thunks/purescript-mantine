@@ -18,12 +18,12 @@ type ContainerProps =
   MantineComponent
     ( children :: Array JSX
     , fluid    :: Boolean
-    , size     :: Maybe MantineNumberSize
+    , size     :: Optional MantineNumberSize
     )
 
 type ContainerPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
     , fluid    :: Boolean
-    , size     :: Nullable MantineNumberSizeImpl
+    , size     :: OptionalImpl MantineNumberSizeImpl
     )

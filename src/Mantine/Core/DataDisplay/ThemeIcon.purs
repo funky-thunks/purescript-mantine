@@ -14,7 +14,7 @@ foreign import themeIconComponent :: ReactComponent ThemeIconPropsImpl
 type ThemeIconProps =
   MantineComponent
     ( children :: Array JSX
-    , color    :: Maybe MantineColor
+    , color    :: Optional MantineColor
     , radius   :: MantineNumberSize
     , size     :: MantineNumberSize
     , variant  :: ThemeIconVariant
@@ -38,10 +38,10 @@ data ThemeIconVariant
 instance DefaultValue ThemeIconVariant where
   defaultValue = ThemeIconFilled
 
-type ThemeIconVariantImpl = Nullable String
+type ThemeIconVariantImpl = OptionalImpl String
 
 instance ToFFI ThemeIconVariant ThemeIconVariantImpl where
-  toNative = toNative <<< case _ of
+  toNative = toNative <<< Optional <<< case _ of
     ThemeIconFilled     -> Nothing
     ThemeIconLight      -> Just "light"
     ThemeIconOutline    -> Just "outline"
@@ -52,8 +52,8 @@ instance ToFFI ThemeIconVariant ThemeIconVariantImpl where
 type ThemeIconPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , color    :: Nullable MantineColorImpl
-    , gradient :: Nullable MantineGradientImpl
+    , color    :: OptionalImpl MantineColorImpl
+    , gradient :: OptionalImpl MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
     , variant  :: ThemeIconVariantImpl
@@ -61,7 +61,7 @@ type ThemeIconPropsImpl =
 
 themeIconToImpl :: ThemeIconProps -> ThemeIconPropsImpl
 themeIconToImpl props =
-  let gradient = case props.variant of
+  let gradient = Optional $ case props.variant of
         ThemeIconGradient g -> pure g
         _                   -> Nothing
    in toNative ({ gradient } `union` props)
