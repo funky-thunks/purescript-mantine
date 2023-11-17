@@ -4,7 +4,7 @@
   , "aff-promise"
   , "console"
   , "contravariant"
-  , "default"
+  , "default-values"
   , "effect"
   , "either"
   , "exceptions"

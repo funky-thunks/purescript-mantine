@@ -79,11 +79,11 @@ let
 
     "console" = pkgs.stdenv.mkDerivation {
         name = "console";
-        version = "v6.0.0";
+        version = "v6.1.0";
         src = pkgs.fetchgit {
           url = "https://github.com/purescript/purescript-console.git";
-          rev = "3b83d7b792d03872afeea5e62b4f686ab0f09842";
-          sha256 = "0fr5l1myhscp910mybp04cg6g8f2hy3ikjfc8fkqlb2dm2cqzdfs";
+          rev = "dc9854023e3392399f5eea9f5db965dbfe2cfe11";
+          sha256 = "0br5i4kzya2gwvlakbqzy4ivav9fpp61ipfpch45jnhqqfgfdhmd";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
@@ -137,11 +137,11 @@ let
         installPhase = "ln -s $src $out";
       };
 
-    "default" = pkgs.stdenv.mkDerivation {
-        name = "default";
+    "default-values" = pkgs.stdenv.mkDerivation {
+        name = "default-values";
         version = "v1.0.1";
         src = pkgs.fetchgit {
-          url = "https://github.com/imsaravana369/purescript-default";
+          url = "https://github.com/imsaravana369/purescript-default.git";
           rev = "5c4bf1e367c05be7f0939ff7a7fc80535f5ea3ad";
           sha256 = "0n5rzh2sy9q3bmwj932z51kdxf5a43p3nh7g17d7n1xnc0qizisg";
         };
@@ -487,11 +487,11 @@ let
 
     "ordered-collections" = pkgs.stdenv.mkDerivation {
         name = "ordered-collections";
-        version = "v3.0.0";
+        version = "v3.1.1";
         src = pkgs.fetchgit {
           url = "https://github.com/purescript/purescript-ordered-collections.git";
-          rev = "9826b7632d0d0a691173bde308a634195f42a419";
-          sha256 = "1wk8mcn1zsxi0yk9ybas2v7m0drb492806gld1xxxic8x1i19ws0";
+          rev = "313ec0c3556854cd4e4752a77a86b102fc41ad05";
+          sha256 = "1n19awmjg91wiqy28lhiyyiyblqp4f5yl0w1v10vpi0h6pc80v8c";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
@@ -511,11 +511,11 @@ let
 
     "parallel" = pkgs.stdenv.mkDerivation {
         name = "parallel";
-        version = "v6.0.0";
+        version = "v7.0.0";
         src = pkgs.fetchgit {
           url = "https://github.com/purescript/purescript-parallel.git";
-          rev = "85290dca837771ac4870071008c933d315ef678f";
-          sha256 = "0bpwvzq4dn7vx5mfj12w1zvvnamc6w2c45c2v54b9yw36snnwpcf";
+          rev = "a6be752e44f115be1ec4d742f307bf7c0e14a765";
+          sha256 = "0xm2bajh7cal5iqv7fvfi4w46imr0jhmcxgav8rljx3priqf35fx";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
@@ -859,11 +859,11 @@ let
 
     "web-uievents" = pkgs.stdenv.mkDerivation {
         name = "web-uievents";
-        version = "v4.0.0";
+        version = "v5.0.0";
         src = pkgs.fetchgit {
           url = "https://github.com/purescript-web/purescript-web-uievents.git";
-          rev = "091ad1b092dee27ec9bcbaad84bb34c4218026df";
-          sha256 = "1dj52fn9nx7qk8i22kyss2xjwpzjqjm3qjfad2lc4802iglii9i7";
+          rev = "93e56dcafe5aa27b391c93110e1c01a09a1dd6ac";
+          sha256 = "0na45ycvcdxly5mkw4b5wc1m33z04ywq2w8hrrmrrczz3r94xz3r";
         };
         phases = "installPhase";
         installPhase = "ln -s $src $out";
