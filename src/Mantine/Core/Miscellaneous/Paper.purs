@@ -17,15 +17,15 @@ foreign import paperComponent :: ReactComponent PaperPropsImpl
 type PaperProps =
   MantineComponent
     ( children   :: Array JSX
-    , radius     :: Maybe MantineNumberSize
-    , shadow     :: Maybe MantineShadow
+    , radius     :: Optional MantineNumberSize
+    , shadow     :: Optional MantineShadow
     , withBorder :: Boolean
     )
 
 type PaperPropsImpl =
   MantineComponentImpl
     ( children   :: Array JSX
-    , radius     :: Nullable MantineNumberSizeImpl
-    , shadow     :: Nullable MantineShadowImpl
+    , radius     :: OptionalImpl MantineNumberSizeImpl
+    , shadow     :: OptionalImpl MantineShadowImpl
     , withBorder :: Boolean
     )

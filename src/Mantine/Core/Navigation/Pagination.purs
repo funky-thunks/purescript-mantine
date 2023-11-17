@@ -34,9 +34,9 @@ foreign import paginationComponent :: ReactComponent PaginationPropsImpl
 type PaginationProps =
   MantineComponent
     ( boundaries     :: PageCount
-    , color          :: Maybe MantineColor
+    , color          :: Optional MantineColor
     , disabled       :: Boolean
-    , gap            :: Maybe MantineNumberSize
+    , gap            :: Optional MantineNumberSize
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
@@ -95,9 +95,9 @@ instance ToFFI PageCount PageCountImpl where
 type PaginationPropsImpl =
   MantineComponentImpl
     ( boundaries     :: PageCountImpl
-    , color          :: Nullable MantineColorImpl
+    , color          :: OptionalImpl MantineColorImpl
     , disabled       :: Boolean
-    , gap            :: Nullable MantineNumberSizeImpl
+    , gap            :: OptionalImpl MantineNumberSizeImpl
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit

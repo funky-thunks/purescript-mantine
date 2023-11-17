@@ -18,11 +18,11 @@ foreign import badgeComponent :: ReactComponent BadgePropsImpl
 type BadgeProps =
   MantineComponent
     ( children     :: Array JSX
-    , color        :: Maybe MantineColor
+    , color        :: Optional MantineColor
     , fullWidth    :: Boolean
-    , leftSection  :: Maybe JSX
+    , leftSection  :: Optional JSX
     , radius       :: MantineNumberSize
-    , rightSection :: Maybe JSX
+    , rightSection :: Optional JSX
     , size         :: MantineSize
     , variant      :: BadgeVariant
     )
@@ -61,12 +61,12 @@ defaultBadgeProps =
 type BadgePropsImpl =
   MantineComponentImpl
     ( children     :: Array JSX
-    , color        :: Nullable MantineColorImpl
+    , color        :: OptionalImpl MantineColorImpl
     , fullWidth    :: Boolean
-    , gradient     :: Nullable MantineGradientImpl
-    , leftSection  :: Nullable JSX
+    , gradient     :: OptionalImpl MantineGradientImpl
+    , leftSection  :: OptionalImpl JSX
     , radius       :: MantineNumberSizeImpl
-    , rightSection :: Nullable JSX
+    , rightSection :: OptionalImpl JSX
     , size         :: MantineSizeImpl
     , variant      :: BadgeVariantImpl
     )
@@ -74,7 +74,7 @@ type BadgePropsImpl =
 badgeToImpl :: BadgeProps -> BadgePropsImpl
 badgeToImpl props = toNative (props `union` { gradient: getGradient props.variant })
 
-getGradient :: BadgeVariant -> Maybe MantineGradient
-getGradient = case _ of
+getGradient :: BadgeVariant -> Optional MantineGradient
+getGradient = Optional <<< case _ of
   BadgeVariantGradient g -> pure g
   _                      -> Nothing

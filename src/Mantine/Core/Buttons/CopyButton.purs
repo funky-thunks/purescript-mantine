@@ -14,7 +14,7 @@ foreign import copyButtonComponent :: ReactComponent CopyButtonPropsImpl
 
 type CopyButtonProps =
   MantineComponent
-    ( timeout :: Maybe Number
+    ( timeout :: Optional Number
     | CopyButtonMandatoryPropsRow
     )
 
@@ -28,7 +28,7 @@ type CopyButtonMandatoryPropsRow =
 type CopyButtonPropsImpl =
   MantineComponentImpl
     ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-    , timeout  :: Nullable Number
+    , timeout  :: OptionalImpl Number
     , value    :: String
     )
 

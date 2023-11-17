@@ -13,13 +13,13 @@ foreign import breadcrumbsComponent :: ReactComponent BreadcrumbsPropsImpl
 type BreadcrumbsProps =
   MantineComponent
     ( children        :: Array JSX
-    , separator       :: Maybe JSX
-    , separatorMargin :: Maybe MantineSpacing
+    , separator       :: Optional JSX
+    , separatorMargin :: Optional MantineSpacing
     )
 
 type BreadcrumbsPropsImpl =
   MantineComponentImpl
     ( children        :: Array JSX
-    , separator       :: Nullable JSX
-    , separatorMargin :: Nullable MantineSpacingImpl
+    , separator       :: OptionalImpl JSX
+    , separatorMargin :: OptionalImpl MantineSpacingImpl
     )

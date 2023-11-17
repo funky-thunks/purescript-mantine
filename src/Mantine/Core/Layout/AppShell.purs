@@ -43,17 +43,17 @@ foreign import appShellComponent :: ReactComponent AppShellPropsImpl
 
 type AppShellProps =
   MantineComponent
-    ( aside                    :: Maybe AppShellVerticalConfiguration
-    , disabled                 :: Maybe Boolean
-    , footer                   :: Maybe AppShellHorizontalConfiguration
-    , header                   :: Maybe AppShellHorizontalConfiguration
-    , layout                   :: Maybe AppShellLayout
-    , navbar                   :: Maybe AppShellVerticalConfiguration
-    , padding                  :: Maybe AppShellPadding
-    , transitionDuration       :: Maybe Milliseconds
-    , transitionTimingFunction :: Maybe MantineTransitionTimingFunction
+    ( aside                    :: Optional AppShellVerticalConfiguration
+    , disabled                 :: Optional Boolean
+    , footer                   :: Optional AppShellHorizontalConfiguration
+    , header                   :: Optional AppShellHorizontalConfiguration
+    , layout                   :: Optional AppShellLayout
+    , navbar                   :: Optional AppShellVerticalConfiguration
+    , padding                  :: Optional AppShellPadding
+    , transitionDuration       :: Optional Milliseconds
+    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
     , withBorder               :: Boolean
-    , zIndex                   :: Maybe ZIndex
+    , zIndex                   :: Optional ZIndex
     )
 
 data AppShellLayout
@@ -97,25 +97,25 @@ instance ToFFI AppShellSize AppShellSizeImpl where
 
 type AppShellVerticalConfiguration =
   { width      :: AppShellSize
-  , breakpoint :: Maybe MantineNumberSize
-  , collapsed  :: Maybe AppShellCollapse
+  , breakpoint :: Optional MantineNumberSize
+  , collapsed  :: Optional AppShellCollapse
   }
 
 type AppShellCollapse = { desktop :: Boolean, mobile :: Boolean }
 
 type AppShellPropsImpl =
   MantineComponentImpl
-    ( aside                    :: Nullable AppShellVerticalConfigurationImpl
-    , disabled                 :: Nullable Boolean
-    , footer                   :: Nullable AppShellHorizontalConfigurationImpl
-    , header                   :: Nullable AppShellHorizontalConfigurationImpl
-    , layout                   :: Nullable String
-    , navbar                   :: Nullable AppShellVerticalConfigurationImpl
-    , padding                  :: Nullable AppShellPaddingImpl
-    , transitionDuration       :: Nullable MillisecondsImpl
-    , transitionTimingFunction :: Nullable MantineTransitionTimingFunctionImpl
+    ( aside                    :: OptionalImpl AppShellVerticalConfigurationImpl
+    , disabled                 :: OptionalImpl Boolean
+    , footer                   :: OptionalImpl AppShellHorizontalConfigurationImpl
+    , header                   :: OptionalImpl AppShellHorizontalConfigurationImpl
+    , layout                   :: OptionalImpl String
+    , navbar                   :: OptionalImpl AppShellVerticalConfigurationImpl
+    , padding                  :: OptionalImpl AppShellPaddingImpl
+    , transitionDuration       :: OptionalImpl MillisecondsImpl
+    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
     , withBorder               :: Boolean
-    , zIndex                   :: Nullable ZIndexImpl
+    , zIndex                   :: OptionalImpl ZIndexImpl
     )
 
 type AppShellHorizontalConfigurationImpl =
@@ -126,8 +126,8 @@ type AppShellHorizontalConfigurationImpl =
 
 type AppShellVerticalConfigurationImpl =
   { width      :: AppShellSizeImpl
-  , breakpoint :: Nullable MantineNumberSizeImpl
-  , collapsed  :: Nullable AppShellCollapse
+  , breakpoint :: OptionalImpl MantineNumberSizeImpl
+  , collapsed  :: OptionalImpl AppShellCollapse
   }
 
 newtype AppShellRules = AppShellRules (Array (String /\ Either String Number))
@@ -213,12 +213,12 @@ type AppShellComponentProps =
   MantineComponent
     ( children   :: Array JSX
     , withBorder :: Boolean
-    , zIndex     :: Maybe ZIndex
+    , zIndex     :: Optional ZIndex
     )
 
 type AppShellComponentPropsImpl =
   MantineComponentImpl
     ( children   :: Array JSX
     , withBorder :: Boolean
-    , zIndex     :: Nullable ZIndexImpl
+    , zIndex     :: OptionalImpl ZIndexImpl
     )

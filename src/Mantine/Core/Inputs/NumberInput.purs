@@ -32,21 +32,21 @@ type NumberInputProps =
     ( allowDecimal             :: Boolean
     , allowLeadingZeros        :: Boolean
     , allowNegative            :: Boolean
-    , allowedDecimalSeparators :: Maybe (Array String)
-    , clampBehavior            :: Maybe NumberClampBehavior
-    , decimalScale             :: Maybe Number
-    , decimalSeparator         :: Maybe String
+    , allowedDecimalSeparators :: Optional (Array String)
+    , clampBehavior            :: Optional NumberClampBehavior
+    , decimalScale             :: Optional Number
+    , decimalSeparator         :: Optional String
     , fixedDecimalScale        :: Boolean
-    , handlersRef              :: Maybe (Ref NumberInputHandlers)
+    , handlersRef              :: Optional (Ref NumberInputHandlers)
     , hideControls             :: Boolean
-    , max                      :: Maybe Number
-    , min                      :: Maybe Number
-    , prefix                   :: Maybe String
-    , startValue               :: Maybe Number
-    , step                     :: Maybe Number
-    , suffix                   :: Maybe String
-    , thousandSeparator        :: Maybe ThousandSeparator
-    , thousandsGroupStyle      :: Maybe ThousandsGroupStyle
+    , max                      :: Optional Number
+    , min                      :: Optional Number
+    , prefix                   :: Optional String
+    , startValue               :: Optional Number
+    , step                     :: Optional Number
+    , suffix                   :: Optional String
+    , thousandSeparator        :: Optional ThousandSeparator
+    , thousandsGroupStyle      :: Optional ThousandsGroupStyle
     , type                     :: NumberInputType
     , valueIsNumericString     :: Boolean
     | Controlled NumberInput
@@ -126,21 +126,21 @@ type NumberInputPropsImpl =
     ( allowDecimal             :: Boolean
     , allowLeadingZeros        :: Boolean
     , allowNegative            :: Boolean
-    , allowedDecimalSeparators :: Nullable (Array String)
-    , clampBehavior            :: Nullable NumberClampBehaviorImpl
-    , decimalScale             :: Nullable Number
-    , decimalSeparator         :: Nullable String
+    , allowedDecimalSeparators :: OptionalImpl (Array String)
+    , clampBehavior            :: OptionalImpl NumberClampBehaviorImpl
+    , decimalScale             :: OptionalImpl Number
+    , decimalSeparator         :: OptionalImpl String
     , fixedDecimalScale        :: Boolean
-    , handlersRef              :: Nullable (Ref NumberInputHandlers)
+    , handlersRef              :: OptionalImpl (Ref NumberInputHandlers)
     , hideControls             :: Boolean
-    , max                      :: Nullable Number
-    , min                      :: Nullable Number
-    , prefix                   :: Nullable String
-    , startValue               :: Nullable Number
-    , step                     :: Nullable Number
-    , suffix                   :: Nullable String
-    , thousandSeparator        :: Nullable ThousandSeparatorImpl
-    , thousandsGroupStyle      :: Nullable ThousandsGroupStyleImpl
+    , max                      :: OptionalImpl Number
+    , min                      :: OptionalImpl Number
+    , prefix                   :: OptionalImpl String
+    , startValue               :: OptionalImpl Number
+    , step                     :: OptionalImpl Number
+    , suffix                   :: OptionalImpl String
+    , thousandSeparator        :: OptionalImpl ThousandSeparatorImpl
+    , thousandsGroupStyle      :: OptionalImpl ThousandsGroupStyleImpl
     , type                     :: NumberInputTypeImpl
     , valueIsNumericString     :: Boolean
     | ControlledImpl NumberInputImpl

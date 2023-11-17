@@ -13,36 +13,36 @@ foreign import ringProgressComponent :: ReactComponent RingProgressPropsImpl
 
 type RingProgressProps =
   MantineComponent
-    ( label     :: Maybe JSX
-    , rootColor :: Maybe MantineColor
+    ( label     :: Optional JSX
+    , rootColor :: Optional MantineColor
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSection
-    , size      :: Maybe Number
-    , thickness :: Maybe Number
+    , size      :: Optional Number
+    , thickness :: Optional Number
     )
 
 type RingProgressSection =
   { color        :: MantineColor
   , onMouseEnter :: EventHandler
   , onMouseLeave :: EventHandler
-  , tooltip      :: Maybe JSX
+  , tooltip      :: Optional JSX
   , value        :: Number
   }
 
 type RingProgressPropsImpl =
   MantineComponentImpl
-    ( label     :: Nullable JSX
-    , rootColor :: Nullable MantineColorImpl
+    ( label     :: OptionalImpl JSX
+    , rootColor :: OptionalImpl MantineColorImpl
     , roundCaps :: Boolean
     , sections  :: Array RingProgressSectionImpl
-    , size      :: Nullable Number
-    , thickness :: Nullable Number
+    , size      :: OptionalImpl Number
+    , thickness :: OptionalImpl Number
     )
 
 type RingProgressSectionImpl =
   { color        :: MantineColorImpl
   , onMouseEnter :: EventHandler
   , onMouseLeave :: EventHandler
-  , tooltip      :: Nullable JSX
+  , tooltip      :: OptionalImpl JSX
   , value        :: Number
   }

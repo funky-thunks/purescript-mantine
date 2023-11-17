@@ -16,24 +16,24 @@ foreign import flexComponent :: ReactComponent FlexPropsImpl
 
 type FlexProps =
   MantineComponent
-    ( align     :: Maybe AlignItems
+    ( align     :: Optional AlignItems
     , children  :: Array JSX
-    , columnGap :: Maybe MantineSize
-    , direction :: Maybe FlexDirection
-    , gap       :: Maybe MantineSize
-    , justify   :: Maybe JustifyContent
-    , rowGap    :: Maybe MantineSize
+    , columnGap :: Optional MantineSize
+    , direction :: Optional FlexDirection
+    , gap       :: Optional MantineSize
+    , justify   :: Optional JustifyContent
+    , rowGap    :: Optional MantineSize
     , wrap      :: FlexWrap
     )
 
 type FlexPropsImpl =
   MantineComponentImpl
-    ( align     :: Nullable AlignItemsImpl
+    ( align     :: OptionalImpl AlignItemsImpl
     , children  :: Array JSX
-    , columnGap :: Nullable MantineSizeImpl
-    , direction :: Nullable FlexDirectionImpl
-    , gap       :: Nullable MantineSizeImpl
-    , justify   :: Nullable JustifyContentImpl
-    , rowGap    :: Nullable MantineSizeImpl
+    , columnGap :: OptionalImpl MantineSizeImpl
+    , direction :: OptionalImpl FlexDirectionImpl
+    , gap       :: OptionalImpl MantineSizeImpl
+    , justify   :: OptionalImpl JustifyContentImpl
+    , rowGap    :: OptionalImpl MantineSizeImpl
     , wrap      :: FlexWrapImpl
     )

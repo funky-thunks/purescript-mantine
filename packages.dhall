@@ -99,20 +99,7 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.15.9-20230718/packages.dhall
-        sha256:661c257c997f37bba1b169020a87ae6ea08eb998e931875cb92e86ac9ea26846
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.10-20231023/packages.dhall
+        sha256:b9a482e743055ba8f2d65b08a88cd772b59c6e2084d0e5ad854025fa90417fd4
 
 in  upstream
-     with default =
-       { dependencies =
-           [ "prelude"
-           , "either"
-           , "maybe"
-           , "tuples"
-           , "lists"
-           , "ordered-collections"
-           , "foreign-object"
-           ]
-       , repo = "https://github.com/imsaravana369/purescript-default"
-       , version = "v1.0.1"
-       }

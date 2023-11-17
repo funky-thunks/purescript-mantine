@@ -33,15 +33,15 @@ type TabsProps =
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
-    , color                   :: Maybe MantineColor
-    , id                      :: Maybe String
+    , color                   :: Optional MantineColor
+    , id                      :: Optional String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , orientation             :: Maybe Orientation
-    , placement               :: Maybe TabsPlacement
-    , radius                  :: Maybe MantineNumberSize
-    , variant                 :: Maybe TabsVariant
+    , orientation             :: Optional Orientation
+    , placement               :: Optional TabsPlacement
+    , radius                  :: Optional MantineNumberSize
+    , variant                 :: Optional TabsVariant
     | Controlled String
     )
 
@@ -74,15 +74,15 @@ type TabsPropsImpl =
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
-    , color                   :: Nullable MantineColorImpl
-    , id                      :: Nullable String
+    , color                   :: OptionalImpl MantineColorImpl
+    , id                      :: OptionalImpl String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , orientation             :: Nullable OrientationImpl
-    , placement               :: Nullable TabsPlacementImpl
-    , radius                  :: Nullable MantineNumberSizeImpl
-    , variant                 :: Nullable TabsVariantImpl
+    , orientation             :: OptionalImpl OrientationImpl
+    , placement               :: OptionalImpl TabsPlacementImpl
+    , radius                  :: OptionalImpl MantineNumberSizeImpl
+    , variant                 :: OptionalImpl TabsVariantImpl
     | ControlledImpl String
     )
 
@@ -97,21 +97,21 @@ foreign import tabComponent :: ReactComponent TabsTabPropsImpl
 type TabsTabProps =
   MantineComponent
     ( children     :: Array JSX
-    , color        :: Maybe MantineColor
-    , leftSection  :: Maybe JSX
-    , rightSection :: Maybe JSX
-    , size         :: Maybe MantineNumberSize
-    , value        :: Maybe String
+    , color        :: Optional MantineColor
+    , leftSection  :: Optional JSX
+    , rightSection :: Optional JSX
+    , size         :: Optional MantineNumberSize
+    , value        :: Optional String
     )
 
 type TabsTabPropsImpl =
   MantineComponentImpl
     ( children     :: Array JSX
-    , color        :: Nullable MantineColorImpl
-    , leftSection  :: Nullable JSX
-    , rightSection :: Nullable JSX
-    , size         :: Nullable MantineNumberSizeImpl
-    , value        :: Nullable String
+    , color        :: OptionalImpl MantineColorImpl
+    , leftSection  :: OptionalImpl JSX
+    , rightSection :: OptionalImpl JSX
+    , size         :: OptionalImpl MantineNumberSizeImpl
+    , value        :: OptionalImpl String
     )
 
 tabList :: (TabListProps -> TabListProps) -> JSX
@@ -126,14 +126,14 @@ type TabListProps =
   MantineComponent
     ( children :: Array JSX
     , grow     :: Boolean
-    , justify  :: Maybe JustifyContent
+    , justify  :: Optional JustifyContent
     )
 
 type TabListPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
     , grow     :: Boolean
-    , justify  :: Nullable JustifyContentImpl
+    , justify  :: OptionalImpl JustifyContentImpl
     )
 
 tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX

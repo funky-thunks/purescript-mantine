@@ -12,33 +12,33 @@ foreign import ratingComponent :: ReactComponent RatingPropsImpl
 
 type RatingProps =
   MantineComponent
-    ( color                 :: Maybe MantineColor
-    , count                 :: Maybe Number
-    , emptySymbol           :: Maybe (Int -> JSX)
-    , fractions             :: Maybe Number
-    , fullSymbol            :: Maybe (Int -> JSX)
-    , getSymbolLabel        :: Maybe (Int -> String)
+    ( color                 :: Optional MantineColor
+    , count                 :: Optional Number
+    , emptySymbol           :: Optional (Int -> JSX)
+    , fractions             :: Optional Number
+    , fullSymbol            :: Optional (Int -> JSX)
+    , getSymbolLabel        :: Optional (Int -> String)
     , highlightSelectedOnly :: Boolean
-    , name                  :: Maybe String
+    , name                  :: Optional String
     , onHover               :: ValueHandler Number
     , readOnly              :: Boolean
-    , size                  :: Maybe MantineSize
+    , size                  :: Optional MantineSize
     | Controlled Number
     )
 
 type RatingPropsImpl =
   MantineComponentImpl
-    ( color                 :: Nullable MantineColorImpl
-    , count                 :: Nullable Number
-    , emptySymbol           :: Nullable (Int -> JSX)
-    , fractions             :: Nullable Number
-    , fullSymbol            :: Nullable (Int -> JSX)
-    , getSymbolLabel        :: Nullable (Int -> String)
+    ( color                 :: OptionalImpl MantineColorImpl
+    , count                 :: OptionalImpl Number
+    , emptySymbol           :: OptionalImpl (Int -> JSX)
+    , fractions             :: OptionalImpl Number
+    , fullSymbol            :: OptionalImpl (Int -> JSX)
+    , getSymbolLabel        :: OptionalImpl (Int -> String)
     , highlightSelectedOnly :: Boolean
-    , name                  :: Nullable String
+    , name                  :: OptionalImpl String
     , onHover               :: ValueHandlerImpl Number
     , readOnly              :: Boolean
-    , size                  :: Nullable MantineSizeImpl
+    , size                  :: OptionalImpl MantineSizeImpl
     | ControlledImpl Number
     )
 
@@ -48,7 +48,7 @@ ratingToImpl props =
          <<< delete (Proxy :: Proxy "emptySymbol")
          <<< delete (Proxy :: Proxy "fullSymbol")
          <<< delete (Proxy :: Proxy "getSymbolLabel")
-   in { emptySymbol:    toNullable props.emptySymbol
-      , fullSymbol:     toNullable props.fullSymbol
-      , getSymbolLabel: toNullable props.getSymbolLabel
+   in { emptySymbol:    toOptionalImpl props.emptySymbol
+      , fullSymbol:     toOptionalImpl props.fullSymbol
+      , getSymbolLabel: toOptionalImpl props.getSymbolLabel
       } `union` rest props

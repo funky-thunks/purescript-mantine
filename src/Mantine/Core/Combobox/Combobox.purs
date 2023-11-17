@@ -66,33 +66,33 @@ defaultComboboxProps =
 
 type ComboboxProps =
   MantineComponent
-    ( arrowOffset                 :: Maybe Pixels
-    , arrowPosition               :: Maybe ComboboxArrowPosition
-    , arrowRadius                 :: Maybe Pixels
-    , arrowSize                   :: Maybe Pixels
+    ( arrowOffset                 :: Optional Pixels
+    , arrowPosition               :: Optional ComboboxArrowPosition
+    , arrowRadius                 :: Optional Pixels
+    , arrowSize                   :: Optional Pixels
     , children                    :: Array JSX
     , disabled                    :: Boolean
-    , dropdownPadding             :: Maybe Number
+    , dropdownPadding             :: Optional Number
     , keepMounted                 :: Boolean
     , middlewares                 :: PopoverMiddlewares
-    , offset                      :: Maybe Offset
+    , offset                      :: Optional Offset
     , onClose                     :: Effect Unit
     , onOpen                      :: Effect Unit
     , onOptionSubmit              :: String -> ComboboxOptionProps -> Effect Unit
     , onPositionChange            :: ValueHandler ComboboxFloatingPosition
     , position                    :: ComboboxFloatingPosition
-    , radius                      :: Maybe MantineNumberSize
+    , radius                      :: Optional MantineNumberSize
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , shadow                      :: Maybe MantineShadow
-    , size                        :: Maybe MantineSize
-    , store                       :: Maybe ComboboxStore
+    , shadow                      :: Optional MantineShadow
+    , size                        :: Optional MantineSize
+    , store                       :: Optional ComboboxStore
     , transitionProps             :: MantineTransitionProps
-    , width                       :: Maybe ComboboxPopoverWidth
+    , width                       :: Optional ComboboxPopoverWidth
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: Maybe ZIndex
+    , zIndex                      :: Optional ZIndex
     )
 
 type ComboboxStore =
@@ -104,15 +104,15 @@ type ComboboxStore =
   , listId                    :: Maybe String
   , openDropdown              :: ValueHandler ComboboxDropdownEventSource
   , resetSelectedOption       :: Effect Unit
-  , searchRef                 :: Maybe (Ref HTMLInputElement)
+  , searchRef                 :: Ref (Nullable HTMLInputElement)
   , selectActiveOption        :: Effect (Maybe String)
   , selectFirstOption         :: Effect (Maybe String)
   , selectNextOption          :: Effect (Maybe String)
   , selectOption              :: ValueHandler Number
   , selectPreviousOption      :: Effect (Maybe String)
-  , selectedOptionIndex       :: Maybe Number
+  , selectedOptionIndex       :: Number
   , setListId                 :: ValueHandler String
-  , targetRef                 :: Maybe (Ref HTMLElement)
+  , targetRef                 :: Ref (Nullable HTMLElement)
   , toggleDropdown            :: ValueHandler ComboboxDropdownEventSource
   , updateSelectedOptionIndex :: ValueHandler ComboboxSelectedOption
   }
@@ -162,15 +162,15 @@ type ComboboxStoreImpl =
   , listId                    :: Nullable String
   , openDropdown              :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
   , resetSelectedOption       :: Effect Unit
-  , searchRef                 :: Nullable (Ref HTMLInputElement)
+  , searchRef                 :: Ref (Nullable HTMLInputElement)
   , selectActiveOption        :: Effect (Nullable String)
   , selectFirstOption         :: Effect (Nullable String)
   , selectNextOption          :: Effect (Nullable String)
   , selectOption              :: ValueHandlerImpl Number
   , selectPreviousOption      :: Effect (Nullable String)
-  , selectedOptionIndex       :: Nullable Number
+  , selectedOptionIndex       :: Number
   , setListId                 :: ValueHandlerImpl String
-  , targetRef                 :: Nullable (Ref HTMLElement)
+  , targetRef                 :: Ref (Nullable HTMLElement)
   , toggleDropdown            :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
   , updateSelectedOptionIndex :: ValueHandlerImpl ComboboxSelectedOptionImpl
   }
@@ -187,15 +187,15 @@ instance ToFFI Offset OffsetImpl where
     ByAxes fao -> asOneOf (toNative fao)
 
 type FloatingAxesOffsets =
-  { mainAxis      :: Maybe Number
-  , crossAxis     :: Maybe Number
-  , alignmentAxis :: Maybe Number
+  { mainAxis      :: Optional Number
+  , crossAxis     :: Optional Number
+  , alignmentAxis :: Optional Number
   }
 
 type FloatingAxesOffsetsImpl =
-  { mainAxis      :: Nullable Number
-  , crossAxis     :: Nullable Number
-  , alignmentAxis :: Nullable Number
+  { mainAxis      :: OptionalImpl Number
+  , crossAxis     :: OptionalImpl Number
+  , alignmentAxis :: OptionalImpl Number
   }
 
 data ComboboxPopoverWidth
@@ -272,33 +272,33 @@ instance ToFFI ComboboxArrowPosition ComboboxArrowPositionImpl where
 
 type ComboboxPropsImpl =
   MantineComponentImpl
-    ( arrowOffset                 :: Nullable PixelsImpl
-    , arrowPosition               :: Nullable ComboboxArrowPositionImpl
-    , arrowRadius                 :: Nullable PixelsImpl
-    , arrowSize                   :: Nullable PixelsImpl
+    ( arrowOffset                 :: OptionalImpl PixelsImpl
+    , arrowPosition               :: OptionalImpl ComboboxArrowPositionImpl
+    , arrowRadius                 :: OptionalImpl PixelsImpl
+    , arrowSize                   :: OptionalImpl PixelsImpl
     , children                    :: Array JSX
     , disabled                    :: Boolean
-    , dropdownPadding             :: Nullable Number
+    , dropdownPadding             :: OptionalImpl Number
     , keepMounted                 :: Boolean
     , middlewares                 :: PopoverMiddlewaresImpl
-    , offset                      :: Nullable OffsetImpl
+    , offset                      :: OptionalImpl OffsetImpl
     , onClose                     :: Effect Unit
     , onOpen                      :: Effect Unit
     , onOptionSubmit              :: EffectFn2 String ComboboxOptionProps Unit
     , onPositionChange            :: ValueHandlerImpl ComboboxFloatingPositionImpl
     , position                    :: ComboboxFloatingPositionImpl
-    , radius                      :: Nullable MantineNumberSizeImpl
+    , radius                      :: OptionalImpl MantineNumberSizeImpl
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , shadow                      :: Nullable MantineShadowImpl
-    , size                        :: Nullable MantineSizeImpl
-    , store                       :: Nullable ComboboxStoreImpl
+    , shadow                      :: OptionalImpl MantineShadowImpl
+    , size                        :: OptionalImpl MantineSizeImpl
+    , store                       :: OptionalImpl ComboboxStoreImpl
     , transitionProps             :: MantineTransitionPropsImpl
-    , width                       :: Nullable ComboboxPopoverWidthImpl
+    , width                       :: OptionalImpl ComboboxPopoverWidthImpl
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: Nullable ZIndexImpl
+    , zIndex                      :: OptionalImpl ZIndexImpl
     )
 
 comboboxOption :: (ComboboxOptionProps -> ComboboxOptionProps) -> JSX
@@ -311,7 +311,7 @@ type ComboboxOptionProps =
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
-    , value    :: Maybe String
+    , value    :: Optional String
     )
 
 type ComboboxOptionPropsImpl =
@@ -319,7 +319,7 @@ type ComboboxOptionPropsImpl =
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
-    , value    :: Nullable String
+    , value    :: OptionalImpl String
     )
 
 comboboxTarget :: (ComboboxTargetProps -> ComboboxTargetProps) -> JSX
@@ -330,7 +330,7 @@ foreign import comboboxTargetComponent :: ReactComponent ComboboxTargetPropsImpl
 type ComboboxTargetProps =
   MantineComponent
     ( children               :: Array JSX
-    , refProp                :: Maybe String
+    , refProp                :: Optional String
     , targetType             :: EventsTargetType
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
@@ -340,7 +340,7 @@ type ComboboxTargetProps =
 type ComboboxTargetPropsImpl =
   MantineComponentImpl
     ( children               :: Array JSX
-    , refProp                :: Nullable String
+    , refProp                :: OptionalImpl String
     , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
@@ -355,13 +355,13 @@ foreign import comboboxDropdownTargetComponent :: ReactComponent ComboboxDropdow
 type ComboboxDropdownTargetProps =
   MantineComponent
     ( children :: Array JSX
-    , refProp  :: Maybe String
+    , refProp  :: Optional String
     )
 
 type ComboboxDropdownTargetPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , refProp  :: Nullable String
+    , refProp  :: OptionalImpl String
     )
 
 comboboxEventsTarget :: (ComboboxEventsTargetProps -> ComboboxEventsTargetProps) -> JSX
@@ -372,7 +372,7 @@ foreign import comboboxEventsTargetComponent :: ReactComponent ComboboxEventsTar
 type ComboboxEventsTargetProps =
   MantineComponent
     ( children               :: Array JSX
-    , refProp                :: Maybe String
+    , refProp                :: Optional String
     , targetType             :: EventsTargetType
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
@@ -382,7 +382,7 @@ type ComboboxEventsTargetProps =
 type ComboboxEventsTargetPropsImpl =
   MantineComponentImpl
     ( children               :: Array JSX
-    , refProp                :: Nullable String
+    , refProp                :: OptionalImpl String
     , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
@@ -402,8 +402,8 @@ comboboxGroup = mkTrivialComponent comboboxGroupComponent
 
 foreign import comboboxGroupComponent :: ReactComponent ComboboxGroupPropsImpl
 
-type ComboboxGroupProps     = MantineComponent     ( label :: Maybe    JSX )
-type ComboboxGroupPropsImpl = MantineComponentImpl ( label :: Nullable JSX )
+type ComboboxGroupProps     = MantineComponent     ( label :: Optional     JSX )
+type ComboboxGroupPropsImpl = MantineComponentImpl ( label :: OptionalImpl JSX )
 
 data EventsTargetType
   = EventsTargetTypeInput

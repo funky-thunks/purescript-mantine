@@ -14,17 +14,17 @@ foreign import indicatorComponent :: ReactComponent IndicatorPropsImpl
 type IndicatorProps =
   MantineComponent
     ( children   :: Array JSX
-    , color      :: Maybe MantineColor
+    , color      :: Optional MantineColor
     , disabled   :: Boolean
     , inline     :: Boolean
-    , label      :: Maybe JSX
-    , offset     :: Maybe Pixels
+    , label      :: Optional JSX
+    , offset     :: Optional Pixels
     , position   :: IndicatorPosition
     , processing :: Boolean
-    , radius     :: Maybe MantineNumberSize
-    , size       :: Maybe Pixels
+    , radius     :: Optional MantineNumberSize
+    , size       :: Optional Pixels
     , withBorder :: Boolean
-    , zIndex     :: Maybe ZIndex
+    , zIndex     :: Optional ZIndex
     )
 
 data IndicatorPosition
@@ -57,15 +57,15 @@ instance ToFFI IndicatorPosition IndicatorPositionImpl where
 type IndicatorPropsImpl =
   MantineComponentImpl
     ( children   :: Array JSX
-    , color      :: Nullable MantineColorImpl
+    , color      :: OptionalImpl MantineColorImpl
     , disabled   :: Boolean
     , inline     :: Boolean
-    , label      :: Nullable JSX
-    , offset     :: Nullable PixelsImpl
+    , label      :: OptionalImpl JSX
+    , offset     :: OptionalImpl PixelsImpl
     , position   :: IndicatorPositionImpl
     , processing :: Boolean
-    , radius     :: Nullable MantineNumberSizeImpl
-    , size       :: Nullable PixelsImpl
+    , radius     :: OptionalImpl MantineNumberSizeImpl
+    , size       :: OptionalImpl PixelsImpl
     , withBorder :: Boolean
-    , zIndex     :: Nullable ZIndexImpl
+    , zIndex     :: OptionalImpl ZIndexImpl
     )

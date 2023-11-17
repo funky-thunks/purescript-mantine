@@ -38,8 +38,8 @@ type OptionalPortalPropsImpl = PortalComponentImpl (withinPortal :: Boolean)
 
 type PortalComponent rest =
   { children :: Array JSX
-  , ref      :: Maybe (Ref HTMLDivElement)
-  , target   :: Maybe PortalTarget
+  , ref      :: Optional (Ref HTMLDivElement)
+  , target   :: Optional PortalTarget
   | rest
   }
 
@@ -56,7 +56,7 @@ instance ToFFI PortalTarget PortalTargetImpl where
 
 type PortalComponentImpl rest =
   { children :: Array JSX
-  , ref      :: Nullable (Ref HTMLDivElement)
-  , target   :: Nullable PortalTargetImpl
+  , ref      :: OptionalImpl (Ref HTMLDivElement)
+  , target   :: OptionalImpl PortalTargetImpl
   | rest
   }

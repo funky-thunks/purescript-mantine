@@ -20,12 +20,12 @@ foreign import spoilerComponent :: ReactComponent SpoilerPropsImpl
 type SpoilerProps =
   MantineComponent
     ( children           :: Array JSX
-    , controlRef         :: Maybe (Ref HTMLButtonElement)
+    , controlRef         :: Optional (Ref HTMLButtonElement)
     , hideLabel          :: JSX
     , initialState       :: SpoilerState
     , maxHeight          :: Pixels
     , showLabel          :: JSX
-    , transitionDuration :: Maybe Milliseconds
+    , transitionDuration :: Optional Milliseconds
     )
 
 defaultSpoilerProps :: SpoilerProps
@@ -51,10 +51,10 @@ instance ToFFI SpoilerState SpoilerStateImpl where
 type SpoilerPropsImpl =
   MantineComponentImpl
     ( children           :: Array JSX
-    , controlRef         :: Nullable (Ref HTMLButtonElement)
+    , controlRef         :: OptionalImpl (Ref HTMLButtonElement)
     , hideLabel          :: JSX
     , initialState       :: SpoilerStateImpl
     , maxHeight          :: PixelsImpl
     , showLabel          :: JSX
-    , transitionDuration :: Nullable MillisecondsImpl
+    , transitionDuration :: OptionalImpl MillisecondsImpl
     )

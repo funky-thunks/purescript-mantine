@@ -40,39 +40,39 @@ foreign import menuComponent :: ReactComponent MenuPropsImpl
 
 type MenuProps =
   MantineComponent
-    ( arrowOffset         :: Maybe Pixels
-    , arrowPosition       :: Maybe MenuArrowPosition
-    , arrowRadius         :: Maybe Pixels
-    , arrowSize           :: Maybe Pixels
+    ( arrowOffset         :: Optional Pixels
+    , arrowPosition       :: Optional MenuArrowPosition
+    , arrowRadius         :: Optional Pixels
+    , arrowSize           :: Optional Pixels
     , children            :: Array JSX
-    , clickOutsideEvents  :: Maybe (Array String)
-    , closeDelay          :: Maybe Milliseconds
+    , clickOutsideEvents  :: Optional (Array String)
+    , closeDelay          :: Optional Milliseconds
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
     , closeOnItemClick    :: Boolean
-    , defaultOpened       :: Maybe Boolean
+    , defaultOpened       :: Optional Boolean
     , disabled            :: Boolean
-    , id                  :: Maybe String
+    , id                  :: Optional String
     , keepMounted         :: Boolean
     , loop                :: Boolean
     , middlewares         :: PopoverMiddlewares
-    , offset              :: Maybe Pixels
+    , offset              :: Optional Pixels
     , onChange            :: ValueHandler Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , onPositionChange    :: ValueHandler MenuFloatingPosition
-    , openDelay           :: Maybe Milliseconds
-    , opened              :: Maybe Boolean
+    , openDelay           :: Optional Milliseconds
+    , opened              :: Optional Boolean
     , position            :: MenuFloatingPosition
-    , radius              :: Maybe MantineNumberSize
+    , radius              :: Optional MantineNumberSize
     , returnFocus         :: Boolean
-    , shadow              :: Maybe MantineShadow
+    , shadow              :: Optional MantineShadow
     , transitionProps     :: MantineTransitionProps
-    , trigger             :: Maybe MenuTrigger
-    , width               :: Maybe MenuPopoverWidth
+    , trigger             :: Optional MenuTrigger
+    , width               :: Optional MenuPopoverWidth
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Maybe ZIndex
+    , zIndex              :: Optional ZIndex
     )
 
 defaultMenuProps :: MenuProps
@@ -88,39 +88,39 @@ defaultMenuProps =
 
 type MenuPropsImpl =
   MantineComponentImpl
-    ( arrowOffset         :: Nullable PixelsImpl
-    , arrowPosition       :: Nullable MenuArrowPositionImpl
-    , arrowRadius         :: Nullable PixelsImpl
-    , arrowSize           :: Nullable PixelsImpl
+    ( arrowOffset         :: OptionalImpl PixelsImpl
+    , arrowPosition       :: OptionalImpl MenuArrowPositionImpl
+    , arrowRadius         :: OptionalImpl PixelsImpl
+    , arrowSize           :: OptionalImpl PixelsImpl
     , children            :: Array JSX
-    , clickOutsideEvents  :: Nullable (Array String)
-    , closeDelay          :: Nullable MillisecondsImpl
+    , clickOutsideEvents  :: OptionalImpl (Array String)
+    , closeDelay          :: OptionalImpl MillisecondsImpl
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
     , closeOnItemClick    :: Boolean
-    , defaultOpened       :: Nullable Boolean
+    , defaultOpened       :: OptionalImpl Boolean
     , disabled            :: Boolean
-    , id                  :: Nullable String
+    , id                  :: OptionalImpl String
     , keepMounted         :: Boolean
     , loop                :: Boolean
     , middlewares         :: PopoverMiddlewaresImpl
-    , offset              :: Nullable PixelsImpl
+    , offset              :: OptionalImpl PixelsImpl
     , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , onPositionChange    :: ValueHandlerImpl MenuFloatingPositionImpl
-    , openDelay           :: Nullable MillisecondsImpl
-    , opened              :: Nullable Boolean
+    , openDelay           :: OptionalImpl MillisecondsImpl
+    , opened              :: OptionalImpl Boolean
     , position            :: MenuFloatingPositionImpl
-    , radius              :: Nullable MantineNumberSizeImpl
+    , radius              :: OptionalImpl MantineNumberSizeImpl
     , returnFocus         :: Boolean
-    , shadow              :: Nullable MantineShadowImpl
+    , shadow              :: OptionalImpl MantineShadowImpl
     , transitionProps     :: MantineTransitionPropsImpl
-    , trigger             :: Nullable MenuTriggerImpl
-    , width               :: Nullable MenuPopoverWidthImpl
+    , trigger             :: OptionalImpl MenuTriggerImpl
+    , width               :: OptionalImpl MenuPopoverWidthImpl
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Nullable ZIndexImpl
+    , zIndex              :: OptionalImpl ZIndexImpl
     )
 
 data MenuPopoverWidth
@@ -219,12 +219,12 @@ foreign import menuItemComponent :: ReactComponent MenuItemPropsImpl
 type MenuItemProps =
   MantineComponent
     ( children         :: Array JSX
-    , closeMenuOnClick :: Maybe Boolean
-    , color            :: Maybe MantineColor
+    , closeMenuOnClick :: Optional Boolean
+    , color            :: Optional MantineColor
     , disabled         :: Boolean
-    , leftSection      :: Maybe JSX
+    , leftSection      :: Optional JSX
     , onClick          :: Effect Unit
-    , rightSection     :: Maybe JSX
+    , rightSection     :: Optional JSX
     )
 
 defaultMenuItemProps :: Effect Unit -> MenuItemProps
@@ -233,12 +233,12 @@ defaultMenuItemProps onClick = defaultMantineComponent { onClick }
 type MenuItemPropsImpl =
   MantineComponentImpl
     ( children         :: Array JSX
-    , closeMenuOnClick :: Nullable Boolean
-    , color            :: Nullable MantineColorImpl
+    , closeMenuOnClick :: OptionalImpl Boolean
+    , color            :: OptionalImpl MantineColorImpl
     , disabled         :: Boolean
-    , leftSection      :: Nullable JSX
+    , leftSection      :: OptionalImpl JSX
     , onClick          :: EventHandler
-    , rightSection     :: Nullable JSX
+    , rightSection     :: OptionalImpl JSX
     )
 
 menuItemToImpl :: MenuItemProps -> MenuItemPropsImpl
@@ -264,13 +264,13 @@ foreign import menuTargetComponent :: ReactComponent MenuTargetPropsImpl
 type MenuTargetProps =
   MantineComponent
     ( children :: Array JSX
-    , refProp  :: Maybe String
+    , refProp  :: Optional String
     )
 
 type MenuTargetPropsImpl =
   MantineComponentImpl
     ( children :: Array JSX
-    , refProp  :: Nullable String
+    , refProp  :: OptionalImpl String
     )
 
 menuLabel :: JSX -> JSX

@@ -35,12 +35,12 @@ foreign import scrollAreaAutosizeComponent :: ReactComponent ScrollAreaPropsImpl
 type ScrollAreaProps =
   MantineComponent
     ( children               :: Array JSX
-    , offsetScrollbars       :: Maybe OffsetScrollbars
+    , offsetScrollbars       :: Optional OffsetScrollbars
     , onScrollPositionChange :: ValueHandler ScrollPosition
-    , scrollHideDelay        :: Maybe Milliseconds
-    , scrollbarSize          :: Maybe Pixels
-    , type                   :: Maybe ScrollbarType
-    , viewportRef            :: Maybe (Ref HTMLDivElement)
+    , scrollHideDelay        :: Optional Milliseconds
+    , scrollbarSize          :: Optional Pixels
+    , type                   :: Optional ScrollbarType
+    , viewportRef            :: Optional (Ref HTMLDivElement)
     )
 
 data OffsetScrollbars
@@ -81,10 +81,10 @@ instance ToFFI ScrollbarType ScrollbarTypeImpl where
 type ScrollAreaPropsImpl =
   MantineComponentImpl
     ( children               :: Array JSX
-    , offsetScrollbars       :: Nullable OffsetScrollbarsImpl
+    , offsetScrollbars       :: OptionalImpl OffsetScrollbarsImpl
     , onScrollPositionChange :: ValueHandlerImpl ScrollPosition
-    , scrollHideDelay        :: Nullable MillisecondsImpl
-    , scrollbarSize          :: Nullable PixelsImpl
-    , type                   :: Nullable ScrollbarTypeImpl
-    , viewportRef            :: Nullable (Ref HTMLDivElement)
+    , scrollHideDelay        :: OptionalImpl MillisecondsImpl
+    , scrollbarSize          :: OptionalImpl PixelsImpl
+    , type                   :: OptionalImpl ScrollbarTypeImpl
+    , viewportRef            :: OptionalImpl (Ref HTMLDivElement)
     )

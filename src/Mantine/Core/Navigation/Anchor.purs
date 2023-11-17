@@ -16,7 +16,7 @@ type AnchorProps =
   MantineComponent
     ( children  :: Array JSX
     , href      :: String
-    , target    :: Maybe String
+    , target    :: Optional String
     , underline :: AnchorUnderline
     | Polymorphic TextPropsRow
     )
@@ -41,7 +41,7 @@ type AnchorPropsImpl =
   MantineComponentImpl
     ( children  :: Array JSX
     , href      :: String
-    , target    :: Nullable String
+    , target    :: OptionalImpl String
     , underline :: AnchorUnderlineImpl
     | PolymorphicImpl TextPropsImplRow
     )

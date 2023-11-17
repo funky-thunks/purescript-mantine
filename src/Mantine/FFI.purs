@@ -4,6 +4,10 @@ module Mantine.FFI
   , class RecordToFFI
   , recordToNative
 
+  , Optional(..)
+  , OptionalImpl
+  , toOptionalImpl
+
   , class FromFFI
   , fromNative
   , class RecordFromFFI
@@ -11,13 +15,21 @@ module Mantine.FFI
   ) where
 
 import Prelude (Unit, identity, map, (<<<))
+import Control.Applicative (class Applicative, class Apply)
+import Control.Bind (class Bind)
+import Control.Monad (class Monad)
+import Control.Promise (Promise, toAff)
+import Data.Default (class DefaultValue)
 import Data.Either (Either, either)
+import Data.Functor (class Functor)
 import Data.Int (toNumber)
 import Data.JSDate (JSDate)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
+import Data.Show (class Show)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
+import Effect.Aff (Aff)
 import Effect.Exception (Error)
 import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
 import Foreign (Foreign)
@@ -31,11 +43,9 @@ import React.Basic.Events (EventHandler)
 import React.Basic.Hooks (JSX)
 import Record (delete, get, insert)
 import Type.Proxy (Proxy(..))
-import Untagged.Union (class InOneOf, type (|+|), asOneOf)
+import Untagged.Union (class InOneOf, type (|+|), UndefinedOr, asOneOf, maybeToUor, uorToMaybe)
 import Web.File.File (File)
 import Web.HTML (HTMLElement)
-import Control.Promise (Promise, toAff)
-import Effect.Aff (Aff)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
@@ -66,6 +76,30 @@ instance ToFFI abstract native => ToFFI (Array abstract) (Array native) where
 
 instance ToFFI abstract native => ToFFI (Maybe abstract) (Nullable native) where
   toNative m = toNullable (map toNative m)
+
+newtype Optional v = Optional (Maybe v)
+
+derive newtype instance Show v => Show (Optional v)
+derive newtype instance Functor       Optional
+derive newtype instance Apply         Optional
+derive newtype instance Applicative   Optional
+derive newtype instance Bind          Optional
+derive newtype instance Monad         Optional
+derive newtype instance DefaultValue (Optional v)
+
+type OptionalImpl v = UndefinedOr v
+
+toOptionalImpl :: forall v. Optional v -> OptionalImpl v
+toOptionalImpl (Optional m) = maybeToUor m
+
+instance ToFFI abstract native => ToFFI (Optional abstract) (OptionalImpl native) where
+  toNative = toOptionalImpl <<< map toNative
+
+fromOptionalImpl :: forall v. OptionalImpl v -> Optional v
+fromOptionalImpl = Optional <<< uorToMaybe
+
+instance FromFFI native abstract => FromFFI (OptionalImpl native) (Optional abstract) where
+  fromNative = map fromNative <<< fromOptionalImpl
 
 instance ToFFI abstract native => ToFFI (Object abstract) (Object native) where
   toNative = map toNative

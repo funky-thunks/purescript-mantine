@@ -19,9 +19,9 @@ type SkeletonProps =
     ( animate :: Boolean
     , circle  :: Boolean
     , height  :: Dimension
-    , radius  :: Maybe MantineNumberSize
+    , radius  :: Optional MantineNumberSize
     , visible :: Boolean
-    , width   :: Maybe Dimension
+    , width   :: Optional Dimension
     )
 
 defaultSkeletonProps :: SkeletonProps
@@ -37,7 +37,7 @@ type SkeletonPropsImpl =
     ( animate :: Boolean
     , circle  :: Boolean
     , height  :: DimensionImpl
-    , radius  :: Nullable MantineNumberSizeImpl
+    , radius  :: OptionalImpl MantineNumberSizeImpl
     , visible :: Boolean
-    , width   :: Nullable DimensionImpl
+    , width   :: OptionalImpl DimensionImpl
     )

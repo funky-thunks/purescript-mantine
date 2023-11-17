@@ -17,13 +17,13 @@ foreign import timelineComponent :: ReactComponent TimelinePropsImpl
 
 type TimelineProps =
   MantineComponent
-    ( active        :: Maybe Int
+    ( active        :: Optional Int
     , align         :: TimelineAlign
-    , bulletSize    :: Maybe Pixels
+    , bulletSize    :: Optional Pixels
     , children      :: Array JSX
-    , color         :: Maybe MantineColor
-    , lineWidth     :: Maybe Pixels
-    , radius        :: Maybe MantineNumberSize
+    , color         :: Optional MantineColor
+    , lineWidth     :: Optional Pixels
+    , radius        :: Optional MantineNumberSize
     , reverseActive :: Boolean
     )
 
@@ -42,13 +42,13 @@ instance ToFFI TimelineAlign TimelineAlignImpl where
 
 type TimelinePropsImpl =
   MantineComponentImpl
-    ( active        :: Nullable Number
+    ( active        :: OptionalImpl Number
     , align         :: TimelineAlignImpl
-    , bulletSize    :: Nullable PixelsImpl
+    , bulletSize    :: OptionalImpl PixelsImpl
     , children      :: Array JSX
-    , color         :: Nullable MantineColorImpl
-    , lineWidth     :: Nullable PixelsImpl
-    , radius        :: Nullable MantineNumberSizeImpl
+    , color         :: OptionalImpl MantineColorImpl
+    , lineWidth     :: OptionalImpl PixelsImpl
+    , radius        :: OptionalImpl MantineNumberSizeImpl
     , reverseActive :: Boolean
     )
 
@@ -59,12 +59,12 @@ foreign import timelineItemComponent :: ReactComponent TimelineItemPropsImpl
 
 type TimelineItemProps =
   MantineComponent
-    ( bullet      :: Maybe JSX
+    ( bullet      :: Optional JSX
     , children    :: Array JSX
-    , color       :: Maybe MantineColor
+    , color       :: Optional MantineColor
     , lineVariant :: TimelineLineVariant
-    , radius      :: Maybe MantineNumberSize
-    , title       :: Maybe JSX
+    , radius      :: Optional MantineNumberSize
+    , title       :: Optional JSX
     )
 
 data TimelineLineVariant
@@ -84,10 +84,10 @@ instance DefaultValue TimelineLineVariant where defaultValue = TimelineLineVaria
 
 type TimelineItemPropsImpl =
   MantineComponentImpl
-    ( bullet      :: Nullable JSX
+    ( bullet      :: OptionalImpl JSX
     , children    :: Array JSX
-    , color       :: Nullable MantineColorImpl
+    , color       :: OptionalImpl MantineColorImpl
     , lineVariant :: TimelineLineVariantImpl
-    , radius      :: Nullable MantineNumberSizeImpl
-    , title       :: Nullable JSX
+    , radius      :: OptionalImpl MantineNumberSizeImpl
+    , title       :: OptionalImpl JSX
     )

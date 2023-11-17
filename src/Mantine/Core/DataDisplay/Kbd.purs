@@ -17,10 +17,10 @@ foreign import kbdComponent :: ReactComponent KbdPropsImpl
 
 type KbdProps =
   { children :: Array JSX
-  , size     :: Maybe MantineSize
+  , size     :: Optional MantineSize
   }
 
 type KbdPropsImpl =
   { children :: Array JSX
-  , size     :: Nullable MantineSizeImpl
+  , size     :: OptionalImpl MantineSizeImpl
   }

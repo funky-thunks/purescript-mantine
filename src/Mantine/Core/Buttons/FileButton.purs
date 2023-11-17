@@ -32,25 +32,25 @@ type MandatoryFileButtonProps payload =
 type FileButtonProps payload =
   MantineComponent
     ( accept   :: String
-    , capture  :: Maybe CaptureMode
+    , capture  :: Optional CaptureMode
     , children :: { onClick :: Effect Unit } -> JSX
     , disabled :: Boolean
-    , form     :: Maybe String
-    , name     :: Maybe String
+    , form     :: Optional String
+    , name     :: Optional String
     , onChange :: ValueHandler payload
-    , resetRef :: Maybe (Ref (Effect Unit))
+    , resetRef :: Optional (Ref (Effect Unit))
     )
 
 type FileButtonPropsImpl payload =
   MantineComponentImpl
     ( accept   :: String
-    , capture  :: Nullable CaptureModeImpl
+    , capture  :: OptionalImpl CaptureModeImpl
     , children :: { onClick :: Effect Unit } -> JSX
     , disabled :: Boolean
-    , form     :: Nullable String
-    , name     :: Nullable String
+    , form     :: OptionalImpl String
+    , name     :: OptionalImpl String
     , onChange :: ValueHandlerImpl payload
-    , resetRef :: Nullable (Ref (Effect Unit))
+    , resetRef :: OptionalImpl (Ref (Effect Unit))
     )
 
 fileButtonPropsToImpl :: forall payload. FromFFI payload payload => FileButtonProps payload -> FileButtonPropsImpl payload

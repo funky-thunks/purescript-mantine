@@ -16,16 +16,16 @@ foreign import stackComponent :: ReactComponent StackPropsImpl
 
 type StackProps =
   MantineComponent
-    ( align    :: Maybe AlignItems
+    ( align    :: Optional AlignItems
     , children :: Array JSX
-    , gap      :: Maybe MantineSpacing
-    , justify  :: Maybe JustifyContent
+    , gap      :: Optional MantineSpacing
+    , justify  :: Optional JustifyContent
     )
 
 type StackPropsImpl =
   MantineComponentImpl
-    ( align    :: Nullable AlignItemsImpl
+    ( align    :: OptionalImpl AlignItemsImpl
     , children :: Array JSX
-    , gap      :: Nullable MantineSpacingImpl
-    , justify  :: Nullable JustifyContentImpl
+    , gap      :: OptionalImpl MantineSpacingImpl
+    , justify  :: OptionalImpl JustifyContentImpl
     )

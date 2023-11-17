@@ -13,47 +13,47 @@ import Web.HTML.HTMLDivElement (HTMLDivElement)
 
 type CheckableComponent rest =
   MantineComponent
-    ( checked        :: Maybe Boolean
-    , color          :: Maybe MantineColor
-    , defaultChecked :: Maybe Boolean
-    , id             :: Maybe String
+    ( checked        :: Optional Boolean
+    , color          :: Optional MantineColor
+    , defaultChecked :: Optional Boolean
+    , id             :: Optional String
     , onChange       :: CheckerHandler
-    , radius         :: Maybe MantineNumberSize
-    , rootRef        :: Maybe (Ref HTMLDivElement)
-    , size           :: Maybe MantineSize
-    , value          :: Maybe String
+    , radius         :: Optional MantineNumberSize
+    , rootRef        :: Optional (Ref HTMLDivElement)
+    , size           :: Optional MantineSize
+    , value          :: Optional String
     | rest
     )
 
 type CheckableFieldComponent rest =
   CheckableComponent
-    ( description    :: Maybe JSX
-    , error          :: Maybe JSX
-    , label          :: Maybe JSX
-    , labelPosition  :: Maybe CheckableLabelPosition
+    ( description    :: Optional JSX
+    , error          :: Optional JSX
+    , label          :: Optional JSX
+    , labelPosition  :: Optional CheckableLabelPosition
     | rest
     )
 
 type CheckableComponentImpl rest =
   MantineComponentImpl
-    ( checked        :: Nullable Boolean
-    , color          :: Nullable MantineColorImpl
-    , defaultChecked :: Nullable Boolean
-    , id             :: Nullable String
+    ( checked        :: OptionalImpl Boolean
+    , color          :: OptionalImpl MantineColorImpl
+    , defaultChecked :: OptionalImpl Boolean
+    , id             :: OptionalImpl String
     , onChange       :: CheckerHandlerImpl
-    , radius         :: Nullable MantineNumberSizeImpl
-    , rootRef        :: Nullable (Ref HTMLDivElement)
-    , size           :: Nullable MantineSizeImpl
-    , value          :: Nullable String
+    , radius         :: OptionalImpl MantineNumberSizeImpl
+    , rootRef        :: OptionalImpl (Ref HTMLDivElement)
+    , size           :: OptionalImpl MantineSizeImpl
+    , value          :: OptionalImpl String
     | rest
     )
 
 type CheckableFieldComponentImpl rest =
   CheckableComponentImpl
-    ( description    :: Nullable JSX
-    , error          :: Nullable JSX
-    , label          :: Nullable JSX
-    , labelPosition  :: Nullable CheckableLabelPositionImpl
+    ( description    :: OptionalImpl JSX
+    , error          :: OptionalImpl JSX
+    , label          :: OptionalImpl JSX
+    , labelPosition  :: OptionalImpl CheckableLabelPositionImpl
     | rest
     )
 

@@ -31,16 +31,16 @@ foreign import buttonComponent :: ReactComponent ButtonPropsImpl
 type ButtonProps =
   MantineComponent
     ( children     :: Array JSX
-    , color        :: Maybe MantineColor
+    , color        :: Optional MantineColor
     , disabled     :: Boolean
     , fullWidth    :: Boolean
-    , justify      :: Maybe JustifyContent
-    , leftSection  :: Maybe JSX
-    , loaderProps  :: Maybe LoaderProps
+    , justify      :: Optional JustifyContent
+    , leftSection  :: Optional JSX
+    , loaderProps  :: Optional LoaderProps
     , loading      :: Boolean
     , onClick      :: EventHandler
-    , radius       :: Maybe Radius
-    , rightSection :: Maybe JSX
+    , radius       :: Optional Radius
+    , rightSection :: Optional JSX
     , size         :: ButtonSize
     , variant      :: ButtonVariant
     )
@@ -105,24 +105,24 @@ defaultButtonProps =
 type ButtonPropsImpl =
   MantineComponentImpl
     ( children     :: Array JSX
-    , color        :: Nullable MantineColorImpl
+    , color        :: OptionalImpl MantineColorImpl
     , disabled     :: Boolean
     , fullWidth    :: Boolean
-    , gradient     :: Nullable MantineGradientImpl
-    , justify      :: Nullable JustifyContentImpl
-    , leftSection  :: Nullable JSX
-    , loaderProps  :: Nullable LoaderPropsImpl
+    , gradient     :: OptionalImpl MantineGradientImpl
+    , justify      :: OptionalImpl JustifyContentImpl
+    , leftSection  :: OptionalImpl JSX
+    , loaderProps  :: OptionalImpl LoaderPropsImpl
     , loading      :: Boolean
     , onClick      :: EventHandler
-    , radius       :: Nullable RadiusImpl
-    , rightSection :: Nullable JSX
+    , radius       :: OptionalImpl RadiusImpl
+    , rightSection :: OptionalImpl JSX
     , size         :: ButtonSizeImpl
     , variant      :: ButtonVariantImpl
     )
 
 buttonToImpl :: ButtonProps -> ButtonPropsImpl
 buttonToImpl props =
-  let gradient = case props.variant of
+  let gradient = Optional $ case props.variant of
         ButtonVariantGradient g -> pure g
         _                       -> Nothing
    in toNative ({ gradient } `union` props)
@@ -134,7 +134,7 @@ foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
 
 type ButtonGroupProps =
   MantineComponent
-    ( borderWidth :: Maybe MantineNumberSize
+    ( borderWidth :: Optional MantineNumberSize
     , children    :: Array JSX
     , orientation :: Orientation
     )
@@ -144,7 +144,7 @@ defaultButtonGroupProps = defaultMantineComponent { orientation: Horizontal }
 
 type ButtonGroupPropsImpl =
   MantineComponentImpl
-    ( borderWidth :: Nullable MantineNumberSizeImpl
+    ( borderWidth :: OptionalImpl MantineNumberSizeImpl
     , children    :: Array JSX
     , orientation :: OrientationImpl
     )

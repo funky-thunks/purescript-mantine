@@ -18,13 +18,13 @@ foreign import notificationComponent :: ReactComponent NotificationPropsImpl
 type NotificationProps =
   MantineComponent
     ( children         :: JSX
-    , closeButtonProps :: Maybe CloseButtonProps
-    , color            :: Maybe MantineColor
-    , icon             :: Maybe JSX
+    , closeButtonProps :: Optional CloseButtonProps
+    , color            :: Optional MantineColor
+    , icon             :: Optional JSX
     , loading          :: Boolean
     , onClose          :: Effect Unit
-    , radius           :: Maybe MantineNumberSize
-    , title            :: Maybe JSX
+    , radius           :: Optional MantineNumberSize
+    , title            :: Optional JSX
     , withBorder       :: Boolean
     , withCloseButton  :: Boolean
     )
@@ -39,13 +39,13 @@ defaultNotificationProps =
 type NotificationPropsImpl =
   MantineComponentImpl
     ( children         :: JSX
-    , closeButtonProps :: Nullable CloseButtonPropsImpl
-    , color            :: Nullable MantineColorImpl
-    , icon             :: Nullable JSX
+    , closeButtonProps :: OptionalImpl CloseButtonPropsImpl
+    , color            :: OptionalImpl MantineColorImpl
+    , icon             :: OptionalImpl JSX
     , loading          :: Boolean
     , onClose          :: Effect Unit
-    , radius           :: Nullable MantineNumberSizeImpl
-    , title            :: Nullable JSX
+    , radius           :: OptionalImpl MantineNumberSizeImpl
+    , title            :: OptionalImpl JSX
     , withBorder       :: Boolean
     , withCloseButton  :: Boolean
     )

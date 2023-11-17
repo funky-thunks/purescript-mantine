@@ -14,11 +14,11 @@ foreign import textInputComponent :: ReactComponent TextInputPropsImpl
 type TextInputProps =
   InputComponent
     ( onChange :: InputHandler
-    , value    :: Maybe String
+    , value    :: Optional String
     )
 
 type TextInputPropsImpl =
   InputComponentImpl
     ( onChange :: InputHandlerImpl
-    , value    :: Nullable String
+    , value    :: OptionalImpl String
     )

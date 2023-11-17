@@ -19,23 +19,23 @@ foreign import jsonInputComponent :: ReactComponent JsonInputPropsImpl
 type JsonInputProps =
   InputComponent
     ( autosize        :: Boolean
-    , defaultValue    :: Maybe String
+    , defaultValue    :: Optional String
     , formatOnBlur    :: Boolean
-    , maxRows         :: Maybe Int
-    , minRows         :: Maybe Int
+    , maxRows         :: Optional Int
+    , minRows         :: Optional Int
     , onChange        :: InputHandler
-    , validationError :: Maybe JSX
-    , value           :: Maybe String
+    , validationError :: Optional JSX
+    , value           :: Optional String
     )
 
 type JsonInputPropsImpl =
   InputComponentImpl
     ( autosize        :: Boolean
-    , defaultValue    :: Nullable String
+    , defaultValue    :: OptionalImpl String
     , formatOnBlur    :: Boolean
-    , maxRows         :: Nullable Number
-    , minRows         :: Nullable Number
+    , maxRows         :: OptionalImpl Number
+    , minRows         :: OptionalImpl Number
     , onChange        :: InputHandlerImpl
-    , validationError :: Nullable JSX
-    , value           :: Nullable String
+    , validationError :: OptionalImpl JSX
+    , value           :: OptionalImpl String
     )

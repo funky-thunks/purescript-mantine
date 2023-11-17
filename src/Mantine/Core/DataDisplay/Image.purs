@@ -15,18 +15,18 @@ defaultImageProps = defaultMantineComponent { onError: handler_ (pure unit) }
 
 type ImageProps =
   MantineComponent
-    ( fallbackSrc :: Maybe String
-    , fit         :: Maybe ObjectFit
+    ( fallbackSrc :: Optional String
+    , fit         :: Optional ObjectFit
     , onError     :: EventHandler
-    , radius      :: Maybe MantineNumberSize
-    , src         :: Maybe String
+    , radius      :: Optional MantineNumberSize
+    , src         :: Optional String
     )
 
 type ImagePropsImpl =
   MantineComponentImpl
-    ( fallbackSrc :: Nullable String
-    , fit         :: Nullable ObjectFitImpl
+    ( fallbackSrc :: OptionalImpl String
+    , fit         :: OptionalImpl ObjectFitImpl
     , onError     :: EventHandler
-    , radius      :: Nullable MantineNumberSizeImpl
-    , src         :: Nullable String
+    , radius      :: OptionalImpl MantineNumberSizeImpl
+    , src         :: OptionalImpl String
     )

@@ -40,14 +40,14 @@ foreign import calendarComponent :: ReactComponent CalendarPropsImpl
 type CalendarProps =
   DatePickerLevel3Component
     ( minLevel :: CalendarLevel
-    , size     :: Maybe MantineSize
+    , size     :: Optional MantineSize
     , static   :: Boolean
     )
 
 type CalendarPropsImpl =
   DatePickerLevel3ComponentImpl
     ( minLevel :: CalendarLevelImpl
-    , size     :: Nullable MantineSizeImpl
+    , size     :: OptionalImpl MantineSizeImpl
     , static   :: Boolean
     )
 
@@ -56,7 +56,7 @@ datePicker = mkComponentWithDefault datePickerComponent defaultDatePickerProps
 
 foreign import datePickerComponent :: ReactComponent DatePickerPropsImpl
 
-type DatePickerProps = DatePickerProps_ (size :: Maybe MantineSize)
+type DatePickerProps = DatePickerProps_ (size :: Optional MantineSize)
 type DatePickerProps_ rest =
   DatePickerLevel3Component
     ( allowDeselect          :: Boolean
@@ -83,7 +83,7 @@ instance ToFFI DatePickerType DatePickerTypeImpl where
     DatePickerTypeRange    -> "range"
     DatePickerTypeMultiple -> "multiple"
 
-type DatePickerPropsImpl = DatePickerPropsImpl_ (size :: Nullable MantineSizeImpl)
+type DatePickerPropsImpl = DatePickerPropsImpl_ (size :: OptionalImpl MantineSizeImpl)
 type DatePickerPropsImpl_ rest =
   DatePickerLevel3ComponentImpl
     ( allowDeselect          :: Boolean
@@ -104,10 +104,10 @@ foreign import dateInputComponent :: ReactComponent DateInputPropsImpl
 type DateInputProps =
   DatePickerLevel1Component
     ( allowDeselect    :: Boolean
-    , dateParser       :: Maybe (String -> Maybe JSDate)
-    , defaultDate      :: Maybe JSDate
+    , dateParser       :: Optional (String -> Maybe JSDate)
+    , defaultDate      :: Optional JSDate
     , fixOnBlur        :: Boolean
-    , maxLevel         :: Maybe CalendarLevel
+    , maxLevel         :: Optional CalendarLevel
     , nextDisabled     :: Boolean
     , onLevelClick     :: Effect Unit
     , onNext           :: Effect Unit
@@ -137,10 +137,10 @@ defaultDateInputProps =
 type DateInputPropsImpl =
   DatePickerLevel1ComponentImpl
     ( allowDeselect    :: Boolean
-    , dateParser       :: Nullable (String -> Nullable JSDate)
-    , defaultDate      :: Nullable JSDate
+    , dateParser       :: OptionalImpl (String -> Nullable JSDate)
+    , defaultDate      :: OptionalImpl JSDate
     , fixOnBlur        :: Boolean
-    , maxLevel         :: Nullable CalendarLevelImpl
+    , maxLevel         :: OptionalImpl CalendarLevelImpl
     , nextDisabled     :: Boolean
     , onLevelClick     :: Effect Unit
     , onNext           :: Effect Unit
@@ -156,7 +156,7 @@ dateInputToImpl :: DateInputProps -> DateInputPropsImpl
 dateInputToImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "clearable")
                       <<< delete (Proxy :: Proxy "dateParser")
-      dateParser = toNullable ((\f -> f >>> toNullable) <$> props.dateParser)
+      dateParser = toOptionalImpl ((\f -> f >>> toNullable) <$> props.dateParser)
    in { dateParser } `union` toNative props.clearable `union` rest props
 
 datePickerInput :: (DatePickerInputProps -> DatePickerInputProps) -> JSX
@@ -186,30 +186,30 @@ foreign import dateTimePickerComponent :: ReactComponent DateTimePickerPropsImpl
 
 type DateTimePickerProps =
   DatePickerLevel2Component
-    ( dropdownType      :: Maybe DropdownType
-    , labelSeparator    :: Maybe String
-    , modalProps        :: Maybe SubModalProps
-    , popoverProps      :: Maybe PopoverProps
+    ( dropdownType      :: Optional DropdownType
+    , labelSeparator    :: Optional String
+    , modalProps        :: Optional SubModalProps
+    , popoverProps      :: Optional PopoverProps
     , readOnly          :: Boolean
     , sortDates         :: Boolean
-    , submitButtonProps :: Maybe ActionIconProps
-    , timeInputProps    :: Maybe TimeInputProps
-    , valueFormat       :: Maybe String
+    , submitButtonProps :: Optional ActionIconProps
+    , timeInputProps    :: Optional TimeInputProps
+    , valueFormat       :: Optional String
     , withSeconds       :: Boolean
     | Controlled_ DateValue + InputProps
     )
 
 type DateTimePickerPropsImpl =
   DatePickerLevel2ComponentImpl
-    ( dropdownType      :: Nullable DropdownTypeImpl
-    , labelSeparator    :: Nullable String
-    , modalProps        :: Nullable SubModalPropsImpl
-    , popoverProps      :: Nullable PopoverPropsImpl
+    ( dropdownType      :: OptionalImpl DropdownTypeImpl
+    , labelSeparator    :: OptionalImpl String
+    , modalProps        :: OptionalImpl SubModalPropsImpl
+    , popoverProps      :: OptionalImpl PopoverPropsImpl
     , readOnly          :: Boolean
     , sortDates         :: Boolean
-    , submitButtonProps :: Nullable ActionIconPropsImpl
-    , timeInputProps    :: Nullable TimeInputPropsImpl
-    , valueFormat       :: Nullable String
+    , submitButtonProps :: OptionalImpl ActionIconPropsImpl
+    , timeInputProps    :: OptionalImpl TimeInputPropsImpl
+    , valueFormat       :: OptionalImpl String
     , withSeconds       :: Boolean
     | ControlledImpl_ DateValueImpl + InputPropsImpl
     )
@@ -218,15 +218,15 @@ dateTimePickerToImpl :: DateTimePickerProps -> DateTimePickerPropsImpl
 dateTimePickerToImpl props =
   let rest = toNative <<< delete (Proxy :: Proxy "clearable")
                       <<< delete (Proxy :: Proxy "submitButtonProps")
-      submitButtonProps = toNullable (actionIconToImpl <$> props.submitButtonProps)
+      submitButtonProps = toOptionalImpl (actionIconToImpl <$> props.submitButtonProps)
    in toNative props.clearable `union` { submitButtonProps } `union` rest props
 
 type DatePickerLevel3Component rest =
   DatePickerLevel2Component
-    ( defaultDate       :: Maybe JSDate
-    , maxLevel          :: Maybe CalendarLevel
-    , onMonthMouseEnter :: Maybe (MouseEvent -> JSDate -> Effect Unit)
-    , onYearMouseEnter  :: Maybe (MouseEvent -> JSDate -> Effect Unit)
+    ( defaultDate       :: Optional JSDate
+    , maxLevel          :: Optional CalendarLevel
+    , onMonthMouseEnter :: Optional (MouseEvent -> JSDate -> Effect Unit)
+    , onYearMouseEnter  :: Optional (MouseEvent -> JSDate -> Effect Unit)
     | rest
     )
 
@@ -239,39 +239,39 @@ type DatePickerLevel2Component rest =
 
 type DatePickerLevel1Component rest =
   DateComponent
-    ( defaultLevel         :: Maybe CalendarLevel
-    , excludeDate          :: Maybe (DateFunction Boolean)
-    , firstDayOfWeek       :: Maybe DayOfWeek
-    , getDayAriaLabel      :: Maybe (DateFunction String)
-    , getMonthControlProps :: Maybe (DateFunction PickerControlProps)
+    ( defaultLevel         :: Optional CalendarLevel
+    , excludeDate          :: Optional (DateFunction Boolean)
+    , firstDayOfWeek       :: Optional DayOfWeek
+    , getDayAriaLabel      :: Optional (DateFunction String)
+    , getMonthControlProps :: Optional (DateFunction PickerControlProps)
     , hasNextLevel         :: Boolean
     , hideOutsideDates     :: Boolean
     , hideWeekdays         :: Boolean
-    , level                :: Maybe CalendarLevel
-    , monthLabelFormat     :: Maybe DateFormat
-    , monthsListFormat     :: Maybe String
-    , nextIcon             :: Maybe JSX
-    , nextLabel            :: Maybe String
+    , level                :: Optional CalendarLevel
+    , monthLabelFormat     :: Optional DateFormat
+    , monthsListFormat     :: Optional String
+    , nextIcon             :: Optional JSX
+    , nextLabel            :: Optional String
     , onLevelChange        :: ValueHandler CalendarLevel
     , onNextMonth          :: ValueHandler JSDate
     , onNextYear           :: ValueHandler JSDate
     , onPreviousMonth      :: ValueHandler JSDate
     , onPreviousYear       :: ValueHandler JSDate
-    , previousIcon         :: Maybe JSX
+    , previousIcon         :: Optional JSX
     , previousLabel        :: String
-    , renderDay            :: Maybe (DateFunction JSX)
-    , weekdayFormat        :: Maybe DateFormat
-    , weekendDays          :: Maybe (Array DayOfWeek)
-    , yearLabelFormat      :: Maybe DateFormat
+    , renderDay            :: Optional (DateFunction JSX)
+    , weekdayFormat        :: Optional DateFormat
+    , weekendDays          :: Optional (Array DayOfWeek)
+    , yearLabelFormat      :: Optional DateFormat
     | rest
     )
 
 type DatePickerLevel3ComponentImpl rest =
   DatePickerLevel2ComponentImpl
-    ( defaultDate       :: Nullable JSDate
-    , maxLevel          :: Nullable CalendarLevelImpl
-    , onMonthMouseEnter :: Nullable (EffectFn2 MouseEvent JSDate Unit)
-    , onYearMouseEnter  :: Nullable (EffectFn2 MouseEvent JSDate Unit)
+    ( defaultDate       :: OptionalImpl JSDate
+    , maxLevel          :: OptionalImpl CalendarLevelImpl
+    , onMonthMouseEnter :: OptionalImpl (EffectFn2 MouseEvent JSDate Unit)
+    , onYearMouseEnter  :: OptionalImpl (EffectFn2 MouseEvent JSDate Unit)
     | rest
     )
 
@@ -284,30 +284,30 @@ type DatePickerLevel2ComponentImpl rest =
 
 type DatePickerLevel1ComponentImpl rest =
   DateComponentImpl
-    ( defaultLevel         :: Nullable CalendarLevelImpl
-    , excludeDate          :: Nullable (DateFunctionImpl Boolean)
-    , firstDayOfWeek       :: Nullable DayOfWeekImpl
-    , getDayAriaLabel      :: Nullable (DateFunctionImpl String)
-    , getMonthControlProps :: Nullable (DateFunctionImpl PickerControlPropsImpl)
+    ( defaultLevel         :: OptionalImpl CalendarLevelImpl
+    , excludeDate          :: OptionalImpl (DateFunctionImpl Boolean)
+    , firstDayOfWeek       :: OptionalImpl DayOfWeekImpl
+    , getDayAriaLabel      :: OptionalImpl (DateFunctionImpl String)
+    , getMonthControlProps :: OptionalImpl (DateFunctionImpl PickerControlPropsImpl)
     , hasNextLevel         :: Boolean
     , hideOutsideDates     :: Boolean
     , hideWeekdays         :: Boolean
-    , level                :: Nullable CalendarLevelImpl
-    , monthLabelFormat     :: Nullable DateFormatImpl
-    , monthsListFormat     :: Nullable String
-    , nextIcon             :: Nullable JSX
-    , nextLabel            :: Nullable String
+    , level                :: OptionalImpl CalendarLevelImpl
+    , monthLabelFormat     :: OptionalImpl DateFormatImpl
+    , monthsListFormat     :: OptionalImpl String
+    , nextIcon             :: OptionalImpl JSX
+    , nextLabel            :: OptionalImpl String
     , onLevelChange        :: ValueHandlerImpl CalendarLevelImpl
     , onNextMonth          :: ValueHandlerImpl JSDate
     , onNextYear           :: ValueHandlerImpl JSDate
     , onPreviousMonth      :: ValueHandlerImpl JSDate
     , onPreviousYear       :: ValueHandlerImpl JSDate
-    , previousIcon         :: Nullable JSX
+    , previousIcon         :: OptionalImpl JSX
     , previousLabel        :: String
-    , renderDay            :: Nullable (DateFunctionImpl JSX)
-    , weekdayFormat        :: Nullable DateFormatImpl
-    , weekendDays          :: Nullable (Array DayOfWeekImpl)
-    , yearLabelFormat      :: Nullable DateFormatImpl
+    , renderDay            :: OptionalImpl (DateFunctionImpl JSX)
+    , weekdayFormat        :: OptionalImpl DateFormatImpl
+    , weekendDays          :: OptionalImpl (Array DayOfWeekImpl)
+    , yearLabelFormat      :: OptionalImpl DateFormatImpl
     | rest
     )
 

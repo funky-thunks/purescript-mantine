@@ -21,7 +21,7 @@ type ColorInputProps =
   InputComponent
     ( closeOnColorSwatchClick :: Boolean
     , disallowInput           :: Boolean
-    , eyeDropperIcon          :: Maybe JSX
+    , eyeDropperIcon          :: Optional JSX
     , fixOnBlur               :: Boolean
     , popoverProps            :: PopoverProps
     , withEyeDropper          :: Boolean
@@ -34,8 +34,8 @@ type ColorInputProps =
 --   }
 
 type PopoverProps =
-  { dropdownZIndex  :: Maybe Number
-  , shadow          :: Maybe MantineShadow
+  { dropdownZIndex  :: Optional ZIndex
+  , shadow          :: Optional MantineShadow
   , transitionProps :: MantineTransitionProps
   , withinPortal    :: Boolean
   }
@@ -47,7 +47,7 @@ type ColorInputPropsImpl =
   InputComponentImpl
     ( closeOnColorSwatchClick :: Boolean
     , disallowInput           :: Boolean
-    , eyeDropperIcon          :: Nullable JSX
+    , eyeDropperIcon          :: OptionalImpl JSX
     , fixOnBlur               :: Boolean
     , popoverProps            :: PopoverPropsImpl
     , withEyeDropper          :: Boolean
@@ -56,8 +56,8 @@ type ColorInputPropsImpl =
     )
 
 type PopoverPropsImpl =
-  { dropdownZIndex  :: Nullable Number
-  , shadow          :: Nullable String
+  { dropdownZIndex  :: OptionalImpl ZIndexImpl
+  , shadow          :: OptionalImpl String
   , transitionProps :: MantineTransitionPropsImpl
   , withinPortal    :: Boolean
   }

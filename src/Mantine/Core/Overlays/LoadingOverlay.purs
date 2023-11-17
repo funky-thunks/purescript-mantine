@@ -22,7 +22,7 @@ type LoadingOverlayProps =
     , overlayProps    :: OverlayProps
     , transitionProps :: MantineTransitionProps
     , visible         :: Boolean
-    , zIndex          :: Maybe ZIndex
+    , zIndex          :: Optional ZIndex
     )
 
 type LoadingOverlayPropsImpl =
@@ -31,5 +31,5 @@ type LoadingOverlayPropsImpl =
     , overlayProps    :: OverlayPropsImpl
     , transitionProps :: MantineTransitionPropsImpl
     , visible         :: Boolean
-    , zIndex          :: Nullable ZIndexImpl
+    , zIndex          :: OptionalImpl ZIndexImpl
     )

@@ -73,16 +73,16 @@ import Mantine.Hooks.Prelude
 import Mantine.Hooks.Theming (MantineColorScheme, MantineColorSchemeImpl)
 import Mantine.Core.Common (ValueHandler, ValueHandlerImpl)
 
-foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (Nullable (Array String)) (Ref Node)
+foreign import useClickOutsideImpl :: EffectFn2 (Effect Unit) (OptionalImpl (Array String)) (Ref Node)
 foreign import data UseClickOutside :: Type -> Type
 
-useClickOutside :: Effect Unit -> Maybe (Array String) -> Hook UseClickOutside (Ref Node)
+useClickOutside :: Effect Unit -> Optional (Array String) -> Hook UseClickOutside (Ref Node)
 useClickOutside = mkHook2 useClickOutsideImpl
 
-foreign import useColorSchemeImpl :: EffectFn2 (Nullable MantineColorSchemeImpl) (Nullable { getInitialValueInEffect :: Boolean }) String
+foreign import useColorSchemeImpl :: EffectFn2 (OptionalImpl MantineColorSchemeImpl) (OptionalImpl { getInitialValueInEffect :: Boolean }) String
 foreign import data UseColorScheme :: Type -> Type
 
-useColorScheme :: Maybe MantineColorScheme -> Maybe { getInitialValueInEffect :: Boolean } -> Hook UseColorScheme MantineColorScheme
+useColorScheme :: Optional MantineColorScheme -> Optional { getInitialValueInEffect :: Boolean } -> Hook UseColorScheme MantineColorScheme
 useColorScheme = mkHook2 useColorSchemeImpl
 
 foreign import useElementSizeImpl :: Effect { ref :: Ref Node, width :: Number, height :: Number }
@@ -96,12 +96,12 @@ foreign import data UseFocusReturn :: Type -> Type
 
 type UseFocusReturnOptions =
   { opened            :: Boolean
-  , shouldReturnFocus :: Maybe Boolean
+  , shouldReturnFocus :: Optional Boolean
   }
 
 type UseFocusReturnOptionsImpl =
   { opened            :: Boolean
-  , shouldReturnFocus :: Nullable Boolean
+  , shouldReturnFocus :: OptionalImpl Boolean
   }
 
 useFocusReturn :: UseFocusReturnOptions -> Hook UseFocusReturn (Effect Unit)
@@ -159,13 +159,13 @@ type UseHotkeysOptions item =
 type HotkeyItem =
   { hotkey  :: String
   , handler :: KeyboardEvent -> Effect Unit
-  , options :: Maybe { preventDefault :: Boolean }
+  , options :: Optional { preventDefault :: Boolean }
   }
 
 type HotkeyItemImpl =
   { hotkey  :: String
   , handler :: EffectFn1 KeyboardEvent Unit
-  , options :: Nullable { preventDefault :: Boolean }
+  , options :: OptionalImpl { preventDefault :: Boolean }
   }
 
 foreign import useHotkeysImpl :: EffectFn1 (UseHotkeysOptions HotkeyItemImpl) Unit
@@ -182,14 +182,14 @@ useHover = mkHook0 useHoverImpl
 
 type UseMediaQueryOptions =
   { query        :: String
-  , initialValue :: Maybe Boolean
-  , options      :: Maybe { getInitialValueInEffect :: Boolean }
+  , initialValue :: Optional Boolean
+  , options      :: Optional { getInitialValueInEffect :: Boolean }
   }
 
 type UseMediaQueryOptionsImpl =
   { query        :: String
-  , initialValue :: Nullable Boolean
-  , options      :: Nullable { getInitialValueInEffect :: Boolean }
+  , initialValue :: OptionalImpl Boolean
+  , options      :: OptionalImpl { getInitialValueInEffect :: Boolean }
   }
 
 foreign import useMediaQueryImpl :: EffectFn1 UseMediaQueryOptionsImpl Boolean
@@ -243,10 +243,10 @@ useMove onChange handlers =
   let unpack { active, ref } = active /\ ref
    in unpack <$> mkHook2 useMoveImpl onChange handlers
 
-foreign import useReducedMotionImpl :: EffectFn2 (Nullable Boolean) (Nullable { getInitialValueInEffect :: Boolean }) Boolean
+foreign import useReducedMotionImpl :: EffectFn2 (OptionalImpl Boolean) (OptionalImpl { getInitialValueInEffect :: Boolean }) Boolean
 foreign import data UseReducedMotion :: Type -> Type
 
-useReducedMotion :: Maybe Boolean -> Maybe { getInitialValueInEffect :: Boolean } -> Hook UseReducedMotion Boolean
+useReducedMotion :: Optional Boolean -> Optional { getInitialValueInEffect :: Boolean } -> Hook UseReducedMotion Boolean
 useReducedMotion = mkHook2 useReducedMotionImpl
 
 type ResizeRectangle =
@@ -289,28 +289,28 @@ instance ToFFI Axis AxisImpl where
 
 type UseScrollIntoViewOptions =
   { onScrollFinish :: Effect Unit
-  , duration       :: Maybe Number
-  , axis           :: Maybe Axis
-  , easing         :: Maybe (Number -> Number)
-  , offset         :: Maybe Number
-  , cancelable     :: Maybe Boolean
-  , isList         :: Maybe Boolean
+  , duration       :: Optional Number
+  , axis           :: Optional Axis
+  , easing         :: Optional (Number -> Number)
+  , offset         :: Optional Number
+  , cancelable     :: Optional Boolean
+  , isList         :: Optional Boolean
   }
 
 type UseScrollIntoViewOptionsImpl =
   { onScrollFinish :: Effect Unit
-  , duration       :: Nullable Number
-  , axis           :: Nullable AxisImpl
-  , easing         :: Nullable (Number -> Number)
-  , offset         :: Nullable Number
-  , cancelable     :: Nullable Boolean
-  , isList         :: Nullable Boolean
+  , duration       :: OptionalImpl Number
+  , axis           :: OptionalImpl AxisImpl
+  , easing         :: OptionalImpl (Number -> Number)
+  , offset         :: OptionalImpl Number
+  , cancelable     :: OptionalImpl Boolean
+  , isList         :: OptionalImpl Boolean
   }
 
 type UseScrollIntoViewResult =
   { targetRef      :: Ref (Nullable Node)
   , scrollableRef  :: Ref (Nullable Node)
-  , scrollIntoView :: ValueHandler { alignment :: Maybe Alignment }
+  , scrollIntoView :: ValueHandler { alignment :: Optional Alignment }
   , cancel         :: Effect Unit
   }
 
@@ -330,13 +330,13 @@ instance ToFFI Alignment AlignmentImpl where
 type UseScrollIntoViewResultImpl =
   { targetRef      :: Ref (Nullable Node)
   , scrollableRef  :: Ref (Nullable Node)
-  , scrollIntoView :: ValueHandlerImpl { alignment :: Nullable AlignmentImpl }
+  , scrollIntoView :: ValueHandlerImpl { alignment :: OptionalImpl AlignmentImpl }
   , cancel         :: Effect Unit
   }
 
 useScrollIntoView :: UseScrollIntoViewOptions -> Hook UseScrollIntoView UseScrollIntoViewResult
 useScrollIntoView options =
-  let toImpl opts = rest opts `union` { easing: toNullable opts.easing }
+  let toImpl opts = rest opts `union` { easing: toOptionalImpl opts.easing }
       rest = toNative <<< delete (Proxy :: Proxy "easing")
    in unsafeHook (fromNative <$> runEffectFn1 useScrollIntoViewImpl (toImpl options))
 

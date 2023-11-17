@@ -18,12 +18,12 @@ foreign import dividerComponent :: ReactComponent DividerPropsImpl
 
 type DividerProps =
   MantineComponent
-    ( color         :: Maybe MantineColor
-    , label         :: Maybe JSX
-    , labelPosition :: Maybe DividerLabelPosition
+    ( color         :: Optional MantineColor
+    , label         :: Optional JSX
+    , labelPosition :: Optional DividerLabelPosition
     , orientation   :: Orientation
-    , size          :: Maybe MantineNumberSize
-    , variant       :: Maybe DividerVariant
+    , size          :: Optional MantineNumberSize
+    , variant       :: Optional DividerVariant
     )
 
 defaultDividerProps :: DividerProps
@@ -57,10 +57,10 @@ instance ToFFI DividerVariant DividerVariantImpl where
 
 type DividerPropsImpl =
   MantineComponentImpl
-    ( color         :: Nullable MantineColorImpl
-    , label         :: Nullable JSX
-    , labelPosition :: Nullable DividerLabelPositionImpl
+    ( color         :: OptionalImpl MantineColorImpl
+    , label         :: OptionalImpl JSX
+    , labelPosition :: OptionalImpl DividerLabelPositionImpl
     , orientation   :: OrientationImpl
-    , size          :: Nullable MantineNumberSizeImpl
-    , variant       :: Nullable DividerVariantImpl
+    , size          :: OptionalImpl MantineNumberSizeImpl
+    , variant       :: OptionalImpl DividerVariantImpl
     )

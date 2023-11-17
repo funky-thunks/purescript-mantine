@@ -29,14 +29,14 @@ foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
 type ActionIconProps = MantineComponent ActionIconPropsRow
 
 type ActionIconPropsRow =
-  ( color       :: Maybe MantineColor
+  ( color       :: Optional MantineColor
   , disabled    :: Boolean
   , icon        :: ReactIcon
   , loading     :: Boolean
-  , loaderProps :: Maybe LoaderProps
-  , onClick     :: Maybe EventHandler
-  , radius      :: Maybe MantineNumberSize
-  , size        :: Maybe MantineNumberSize
+  , loaderProps :: Optional LoaderProps
+  , onClick     :: Optional EventHandler
+  , radius      :: Optional MantineNumberSize
+  , size        :: Optional MantineNumberSize
   , variant     :: ActionIconVariant
   )
 
@@ -47,14 +47,14 @@ type ActionIconPropsImpl = MantineComponentImpl ActionIconPropsImplRow
 
 type ActionIconPropsImplRow =
   ( children    :: Array JSX
-  , color       :: Nullable MantineColorImpl
+  , color       :: OptionalImpl MantineColorImpl
   , disabled    :: Boolean
-  , gradient    :: Nullable MantineGradientImpl
-  , loaderProps :: Nullable LoaderPropsImpl
+  , gradient    :: OptionalImpl MantineGradientImpl
+  , loaderProps :: OptionalImpl LoaderPropsImpl
   , loading     :: Boolean
-  , onClick     :: Nullable EventHandler
-  , radius      :: Nullable MantineNumberSizeImpl
-  , size        :: Nullable MantineNumberSizeImpl
+  , onClick     :: OptionalImpl EventHandler
+  , radius      :: OptionalImpl MantineNumberSizeImpl
+  , size        :: OptionalImpl MantineNumberSizeImpl
   , variant     :: ActionIconVariantImpl
   )
 
@@ -69,20 +69,20 @@ data ActionIconVariant
 
 instance DefaultValue ActionIconVariant where defaultValue = ActionIconDefault
 
-type ActionIconVariantImpl = Nullable String
+type ActionIconVariantImpl = OptionalImpl String
 
 instance ToFFI ActionIconVariant ActionIconVariantImpl where
-  toNative = case _ of
-    ActionIconOutline     -> notNull "outline"
-    ActionIconTransparent -> notNull "transparent"
-    ActionIconLight       -> notNull "light"
-    ActionIconDefault     -> null
-    ActionIconFilled      -> notNull "filled"
-    ActionIconSubtle      -> notNull "subtle"
-    ActionIconGradient _  -> notNull "gradient"
+  toNative = toNative <<< Optional <<< case _ of
+    ActionIconOutline     -> pure "outline"
+    ActionIconTransparent -> pure "transparent"
+    ActionIconLight       -> pure "light"
+    ActionIconDefault     -> Nothing
+    ActionIconFilled      -> pure "filled"
+    ActionIconSubtle      -> pure "subtle"
+    ActionIconGradient _  -> pure "gradient"
 
-getGradient :: ActionIconVariant -> Maybe MantineGradient
-getGradient = case _ of
+getGradient :: ActionIconVariant -> Optional MantineGradient
+getGradient = Optional <<< case _ of
   ActionIconGradient g -> Just g
   _                    -> Nothing
 
@@ -102,7 +102,7 @@ foreign import actionIconGroupComponent :: ReactComponent ActionIconGroupPropsIm
 
 type ActionIconGroupProps =
   MantineComponent
-    ( borderWidth :: Maybe MantineNumberSize
+    ( borderWidth :: Optional MantineNumberSize
     , children    :: Array JSX
     , orientation :: ActionIconGroupOrientation
     )
@@ -123,7 +123,7 @@ instance ToFFI ActionIconGroupOrientation ActionIconGroupOrientationImpl where
 
 type ActionIconGroupPropsImpl =
   MantineComponentImpl
-    ( borderWidth :: Nullable MantineNumberSizeImpl
+    ( borderWidth :: OptionalImpl MantineNumberSizeImpl
     , children    :: Array JSX
     , orientation :: ActionIconGroupOrientationImpl
     )

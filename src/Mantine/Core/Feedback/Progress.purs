@@ -32,8 +32,8 @@ type ProgressProps =
   MantineComponent (ProgressSectionPropsRow ProgressRootPropsRow)
 
 type ProgressRootPropsRow =
-  ( radius :: Maybe MantineNumberSize
-  , size   :: Maybe MantineNumberSize
+  ( radius :: Optional MantineNumberSize
+  , size   :: Optional MantineNumberSize
   )
 
 type ProgressRootProps = MantineComponent ProgressRootPropsRow
@@ -41,15 +41,15 @@ type ProgressRootProps = MantineComponent ProgressRootPropsRow
 type ProgressSectionProps =
   MantineComponent
     ( ProgressSectionPropsRow
-      ( onMouseEnter :: Maybe EventHandler
-      , onMouseLeave :: Maybe EventHandler
+      ( onMouseEnter :: Optional EventHandler
+      , onMouseLeave :: Optional EventHandler
       , withAria     :: Boolean
       )
     )
 
 type ProgressSectionPropsRow rest =
   ( animated :: Boolean
-  , color    :: Maybe MantineColor
+  , color    :: Optional MantineColor
   , striped  :: Boolean
   , value    :: Number
   | rest
@@ -59,8 +59,8 @@ type ProgressPropsImpl =
   MantineComponentImpl (ProgressSectionPropsImplRow ProgressRootPropsImplRow)
 
 type ProgressRootPropsImplRow =
-  ( radius :: Nullable MantineNumberSizeImpl
-  , size   :: Nullable MantineNumberSizeImpl
+  ( radius :: OptionalImpl MantineNumberSizeImpl
+  , size   :: OptionalImpl MantineNumberSizeImpl
   )
 
 type ProgressRootPropsImpl = MantineComponentImpl ProgressRootPropsImplRow
@@ -68,15 +68,15 @@ type ProgressRootPropsImpl = MantineComponentImpl ProgressRootPropsImplRow
 type ProgressSectionPropsImpl =
   MantineComponentImpl
     ( ProgressSectionPropsImplRow
-      ( onMouseEnter :: Nullable EventHandler
-      , onMouseLeave :: Nullable EventHandler
+      ( onMouseEnter :: OptionalImpl EventHandler
+      , onMouseLeave :: OptionalImpl EventHandler
       , withAria     :: Boolean
       )
     )
 
 type ProgressSectionPropsImplRow rest =
   ( animated :: Boolean
-  , color    :: Nullable MantineColorImpl
+  , color    :: OptionalImpl MantineColorImpl
   , striped  :: Boolean
   , value    :: Number
   | rest

@@ -16,9 +16,9 @@ foreign import cardComponent :: ReactComponent CardPropsImpl
 type CardProps =
   MantineComponent
     ( children   :: Array JSX
-    , padding    :: Maybe MantineNumberSize
+    , padding    :: Optional MantineNumberSize
     , radius     :: MantineNumberSize
-    , shadow     :: Maybe MantineShadow
+    , shadow     :: Optional MantineShadow
     , withBorder :: Boolean
     )
 
@@ -28,9 +28,9 @@ defaultCardProps = defaultMantineComponent { radius: Preset Small }
 type CardPropsImpl =
   MantineComponentImpl
     ( children   :: Array JSX
-    , padding    :: Nullable MantineNumberSizeImpl
+    , padding    :: OptionalImpl MantineNumberSizeImpl
     , radius     :: MantineNumberSizeImpl
-    , shadow     :: Nullable MantineShadowImpl
+    , shadow     :: OptionalImpl MantineShadowImpl
     , withBorder :: Boolean
     )
 

@@ -22,20 +22,20 @@ foreign import stepperComponent :: ReactComponent StepperPropsImpl
 
 type StepperProps =
   MantineComponent
-    ( active               :: Maybe Number
+    ( active               :: Optional Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
-    , color                :: Maybe MantineColor
-    , completedIcon        :: Maybe StepFragmentComponent
-    , contentPadding       :: Maybe MantineNumberSize
-    , icon                 :: Maybe StepFragmentComponent
+    , color                :: Optional MantineColor
+    , completedIcon        :: Optional StepFragmentComponent
+    , contentPadding       :: Optional MantineNumberSize
+    , icon                 :: Optional StepFragmentComponent
     , iconPosition         :: StepperIconPosition
-    , iconSize             :: Maybe Pixels
+    , iconSize             :: Optional Pixels
     , onStepClick          :: ValueHandler Int
-    , orientation          :: Maybe Orientation
-    , progressIcon         :: Maybe StepFragmentComponent
-    , radius               :: Maybe MantineNumberSize
-    , size                 :: Maybe MantineSize
+    , orientation          :: Optional Orientation
+    , progressIcon         :: Optional StepFragmentComponent
+    , radius               :: Optional MantineNumberSize
+    , size                 :: Optional MantineSize
     , wrap                 :: Boolean
     )
 
@@ -70,20 +70,20 @@ instance ToFFI StepperIconPosition StepperIconPositionImpl where
 
 type StepperPropsImpl =
   MantineComponentImpl
-    ( active               :: Nullable Number
+    ( active               :: OptionalImpl Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
-    , color                :: Nullable MantineColorImpl
-    , completedIcon        :: Nullable StepFragmentComponentImpl
-    , contentPadding       :: Nullable MantineNumberSizeImpl
-    , icon                 :: Nullable StepFragmentComponentImpl
+    , color                :: OptionalImpl MantineColorImpl
+    , completedIcon        :: OptionalImpl StepFragmentComponentImpl
+    , contentPadding       :: OptionalImpl MantineNumberSizeImpl
+    , icon                 :: OptionalImpl StepFragmentComponentImpl
     , iconPosition         :: StepperIconPositionImpl
-    , iconSize             :: Nullable PixelsImpl
+    , iconSize             :: OptionalImpl PixelsImpl
     , onStepClick          :: ValueHandlerImpl Number
-    , orientation          :: Nullable OrientationImpl
-    , progressIcon         :: Nullable StepFragmentComponentImpl
-    , radius               :: Nullable MantineNumberSizeImpl
-    , size                 :: Nullable MantineSizeImpl
+    , orientation          :: OptionalImpl OrientationImpl
+    , progressIcon         :: OptionalImpl StepFragmentComponentImpl
+    , radius               :: OptionalImpl MantineNumberSizeImpl
+    , size                 :: OptionalImpl MantineSizeImpl
     , wrap                 :: Boolean
     )
 
@@ -100,18 +100,18 @@ type StepperStepProps =
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
-    , color           :: Maybe MantineColor
-    , completedIcon   :: Maybe StepFragmentComponent
-    , description     :: Maybe StepFragmentComponent
-    , icon            :: Maybe StepFragmentComponent
+    , color           :: Optional MantineColor
+    , completedIcon   :: Optional StepFragmentComponent
+    , description     :: Optional StepFragmentComponent
+    , icon            :: Optional StepFragmentComponent
     , iconPosition    :: StepperIconPosition
-    , iconSize        :: Maybe Pixels
-    , label           :: Maybe StepFragmentComponent
+    , iconSize        :: Optional Pixels
+    , label           :: Optional StepFragmentComponent
     , loading         :: Boolean
-    , orientation     :: Maybe Orientation
-    , progressIcon    :: Maybe StepFragmentComponent
-    , state           :: Maybe StepState
-    , step            :: Maybe Number
+    , orientation     :: Optional Orientation
+    , progressIcon    :: Optional StepFragmentComponent
+    , state           :: Optional StepState
+    , step            :: Optional Number
     , withIcon        :: Boolean
     )
 
@@ -133,18 +133,18 @@ type StepperStepPropsImpl =
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
-    , color           :: Nullable MantineColorImpl
-    , completedIcon   :: Nullable StepFragmentComponentImpl
-    , description     :: Nullable StepFragmentComponentImpl
-    , icon            :: Nullable StepFragmentComponentImpl
+    , color           :: OptionalImpl MantineColorImpl
+    , completedIcon   :: OptionalImpl StepFragmentComponentImpl
+    , description     :: OptionalImpl StepFragmentComponentImpl
+    , icon            :: OptionalImpl StepFragmentComponentImpl
     , iconPosition    :: StepperIconPositionImpl
-    , iconSize        :: Nullable PixelsImpl
-    , label           :: Nullable StepFragmentComponentImpl
+    , iconSize        :: OptionalImpl PixelsImpl
+    , label           :: OptionalImpl StepFragmentComponentImpl
     , loading         :: Boolean
-    , orientation     :: Nullable OrientationImpl
-    , progressIcon    :: Nullable StepFragmentComponentImpl
-    , state           :: Nullable StepStateImpl
-    , step            :: Nullable Number
+    , orientation     :: OptionalImpl OrientationImpl
+    , progressIcon    :: OptionalImpl StepFragmentComponentImpl
+    , state           :: OptionalImpl StepStateImpl
+    , step            :: OptionalImpl Number
     , withIcon        :: Boolean
     )
 

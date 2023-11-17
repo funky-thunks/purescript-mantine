@@ -20,23 +20,23 @@ type DialogProps =
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
-    , opened          :: Maybe Boolean
-    , position        :: Maybe DialogPosition
-    , radius          :: Maybe MantineNumberSize
-    , shadow          :: Maybe MantineShadow
-    , size            :: Maybe Dimension
+    , opened          :: Optional Boolean
+    , position        :: Optional DialogPosition
+    , radius          :: Optional MantineNumberSize
+    , shadow          :: Optional MantineShadow
+    , size            :: Optional Dimension
     , transitionProps :: MantineTransitionProps
     , withBorder      :: Boolean
-    , withCloseButton :: Maybe Boolean
-    , withinPortal    :: Maybe Boolean
-    , zIndex          :: Maybe ZIndex
+    , withCloseButton :: Optional Boolean
+    , withinPortal    :: Optional Boolean
+    , zIndex          :: Optional ZIndex
     )
 
 type DialogPosition =
-  { bottom :: Maybe Dimension
-  , left   :: Maybe Dimension
-  , right  :: Maybe Dimension
-  , top    :: Maybe Dimension
+  { bottom :: Optional Dimension
+  , left   :: Optional Dimension
+  , right  :: Optional Dimension
+  , top    :: Optional Dimension
   }
 
 defaultDialogProps :: DialogProps
@@ -47,21 +47,21 @@ type DialogPropsImpl =
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
-    , opened          :: Nullable Boolean
-    , position        :: Nullable DialogPositionImpl
-    , radius          :: Nullable MantineNumberSizeImpl
-    , shadow          :: Nullable MantineShadowImpl
-    , size            :: Nullable DimensionImpl
+    , opened          :: OptionalImpl Boolean
+    , position        :: OptionalImpl DialogPositionImpl
+    , radius          :: OptionalImpl MantineNumberSizeImpl
+    , shadow          :: OptionalImpl MantineShadowImpl
+    , size            :: OptionalImpl DimensionImpl
     , transitionProps :: MantineTransitionPropsImpl
     , withBorder      :: Boolean
-    , withCloseButton :: Nullable Boolean
-    , withinPortal    :: Nullable Boolean
-    , zIndex          :: Nullable ZIndexImpl
+    , withCloseButton :: OptionalImpl Boolean
+    , withinPortal    :: OptionalImpl Boolean
+    , zIndex          :: OptionalImpl ZIndexImpl
     )
 
 type DialogPositionImpl =
-  { bottom :: Nullable DimensionImpl
-  , left   :: Nullable DimensionImpl
-  , right  :: Nullable DimensionImpl
-  , top    :: Nullable DimensionImpl
+  { bottom :: OptionalImpl DimensionImpl
+  , left   :: OptionalImpl DimensionImpl
+  , right  :: OptionalImpl DimensionImpl
+  , top    :: OptionalImpl DimensionImpl
   }

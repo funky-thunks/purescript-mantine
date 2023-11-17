@@ -29,14 +29,14 @@ foreign import tooltipFloatingComponent :: ReactComponent TooltipPropsImpl
 
 type TooltipProps =
   HoverableComponent
-    ( closeDelay :: Maybe Milliseconds
-    , color      :: Maybe MantineColor
+    ( closeDelay :: Optional Milliseconds
+    , color      :: Optional MantineColor
     , events     :: TooltipActivationEvents
     , inline     :: Boolean
-    , label      :: Maybe JSX
+    , label      :: Optional JSX
     , multiline  :: Boolean
-    , openDelay  :: Maybe Milliseconds
-    , refProp    :: Maybe String
+    , openDelay  :: Optional Milliseconds
+    , refProp    :: Optional String
     )
 
 defaultTooltipProps :: TooltipProps
@@ -51,14 +51,14 @@ type TooltipActivationEvents = { hover :: Boolean, focus :: Boolean, touch :: Bo
 
 type TooltipPropsImpl =
   HoverableComponentImpl
-    ( closeDelay :: Nullable MillisecondsImpl
-    , color      :: Nullable MantineColorImpl
+    ( closeDelay :: OptionalImpl MillisecondsImpl
+    , color      :: OptionalImpl MantineColorImpl
     , events     :: TooltipActivationEvents
     , inline     :: Boolean
-    , label      :: Nullable JSX
+    , label      :: OptionalImpl JSX
     , multiline  :: Boolean
-    , openDelay  :: Nullable MillisecondsImpl
-    , refProp    :: Nullable String
+    , openDelay  :: OptionalImpl MillisecondsImpl
+    , refProp    :: OptionalImpl String
     )
 
 tooltipGroup :: (TooltipGroupProps -> TooltipGroupProps) -> JSX

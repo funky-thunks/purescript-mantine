@@ -20,11 +20,11 @@ type AlertProps =
   MantineComponent
     ( children  :: JSX
     , closable  :: AlertClosable
-    , color     :: Maybe MantineColor
-    , icon      :: Maybe JSX
-    , radius    :: Maybe MantineNumberSize
-    , title     :: Maybe JSX
-    , variant   :: Maybe AlertVariant
+    , color     :: Optional MantineColor
+    , icon      :: Optional JSX
+    , radius    :: Optional MantineNumberSize
+    , title     :: Optional JSX
+    , variant   :: Optional AlertVariant
     )
 
 data AlertClosable
@@ -60,15 +60,15 @@ type AlertPropsImpl = MantineComponentImpl (CloseProps + AlertPropsRowImpl)
 
 type AlertPropsRowImpl =
   ( children :: JSX
-  , color    :: Nullable MantineColorImpl
-  , icon     :: Nullable JSX
-  , radius   :: Nullable MantineNumberSizeImpl
-  , title    :: Nullable JSX
-  , variant  :: Nullable AlertVariantImpl
+  , color    :: OptionalImpl MantineColorImpl
+  , icon     :: OptionalImpl JSX
+  , radius   :: OptionalImpl MantineNumberSizeImpl
+  , title    :: OptionalImpl JSX
+  , variant  :: OptionalImpl AlertVariantImpl
   )
 
 type CloseProps r =
-  ( closeButtonLabel :: Nullable String
+  ( closeButtonLabel :: OptionalImpl String
   , onClose          :: Effect Unit
   , withCloseButton  :: Boolean
   | r
@@ -83,11 +83,11 @@ closeProps :: AlertClosable -> { | CloseProps () }
 closeProps = case _ of
   AlertNotClosable ->
     { withCloseButton: false
-    , closeButtonLabel: null
+    , closeButtonLabel: toOptionalImpl (Optional Nothing)
     , onClose: pure unit
     }
   AlertClosable message action ->
     { withCloseButton: true
-    , closeButtonLabel: toNullable (pure message)
+    , closeButtonLabel: toOptionalImpl (pure message)
     , onClose: action
     }
