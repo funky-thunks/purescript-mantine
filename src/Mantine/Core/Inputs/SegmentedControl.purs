@@ -8,16 +8,16 @@ module Mantine.Core.Inputs.SegmentedControl
 import Mantine.Core.Prelude
 
 segmentedControl :: (SegmentedControlProps -> SegmentedControlProps) -> JSX
-segmentedControl = mkComponent segmentedControlComponent segmentedControlToImpl defaultMantineComponent_
+segmentedControl = mkTrivialComponent segmentedControlComponent
 
 foreign import segmentedControlComponent :: ReactComponent SegmentedControlPropsImpl
 
 type SegmentedControlProps =
   MantineComponent
     ( color                    :: Optional MantineColor
+    , data                     :: Array SegmentedControlItem
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
-    , items                    :: Array SegmentedControlItem
     , name                     :: Optional String
     , orientation              :: SegmentedControlOrientation
     , radius                   :: Optional MantineNumberSize
@@ -69,6 +69,3 @@ type SegmentedControlItemImpl =
   , label    :: JSX
   , disabled :: OptionalImpl Boolean
   }
-
-segmentedControlToImpl :: SegmentedControlProps -> SegmentedControlPropsImpl
-segmentedControlToImpl = toNative <<< rename (Proxy :: Proxy "items") (Proxy :: Proxy "data")

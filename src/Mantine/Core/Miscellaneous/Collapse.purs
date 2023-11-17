@@ -7,7 +7,7 @@ module Mantine.Core.Miscellaneous.Collapse
 import Mantine.Core.Prelude
 
 collapse :: (CollapseProps -> CollapseProps) -> JSX
-collapse = mkComponent collapseComponent collapseToImpl defaultCollapseProps
+collapse = mkComponentWithDefault collapseComponent defaultCollapseProps
 
 collapse_ :: Array JSX -> JSX
 collapse_ children = collapse _ { children = children }
@@ -18,8 +18,8 @@ type CollapseProps =
   MantineComponent
     ( animateOpacity           :: Boolean
     , children                 :: Array JSX
+    , in                       :: Boolean
     , onTransitionEnd          :: Effect Unit
-    , opened                   :: Boolean
     , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: MantineTransitionTimingFunction
     )
@@ -42,6 +42,3 @@ type CollapsePropsImpl =
     , transitionDuration       :: MillisecondsImpl
     , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
     )
-
-collapseToImpl :: CollapseProps -> CollapsePropsImpl
-collapseToImpl = toNative <<< rename (Proxy :: Proxy "opened") (Proxy :: Proxy "in")

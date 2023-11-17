@@ -36,7 +36,7 @@ import Effect.Uncurried (EffectFn1, EffectFn2, mkEffectFn1, runEffectFn1, runEff
 import Mantine.FFI (class FromFFI, class ToFFI, Optional(..), OptionalImpl, toOptionalImpl, fromNative, toNative)
 import Prelude
 import React.Basic.Hooks (type (/\), Hook, Ref, Render, (/\), unsafeHook)
-import Record (delete, merge, rename, union)
+import Record (delete, merge, union)
 import Type.Proxy (Proxy(..))
 import Web.DOM (Node)
 import Web.Event.Event (Event)

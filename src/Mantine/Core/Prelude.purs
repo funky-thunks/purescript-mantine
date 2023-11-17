@@ -37,7 +37,7 @@ import Mantine.FFI (class FromFFI, class ToFFI, Optional(..), OptionalImpl, from
 import React.Basic (ReactComponent, Ref)
 import React.Basic.Events (EventHandler, SyntheticEvent, handler, handler_)
 import React.Basic.Hooks (JSX)
-import Record (delete, merge, rename, union)
+import Record (delete, merge, union)
 import Type.Proxy (Proxy(..))
 import Type.Row (type (+))
 import Untagged.Union (type (|+|), UndefinedOr, asOneOf)
