@@ -19,10 +19,9 @@ import Control.Applicative (class Applicative, class Apply)
 import Control.Bind (class Bind)
 import Control.Monad (class Monad)
 import Control.Promise (Promise, toAff)
-import Data.Default (class DefaultValue)
 import Data.Either (Either, either)
 import Data.Functor (class Functor)
-import Data.Int (toNumber)
+import Data.Int (floor, toNumber)
 import Data.JSDate (JSDate)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
@@ -87,7 +86,6 @@ derive newtype instance Apply         Optional
 derive newtype instance Applicative   Optional
 derive newtype instance Bind          Optional
 derive newtype instance Monad         Optional
-derive newtype instance DefaultValue (Optional v)
 
 type OptionalImpl v = UndefinedOr v
 
@@ -195,6 +193,9 @@ instance FromFFI Boolean Boolean where
 
 instance FromFFI Char Char where
   fromNative = identity
+
+instance FromFFI Number Int where
+  fromNative = floor
 
 instance FromFFI Number Number where
   fromNative = identity

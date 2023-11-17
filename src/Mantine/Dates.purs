@@ -5,7 +5,7 @@ module Mantine.Dates
   , module Mantine.Dates.YearMonthPickers
   ) where
 
-import Mantine.Dates.Calendar (CalendarProps, DateInputProps, DatePickerInputProps, DatePickerLevel1Component, DatePickerLevel2Component, DatePickerLevel3Component, DatePickerProps, DatePickerProps_, DatePickerType, DateTimePickerProps, TimeInputProps, calendar, dateInput, datePicker, datePickerInput, dateTimePicker, timeInput)
-import Mantine.Dates.DateComponent (CalendarLevel(..), ClearableInputProps_, DateComponent, DateFormat(..), DateFunction(..), DateInputBaseProps, DateInputBasePropsRow, DateValue(..), DayOfWeek(..), DecadeLabelFormat(..), DropdownType(..), InputProps, PickerControlProps)
-import Mantine.Dates.DatesProvider (DatesProviderProps, Locale(..), Timezone(..), datesProvider)
-import Mantine.Dates.YearMonthPickers (MonthPickerBaseProps, MonthPickerInputProps, MonthPickerLevel(..), MonthPickerProps, YearMonthPickerProps, YearPickerInputProps, YearPickerProps, monthPicker, monthPickerInput, yearPicker, yearPickerInput)
+import Mantine.Dates.Calendar (DatePickerLevel1Component, DatePickerLevel2Component, DatePickerLevel3Component, DatePickerType, Props_Calendar, Props_DateInput, Props_DatePicker, Props_DatePickerInput, Props_DatePicker_, Props_DateTimePicker, Props_TimeInput, calendar, dateInput, datePicker, datePickerInput, dateTimePicker, timeInput)
+import Mantine.Dates.DateComponent (CalendarLevel(..), ClearableInputProps_, DateComponent, DateFormat(..), DateFunction, DateValue(..), DayOfWeek(..), DecadeLabelFormat(..), DropdownType(..), InputProps, PickerControlProps, Props_DateInputBase, Props_DateInputBaseRow)
+import Mantine.Dates.DatesProvider (DatesSettings, Locale(..), Props_DatesProvider, Timezone(..), datesProvider)
+import Mantine.Dates.YearMonthPickers (MonthPickerLevel(..), Props_MonthPicker, Props_MonthPickerBase, Props_MonthPickerInput, Props_YearMonthPicker, Props_YearPicker, Props_YearPickerInput, monthPicker, monthPickerInput, yearPicker, yearPickerInput)

@@ -1,24 +1,30 @@
 module Mantine.Core.Inputs.TextInput
   ( textInput
-  , TextInputProps
+  , Props_TextInput
+  , Props_TextInputImpl
   ) where
 
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-textInput :: (TextInputProps -> TextInputProps) -> JSX
-textInput = mkTrivialComponent textInputComponent
+textInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TextInput
+  => Union attrsImpl attrsImpl_ Props_TextInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+textInput = element (unsafeCoerce textInputComponent) <<< toNative
 
-foreign import textInputComponent :: ReactComponent TextInputPropsImpl
+foreign import textInputComponent :: ReactComponent (Record Props_TextInputImpl)
 
-type TextInputProps =
-  InputComponent
+type Props_TextInput =
+  Props_InputComponent
     ( onChange :: InputHandler
-    , value    :: Optional String
+    , value    :: String
     )
 
-type TextInputPropsImpl =
-  InputComponentImpl
+type Props_TextInputImpl =
+  Props_InputComponentImpl
     ( onChange :: InputHandlerImpl
-    , value    :: OptionalImpl String
+    , value    :: String
     )

@@ -1,41 +1,47 @@
 module Mantine.Core.Inputs.JsonInput
   ( jsonInput
-  , JsonInputProps
+  , Props_JsonInput
+  , Props_JsonInputImpl
   ) where
 
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-jsonInput :: (JsonInputProps -> JsonInputProps) -> JSX
-jsonInput = mkTrivialComponent jsonInputComponent
+jsonInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_JsonInput
+  => Union attrsImpl attrsImpl_ Props_JsonInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+jsonInput = element (unsafeCoerce jsonInputComponent) <<< toNative
 
-foreign import jsonInputComponent :: ReactComponent JsonInputPropsImpl
+foreign import jsonInputComponent :: ReactComponent (Record Props_JsonInputImpl)
 
 -- Not supported properties:
 --   { deserialize :: (text: string, reviver?: (this: any, key: string, value: any) => any) => any
 --   , serialize   :: { (value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string; (value: any, replacer?: (string | number)[], space?: string | number): string; }
 --   }
 
-type JsonInputProps =
-  InputComponent
+type Props_JsonInput =
+  Props_InputComponent
     ( autosize        :: Boolean
-    , defaultValue    :: Optional String
+    , defaultValue    :: String
     , formatOnBlur    :: Boolean
-    , maxRows         :: Optional Int
-    , minRows         :: Optional Int
+    , maxRows         :: Int
+    , minRows         :: Int
     , onChange        :: InputHandler
-    , validationError :: Optional JSX
-    , value           :: Optional String
+    , validationError :: JSX
+    , value           :: String
     )
 
-type JsonInputPropsImpl =
-  InputComponentImpl
+type Props_JsonInputImpl =
+  Props_InputComponentImpl
     ( autosize        :: Boolean
-    , defaultValue    :: OptionalImpl String
+    , defaultValue    :: String
     , formatOnBlur    :: Boolean
-    , maxRows         :: OptionalImpl Number
-    , minRows         :: OptionalImpl Number
+    , maxRows         :: Number
+    , minRows         :: Number
     , onChange        :: InputHandlerImpl
-    , validationError :: OptionalImpl JSX
-    , value           :: OptionalImpl String
+    , validationError :: JSX
+    , value           :: String
     )

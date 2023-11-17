@@ -1,26 +1,32 @@
 module Mantine.Core.DataDisplay.Kbd
   ( kbd
   , kbd_
-  , KbdProps
+  , Props_Kbd
+  , Props_KbdImpl
   ) where
 
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 
-kbd :: (KbdProps -> KbdProps) -> JSX
-kbd = mkComponentWithDefault kbdComponent defaultValue
+kbd
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Kbd
+  => Union attrsImpl attrsImpl_ Props_KbdImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+kbd = element (unsafeCoerce kbdComponent) <<< toNative
 
 kbd_ :: String -> JSX
-kbd_ text = kbd _ { children = [ DOM.text text ] }
+kbd_ text = kbd { children: [ DOM.text text ] }
 
-foreign import kbdComponent :: ReactComponent KbdPropsImpl
+foreign import kbdComponent :: ReactComponent (Record Props_KbdImpl)
 
-type KbdProps =
-  { children :: Array JSX
-  , size     :: Optional MantineSize
-  }
+type Props_Kbd =
+  ( children :: Array JSX
+  , size     :: MantineSize
+  )
 
-type KbdPropsImpl =
-  { children :: Array JSX
-  , size     :: OptionalImpl MantineSizeImpl
-  }
+type Props_KbdImpl =
+  ( children :: Array JSX
+  , size     :: MantineSizeImpl
+  )

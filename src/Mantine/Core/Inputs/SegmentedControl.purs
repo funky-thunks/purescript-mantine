@@ -1,30 +1,38 @@
 module Mantine.Core.Inputs.SegmentedControl
   ( segmentedControl
-  , SegmentedControlProps
+  , Props_SegmentedControl
+  , Props_SegmentedControlImpl
   , SegmentedControlItem
+  , SegmentedControlItemImpl
   , SegmentedControlOrientation(..)
+  , SegmentedControlOrientationImpl
   ) where
 
 import Mantine.Core.Prelude
 
-segmentedControl :: (SegmentedControlProps -> SegmentedControlProps) -> JSX
-segmentedControl = mkTrivialComponent segmentedControlComponent
+segmentedControl
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_SegmentedControl
+  => Union attrsImpl attrsImpl_ Props_SegmentedControlImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+segmentedControl = element (unsafeCoerce segmentedControlComponent) <<< toNative
 
-foreign import segmentedControlComponent :: ReactComponent SegmentedControlPropsImpl
+foreign import segmentedControlComponent :: ReactComponent (Record Props_SegmentedControlImpl)
 
-type SegmentedControlProps =
-  MantineComponent
-    ( color                    :: Optional MantineColor
+type Props_SegmentedControl =
+  Props_Common
+    ( color                    :: MantineColor
     , data                     :: Array SegmentedControlItem
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
-    , name                     :: Optional String
+    , name                     :: String
     , orientation              :: SegmentedControlOrientation
-    , radius                   :: Optional MantineNumberSize
+    , radius                   :: MantineNumberSize
     , readOnly                 :: Boolean
-    , size                     :: Optional MantineSize
+    , size                     :: MantineSize
     , transitionDuration       :: Milliseconds
-    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
+    , transitionTimingFunction :: MantineTransitionTimingFunction
     | Controlled String
     )
 
@@ -38,9 +46,6 @@ data SegmentedControlOrientation
   = SegmentedControlOrientationHorizontal
   | SegmentedControlOrientationVertical
 
-instance DefaultValue SegmentedControlOrientation where
-  defaultValue = SegmentedControlOrientationHorizontal
-
 type SegmentedControlOrientationImpl = String
 
 instance ToFFI SegmentedControlOrientation SegmentedControlOrientationImpl where
@@ -48,19 +53,19 @@ instance ToFFI SegmentedControlOrientation SegmentedControlOrientationImpl where
     SegmentedControlOrientationHorizontal -> "horizontal"
     SegmentedControlOrientationVertical   -> "vertical"
 
-type SegmentedControlPropsImpl =
-  MantineComponentImpl
-    ( color                    :: OptionalImpl MantineColorImpl
+type Props_SegmentedControlImpl =
+  Props_CommonImpl
+    ( color                    :: MantineColorImpl
     , data                     :: Array SegmentedControlItemImpl
     , disabled                 :: Boolean
     , fullWidth                :: Boolean
-    , name                     :: OptionalImpl String
+    , name                     :: String
     , orientation              :: SegmentedControlOrientationImpl
-    , radius                   :: OptionalImpl MantineNumberSizeImpl
+    , radius                   :: MantineNumberSizeImpl
     , readOnly                 :: Boolean
-    , size                     :: OptionalImpl MantineSizeImpl
+    , size                     :: MantineSizeImpl
     , transitionDuration       :: MillisecondsImpl
-    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
+    , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
     | ControlledImpl String
     )
 

@@ -1,41 +1,46 @@
 module Mantine.Core.Typography.Text
   ( text
   , text_
-  , TextProps
-  , TextPropsRow
-  , TextSpecificPropsRow
+  , Props_Text
+  , Props_TextImpl
+  , Props_TextBase
+  , Props_TextBaseImpl
+  , Props_TextSpecific
+  , Props_TextSpecificImpl
   , TextTruncate(..)
-
-  , TextPropsImplRow
   , TextTruncateImpl
   ) where
 
 import Mantine.Core.Prelude
 
-text :: (TextProps -> TextProps) -> JSX
-text = mkTrivialComponent textComponent
+text :: forall attrs attrs_ attrsImpl attrsImpl_
+      . Union attrs     attrs_     Props_Text
+     => Union attrsImpl attrsImpl_ Props_TextImpl
+     => ToFFI (Record attrs) (Record attrsImpl)
+     => Record attrs -> JSX
+text = element (unsafeCoerce textComponent) <<< toNative
 
 text_ :: Array JSX -> JSX
-text_ children = text _ { children = children }
+text_ children = text { children }
 
-foreign import textComponent :: ReactComponent TextPropsImpl
+foreign import textComponent :: ReactComponent (Record Props_TextImpl)
 
-type TextProps = MantineComponent (TextSpecificPropsRow + TextPropsRow)
+type Props_Text = Props_Common + Props_TextSpecific + Props_TextBase
 
-type TextSpecificPropsRow r =
+type Props_TextSpecific r =
   ( children :: Array JSX
-  , color    :: Optional MantineColor
+  , color    :: MantineColor
   , span     :: Boolean
   | r
   )
 
-type TextPropsRow =
-  ( gradient  :: Optional MantineGradient
+type Props_TextBase =
+  ( gradient  :: MantineGradient
   , inherit   :: Boolean
   , inline    :: Boolean
-  , lineClamp :: Optional Int
-  , size      :: Optional MantineNumberSize
-  , truncate  :: Optional TextTruncate
+  , lineClamp :: Int
+  , size      :: MantineNumberSize
+  , truncate  :: TextTruncate
   )
 
 data TextTruncate
@@ -51,20 +56,20 @@ instance ToFFI TextTruncate TextTruncateImpl where
     TextTruncateStart -> asOneOf "start"
     TextTruncateEnd   -> asOneOf "end"
 
-type TextPropsImpl = MantineComponentImpl (TextSpecificPropsImplRow + TextPropsImplRow)
+type Props_TextImpl = Props_CommonImpl + Props_TextSpecificImpl + Props_TextBaseImpl
 
-type TextSpecificPropsImplRow r =
+type Props_TextSpecificImpl r =
   ( children :: Array JSX
-  , color    :: OptionalImpl MantineColorImpl
+  , color    :: MantineColorImpl
   , span     :: Boolean
   | r
   )
 
-type TextPropsImplRow =
-  ( gradient  :: OptionalImpl MantineGradientImpl
+type Props_TextBaseImpl =
+  ( gradient  :: MantineGradientImpl
   , inherit   :: Boolean
   , inline    :: Boolean
-  , lineClamp :: OptionalImpl Number
-  , size      :: OptionalImpl MantineNumberSizeImpl
-  , truncate  :: OptionalImpl TextTruncateImpl
+  , lineClamp :: Number
+  , size      :: MantineNumberSizeImpl
+  , truncate  :: TextTruncateImpl
   )

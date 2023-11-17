@@ -1,49 +1,62 @@
 module Mantine.Core.DataDisplay.Accordion
   ( accordion
   , multipleAccordion
-  , AccordionProps
+  , Props_Accordion
+  , Props_AccordionImpl
   , AccordionChevronPosition(..)
+  , AccordionChevronPositionImpl
   , AccordionOrder(..)
+  , AccordionOrderImpl
   , AccordionVariant(..)
+  , AccordionVariantImpl
 
   , accordionControl
   , accordionControl_
-  , AccordionControlProps
+  , Props_AccordionControl
+  , Props_AccordionControlImpl
 
   , accordionItem
   , accordionItem_
-  , AccordionItemProps
+  , Props_AccordionItem
+  , Props_AccordionItemImpl
 
   , accordionPanel_
   ) where
 
 import Mantine.Core.Prelude
 
-accordion :: (AccordionProps String -> AccordionProps String) -> JSX
-accordion = mkComponentWithDefault accordionComponent defaultAccordionProps
+accordion
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     (Props_Accordion     String)
+  => Union attrsImpl attrsImpl_ (Props_AccordionImpl String)
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+accordion = element (unsafeCoerce accordionComponent) <<< toNative
 
-multipleAccordion :: (AccordionProps (Array String) -> AccordionProps (Array String)) -> JSX
-multipleAccordion = mkComponentWithDefault multipleAccordionComponent defaultAccordionProps
+multipleAccordion
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     (Props_Accordion     (Array String))
+  => Union attrsImpl attrsImpl_ (Props_AccordionImpl (Array String))
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+multipleAccordion = element (unsafeCoerce multipleAccordionComponent) <<< toNative
 
-foreign import accordionComponent :: ReactComponent (AccordionPropsImpl String)
+foreign import accordionComponent :: ReactComponent (Record (Props_AccordionImpl String))
 
-foreign import multipleAccordionComponent :: ReactComponent (AccordionPropsImpl (Array String))
+foreign import multipleAccordionComponent :: ReactComponent (Record (Props_AccordionImpl (Array String)))
 
-defaultAccordionProps :: forall accordionValue. AccordionProps accordionValue
-defaultAccordionProps = defaultMantineComponent { radius: Preset Small }
-
-type AccordionProps accordionValue =
-  MantineComponent
-    ( chevron                :: Optional JSX
+type Props_Accordion accordionValue =
+  Props_Common
+    ( chevron                :: JSX
     , chevronPosition        :: AccordionChevronPosition
-    , chevronSize            :: Optional Number
+    , chevronSize            :: Number
     , children               :: Array JSX
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , order                  :: Optional AccordionOrder
+    , order                  :: AccordionOrder
     , radius                 :: MantineNumberSize
-    , transitionDuration     :: Optional Milliseconds
+    , transitionDuration     :: Milliseconds
     , variant                :: AccordionVariant
     | Controlled accordionValue
     )
@@ -51,9 +64,6 @@ type AccordionProps accordionValue =
 data AccordionChevronPosition
   = AccordionChevronPositionLeft
   | AccordionChevronPositionRight
-
-instance DefaultValue AccordionChevronPosition where
-  defaultValue = AccordionChevronPositionRight
 
 type AccordionChevronPositionImpl = String
 
@@ -67,9 +77,6 @@ data AccordionVariant
   | AccordionVariantContained
   | AccordionVariantFilled
   | AccordionVariantSeparated
-
-instance DefaultValue AccordionVariant where
-  defaultValue = AccordionVariantDefault
 
 type AccordionVariantImpl = OptionalImpl String
 
@@ -97,70 +104,81 @@ instance ToFFI AccordionOrder AccordionOrderImpl where
     AccordionOrder5 -> 5
     AccordionOrder6 -> 6
 
-type AccordionPropsImpl accordionValueImpl =
-  MantineComponentImpl
-    ( chevron                :: OptionalImpl JSX
+type Props_AccordionImpl accordionValueImpl =
+  Props_CommonImpl
+    ( chevron                :: JSX
     , chevronPosition        :: AccordionChevronPositionImpl
-    , chevronSize            :: OptionalImpl Number
+    , chevronSize            :: Number
     , children               :: Array JSX
     , disableChevronRotation :: Boolean
     , id                     :: String
     , loop                   :: Boolean
-    , order                  :: OptionalImpl AccordionOrderImpl
+    , order                  :: AccordionOrderImpl
     , radius                 :: MantineNumberSizeImpl
-    , transitionDuration     :: OptionalImpl MillisecondsImpl
+    , transitionDuration     :: MillisecondsImpl
     , variant                :: AccordionVariantImpl
     | ControlledImpl accordionValueImpl
     )
 
-accordionControl :: (AccordionControlProps -> AccordionControlProps) -> JSX
-accordionControl = mkComponentWithDefault accordionControlComponent defaultValue
+accordionControl
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AccordionControl
+  => Union attrsImpl attrsImpl_ Props_AccordionControlImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+accordionControl = element (unsafeCoerce accordionControlComponent) <<< toNative
 
 accordionControl_ :: Array JSX -> JSX
-accordionControl_ children = accordionControl _ { children = children }
+accordionControl_ children = accordionControl { children }
 
-foreign import accordionControlComponent :: ReactComponent AccordionControlPropsImpl
+foreign import accordionControlComponent :: ReactComponent (Record Props_AccordionControlImpl)
 
-type AccordionControlProps =
-  { chevron  :: Optional JSX
+type Props_AccordionControl =
+  ( chevron  :: JSX
   , children :: Array JSX
   , disabled :: Boolean
-  , icon     :: Optional JSX
-  }
+  , icon     :: JSX
+  )
 
-type AccordionControlPropsImpl =
-  { chevron  :: OptionalImpl JSX
+type Props_AccordionControlImpl =
+  ( chevron  :: JSX
   , children :: Array JSX
   , disabled :: Boolean
-  , icon     :: OptionalImpl JSX
-  }
+  , icon     :: JSX
+  )
 
-accordionItem :: (AccordionItemProps -> AccordionItemProps) -> JSX
-accordionItem = mkComponentWithDefault accordionItemComponent defaultValue
+accordionItem
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AccordionItem
+  => Union attrsImpl attrsImpl_ Props_AccordionItemImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+accordionItem = element (unsafeCoerce accordionItemComponent) <<< toNative
 
 accordionItem_ :: Array JSX -> JSX
-accordionItem_ children = accordionItem _ { children = children }
+accordionItem_ children = accordionItem { children }
 
-foreign import accordionItemComponent :: ReactComponent AccordionItemPropsImpl
+foreign import accordionItemComponent :: ReactComponent (Record Props_AccordionItemImpl)
 
-type AccordionItemProps =
-  { children :: Array JSX
+type Props_AccordionItem =
+  ( children :: Array JSX
   , value    :: String
-  }
+  )
 
-type AccordionItemPropsImpl =
-  { children :: Array JSX
+type Props_AccordionItemImpl =
+  ( children :: Array JSX
   , value    :: String
-  }
+  )
 
-accordionPanel :: (AccordionPanelProps -> AccordionPanelProps) -> JSX
-accordionPanel = mkComponentWithDefault accordionPanelComponent defaultValue
+accordionPanel
+  :: forall attrs attrs_
+   . Union attrs attrs_ Props_AccordionPanel
+  => Record attrs -> JSX
+accordionPanel = element (unsafeCoerce accordionPanelComponent)
 
 accordionPanel_ :: Array JSX -> JSX
-accordionPanel_ children = accordionPanel _ { children = children }
+accordionPanel_ children = accordionPanel { children }
 
-foreign import accordionPanelComponent :: ReactComponent AccordionPanelProps
+foreign import accordionPanelComponent :: ReactComponent (Record Props_AccordionPanel)
 
-type AccordionPanelProps =
-  { children :: Array JSX
-  }
+type Props_AccordionPanel = ( children :: Array JSX )

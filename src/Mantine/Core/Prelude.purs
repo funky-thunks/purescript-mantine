@@ -1,6 +1,5 @@
 module Mantine.Core.Prelude
   ( module Prelude
-  , module Data.Default
   , module Data.Either
   , module Data.Maybe
   , module Data.Nullable
@@ -12,17 +11,18 @@ module Mantine.Core.Prelude
   , module Mantine.Core.CSS
   , module Mantine.Core.Common
   , module Mantine.FFI
+  , module Prim.Row
   , module React.Basic
   , module React.Basic.Events
   , module React.Basic.Hooks
   , module Record
   , module Type.Proxy
   , module Type.Row
+  , module Unsafe.Coerce
   , module Untagged.Union
   ) where
 
 import Prelude (Unit, const, identity, map, mempty, pure, unit, ($), (=<<), (<<<), (>>>), (<$), (<$>))
-import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either, either)
 import Data.Maybe (Maybe(..))
 import Data.Nullable (Nullable, notNull, null, toMaybe, toNullable)
@@ -32,12 +32,14 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1, EffectFn2)
 import Foreign.Object (Object, fromFoldable)
 import Mantine.Core.CSS (AlignContent(..), AlignContentImpl, AlignItems(..), AlignItemsImpl, FlexDirection(..), FlexDirectionImpl, FlexWrap(..), FlexWrapImpl, FontWeight(..), FontWeightImpl, GlobalValues(..), JustifyContent(..), JustifyContentImpl, ListStyleType(..), ListStyleTypeImpl, ObjectFit(..), ObjectFitImpl, PointerEvents(..), PointerEventsImpl, Position(..), PositionImpl, TableLayout(..), TableLayoutImpl, TextAlign(..), TextAlignImpl)
-import Mantine.Core.Common (CheckerHandler(..), CheckerHandlerImpl, Controlled, ControlledImpl, ControlledImpl_, Controlled_, Degrees(..), DegreesImpl, Dimension(..), DimensionImpl, DimmedOrColor(..), DimmedOrColorImpl, FixedOrResponsive, FixedOrResponsiveImpl, InputHandler(..), InputHandlerImpl, MantineColor(..), MantineColorImpl, MantineComponent, MantineComponentImpl, MantineComponentImplRow, MantineComponentRow, MantineGradient, MantineGradientImpl, MantineNumberSize(..), MantineNumberSizeImpl, MantineShadow, MantineShadowImpl, MantineSize(..), MantineSizeImpl, MantineSpacing, MantineSpacingImpl, MantineTransition(..), MantineTransitionBase, MantineTransitionBaseImpl, MantineTransitionImpl, MantineTransitionProps, MantineTransitionPropsImpl, MantineTransitionTimingFunction(..), MantineTransitionTimingFunctionImpl, Milliseconds, MillisecondsImpl, Orientation(..), OrientationImpl, Pixels, PixelsImpl, Polymorphic, PolymorphicImpl, PopoverMiddlewares, PopoverMiddlewaresImpl, Radius(..), RadiusImpl, Rem, RemImpl, Responsive, ResponsiveImpl, ValueHandler(..), ValueHandlerImpl, ZIndex, ZIndexImpl, defaultMantineComponent, defaultMantineComponent_, mkComponent, mkComponentWithDefault, mkTrivialComponent)
+import Mantine.Core.Common (CheckerHandler(..), CheckerHandlerImpl, Controlled, ControlledImpl, ControlledImpl_, Controlled_, Degrees(..), DegreesImpl, Dimension(..), DimensionImpl, DimmedOrColor(..), DimmedOrColorImpl, FixedOrResponsive, FixedOrResponsiveImpl, InputHandler(..), InputHandlerImpl, MantineColor(..), MantineColorImpl, MantineGradient, MantineGradientImpl, MantineNumberSize(..), MantineNumberSizeImpl, MantineShadow, MantineShadowImpl, MantineSize(..), MantineSizeImpl, MantineSpacing, MantineSpacingImpl, MantineTransition(..), MantineTransitionBase, MantineTransitionBaseImpl, MantineTransitionImpl, MantineTransitionProps, MantineTransitionPropsImpl, MantineTransitionTimingFunction(..), MantineTransitionTimingFunctionImpl, Milliseconds, MillisecondsImpl, Orientation(..), OrientationImpl, Pixels, PixelsImpl, Polymorphic, PolymorphicImpl, PopoverMiddlewares, PopoverMiddlewaresImpl, Props_Common, Props_CommonImpl, Radius(..), RadiusImpl, Rem, RemImpl, Responsive, ResponsiveImpl, ValueHandler, ValueHandlerImpl, ZIndex, ZIndexImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional(..), OptionalImpl, fromNative, toNative, toOptionalImpl)
-import React.Basic (ReactComponent, Ref)
+import Prim.Row (class Union)
+import React.Basic (ReactComponent, Ref, element)
 import React.Basic.Events (EventHandler, SyntheticEvent, handler, handler_)
 import React.Basic.Hooks (JSX)
 import Record (delete, merge, union)
 import Type.Proxy (Proxy(..))
 import Type.Row (type (+))
+import Unsafe.Coerce (unsafeCoerce)
 import Untagged.Union (type (|+|), UndefinedOr, asOneOf)

@@ -40,13 +40,6 @@ module Mantine.Core.Common
   , PopoverMiddlewares
   , PopoverMiddlewaresImpl
 
-  , MantineComponent
-  , MantineComponentRow
-  , defaultMantineComponent
-  , defaultMantineComponent_
-  , MantineComponentImpl
-  , MantineComponentImplRow
-
   , ValueHandler
   , ValueHandlerImpl
   , CheckerHandler(..)
@@ -54,16 +47,12 @@ module Mantine.Core.Common
   , InputHandler(..)
   , InputHandlerImpl
 
-  , mkComponent
-  , mkComponentWithDefault
-  , mkTrivialComponent
-
   , Polymorphic
   , PolymorphicImpl
 
   , Responsive
   , ResponsiveImpl
-  , FixedOrResponsive
+  , FixedOrResponsive(..)
   , FixedOrResponsiveImpl
 
   , Controlled
@@ -73,16 +62,19 @@ module Mantine.Core.Common
 
   , Breakpoint(..)
   , BreakpointImpl
+
+  , Props_Common
+  , Props_CommonImpl
   ) where
 
 import Prelude hiding (bind)
-import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either(..))
 import Data.Foldable (foldMap)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Natural (Natural)
 import Data.Newtype (class Newtype, unwrap)
+import Data.Nullable (Nullable)
 import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
@@ -92,14 +84,9 @@ import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
-import Prim.RowList (class RowToList)
-import React.Basic (ReactComponent, element)
 import React.Basic.Events (EventHandler, handler)
 import React.Basic.DOM (CSS)
 import React.Basic.DOM.Events (targetChecked, targetValue)
-import React.Basic.Hooks (JSX)
-import Record (merge, union)
-import Type.Row (class Nub, class Union, type (+))
 import Untagged.Union (type (|+|), asOneOf, toEither1)
 
 data MantineColor
@@ -334,7 +321,7 @@ instance ToFFI MantineSize MantineSizeImpl where
     Large      -> "lg"
     ExtraLarge -> "xl"
 
-instance FromFFI String MantineSize where
+instance FromFFI MantineSizeImpl MantineSize where
   fromNative = case _ of
     "xs" -> ExtraSmall
     "sm" -> Small
@@ -645,113 +632,11 @@ type MantineTransitionBaseImpl rest =
 type MantineSpacing     = MantineNumberSize
 type MantineSpacingImpl = MantineNumberSizeImpl
 
-type MantineComponent r = Record (MantineComponentRow + r)
-
-type MantineComponentRow r =
-  ( m           :: Optional MantineSize
-  , mt          :: Optional MantineSize
-  , mb          :: Optional MantineSize
-  , ml          :: Optional MantineSize
-  , mr          :: Optional MantineSize
-  , mx          :: Optional MantineSize
-  , my          :: Optional MantineSize
-  , p           :: Optional MantineSize
-  , pt          :: Optional MantineSize
-  , pb          :: Optional MantineSize
-  , pl          :: Optional MantineSize
-  , pr          :: Optional MantineSize
-  , px          :: Optional MantineSize
-  , py          :: Optional MantineSize
-  , w           :: Optional MantineSize
-  , miw         :: Optional MantineSize
-  , maw         :: Optional MantineSize
-  , h           :: Optional MantineSize
-  , mih         :: Optional MantineSize
-  , mah         :: Optional MantineSize
-  , fw          :: Optional FontWeight
-  , bg          :: Optional MantineColor
-  , c           :: Optional MantineColor
-  , className   :: Optional String
-  , style       :: Optional CSS
-  , darkHidden  :: Optional Boolean
-  , lightHidden :: Optional Boolean
-  , hiddenFrom  :: Optional Breakpoint
-  , visibleFrom :: Optional Breakpoint
-  | r
-  )
-
-defaultMantineComponentGeneral
-  :: forall otherProps
-   . Nub (MantineComponentRow otherProps)
-         (MantineComponentRow otherProps)
-  => Record otherProps -> MantineComponent otherProps
-defaultMantineComponentGeneral =
-  let baseProps :: MantineComponent ()
-      baseProps = defaultValue
-   in merge baseProps
-
-defaultMantineComponent
-  :: forall otherProps nonDefaultableProps defaultableProps defaultablePropsList
-   . Nub (MantineComponentRow otherProps)
-         (MantineComponentRow otherProps)
-  => Union nonDefaultableProps defaultableProps otherProps
-  => RowToList defaultableProps defaultablePropsList
-  => DefaultValue (Record defaultableProps)
-  => Record nonDefaultableProps
-  -> MantineComponent otherProps
-defaultMantineComponent nonDefaultable = defaultMantineComponentGeneral (nonDefaultable `union` defaultValue)
-
-defaultMantineComponent_
-  :: forall otherProps
-   . Nub (MantineComponentRow otherProps)
-         (MantineComponentRow otherProps)
-  => DefaultValue (Record otherProps)
-  => MantineComponent otherProps
-defaultMantineComponent_ = defaultMantineComponentGeneral defaultValue
-
-type MantineComponentImpl otherProps = Record (MantineComponentImplRow + otherProps)
-
-type MantineComponentImplRow r =
-  ( m           :: OptionalImpl MantineSizeImpl
-  , mt          :: OptionalImpl MantineSizeImpl
-  , mb          :: OptionalImpl MantineSizeImpl
-  , ml          :: OptionalImpl MantineSizeImpl
-  , mr          :: OptionalImpl MantineSizeImpl
-  , mx          :: OptionalImpl MantineSizeImpl
-  , my          :: OptionalImpl MantineSizeImpl
-  , p           :: OptionalImpl MantineSizeImpl
-  , pt          :: OptionalImpl MantineSizeImpl
-  , pb          :: OptionalImpl MantineSizeImpl
-  , pl          :: OptionalImpl MantineSizeImpl
-  , pr          :: OptionalImpl MantineSizeImpl
-  , px          :: OptionalImpl MantineSizeImpl
-  , py          :: OptionalImpl MantineSizeImpl
-  , w           :: OptionalImpl MantineSizeImpl
-  , miw         :: OptionalImpl MantineSizeImpl
-  , maw         :: OptionalImpl MantineSizeImpl
-  , h           :: OptionalImpl MantineSizeImpl
-  , mih         :: OptionalImpl MantineSizeImpl
-  , mah         :: OptionalImpl MantineSizeImpl
-  , fw          :: OptionalImpl FontWeightImpl
-  , bg          :: OptionalImpl MantineColorImpl
-  , c           :: OptionalImpl MantineColorImpl
-  , className   :: OptionalImpl String
-  , style       :: OptionalImpl CSS
-  , darkHidden  :: OptionalImpl Boolean
-  , lightHidden :: OptionalImpl Boolean
-  , hiddenFrom  :: OptionalImpl BreakpointImpl
-  , visibleFrom :: OptionalImpl BreakpointImpl
-  | r
-  )
-
 type ValueHandler     value       = value -> Effect Unit
 type ValueHandlerImpl nativeValue = EffectFn1 nativeValue Unit
 
 newtype CheckerHandler = CheckerHandler (Boolean -> Effect Unit)
 derive instance Newtype CheckerHandler _
-
-instance DefaultValue CheckerHandler where
-  defaultValue = CheckerHandler (const (pure unit))
 
 type CheckerHandlerImpl = EventHandler
 
@@ -761,47 +646,19 @@ instance ToFFI CheckerHandler CheckerHandlerImpl where
 newtype InputHandler = InputHandler (String -> Effect Unit)
 derive instance Newtype InputHandler _
 
-instance DefaultValue InputHandler where
-  defaultValue = InputHandler (const (pure unit))
-
 type InputHandlerImpl = EventHandler
 
 instance ToFFI InputHandler InputHandlerImpl where
   toNative (InputHandler ch) = handler targetValue (foldMap ch)
 
-mkComponent :: forall props foreignProps
-             . ReactComponent (Record foreignProps)
-            -> (props -> Record foreignProps)
-            -> props
-            -> (props -> props)
-            -> JSX
-mkComponent cmpt converter default setProps = element cmpt (converter (setProps default))
-
-mkComponentWithDefault :: forall props foreignProps
-                        . ToFFI props (Record foreignProps)
-                       => ReactComponent (Record foreignProps)
-                       -> props
-                       -> (props -> props)
-                       -> JSX
-mkComponentWithDefault cmpt = mkComponent cmpt toNative
-
-mkTrivialComponent :: forall props foreignProps
-                    . Nub (MantineComponentRow props) (MantineComponentRow props)
-                   => DefaultValue (Record props)
-                   => ToFFI (MantineComponent props) (MantineComponentImpl foreignProps)
-                   => ReactComponent (MantineComponentImpl foreignProps)
-                   -> (MantineComponent props -> MantineComponent props)
-                   -> JSX
-mkTrivialComponent cmpt = mkComponentWithDefault cmpt defaultMantineComponent_
-
 type Polymorphic rest =
-  ( component        :: Optional String
+  ( component        :: String
   , polymorphicProps :: Object Foreign
   | rest
   )
 
 type PolymorphicImpl rest =
-  ( component        :: OptionalImpl String
+  ( component        :: String
   , polymorphicProps :: Object Foreign
   | rest
   )
@@ -849,17 +706,17 @@ type PopoverMiddlewaresImpl =
 
 type Controlled  value = Controlled_ value ()
 type Controlled_ value rest =
-  ( defaultValue :: Optional     value
+  ( defaultValue :: Maybe        value
   , onChange     :: ValueHandler value
-  , value        :: Optional     value
+  , value        :: Maybe        value
   | rest
   )
 
 type ControlledImpl  value = ControlledImpl_ value ()
 type ControlledImpl_ value rest =
-  ( defaultValue :: OptionalImpl     value
+  ( defaultValue :: Nullable         value
   , onChange     :: ValueHandlerImpl value
-  , value        :: OptionalImpl     value
+  , value        :: Nullable         value
   | rest
   )
 
@@ -879,3 +736,69 @@ instance ToFFI Breakpoint BreakpointImpl where
     BreakpointMedium     -> "md"
     BreakpointLarge      -> "lg"
     BreakpointExtraLarge -> "xl"
+
+type Props_Common r =
+  ( m           :: MantineSize
+  , mt          :: MantineSize
+  , mb          :: MantineSize
+  , ml          :: MantineSize
+  , mr          :: MantineSize
+  , mx          :: MantineSize
+  , my          :: MantineSize
+  , p           :: MantineSize
+  , pt          :: MantineSize
+  , pb          :: MantineSize
+  , pl          :: MantineSize
+  , pr          :: MantineSize
+  , px          :: MantineSize
+  , py          :: MantineSize
+  , w           :: MantineSize
+  , miw         :: MantineSize
+  , maw         :: MantineSize
+  , h           :: MantineSize
+  , mih         :: MantineSize
+  , mah         :: MantineSize
+  , fw          :: FontWeight
+  , bg          :: MantineColor
+  , c           :: MantineColor
+  , className   :: String
+  , style       :: CSS
+  , darkHidden  :: Boolean
+  , lightHidden :: Boolean
+  , hiddenFrom  :: Breakpoint
+  , visibleFrom :: Breakpoint
+  | r
+  )
+
+type Props_CommonImpl r =
+  ( m           :: MantineSizeImpl
+  , mt          :: MantineSizeImpl
+  , mb          :: MantineSizeImpl
+  , ml          :: MantineSizeImpl
+  , mr          :: MantineSizeImpl
+  , mx          :: MantineSizeImpl
+  , my          :: MantineSizeImpl
+  , p           :: MantineSizeImpl
+  , pt          :: MantineSizeImpl
+  , pb          :: MantineSizeImpl
+  , pl          :: MantineSizeImpl
+  , pr          :: MantineSizeImpl
+  , px          :: MantineSizeImpl
+  , py          :: MantineSizeImpl
+  , w           :: MantineSizeImpl
+  , miw         :: MantineSizeImpl
+  , maw         :: MantineSizeImpl
+  , h           :: MantineSizeImpl
+  , mih         :: MantineSizeImpl
+  , mah         :: MantineSizeImpl
+  , fw          :: FontWeightImpl
+  , bg          :: MantineColorImpl
+  , c           :: MantineColorImpl
+  , className   :: String
+  , style       :: CSS
+  , darkHidden  :: Boolean
+  , lightHidden :: Boolean
+  , hiddenFrom  :: BreakpointImpl
+  , visibleFrom :: BreakpointImpl
+  | r
+  )

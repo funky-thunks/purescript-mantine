@@ -1,21 +1,28 @@
 module Mantine.Core.Inputs.FieldSet
   ( fieldset
-  , FieldsetProps
+  , Props_Fieldset
+  , Props_FieldsetImpl
   , FieldsetVariant(..)
+  , FieldsetVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-fieldset :: (FieldsetProps -> FieldsetProps) -> JSX
-fieldset = mkTrivialComponent fieldsetComponent
+fieldset
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Fieldset
+  => Union attrsImpl attrsImpl_ Props_FieldsetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+fieldset = element (unsafeCoerce fieldsetComponent) <<< toNative
 
-foreign import fieldsetComponent :: ReactComponent FieldsetPropsImpl
+foreign import fieldsetComponent :: ReactComponent (Record Props_FieldsetImpl)
 
-type FieldsetProps =
-  MantineComponent
+type Props_Fieldset =
+  Props_Common
     ( children :: Array JSX
-    , legend   :: Optional JSX
-    , radius   :: Optional MantineNumberSize
+    , legend   :: JSX
+    , radius   :: MantineNumberSize
     , variant  :: FieldsetVariant
     )
 
@@ -23,9 +30,6 @@ data FieldsetVariant
   = FieldsetVariantDefault
   | FieldsetVariantFilled
   | FieldsetVariantUnstyled
-
-instance DefaultValue FieldsetVariant where
-  defaultValue = FieldsetVariantDefault
 
 type FieldsetVariantImpl = OptionalImpl String
 
@@ -35,10 +39,10 @@ instance ToFFI FieldsetVariant FieldsetVariantImpl where
     FieldsetVariantFilled   -> Just "filled"
     FieldsetVariantUnstyled -> Just "unstyled"
 
-type FieldsetPropsImpl =
-  MantineComponentImpl
+type Props_FieldsetImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , legend   :: OptionalImpl JSX
-    , radius   :: OptionalImpl MantineNumberSizeImpl
+    , legend   :: JSX
+    , radius   :: MantineNumberSizeImpl
     , variant  :: FieldsetVariantImpl
     )

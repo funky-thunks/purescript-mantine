@@ -1,8 +1,11 @@
 module Mantine.Core.Inputs.PinInput
   ( pinInput
-  , PinInputProps
+  , Props_PinInput
+  , Props_PinInputImpl
   , PinInputMode(..)
+  , PinInputModeImpl
   , PinInputType(..)
+  , PinInputTypeImpl
 
   , module Mantine.Core.Inputs.Input
   ) where
@@ -11,36 +14,41 @@ import Data.String.Regex (Regex)
 import Mantine.Core.Inputs.Input (InputType(..), InputTypeImpl)
 import Mantine.Core.Prelude
 
-pinInput :: (PinInputProps -> PinInputProps) -> JSX
-pinInput = mkTrivialComponent pinInputComponent
+pinInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_PinInput
+  => Union attrsImpl attrsImpl_ Props_PinInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pinInput = element (unsafeCoerce pinInputComponent) <<< toNative
 
-foreign import pinInputComponent :: ReactComponent PinInputPropsImpl
+foreign import pinInputComponent :: ReactComponent (Record Props_PinInputImpl)
 
 -- Not supported properties:
 --   { hiddenInputProps :: Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "ref">
 --   }
 
-type PinInputProps =
-  MantineComponent
-    ( ariaLabel   :: Optional String
+type Props_PinInput =
+  Props_Common
+    ( ariaLabel   :: String
     , autoFocus   :: Boolean
     , disabled    :: Boolean
     , error       :: Boolean
-    , form        :: Optional String
-    , gap         :: Optional MantineSpacing
-    , id          :: Optional String
-    , inputMode   :: Optional PinInputMode
-    , inputType   :: Optional InputType
+    , form        :: String
+    , gap         :: MantineSpacing
+    , id          :: String
+    , inputMode   :: PinInputMode
+    , inputType   :: InputType
     , length      :: Number
     , manageFocus :: Boolean
     , mask        :: Boolean
-    , name        :: Optional String
+    , name        :: String
     , onComplete  :: ValueHandler String
     , oneTimeCode :: Boolean
-    , placeholder :: Optional String
-    , radius      :: Optional MantineNumberSize
+    , placeholder :: String
+    , radius      :: MantineNumberSize
     , readOnly    :: Boolean
-    , size        :: Optional MantineSize
+    , size        :: MantineSize
     , type        :: PinInputType
     | Controlled String
     )
@@ -75,35 +83,33 @@ data PinInputType
 
 type PinInputTypeImpl = String |+| Regex
 
-instance DefaultValue PinInputType where defaultValue = PinInputTypeAlphanumeric
-
 instance ToFFI PinInputType PinInputTypeImpl where
   toNative = case _ of
     PinInputTypeAlphanumeric -> asOneOf "alphanumeric"
     PinInputTypeNumber       -> asOneOf "number"
     PinInputTypeRegExp r     -> asOneOf r
 
-type PinInputPropsImpl =
-  MantineComponentImpl
-    ( ariaLabel   :: OptionalImpl String
+type Props_PinInputImpl =
+  Props_CommonImpl
+    ( ariaLabel   :: String
     , autoFocus   :: Boolean
     , disabled    :: Boolean
     , error       :: Boolean
-    , form        :: OptionalImpl String
-    , gap         :: OptionalImpl MantineSpacingImpl
-    , id          :: OptionalImpl String
-    , inputMode   :: OptionalImpl PinInputModeImpl
-    , inputType   :: OptionalImpl InputTypeImpl
+    , form        :: String
+    , gap         :: MantineSpacingImpl
+    , id          :: String
+    , inputMode   :: PinInputModeImpl
+    , inputType   :: InputTypeImpl
     , length      :: Number
     , manageFocus :: Boolean
     , mask        :: Boolean
-    , name        :: OptionalImpl String
+    , name        :: String
     , onComplete  :: ValueHandlerImpl String
     , oneTimeCode :: Boolean
-    , placeholder :: OptionalImpl String
-    , radius      :: OptionalImpl MantineNumberSizeImpl
+    , placeholder :: String
+    , radius      :: MantineNumberSizeImpl
     , readOnly    :: Boolean
-    , size        :: OptionalImpl MantineSizeImpl
+    , size        :: MantineSizeImpl
     , type        :: PinInputTypeImpl
     | ControlledImpl String
     )

@@ -1,54 +1,49 @@
 module Mantine.Core.Inputs.Rating
   ( rating
-  , RatingProps
+  , Props_Rating
+  , Props_RatingImpl
   ) where
 
 import Mantine.Core.Prelude
 
-rating :: (RatingProps -> RatingProps) -> JSX
-rating = mkComponent ratingComponent ratingToImpl defaultMantineComponent_
+rating
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Rating
+  => Union attrsImpl attrsImpl_ Props_RatingImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+rating = element (unsafeCoerce ratingComponent) <<< toNative
 
-foreign import ratingComponent :: ReactComponent RatingPropsImpl
+foreign import ratingComponent :: ReactComponent (Record Props_RatingImpl)
 
-type RatingProps =
-  MantineComponent
-    ( color                 :: Optional MantineColor
-    , count                 :: Optional Number
-    , emptySymbol           :: Optional (Int -> JSX)
-    , fractions             :: Optional Number
-    , fullSymbol            :: Optional (Int -> JSX)
-    , getSymbolLabel        :: Optional (Int -> String)
+type Props_Rating =
+  Props_Common
+    ( color                 :: MantineColor
+    , count                 :: Number
+    , emptySymbol           :: Int -> JSX
+    , fractions             :: Number
+    , fullSymbol            :: Int -> JSX
+    , getSymbolLabel        :: Int -> String
     , highlightSelectedOnly :: Boolean
-    , name                  :: Optional String
+    , name                  :: String
     , onHover               :: ValueHandler Number
     , readOnly              :: Boolean
-    , size                  :: Optional MantineSize
+    , size                  :: MantineSize
     | Controlled Number
     )
 
-type RatingPropsImpl =
-  MantineComponentImpl
-    ( color                 :: OptionalImpl MantineColorImpl
-    , count                 :: OptionalImpl Number
-    , emptySymbol           :: OptionalImpl (Int -> JSX)
-    , fractions             :: OptionalImpl Number
-    , fullSymbol            :: OptionalImpl (Int -> JSX)
-    , getSymbolLabel        :: OptionalImpl (Int -> String)
+type Props_RatingImpl =
+  Props_CommonImpl
+    ( color                 :: MantineColorImpl
+    , count                 :: Number
+    , emptySymbol           :: Number -> JSX
+    , fractions             :: Number
+    , fullSymbol            :: Number -> JSX
+    , getSymbolLabel        :: Number -> String
     , highlightSelectedOnly :: Boolean
-    , name                  :: OptionalImpl String
+    , name                  :: String
     , onHover               :: ValueHandlerImpl Number
     , readOnly              :: Boolean
-    , size                  :: OptionalImpl MantineSizeImpl
+    , size                  :: MantineSizeImpl
     | ControlledImpl Number
     )
-
-ratingToImpl :: RatingProps -> RatingPropsImpl
-ratingToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "emptySymbol")
-         <<< delete (Proxy :: Proxy "fullSymbol")
-         <<< delete (Proxy :: Proxy "getSymbolLabel")
-   in { emptySymbol:    toOptionalImpl props.emptySymbol
-      , fullSymbol:     toOptionalImpl props.fullSymbol
-      , getSymbolLabel: toOptionalImpl props.getSymbolLabel
-      } `union` rest props

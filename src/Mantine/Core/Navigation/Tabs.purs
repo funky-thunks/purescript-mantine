@@ -1,47 +1,58 @@
 module Mantine.Core.Navigation.Tabs
   ( tabs
   , tabs_
-  , TabsProps
+  , Props_Tabs
+  , Props_TabsImpl
   , TabsPlacement(..)
+  , TabsPlacementImpl
   , TabsVariant(..)
+  , TabsVariantImpl
 
   , tab
   , tab_
-  , TabsTabProps
+  , Props_TabsTab
+  , Props_TabsTabImpl
 
   , tabList
   , tabList_
-  , TabListProps
+  , Props_TabList
+  , Props_TabListImpl
 
   , tabPanel
   , tabPanel_
-  , TabPanelProps
+  , Props_TabPanel
+  , Props_TabPanelImpl
   ) where
 
 import Mantine.Core.Prelude
 
-tabs :: (TabsProps -> TabsProps) -> JSX
-tabs = mkTrivialComponent tabsComponent
+tabs
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Tabs
+  => Union attrsImpl attrsImpl_ Props_TabsImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tabs = element (unsafeCoerce tabsComponent) <<< toNative
 
 tabs_ :: Array JSX -> JSX
-tabs_ children = tabs _ { children = children }
+tabs_ children = tabs { children }
 
-foreign import tabsComponent :: ReactComponent TabsPropsImpl
+foreign import tabsComponent :: ReactComponent (Record Props_TabsImpl)
 
-type TabsProps =
-  MantineComponent
+type Props_Tabs =
+  Props_Common
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
-    , color                   :: Optional MantineColor
-    , id                      :: Optional String
+    , color                   :: MantineColor
+    , id                      :: String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , orientation             :: Optional Orientation
-    , placement               :: Optional TabsPlacement
-    , radius                  :: Optional MantineNumberSize
-    , variant                 :: Optional TabsVariant
+    , orientation             :: Orientation
+    , placement               :: TabsPlacement
+    , radius                  :: MantineNumberSize
+    , variant                 :: TabsVariant
     | Controlled String
     )
 
@@ -69,89 +80,104 @@ instance ToFFI TabsVariant TabsVariantImpl where
     TabsVariantDefault -> "default"
     TabsVariantPills   -> "pills"
 
-type TabsPropsImpl =
-  MantineComponentImpl
+type Props_TabsImpl =
+  Props_CommonImpl
     ( activateTabWithKeyboard :: Boolean
     , allowTabDeactivation    :: Boolean
     , children                :: Array JSX
-    , color                   :: OptionalImpl MantineColorImpl
-    , id                      :: OptionalImpl String
+    , color                   :: MantineColorImpl
+    , id                      :: String
     , inverted                :: Boolean
     , keepMounted             :: Boolean
     , loop                    :: Boolean
-    , orientation             :: OptionalImpl OrientationImpl
-    , placement               :: OptionalImpl TabsPlacementImpl
-    , radius                  :: OptionalImpl MantineNumberSizeImpl
-    , variant                 :: OptionalImpl TabsVariantImpl
+    , orientation             :: OrientationImpl
+    , placement               :: TabsPlacementImpl
+    , radius                  :: MantineNumberSizeImpl
+    , variant                 :: TabsVariantImpl
     | ControlledImpl String
     )
 
-tab :: (TabsTabProps -> TabsTabProps) -> JSX
-tab = mkTrivialComponent tabComponent
+tab
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TabsTab
+  => Union attrsImpl attrsImpl_ Props_TabsTabImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tab = element (unsafeCoerce tabComponent) <<< toNative
 
 tab_ :: Array JSX -> JSX
-tab_ children = tab _ { children = children}
+tab_ children = tab { children }
 
-foreign import tabComponent :: ReactComponent TabsTabPropsImpl
+foreign import tabComponent :: ReactComponent (Record Props_TabsTabImpl)
 
-type TabsTabProps =
-  MantineComponent
+type Props_TabsTab =
+  Props_Common
     ( children     :: Array JSX
-    , color        :: Optional MantineColor
-    , leftSection  :: Optional JSX
-    , rightSection :: Optional JSX
-    , size         :: Optional MantineNumberSize
-    , value        :: Optional String
+    , color        :: MantineColor
+    , leftSection  :: JSX
+    , rightSection :: JSX
+    , size         :: MantineNumberSize
+    , value        :: String
     )
 
-type TabsTabPropsImpl =
-  MantineComponentImpl
+type Props_TabsTabImpl =
+  Props_CommonImpl
     ( children     :: Array JSX
-    , color        :: OptionalImpl MantineColorImpl
-    , leftSection  :: OptionalImpl JSX
-    , rightSection :: OptionalImpl JSX
-    , size         :: OptionalImpl MantineNumberSizeImpl
-    , value        :: OptionalImpl String
+    , color        :: MantineColorImpl
+    , leftSection  :: JSX
+    , rightSection :: JSX
+    , size         :: MantineNumberSizeImpl
+    , value        :: String
     )
 
-tabList :: (TabListProps -> TabListProps) -> JSX
-tabList = mkTrivialComponent tabListComponent
+tabList
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TabList
+  => Union attrsImpl attrsImpl_ Props_TabListImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tabList = element (unsafeCoerce tabListComponent) <<< toNative
 
 tabList_ :: Array JSX -> JSX
-tabList_ children = tabList _ { children = children }
+tabList_ children = tabList { children }
 
-foreign import tabListComponent :: ReactComponent TabListPropsImpl
+foreign import tabListComponent :: ReactComponent (Record Props_TabListImpl)
 
-type TabListProps =
-  MantineComponent
+type Props_TabList =
+  Props_Common
     ( children :: Array JSX
     , grow     :: Boolean
-    , justify  :: Optional JustifyContent
+    , justify  :: JustifyContent
     )
 
-type TabListPropsImpl =
-  MantineComponentImpl
+type Props_TabListImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , grow     :: Boolean
-    , justify  :: OptionalImpl JustifyContentImpl
+    , justify  :: JustifyContentImpl
     )
 
-tabPanel :: (TabPanelProps -> TabPanelProps) -> JSX
-tabPanel = mkTrivialComponent tabPanelComponent
+tabPanel
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TabPanel
+  => Union attrsImpl attrsImpl_ Props_TabPanelImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tabPanel = element (unsafeCoerce tabPanelComponent) <<< toNative
 
 tabPanel_ :: Array JSX -> JSX
-tabPanel_ children = tabPanel _ { children = children }
+tabPanel_ children = tabPanel { children }
 
-foreign import tabPanelComponent :: ReactComponent TabPanelPropsImpl
+foreign import tabPanelComponent :: ReactComponent (Record Props_TabPanelImpl)
 
-type TabPanelProps =
-  MantineComponent
+type Props_TabPanel =
+  Props_Common
     ( children :: Array JSX
     , value    :: String
     )
 
-type TabPanelPropsImpl =
-  MantineComponentImpl
+type Props_TabPanelImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , value    :: String
     )

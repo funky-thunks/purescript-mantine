@@ -1,40 +1,52 @@
 module Mantine.Core.Inputs.Radio
   ( radio
-  , RadioProps
+  , Props_Radio
+  , Props_RadioImpl
 
   , radioGroup
   , radioGroup_
-  , RadioGroupProps
+  , Props_RadioGroup
+  , Props_RadioGroupImpl
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
-import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
+import Mantine.Core.Inputs.Checkables (Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputGroupComponent, Props_InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
-radio :: (RadioProps -> RadioProps) -> JSX
-radio = mkTrivialComponent radioComponent
+radio
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Radio
+  => Union attrsImpl attrsImpl_ Props_RadioImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+radio = element (unsafeCoerce radioComponent) <<< toNative
 
-foreign import radioComponent :: ReactComponent RadioPropsImpl
+foreign import radioComponent :: ReactComponent (Record Props_RadioImpl)
 
-type RadioProps =
-  CheckableFieldComponent
-    ( icon      :: Optional JSX
-    , iconColor :: Optional MantineColor
+type Props_Radio =
+  Props_CheckableFieldComponent
+    ( icon      :: JSX
+    , iconColor :: MantineColor
     )
 
-type RadioPropsImpl =
-  CheckableFieldComponentImpl
-    ( icon      :: OptionalImpl JSX
-    , iconColor :: OptionalImpl MantineColorImpl
+type Props_RadioImpl =
+  Props_CheckableFieldComponentImpl
+    ( icon      :: JSX
+    , iconColor :: MantineColorImpl
     )
 
-radioGroup :: (RadioGroupProps -> RadioGroupProps) -> JSX
-radioGroup = mkTrivialComponent radioGroupComponent
+radioGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_RadioGroup
+  => Union attrsImpl attrsImpl_ Props_RadioGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+radioGroup = element (unsafeCoerce radioGroupComponent) <<< toNative
 
 radioGroup_ :: Array JSX -> JSX
-radioGroup_ children = radioGroup _ { children = children }
+radioGroup_ children = radioGroup { children }
 
-foreign import radioGroupComponent :: ReactComponent RadioGroupPropsImpl
+foreign import radioGroupComponent :: ReactComponent (Record Props_RadioGroupImpl)
 
-type RadioGroupProps     = InputGroupComponent     String (name :: Optional     String)
-type RadioGroupPropsImpl = InputGroupComponentImpl String (name :: OptionalImpl String)
+type Props_RadioGroup     = Props_InputGroupComponent     String (name :: String)
+type Props_RadioGroupImpl = Props_InputGroupComponentImpl String (name :: String)

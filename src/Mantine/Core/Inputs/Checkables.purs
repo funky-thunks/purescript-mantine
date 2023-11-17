@@ -1,59 +1,60 @@
 module Mantine.Core.Inputs.Checkables
-  ( CheckableComponent
-  , CheckableFieldComponent
-  , CheckableLabelPosition(..)
+  ( Props_CheckableComponent
+  , Props_CheckableComponentImpl
 
-  , CheckableComponentImpl
-  , CheckableFieldComponentImpl
+  , Props_CheckableFieldComponent
+  , Props_CheckableFieldComponentImpl
+
+  , CheckableLabelPosition(..)
   , CheckableLabelPositionImpl
   ) where
 
 import Mantine.Core.Prelude
 import Web.HTML.HTMLDivElement (HTMLDivElement)
 
-type CheckableComponent rest =
-  MantineComponent
-    ( checked        :: Optional Boolean
-    , color          :: Optional MantineColor
-    , defaultChecked :: Optional Boolean
-    , id             :: Optional String
+type Props_CheckableComponent rest =
+  Props_Common
+    ( checked        :: Boolean
+    , color          :: MantineColor
+    , defaultChecked :: Boolean
+    , id             :: String
     , onChange       :: CheckerHandler
-    , radius         :: Optional MantineNumberSize
-    , rootRef        :: Optional (Ref HTMLDivElement)
-    , size           :: Optional MantineSize
-    , value          :: Optional String
+    , radius         :: MantineNumberSize
+    , rootRef        :: Ref HTMLDivElement
+    , size           :: MantineSize
+    , value          :: String
     | rest
     )
 
-type CheckableFieldComponent rest =
-  CheckableComponent
-    ( description    :: Optional JSX
-    , error          :: Optional JSX
-    , label          :: Optional JSX
-    , labelPosition  :: Optional CheckableLabelPosition
+type Props_CheckableFieldComponent rest =
+  Props_CheckableComponent
+    ( description   :: JSX
+    , error         :: JSX
+    , label         :: JSX
+    , labelPosition :: CheckableLabelPosition
     | rest
     )
 
-type CheckableComponentImpl rest =
-  MantineComponentImpl
-    ( checked        :: OptionalImpl Boolean
-    , color          :: OptionalImpl MantineColorImpl
-    , defaultChecked :: OptionalImpl Boolean
-    , id             :: OptionalImpl String
+type Props_CheckableComponentImpl rest =
+  Props_CommonImpl
+    ( checked        :: Boolean
+    , color          :: MantineColorImpl
+    , defaultChecked :: Boolean
+    , id             :: String
     , onChange       :: CheckerHandlerImpl
-    , radius         :: OptionalImpl MantineNumberSizeImpl
-    , rootRef        :: OptionalImpl (Ref HTMLDivElement)
-    , size           :: OptionalImpl MantineSizeImpl
-    , value          :: OptionalImpl String
+    , radius         :: MantineNumberSizeImpl
+    , rootRef        :: Ref HTMLDivElement
+    , size           :: MantineSizeImpl
+    , value          :: String
     | rest
     )
 
-type CheckableFieldComponentImpl rest =
-  CheckableComponentImpl
-    ( description    :: OptionalImpl JSX
-    , error          :: OptionalImpl JSX
-    , label          :: OptionalImpl JSX
-    , labelPosition  :: OptionalImpl CheckableLabelPositionImpl
+type Props_CheckableFieldComponentImpl rest =
+  Props_CheckableComponentImpl
+    ( description   :: JSX
+    , error         :: JSX
+    , label         :: JSX
+    , labelPosition :: CheckableLabelPositionImpl
     | rest
     )
 

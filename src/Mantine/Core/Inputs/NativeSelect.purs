@@ -1,27 +1,33 @@
 module Mantine.Core.Inputs.NativeSelect
   ( nativeSelect
-  , NativeSelectProps
+  , Props_NativeSelect
+  , Props_NativeSelectImpl
   ) where
 
 import Mantine.Core.Combobox.Select (SelectItem, SelectItemImpl)
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-nativeSelect :: (NativeSelectProps -> NativeSelectProps) -> JSX
-nativeSelect = mkTrivialComponent nativeSelectComponent
+nativeSelect
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_NativeSelect
+  => Union attrsImpl attrsImpl_ Props_NativeSelectImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+nativeSelect = element (unsafeCoerce nativeSelectComponent) <<< toNative
 
-foreign import nativeSelectComponent :: ReactComponent NativeSelectPropsImpl
+foreign import nativeSelectComponent :: ReactComponent (Record Props_NativeSelectImpl)
 
-type NativeSelectProps =
-  InputComponent
+type Props_NativeSelect =
+  Props_InputComponent
     ( data     :: Array SelectItem
     , onChange :: InputHandler
-    , value    :: Optional String
+    , value    :: String
     )
 
-type NativeSelectPropsImpl =
-  InputComponentImpl
+type Props_NativeSelectImpl =
+  Props_InputComponentImpl
     ( data     :: Array SelectItemImpl
     , onChange :: InputHandlerImpl
-    , value    :: OptionalImpl String
+    , value    :: String
     )

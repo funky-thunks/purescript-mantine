@@ -1,98 +1,103 @@
 module Mantine.Core.Combobox.Combobox
   ( combobox
-  , ComboboxProps
+  , Props_Combobox
+  , Props_ComboboxImpl
   , ComboboxArrowPosition(..)
+  , ComboboxArrowPositionImpl
   , ComboboxFloatingPosition(..)
+  , ComboboxFloatingPositionImpl
   , ComboboxPopoverWidth(..)
+  , ComboboxPopoverWidthImpl
   , FloatingAxesOffsets
+  , FloatingAxesOffsetsImpl
   , Offset(..)
+  , OffsetImpl
 
   , ComboboxStore
+  , ComboboxStoreImpl
   , ComboboxDropdownEventSource(..)
+  , ComboboxDropdownEventSourceImpl
   , ComboboxSelectedOption(..)
+  , ComboboxSelectedOptionImpl
 
   , comboboxOption
-  , ComboboxOptionProps
+  , Props_ComboboxOption
+  , Props_ComboboxOptionRow
+  , Props_ComboboxOptionImpl
+  , Props_ComboboxOptionRowImpl
 
   , comboboxTarget
-  , ComboboxTargetProps
+  , Props_ComboboxTarget
+  , Props_ComboboxTargetImpl
 
   , comboboxDropdownTarget
-  , ComboboxDropdownTargetProps
+  , Props_ComboboxDropdownTarget
+  , Props_ComboboxDropdownTargetImpl
 
   , comboboxEventsTarget
-  , ComboboxEventsTargetProps
+  , Props_ComboboxEventsTarget
+  , Props_ComboboxEventsTargetImpl
 
   , comboboxDropdown
-  , ComboboxDropdownProps
+  , Props_ComboboxDropdown
+  , Props_ComboboxDropdownImpl
 
   , comboboxGroup
-  , ComboboxGroupProps
+  , Props_ComboboxGroup
+  , Props_ComboboxGroupImpl
 
   , EventsTargetType(..)
-
-  , ComboboxPropsImpl
-  , ComboboxArrowPositionImpl
-  , ComboboxFloatingPositionImpl
-  , ComboboxPopoverWidthImpl
-  , FloatingAxesOffsetsImpl
-  , OffsetImpl
-  , ComboboxStoreImpl
-  , ComboboxDropdownEventSourceImpl
-  , ComboboxSelectedOptionImpl
+  , EventsTargetTypeImpl
   ) where
 
 import Mantine.Core.Prelude
 import Web.HTML.HTMLElement (HTMLElement)
 import Web.HTML.HTMLInputElement (HTMLInputElement)
 
-combobox :: (ComboboxProps -> ComboboxProps) -> JSX
-combobox = mkComponentWithDefault comboboxComponent defaultComboboxProps
+combobox
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Combobox
+  => Union attrsImpl attrsImpl_ Props_ComboboxImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+combobox = element (unsafeCoerce comboboxComponent) <<< toNative
 
-foreign import comboboxComponent :: ReactComponent ComboboxPropsImpl
-
-defaultComboboxProps :: ComboboxProps
-defaultComboboxProps =
-  defaultMantineComponent
-    { onClose: pure unit
-    , onOpen:  pure unit
-    , onOptionSubmit: const (const (pure unit))
-    }
+foreign import comboboxComponent :: ReactComponent (Record Props_ComboboxImpl)
 
 -- Not supported properties
 --   { portalProps          :: Omit<PortalProps, "children">
 --   , positionDependencies :: any[]
 --   }
 
-type ComboboxProps =
-  MantineComponent
-    ( arrowOffset                 :: Optional Pixels
-    , arrowPosition               :: Optional ComboboxArrowPosition
-    , arrowRadius                 :: Optional Pixels
-    , arrowSize                   :: Optional Pixels
+type Props_Combobox =
+  Props_Common
+    ( arrowOffset                 :: Pixels
+    , arrowPosition               :: ComboboxArrowPosition
+    , arrowRadius                 :: Pixels
+    , arrowSize                   :: Pixels
     , children                    :: Array JSX
     , disabled                    :: Boolean
-    , dropdownPadding             :: Optional Number
+    , dropdownPadding             :: Number
     , keepMounted                 :: Boolean
     , middlewares                 :: PopoverMiddlewares
-    , offset                      :: Optional Offset
+    , offset                      :: Offset
     , onClose                     :: Effect Unit
     , onOpen                      :: Effect Unit
-    , onOptionSubmit              :: String -> ComboboxOptionProps -> Effect Unit
+    , onOptionSubmit              :: String -> Record Props_ComboboxOptionRow -> Effect Unit
     , onPositionChange            :: ValueHandler ComboboxFloatingPosition
     , position                    :: ComboboxFloatingPosition
-    , radius                      :: Optional MantineNumberSize
+    , radius                      :: MantineNumberSize
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , shadow                      :: Optional MantineShadow
-    , size                        :: Optional MantineSize
-    , store                       :: Optional ComboboxStore
+    , shadow                      :: MantineShadow
+    , size                        :: MantineSize
+    , store                       :: ComboboxStore
     , transitionProps             :: MantineTransitionProps
-    , width                       :: Optional ComboboxPopoverWidth
+    , width                       :: ComboboxPopoverWidth
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: Optional ZIndex
+    , zIndex                      :: ZIndex
     )
 
 type ComboboxStore =
@@ -223,9 +228,6 @@ data ComboboxFloatingPosition
   | ComboboxFloatingPositionBottomEnd
   | ComboboxFloatingPositionLeftEnd
 
-instance DefaultValue ComboboxFloatingPosition where
-  defaultValue = ComboboxFloatingPositionBottom
-
 type ComboboxFloatingPositionImpl = String
 
 instance ToFFI ComboboxFloatingPosition ComboboxFloatingPositionImpl where
@@ -257,7 +259,7 @@ instance FromFFI String ComboboxFloatingPosition where
     "right-end"    -> ComboboxFloatingPositionRightEnd
     "bottom-end"   -> ComboboxFloatingPositionBottomEnd
     "left-end"     -> ComboboxFloatingPositionLeftEnd
-    _              -> defaultValue
+    _              -> ComboboxFloatingPositionBottom
 
 data ComboboxArrowPosition
   = ComboboxArrowPositionCenter
@@ -270,147 +272,174 @@ instance ToFFI ComboboxArrowPosition ComboboxArrowPositionImpl where
     ComboboxArrowPositionCenter -> "center"
     ComboboxArrowPositionSide   -> "side"
 
-type ComboboxPropsImpl =
-  MantineComponentImpl
-    ( arrowOffset                 :: OptionalImpl PixelsImpl
-    , arrowPosition               :: OptionalImpl ComboboxArrowPositionImpl
-    , arrowRadius                 :: OptionalImpl PixelsImpl
-    , arrowSize                   :: OptionalImpl PixelsImpl
+type Props_ComboboxImpl =
+  Props_CommonImpl
+    ( arrowOffset                 :: PixelsImpl
+    , arrowPosition               :: ComboboxArrowPositionImpl
+    , arrowRadius                 :: PixelsImpl
+    , arrowSize                   :: PixelsImpl
     , children                    :: Array JSX
     , disabled                    :: Boolean
-    , dropdownPadding             :: OptionalImpl Number
+    , dropdownPadding             :: Number
     , keepMounted                 :: Boolean
     , middlewares                 :: PopoverMiddlewaresImpl
-    , offset                      :: OptionalImpl OffsetImpl
+    , offset                      :: OffsetImpl
     , onClose                     :: Effect Unit
     , onOpen                      :: Effect Unit
-    , onOptionSubmit              :: EffectFn2 String ComboboxOptionProps Unit
+    , onOptionSubmit              :: EffectFn2 String (Record Props_ComboboxOptionRowImpl) Unit
     , onPositionChange            :: ValueHandlerImpl ComboboxFloatingPositionImpl
     , position                    :: ComboboxFloatingPositionImpl
-    , radius                      :: OptionalImpl MantineNumberSizeImpl
+    , radius                      :: MantineNumberSizeImpl
     , readOnly                    :: Boolean
     , resetSelectionOnOptionHover :: Boolean
     , returnFocus                 :: Boolean
-    , shadow                      :: OptionalImpl MantineShadowImpl
-    , size                        :: OptionalImpl MantineSizeImpl
-    , store                       :: OptionalImpl ComboboxStoreImpl
+    , shadow                      :: MantineShadowImpl
+    , size                        :: MantineSizeImpl
+    , store                       :: ComboboxStoreImpl
     , transitionProps             :: MantineTransitionPropsImpl
-    , width                       :: OptionalImpl ComboboxPopoverWidthImpl
+    , width                       :: ComboboxPopoverWidthImpl
     , withArrow                   :: Boolean
     , withinPortal                :: Boolean
-    , zIndex                      :: OptionalImpl ZIndexImpl
+    , zIndex                      :: ZIndexImpl
     )
 
-comboboxOption :: (ComboboxOptionProps -> ComboboxOptionProps) -> JSX
-comboboxOption = mkTrivialComponent comboboxOptionComponent
+comboboxOption
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxOption
+  => Union attrsImpl attrsImpl_ Props_ComboboxOptionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxOption = element (unsafeCoerce comboboxOptionComponent) <<< toNative
 
-foreign import comboboxOptionComponent :: ReactComponent ComboboxOptionPropsImpl
+foreign import comboboxOptionComponent :: ReactComponent (Record Props_ComboboxOptionImpl)
 
-type ComboboxOptionProps =
-  MantineComponent
+type Props_ComboboxOption = Props_Common Props_ComboboxOptionRow
+type Props_ComboboxOptionRow =
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
-    , value    :: Optional String
+    , value    :: String
     )
 
-type ComboboxOptionPropsImpl =
-  MantineComponentImpl
+type Props_ComboboxOptionImpl = Props_CommonImpl Props_ComboboxOptionRowImpl
+type Props_ComboboxOptionRowImpl =
     ( active   :: Boolean
     , disabled :: Boolean
     , selected :: Boolean
-    , value    :: OptionalImpl String
+    , value    :: String
     )
 
-comboboxTarget :: (ComboboxTargetProps -> ComboboxTargetProps) -> JSX
-comboboxTarget = mkTrivialComponent comboboxTargetComponent
+comboboxTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxTarget
+  => Union attrsImpl attrsImpl_ Props_ComboboxTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxTarget = element (unsafeCoerce comboboxTargetComponent) <<< toNative
 
-foreign import comboboxTargetComponent :: ReactComponent ComboboxTargetPropsImpl
+foreign import comboboxTargetComponent :: ReactComponent (Record Props_ComboboxTargetImpl)
 
-type ComboboxTargetProps =
-  MantineComponent
+type Props_ComboboxTarget =
+  Props_Common
     ( children               :: Array JSX
-    , refProp                :: Optional String
+    , refProp                :: String
     , targetType             :: EventsTargetType
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
     )
 
-type ComboboxTargetPropsImpl =
-  MantineComponentImpl
+type Props_ComboboxTargetImpl =
+  Props_CommonImpl
     ( children               :: Array JSX
-    , refProp                :: OptionalImpl String
+    , refProp                :: String
     , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
     )
 
-comboboxDropdownTarget :: (ComboboxDropdownTargetProps -> ComboboxDropdownTargetProps) -> JSX
-comboboxDropdownTarget = mkTrivialComponent comboboxDropdownTargetComponent
+comboboxDropdownTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxDropdownTarget
+  => Union attrsImpl attrsImpl_ Props_ComboboxDropdownTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxDropdownTarget = element (unsafeCoerce comboboxDropdownTargetComponent) <<< toNative
 
-foreign import comboboxDropdownTargetComponent :: ReactComponent ComboboxDropdownTargetPropsImpl
+foreign import comboboxDropdownTargetComponent :: ReactComponent (Record Props_ComboboxDropdownTargetImpl)
 
-type ComboboxDropdownTargetProps =
-  MantineComponent
+type Props_ComboboxDropdownTarget =
+  Props_Common
     ( children :: Array JSX
-    , refProp  :: Optional String
+    , refProp  :: String
     )
 
-type ComboboxDropdownTargetPropsImpl =
-  MantineComponentImpl
+type Props_ComboboxDropdownTargetImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , refProp  :: OptionalImpl String
+    , refProp  :: String
     )
 
-comboboxEventsTarget :: (ComboboxEventsTargetProps -> ComboboxEventsTargetProps) -> JSX
-comboboxEventsTarget = mkTrivialComponent comboboxEventsTargetComponent
+comboboxEventsTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxEventsTarget
+  => Union attrsImpl attrsImpl_ Props_ComboboxEventsTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxEventsTarget = element (unsafeCoerce comboboxEventsTargetComponent) <<< toNative
 
-foreign import comboboxEventsTargetComponent :: ReactComponent ComboboxEventsTargetPropsImpl
+foreign import comboboxEventsTargetComponent :: ReactComponent (Record Props_ComboboxEventsTargetImpl)
 
-type ComboboxEventsTargetProps =
-  MantineComponent
+type Props_ComboboxEventsTarget =
+  Props_Common
     ( children               :: Array JSX
-    , refProp                :: Optional String
+    , refProp                :: String
     , targetType             :: EventsTargetType
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
     )
 
-type ComboboxEventsTargetPropsImpl =
-  MantineComponentImpl
+type Props_ComboboxEventsTargetImpl =
+  Props_CommonImpl
     ( children               :: Array JSX
-    , refProp                :: OptionalImpl String
+    , refProp                :: String
     , targetType             :: EventsTargetTypeImpl
     , withAriaAttributes     :: Boolean
     , withExpandedAttribute  :: Boolean
     , withKeyboardNavigation :: Boolean
     )
 
-comboboxDropdown :: (ComboboxDropdownProps -> ComboboxDropdownProps) -> JSX
-comboboxDropdown = mkTrivialComponent comboboxDropdownComponent
+comboboxDropdown
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxDropdown
+  => Union attrsImpl attrsImpl_ Props_ComboboxDropdownImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxDropdown = element (unsafeCoerce comboboxDropdownComponent) <<< toNative
 
-foreign import comboboxDropdownComponent :: ReactComponent ComboboxDropdownPropsImpl
+foreign import comboboxDropdownComponent :: ReactComponent (Record Props_ComboboxDropdownImpl)
 
-type ComboboxDropdownProps     = MantineComponent     ( hidden :: Boolean )
-type ComboboxDropdownPropsImpl = MantineComponentImpl ( hidden :: Boolean )
+type Props_ComboboxDropdown     = Props_Common     ( hidden :: Boolean )
+type Props_ComboboxDropdownImpl = Props_CommonImpl ( hidden :: Boolean )
 
-comboboxGroup :: (ComboboxGroupProps -> ComboboxGroupProps) -> JSX
-comboboxGroup = mkTrivialComponent comboboxGroupComponent
+comboboxGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxGroup
+  => Union attrsImpl attrsImpl_ Props_ComboboxGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxGroup = element (unsafeCoerce comboboxGroupComponent) <<< toNative
 
-foreign import comboboxGroupComponent :: ReactComponent ComboboxGroupPropsImpl
+foreign import comboboxGroupComponent :: ReactComponent (Record Props_ComboboxGroupImpl)
 
-type ComboboxGroupProps     = MantineComponent     ( label :: Optional     JSX )
-type ComboboxGroupPropsImpl = MantineComponentImpl ( label :: OptionalImpl JSX )
+type Props_ComboboxGroup     = Props_Common     ( label :: JSX )
+type Props_ComboboxGroupImpl = Props_CommonImpl ( label :: JSX )
 
 data EventsTargetType
   = EventsTargetTypeInput
   | EventsTargetTypeButton
-
-instance DefaultValue EventsTargetType where
-  defaultValue = EventsTargetTypeInput
 
 type EventsTargetTypeImpl = String
 

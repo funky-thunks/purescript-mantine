@@ -1,35 +1,41 @@
 module Mantine.Core.Typography.Blockquote
   ( blockquote
   , blockquote_
-  , BlockquoteProps
+  , Props_Blockquote
+  , Props_BlockquoteImpl
   ) where
 
 import Mantine.Core.Prelude
 
-blockquote :: (BlockquoteProps -> BlockquoteProps) -> JSX
-blockquote = mkTrivialComponent blockquoteComponent
+blockquote
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Blockquote
+  => Union attrsImpl attrsImpl_ Props_BlockquoteImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+blockquote = element (unsafeCoerce blockquoteComponent) <<< toNative
 
 blockquote_ :: Array JSX -> JSX
-blockquote_ children = blockquote _ { children = children }
+blockquote_ children = blockquote { children }
 
-foreign import blockquoteComponent :: ReactComponent BlockquotePropsImpl
+foreign import blockquoteComponent :: ReactComponent (Record Props_BlockquoteImpl)
 
-type BlockquoteProps =
-  MantineComponent
+type Props_Blockquote =
+  Props_Common
     ( children :: Array JSX
-    , cite     :: Optional JSX
-    , color    :: Optional MantineColor
-    , icon     :: Optional JSX
-    , iconSize :: Optional MantineNumberSize
-    , radius   :: Optional MantineNumberSize
+    , cite     :: JSX
+    , color    :: MantineColor
+    , icon     :: JSX
+    , iconSize :: MantineNumberSize
+    , radius   :: MantineNumberSize
     )
 
-type BlockquotePropsImpl =
-  MantineComponentImpl
+type Props_BlockquoteImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , cite     :: OptionalImpl JSX
-    , color    :: OptionalImpl MantineColorImpl
-    , icon     :: OptionalImpl JSX
-    , iconSize :: OptionalImpl MantineNumberSizeImpl
-    , radius   :: OptionalImpl MantineNumberSizeImpl
+    , cite     :: JSX
+    , color    :: MantineColorImpl
+    , icon     :: JSX
+    , iconSize :: MantineNumberSizeImpl
+    , radius   :: MantineNumberSizeImpl
     )

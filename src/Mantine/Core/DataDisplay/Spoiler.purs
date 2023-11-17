@@ -1,41 +1,38 @@
 module Mantine.Core.DataDisplay.Spoiler
   ( spoiler
   , spoiler_
-  , SpoilerProps
+  , Props_Spoiler
+  , Props_SpoilerImpl
   , SpoilerState(..)
+  , SpoilerStateImpl
   ) where
 
 import Mantine.Core.Prelude
-import React.Basic.DOM as DOM
 import Web.HTML.HTMLButtonElement (HTMLButtonElement)
 
-spoiler :: (SpoilerProps -> SpoilerProps) -> JSX
-spoiler = mkComponentWithDefault spoilerComponent defaultSpoilerProps
+spoiler
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Spoiler
+  => Union attrsImpl attrsImpl_ Props_SpoilerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+spoiler = element (unsafeCoerce spoilerComponent) <<< toNative
 
 spoiler_ :: Array JSX -> JSX
-spoiler_ children = spoiler _ { children = children }
+spoiler_ children = spoiler { children }
 
-foreign import spoilerComponent :: ReactComponent SpoilerPropsImpl
+foreign import spoilerComponent :: ReactComponent (Record Props_SpoilerImpl)
 
-type SpoilerProps =
-  MantineComponent
+type Props_Spoiler =
+  Props_Common
     ( children           :: Array JSX
-    , controlRef         :: Optional (Ref HTMLButtonElement)
+    , controlRef         :: Ref HTMLButtonElement
     , hideLabel          :: JSX
     , initialState       :: SpoilerState
     , maxHeight          :: Pixels
     , showLabel          :: JSX
-    , transitionDuration :: Optional Milliseconds
+    , transitionDuration :: Milliseconds
     )
-
-defaultSpoilerProps :: SpoilerProps
-defaultSpoilerProps =
-  defaultMantineComponent
-    { hideLabel:    DOM.text "hide"
-    , initialState: SpoilerFolded
-    , maxHeight:    120.0
-    , showLabel:    DOM.text "show"
-    }
 
 data SpoilerState
   = SpoilerFolded
@@ -48,13 +45,13 @@ instance ToFFI SpoilerState SpoilerStateImpl where
     SpoilerFolded   -> false
     SpoilerUnfolded -> true
 
-type SpoilerPropsImpl =
-  MantineComponentImpl
+type Props_SpoilerImpl =
+  Props_CommonImpl
     ( children           :: Array JSX
-    , controlRef         :: OptionalImpl (Ref HTMLButtonElement)
+    , controlRef         :: Ref HTMLButtonElement
     , hideLabel          :: JSX
     , initialState       :: SpoilerStateImpl
     , maxHeight          :: PixelsImpl
     , showLabel          :: JSX
-    , transitionDuration :: OptionalImpl MillisecondsImpl
+    , transitionDuration :: MillisecondsImpl
     )

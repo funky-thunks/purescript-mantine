@@ -1,46 +1,55 @@
 module Mantine.Core.Buttons.Button
   ( button
   , button_
-  , ButtonProps
+  , Props_Button
+  , Props_ButtonImpl
   , ButtonSize(..)
+  , ButtonSizeImpl
   , ButtonVariant(..)
-  , LoaderPosition(..)
+  , ButtonVariantImpl
 
   , buttonGroup
-  , ButtonGroupProps
+  , Props_ButtonGroup
+  , Props_ButtonGroupImpl
 
   , unstyledButton
-  , UnstyledButtonProps
+  , Props_UnstyledButton
+  , Props_UnstyledButtonImpl
   ) where
 
 import Prelude (class Show, (<>))
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
+import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
 import Mantine.Core.Prelude
-import React.Basic.Events (EventHandler, handler_)
 
-button :: (ButtonProps -> ButtonProps) -> JSX
-button = mkComponent buttonComponent buttonToImpl defaultButtonProps
+button
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Button
+  => Union attrsImpl attrsImpl_ Props_ButtonImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+button = element (unsafeCoerce buttonComponent) <<< toNative
 
 button_ :: JSX -> JSX
-button_ child = button _ { children = pure child }
+button_ child = button { children: pure child }
 
-foreign import buttonComponent :: ReactComponent ButtonPropsImpl
+foreign import buttonComponent :: ReactComponent (Record Props_ButtonImpl)
 
-type ButtonProps =
-  MantineComponent
+type Props_Button =
+  Props_Common
     ( children     :: Array JSX
-    , color        :: Optional MantineColor
+    , color        :: MantineColor
     , disabled     :: Boolean
     , fullWidth    :: Boolean
-    , justify      :: Optional JustifyContent
-    , leftSection  :: Optional JSX
-    , loaderProps  :: Optional LoaderProps
+    , gradient     :: MantineGradient
+    , justify      :: JustifyContent
+    , leftSection  :: JSX
+    , loaderProps  :: Record Props_Loader
     , loading      :: Boolean
     , onClick      :: EventHandler
-    , radius       :: Optional Radius
-    , rightSection :: Optional JSX
+    , radius       :: Radius
+    , rightSection :: JSX
     , size         :: ButtonSize
     , variant      :: ButtonVariant
     )
@@ -56,17 +65,6 @@ instance ToFFI ButtonSize ButtonSizeImpl where
     Padded  s -> toNative s
     Compact s -> "compact-" <> toNative s
 
-data LoaderPosition
-  = LoaderPositionLeft
-  | LoaderPositionRight
-  | LoaderPositionCenter
-
-instance ToFFI LoaderPosition String where
-  toNative = case _ of
-    LoaderPositionLeft   -> "left"
-    LoaderPositionRight  -> "right"
-    LoaderPositionCenter -> "center"
-
 data ButtonVariant
   = ButtonVariantDefault
   | ButtonVariantFilled
@@ -75,9 +73,7 @@ data ButtonVariant
   | ButtonVariantSubtle
   | ButtonVariantTransparent
   | ButtonVariantWhite
-  | ButtonVariantGradient MantineGradient
-
-instance DefaultValue ButtonVariant where defaultValue = ButtonVariantFilled
+  | ButtonVariantGradient
 
 type ButtonVariantImpl = String
 
@@ -90,82 +86,72 @@ instance ToFFI ButtonVariant ButtonVariantImpl where
     ButtonVariantSubtle      -> "subtle"
     ButtonVariantTransparent -> "transparent"
     ButtonVariantWhite       -> "white"
-    ButtonVariantGradient _  -> "gradient"
+    ButtonVariantGradient    -> "gradient"
 
 derive instance genericVariant :: Generic ButtonVariant _
 instance showVariant :: Show ButtonVariant where show = genericShow
 
-defaultButtonProps :: ButtonProps
-defaultButtonProps =
-  defaultMantineComponent
-    { onClick: handler_ (pure unit)
-    , size: Padded Small
-    }
-
-type ButtonPropsImpl =
-  MantineComponentImpl
+type Props_ButtonImpl =
+  Props_CommonImpl
     ( children     :: Array JSX
-    , color        :: OptionalImpl MantineColorImpl
+    , color        :: MantineColorImpl
     , disabled     :: Boolean
     , fullWidth    :: Boolean
-    , gradient     :: OptionalImpl MantineGradientImpl
-    , justify      :: OptionalImpl JustifyContentImpl
-    , leftSection  :: OptionalImpl JSX
-    , loaderProps  :: OptionalImpl LoaderPropsImpl
+    , gradient     :: MantineGradientImpl
+    , justify      :: JustifyContentImpl
+    , leftSection  :: JSX
+    , loaderProps  :: Record Props_LoaderImpl
     , loading      :: Boolean
     , onClick      :: EventHandler
-    , radius       :: OptionalImpl RadiusImpl
-    , rightSection :: OptionalImpl JSX
+    , radius       :: RadiusImpl
+    , rightSection :: JSX
     , size         :: ButtonSizeImpl
     , variant      :: ButtonVariantImpl
     )
 
-buttonToImpl :: ButtonProps -> ButtonPropsImpl
-buttonToImpl props =
-  let gradient = Optional $ case props.variant of
-        ButtonVariantGradient g -> pure g
-        _                       -> Nothing
-   in toNative ({ gradient } `union` props)
+buttonGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ButtonGroup
+  => Union attrsImpl attrsImpl_ Props_ButtonGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+buttonGroup = element (unsafeCoerce buttonGroupComponent) <<< toNative
 
-buttonGroup :: (ButtonGroupProps -> ButtonGroupProps) -> JSX
-buttonGroup = mkComponentWithDefault buttonGroupComponent defaultButtonGroupProps
+foreign import buttonGroupComponent :: ReactComponent (Record Props_ButtonGroupImpl)
 
-foreign import buttonGroupComponent :: ReactComponent ButtonGroupPropsImpl
-
-type ButtonGroupProps =
-  MantineComponent
-    ( borderWidth :: Optional MantineNumberSize
+type Props_ButtonGroup =
+  Props_Common
+    ( borderWidth :: MantineNumberSize
     , children    :: Array JSX
     , orientation :: Orientation
     )
 
-defaultButtonGroupProps :: ButtonGroupProps
-defaultButtonGroupProps = defaultMantineComponent { orientation: Horizontal }
-
-type ButtonGroupPropsImpl =
-  MantineComponentImpl
-    ( borderWidth :: OptionalImpl MantineNumberSizeImpl
+type Props_ButtonGroupImpl =
+  Props_CommonImpl
+    ( borderWidth :: MantineNumberSizeImpl
     , children    :: Array JSX
     , orientation :: OrientationImpl
     )
 
-unstyledButton :: (UnstyledButtonProps -> UnstyledButtonProps) -> JSX
-unstyledButton = mkComponentWithDefault unstyledButtonComponent defaultUnstyledButtonProps
+unstyledButton
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_UnstyledButton
+  => Union attrsImpl attrsImpl_ Props_UnstyledButtonImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+unstyledButton = element (unsafeCoerce unstyledButtonComponent) <<< toNative
 
-foreign import unstyledButtonComponent :: ReactComponent UnstyledButtonPropsImpl
+foreign import unstyledButtonComponent :: ReactComponent (Record Props_UnstyledButtonImpl)
 
-type UnstyledButtonProps =
-  MantineComponent
+type Props_UnstyledButton =
+  Props_Common
     ( children :: Array JSX
     , onClick  :: EventHandler
     | Polymorphic ()
     )
 
-defaultUnstyledButtonProps :: UnstyledButtonProps
-defaultUnstyledButtonProps = defaultMantineComponent { onClick: handler_ (pure unit) }
-
-type UnstyledButtonPropsImpl =
-  MantineComponentImpl
+type Props_UnstyledButtonImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , onClick  :: EventHandler
     | PolymorphicImpl ()

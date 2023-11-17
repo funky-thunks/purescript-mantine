@@ -27,7 +27,6 @@ module Mantine.Core.CSS
   ) where
 
 import Prelude ((<>))
-import Data.Default (class DefaultValue)
 import Mantine.FFI (class ToFFI, toNative)
 
 data AlignContent
@@ -137,8 +136,6 @@ instance ToFFI FlexWrap FlexWrapImpl where
     FlexWrapWrap        -> "wrap"
     FlexWrapWrapReverse -> "wrap-reverse"
     FlexWrapGlobal gv   -> toNative gv
-
-instance DefaultValue FlexWrap where defaultValue = FlexWrapNowrap
 
 newtype FontWeight = FontWeight Int
 
@@ -297,9 +294,6 @@ data TableLayout
   = TableLayoutAuto
   | TableLayoutFixed
   | TableLayoutGlobal GlobalValues
-
-instance DefaultValue TableLayout where
-  defaultValue = TableLayoutAuto
 
 type TableLayoutImpl = String
 

@@ -1,26 +1,29 @@
 module Mantine.Core.Layout.AspectRatio
   ( aspectRatio
-  , AspectRatioProps
+  , Props_AspectRatio
+  , Props_AspectRatioImpl
   ) where
 
 import Mantine.Core.Prelude
 
-aspectRatio :: (AspectRatioProps -> AspectRatioProps) -> JSX
-aspectRatio = mkComponentWithDefault aspectRatioComponent defaultAspectRatioProps
+aspectRatio
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AspectRatio
+  => Union attrsImpl attrsImpl_ Props_AspectRatioImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+aspectRatio = element (unsafeCoerce aspectRatioComponent) <<< toNative
 
-foreign import aspectRatioComponent :: ReactComponent AspectRatioPropsImpl
+foreign import aspectRatioComponent :: ReactComponent (Record Props_AspectRatioImpl)
 
-type AspectRatioProps =
-  MantineComponent
+type Props_AspectRatio =
+  Props_Common
     ( children :: Array JSX
     , ratio    :: Number
     )
 
-defaultAspectRatioProps :: AspectRatioProps
-defaultAspectRatioProps = defaultMantineComponent { ratio: 1.0 }
-
-type AspectRatioPropsImpl =
-  MantineComponentImpl
+type Props_AspectRatioImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , ratio    :: Number
     )

@@ -1,37 +1,44 @@
 module Mantine.Core.DataDisplay.Timeline
   ( timeline
-  , TimelineProps
+  , Props_Timeline
+  , Props_TimelineImpl
   , TimelineAlign(..)
+  , TimelineAlignImpl
 
   , timelineItem
-  , TimelineItemProps
+  , Props_TimelineItem
+  , Props_TimelineItemImpl
   , TimelineLineVariant(..)
+  , TimelineLineVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-timeline :: (TimelineProps -> TimelineProps) -> JSX
-timeline = mkTrivialComponent timelineComponent
+timeline
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Timeline
+  => Union attrsImpl attrsImpl_ Props_TimelineImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+timeline = element (unsafeCoerce timelineComponent) <<< toNative
 
-foreign import timelineComponent :: ReactComponent TimelinePropsImpl
+foreign import timelineComponent :: ReactComponent (Record Props_TimelineImpl)
 
-type TimelineProps =
-  MantineComponent
-    ( active        :: Optional Int
+type Props_Timeline =
+  Props_Common
+    ( active        :: Int
     , align         :: TimelineAlign
-    , bulletSize    :: Optional Pixels
+    , bulletSize    :: Pixels
     , children      :: Array JSX
-    , color         :: Optional MantineColor
-    , lineWidth     :: Optional Pixels
-    , radius        :: Optional MantineNumberSize
+    , color         :: MantineColor
+    , lineWidth     :: Pixels
+    , radius        :: MantineNumberSize
     , reverseActive :: Boolean
     )
 
 data TimelineAlign
   = TimelineAlignLeft
   | TimelineAlignRight
-
-instance DefaultValue TimelineAlign where defaultValue = TimelineAlignLeft
 
 type TimelineAlignImpl = String
 
@@ -40,31 +47,36 @@ instance ToFFI TimelineAlign TimelineAlignImpl where
     TimelineAlignLeft  -> "left"
     TimelineAlignRight -> "right"
 
-type TimelinePropsImpl =
-  MantineComponentImpl
-    ( active        :: OptionalImpl Number
+type Props_TimelineImpl =
+  Props_CommonImpl
+    ( active        :: Number
     , align         :: TimelineAlignImpl
-    , bulletSize    :: OptionalImpl PixelsImpl
+    , bulletSize    :: PixelsImpl
     , children      :: Array JSX
-    , color         :: OptionalImpl MantineColorImpl
-    , lineWidth     :: OptionalImpl PixelsImpl
-    , radius        :: OptionalImpl MantineNumberSizeImpl
+    , color         :: MantineColorImpl
+    , lineWidth     :: PixelsImpl
+    , radius        :: MantineNumberSizeImpl
     , reverseActive :: Boolean
     )
 
-timelineItem :: (TimelineItemProps -> TimelineItemProps) -> JSX
-timelineItem = mkTrivialComponent timelineItemComponent
+timelineItem
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TimelineItem
+  => Union attrsImpl attrsImpl_ Props_TimelineItemImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+timelineItem = element (unsafeCoerce timelineItemComponent) <<< toNative
 
-foreign import timelineItemComponent :: ReactComponent TimelineItemPropsImpl
+foreign import timelineItemComponent :: ReactComponent (Record Props_TimelineItemImpl)
 
-type TimelineItemProps =
-  MantineComponent
-    ( bullet      :: Optional JSX
+type Props_TimelineItem =
+  Props_Common
+    ( bullet      :: JSX
     , children    :: Array JSX
-    , color       :: Optional MantineColor
+    , color       :: MantineColor
     , lineVariant :: TimelineLineVariant
-    , radius      :: Optional MantineNumberSize
-    , title       :: Optional JSX
+    , radius      :: MantineNumberSize
+    , title       :: JSX
     )
 
 data TimelineLineVariant
@@ -80,14 +92,12 @@ instance ToFFI TimelineLineVariant TimelineLineVariantImpl where
     TimelineLineVariantDotted -> "dotted"
     TimelineLineVariantSolid  -> "solid"
 
-instance DefaultValue TimelineLineVariant where defaultValue = TimelineLineVariantSolid
-
-type TimelineItemPropsImpl =
-  MantineComponentImpl
-    ( bullet      :: OptionalImpl JSX
+type Props_TimelineItemImpl =
+  Props_CommonImpl
+    ( bullet      :: JSX
     , children    :: Array JSX
-    , color       :: OptionalImpl MantineColorImpl
+    , color       :: MantineColorImpl
     , lineVariant :: TimelineLineVariantImpl
-    , radius      :: OptionalImpl MantineNumberSizeImpl
-    , title       :: OptionalImpl JSX
+    , radius      :: MantineNumberSizeImpl
+    , title       :: JSX
     )

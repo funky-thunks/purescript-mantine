@@ -1,6 +1,7 @@
 module Mantine.Core.Inputs.ColorPicker
   ( colorPicker
-  , ColorPickerProps
+  , Props_ColorPicker
+  , Props_ColorPickerImpl
   , ColorFormat(..)
   , ColorFormatImpl
   , ColorFormula(..)
@@ -12,39 +13,36 @@ module Mantine.Core.Inputs.ColorPicker
 
 import Mantine.Core.Prelude
 
-colorPicker :: (ColorPickerProps -> ColorPickerProps) -> JSX
-colorPicker = mkComponentWithDefault colorPickerComponent defaultColorPickerProps
+colorPicker
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ColorPicker
+  => Union attrsImpl attrsImpl_ Props_ColorPickerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+colorPicker = element (unsafeCoerce colorPickerComponent) <<< toNative
 
-foreign import colorPickerComponent :: ReactComponent ColorPickerPropsImpl
+foreign import colorPickerComponent :: ReactComponent (Record Props_ColorPickerImpl)
 
 type ColorPicking =
   ( format         :: ColorFormat
   , onChangeEnd    :: ValueHandler ColorFormula
-  , swatches       :: Optional (Array ColorFormula)
+  , swatches       :: Array ColorFormula
   , swatchesPerRow :: Int
   , withPicker     :: Boolean
   | Controlled ColorFormula
   )
 
-type ColorPickerProps =
-  MantineComponent
-    ( alphaLabel         :: Optional String
+type Props_ColorPicker =
+  Props_Common
+    ( alphaLabel         :: String
     , focusable          :: Boolean
     , fullWidth          :: Boolean
-    , hueLabel           :: Optional String
+    , hueLabel           :: String
     , onColorSwatchClick :: ValueHandler ColorFormula
-    , saturationLabel    :: Optional String
+    , saturationLabel    :: String
     , size               :: MantineSize
     | ColorPicking
     )
-
-defaultColorPickerProps :: ColorPickerProps
-defaultColorPickerProps =
-  defaultMantineComponent
-    { focusable: true
-    , size: Small
-    , swatchesPerRow: 10
-    }
 
 data ColorFormat
   = ColorFormatHex
@@ -73,9 +71,7 @@ instance FromFFI String ColorFormat where
     "rgba" -> ColorFormatRGBA
     "hsl"  -> ColorFormatHSL
     "hsla" -> ColorFormatHSLA
-    _      -> defaultValue
-
-instance DefaultValue ColorFormat where defaultValue = ColorFormatHex
+    _      -> ColorFormatHex
 
 newtype ColorFormula = ColorFormula String
 
@@ -88,20 +84,20 @@ instance FromFFI String ColorFormula where fromNative = ColorFormula
 type ColorPickingImpl =
   ( format         :: ColorFormatImpl
   , onChangeEnd    :: ValueHandlerImpl ColorFormulaImpl
-  , swatches       :: OptionalImpl (Array ColorFormulaImpl)
+  , swatches       :: Array ColorFormulaImpl
   , swatchesPerRow :: Number
   , withPicker     :: Boolean
   | ControlledImpl ColorFormulaImpl
   )
 
-type ColorPickerPropsImpl =
-  MantineComponentImpl
-    ( alphaLabel         :: OptionalImpl String
+type Props_ColorPickerImpl =
+  Props_CommonImpl
+    ( alphaLabel         :: String
     , focusable          :: Boolean
     , fullWidth          :: Boolean
-    , hueLabel           :: OptionalImpl String
+    , hueLabel           :: String
     , onColorSwatchClick :: ValueHandlerImpl ColorFormulaImpl
-    , saturationLabel    :: OptionalImpl String
+    , saturationLabel    :: String
     , size               :: MantineSizeImpl
     | ColorPickingImpl
     )

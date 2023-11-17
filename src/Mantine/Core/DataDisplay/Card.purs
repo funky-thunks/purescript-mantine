@@ -1,46 +1,55 @@
 module Mantine.Core.DataDisplay.Card
   ( card
-  , CardProps
+  , Props_Card
+  , Props_CardImpl
 
   , cardSection
-  , CardSectionProps
+  , Props_CardSection
+  , Props_CardSectionImpl
   ) where
 
 import Mantine.Core.Prelude
 
-card :: (CardProps -> CardProps) -> JSX
-card = mkComponentWithDefault cardComponent defaultCardProps
+card
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Card
+  => Union attrsImpl attrsImpl_ Props_CardImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+card = element (unsafeCoerce cardComponent) <<< toNative
 
-foreign import cardComponent :: ReactComponent CardPropsImpl
+foreign import cardComponent :: ReactComponent (Record Props_CardImpl)
 
-type CardProps =
-  MantineComponent
+type Props_Card =
+  Props_Common
     ( children   :: Array JSX
-    , padding    :: Optional MantineNumberSize
+    , padding    :: MantineNumberSize
     , radius     :: MantineNumberSize
-    , shadow     :: Optional MantineShadow
+    , shadow     :: MantineShadow
     , withBorder :: Boolean
     )
 
-defaultCardProps :: CardProps
-defaultCardProps = defaultMantineComponent { radius: Preset Small }
-
-type CardPropsImpl =
-  MantineComponentImpl
+type Props_CardImpl =
+  Props_CommonImpl
     ( children   :: Array JSX
-    , padding    :: OptionalImpl MantineNumberSizeImpl
+    , padding    :: MantineNumberSizeImpl
     , radius     :: MantineNumberSizeImpl
-    , shadow     :: OptionalImpl MantineShadowImpl
+    , shadow     :: MantineShadowImpl
     , withBorder :: Boolean
     )
 
-cardSection :: (CardSectionProps -> CardSectionProps) -> JSX
-cardSection = mkComponent cardSectionComponent toNative defaultMantineComponent_
+cardSection
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CardSection
+  => Union attrsImpl attrsImpl_ Props_CardSectionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+cardSection = element (unsafeCoerce cardSectionComponent) <<< toNative
 
-foreign import cardSectionComponent :: ReactComponent CardSectionPropsImpl
+foreign import cardSectionComponent :: ReactComponent (Record Props_CardSectionImpl)
 
-type CardSectionProps =
-  MantineComponent (
+type Props_CardSection =
+  Props_Common (
     Polymorphic
       ( children       :: Array JSX
       , inheritPadding :: Boolean
@@ -48,8 +57,8 @@ type CardSectionProps =
       )
   )
 
-type CardSectionPropsImpl =
-  MantineComponentImpl (
+type Props_CardSectionImpl =
+  Props_CommonImpl (
     PolymorphicImpl
       ( children       :: Array JSX
       , inheritPadding :: Boolean

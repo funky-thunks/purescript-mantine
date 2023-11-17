@@ -1,29 +1,35 @@
 module Mantine.Core.Layout.Container
   ( container
   , container_
-  , ContainerProps
+  , Props_Container
+  , Props_ContainerImpl
   ) where
 
 import Mantine.Core.Prelude
 
-container :: (ContainerProps -> ContainerProps) -> JSX
-container = mkTrivialComponent containerComponent
+container
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Container
+  => Union attrsImpl attrsImpl_ Props_ContainerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+container = element (unsafeCoerce containerComponent) <<< toNative
 
 container_ :: Array JSX -> JSX
-container_ children = container _ { children = children }
+container_ children = container { children }
 
-foreign import containerComponent :: ReactComponent ContainerPropsImpl
+foreign import containerComponent :: ReactComponent (Record Props_ContainerImpl)
 
-type ContainerProps =
-  MantineComponent
+type Props_Container =
+  Props_Common
     ( children :: Array JSX
     , fluid    :: Boolean
-    , size     :: Optional MantineNumberSize
+    , size     :: MantineNumberSize
     )
 
-type ContainerPropsImpl =
-  MantineComponentImpl
+type Props_ContainerImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , fluid    :: Boolean
-    , size     :: OptionalImpl MantineNumberSizeImpl
+    , size     :: MantineNumberSizeImpl
     )

@@ -1,17 +1,23 @@
 module Mantine.Core.Combobox.Autocomplete
   ( autocomplete
-  , AutocompleteProps
+  , Props_Autocomplete
+  , Props_AutocompleteImpl
   , AutocompleteItem
   ) where
 
-import Mantine.Core.Combobox.Combobox (ComboboxProps, ComboboxPropsImpl)
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Combobox.Combobox (Props_Combobox, Props_ComboboxImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-autocomplete :: (AutocompleteProps -> AutocompleteProps) -> JSX
-autocomplete = mkComponent autocompleteComponent autocompleteToImpl defaultAutocompleteProps
+autocomplete
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Autocomplete
+  => Union attrsImpl attrsImpl_ Props_AutocompleteImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+autocomplete = element (unsafeCoerce autocompleteComponent) <<< toNative
 
-foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
+foreign import autocompleteComponent :: ReactComponent (Record Props_AutocompleteImpl)
 
 -- Not supported properties
 --   { dropdownComponent    :: any
@@ -19,15 +25,15 @@ foreign import autocompleteComponent :: ReactComponent AutocompletePropsImpl
 --   , positionDependencies :: any[]
 --   }
 
-type AutocompleteProps =
-  InputComponent
-    ( comboboxProps             :: Optional ComboboxProps
+type Props_Autocomplete =
+  Props_InputComponent
+    ( comboboxProps             :: Record Props_Combobox
     , data                      :: Array AutocompleteItem
-    , defaultDropdownOpened     :: Optional Boolean
-    , dropdownOpened            :: Optional Boolean
-    , filter                    :: Optional (String -> AutocompleteItem -> Effect Boolean)
-    , limit                     :: Optional Int
-    , maxDropdownHeight         :: Optional (String |+| Number)
+    , defaultDropdownOpened     :: Boolean
+    , dropdownOpened            :: Boolean
+    , filter                    :: String -> AutocompleteItem -> Effect Boolean
+    , limit                     :: Int
+    , maxDropdownHeight         :: Dimension
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandler String
@@ -36,26 +42,19 @@ type AutocompleteProps =
     | Controlled String
     )
 
-defaultAutocompleteProps :: AutocompleteProps
-defaultAutocompleteProps =
-  defaultMantineComponent
-    { onDropdownClose: pure unit
-    , onDropdownOpen:  pure unit
-    }
-
 type AutocompleteItem =
   { value :: String
   }
 
-type AutocompletePropsImpl =
-  InputComponentImpl
-    ( comboboxProps             :: OptionalImpl ComboboxPropsImpl
+type Props_AutocompleteImpl =
+  Props_InputComponentImpl
+    ( comboboxProps             :: Record Props_ComboboxImpl
     , data                      :: Array AutocompleteItem
-    , defaultDropdownOpened     :: OptionalImpl Boolean
-    , dropdownOpened            :: OptionalImpl Boolean
-    , filter                    :: OptionalImpl (EffectFn2 String AutocompleteItem Boolean)
-    , limit                     :: OptionalImpl Number
-    , maxDropdownHeight         :: OptionalImpl (String |+| Number)
+    , defaultDropdownOpened     :: Boolean
+    , dropdownOpened            :: Boolean
+    , filter                    :: EffectFn2 String AutocompleteItem Boolean
+    , limit                     :: Number
+    , maxDropdownHeight         :: DimensionImpl
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandlerImpl String
@@ -63,12 +62,3 @@ type AutocompletePropsImpl =
     , withScrollArea            :: Boolean
     | ControlledImpl String
     )
-
-autocompleteToImpl :: AutocompleteProps -> AutocompletePropsImpl
-autocompleteToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "maxDropdownHeight")
-      customProps =
-        { maxDropdownHeight: toOptionalImpl props.maxDropdownHeight
-        }
-   in customProps `union` rest props

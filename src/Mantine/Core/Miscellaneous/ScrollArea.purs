@@ -3,44 +3,57 @@ module Mantine.Core.Miscellaneous.ScrollArea
   , scrollArea_
   , scrollAreaAutosize
   , scrollAreaAutosize_
-  , ScrollAreaProps
+  , Props_ScrollArea
+  , Props_ScrollAreaImpl
   , OffsetScrollbars(..)
+  , OffsetScrollbarsImpl
   , ScrollPosition
   , ScrollbarType(..)
+  , ScrollbarTypeImpl
   ) where
 
 import Mantine.Core.Prelude
 import Web.HTML.HTMLDivElement (HTMLDivElement)
 
-scrollArea :: (ScrollAreaProps -> ScrollAreaProps) -> JSX
-scrollArea = mkTrivialComponent scrollAreaComponent
+scrollArea
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ScrollArea
+  => Union attrsImpl attrsImpl_ Props_ScrollAreaImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+scrollArea = element (unsafeCoerce scrollAreaComponent) <<< toNative
 
 scrollArea_ :: Array JSX -> JSX
-scrollArea_ children = scrollArea _ { children = children }
+scrollArea_ children = scrollArea { children }
 
-foreign import scrollAreaComponent :: ReactComponent ScrollAreaPropsImpl
+foreign import scrollAreaComponent :: ReactComponent (Record Props_ScrollAreaImpl)
 
-scrollAreaAutosize :: (ScrollAreaProps -> ScrollAreaProps) -> JSX
-scrollAreaAutosize = mkTrivialComponent scrollAreaAutosizeComponent
+scrollAreaAutosize
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ScrollArea
+  => Union attrsImpl attrsImpl_ Props_ScrollAreaImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+scrollAreaAutosize = element (unsafeCoerce scrollAreaAutosizeComponent) <<< toNative
 
 scrollAreaAutosize_ :: Array JSX -> JSX
-scrollAreaAutosize_ children = scrollArea _ { children = children }
+scrollAreaAutosize_ children = scrollArea { children }
 
-foreign import scrollAreaAutosizeComponent :: ReactComponent ScrollAreaPropsImpl
+foreign import scrollAreaAutosizeComponent :: ReactComponent (Record Props_ScrollAreaImpl)
 
 -- Not supported properties
 --   { viewportProps :: React.ComponentPropsWithoutRef<"div">
 --   }
 
-type ScrollAreaProps =
-  MantineComponent
+type Props_ScrollArea =
+  Props_Common
     ( children               :: Array JSX
-    , offsetScrollbars       :: Optional OffsetScrollbars
+    , offsetScrollbars       :: OffsetScrollbars
     , onScrollPositionChange :: ValueHandler ScrollPosition
-    , scrollHideDelay        :: Optional Milliseconds
-    , scrollbarSize          :: Optional Pixels
-    , type                   :: Optional ScrollbarType
-    , viewportRef            :: Optional (Ref HTMLDivElement)
+    , scrollHideDelay        :: Milliseconds
+    , scrollbarSize          :: Pixels
+    , type                   :: ScrollbarType
+    , viewportRef            :: (Ref HTMLDivElement)
     )
 
 data OffsetScrollbars
@@ -78,13 +91,13 @@ instance ToFFI ScrollbarType ScrollbarTypeImpl where
     Never  -> "never"
     Hover  -> "hover"
 
-type ScrollAreaPropsImpl =
-  MantineComponentImpl
+type Props_ScrollAreaImpl =
+  Props_CommonImpl
     ( children               :: Array JSX
-    , offsetScrollbars       :: OptionalImpl OffsetScrollbarsImpl
+    , offsetScrollbars       :: OffsetScrollbarsImpl
     , onScrollPositionChange :: ValueHandlerImpl ScrollPosition
-    , scrollHideDelay        :: OptionalImpl MillisecondsImpl
-    , scrollbarSize          :: OptionalImpl PixelsImpl
-    , type                   :: OptionalImpl ScrollbarTypeImpl
-    , viewportRef            :: OptionalImpl (Ref HTMLDivElement)
+    , scrollHideDelay        :: MillisecondsImpl
+    , scrollbarSize          :: PixelsImpl
+    , type                   :: ScrollbarTypeImpl
+    , viewportRef            :: (Ref HTMLDivElement)
     )

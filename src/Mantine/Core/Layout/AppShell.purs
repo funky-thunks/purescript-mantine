@@ -1,26 +1,35 @@
 module Mantine.Core.Layout.AppShell
   ( appShell
-  , AppShellProps
+  , Props_AppShell
+  , Props_AppShellImpl
   , AppShellCollapse
   , AppShellHorizontalConfiguration
+  , AppShellHorizontalConfigurationImpl
   , AppShellLayout(..)
   , AppShellPadding(..)
+  , AppShellPaddingImpl
   , AppShellResponsiveSize
   , AppShellRules(..)
+  , AppShellRulesImpl
   , AppShellSize(..)
+  , AppShellSizeImpl
   , AppShellVerticalConfiguration
+  , AppShellVerticalConfigurationImpl
 
   , appShellMain
-  , AppShellMainProps
+  , Props_AppShellMain
+  , Props_AppShellMainImpl
 
   , appShellSection
   , appShellSection_
   , appShellScrollableSection
   , appShellScrollableSection_
-  , AppShellSectionProps
+  , Props_AppShellSection
+  , Props_AppShellSectionImpl
 
   -- AppShell Components
-  , AppShellComponentProps
+  , Props_AppShellComponent
+  , Props_AppShellComponentImpl
   , appShellNavbar
   , appShellNavbar_
 
@@ -36,24 +45,29 @@ module Mantine.Core.Layout.AppShell
 
 import Mantine.Core.Prelude
 
-appShell :: (AppShellProps -> AppShellProps) -> JSX
-appShell = mkTrivialComponent appShellComponent
+appShell
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShell
+  => Union attrsImpl attrsImpl_ Props_AppShellImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShell = element (unsafeCoerce appShellComponent) <<< toNative
 
-foreign import appShellComponent :: ReactComponent AppShellPropsImpl
+foreign import appShellComponent :: ReactComponent (Record Props_AppShellImpl)
 
-type AppShellProps =
-  MantineComponent
-    ( aside                    :: Optional AppShellVerticalConfiguration
-    , disabled                 :: Optional Boolean
-    , footer                   :: Optional AppShellHorizontalConfiguration
-    , header                   :: Optional AppShellHorizontalConfiguration
-    , layout                   :: Optional AppShellLayout
-    , navbar                   :: Optional AppShellVerticalConfiguration
-    , padding                  :: Optional AppShellPadding
-    , transitionDuration       :: Optional Milliseconds
-    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
+type Props_AppShell =
+  Props_Common
+    ( aside                    :: AppShellVerticalConfiguration
+    , disabled                 :: Boolean
+    , footer                   :: AppShellHorizontalConfiguration
+    , header                   :: AppShellHorizontalConfiguration
+    , layout                   :: AppShellLayout
+    , navbar                   :: AppShellVerticalConfiguration
+    , padding                  :: AppShellPadding
+    , transitionDuration       :: Milliseconds
+    , transitionTimingFunction :: MantineTransitionTimingFunction
     , withBorder               :: Boolean
-    , zIndex                   :: Optional ZIndex
+    , zIndex                   :: ZIndex
     )
 
 data AppShellLayout
@@ -97,25 +111,25 @@ instance ToFFI AppShellSize AppShellSizeImpl where
 
 type AppShellVerticalConfiguration =
   { width      :: AppShellSize
-  , breakpoint :: Optional MantineNumberSize
-  , collapsed  :: Optional AppShellCollapse
+  , breakpoint :: MantineNumberSize
+  , collapsed  :: AppShellCollapse
   }
 
 type AppShellCollapse = { desktop :: Boolean, mobile :: Boolean }
 
-type AppShellPropsImpl =
-  MantineComponentImpl
-    ( aside                    :: OptionalImpl AppShellVerticalConfigurationImpl
-    , disabled                 :: OptionalImpl Boolean
-    , footer                   :: OptionalImpl AppShellHorizontalConfigurationImpl
-    , header                   :: OptionalImpl AppShellHorizontalConfigurationImpl
-    , layout                   :: OptionalImpl String
-    , navbar                   :: OptionalImpl AppShellVerticalConfigurationImpl
-    , padding                  :: OptionalImpl AppShellPaddingImpl
-    , transitionDuration       :: OptionalImpl MillisecondsImpl
-    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
+type Props_AppShellImpl =
+  Props_CommonImpl
+    ( aside                    :: AppShellVerticalConfigurationImpl
+    , disabled                 :: Boolean
+    , footer                   :: AppShellHorizontalConfigurationImpl
+    , header                   :: AppShellHorizontalConfigurationImpl
+    , layout                   :: String
+    , navbar                   :: AppShellVerticalConfigurationImpl
+    , padding                  :: AppShellPaddingImpl
+    , transitionDuration       :: MillisecondsImpl
+    , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
     , withBorder               :: Boolean
-    , zIndex                   :: OptionalImpl ZIndexImpl
+    , zIndex                   :: ZIndexImpl
     )
 
 type AppShellHorizontalConfigurationImpl =
@@ -126,13 +140,11 @@ type AppShellHorizontalConfigurationImpl =
 
 type AppShellVerticalConfigurationImpl =
   { width      :: AppShellSizeImpl
-  , breakpoint :: OptionalImpl MantineNumberSizeImpl
-  , collapsed  :: OptionalImpl AppShellCollapse
+  , breakpoint :: MantineNumberSizeImpl
+  , collapsed  :: AppShellCollapse
   }
 
 newtype AppShellRules = AppShellRules (Array (String /\ Either String Number))
-
-instance DefaultValue AppShellRules where defaultValue = AppShellRules []
 
 type AppShellRulesImpl = Object (String |+| Number)
 
@@ -141,84 +153,119 @@ instance ToFFI AppShellRules AppShellRulesImpl where
     let f = either asOneOf asOneOf
      in fromFoldable (map f <$> rs)
 
-appShellSection :: (AppShellSectionProps -> AppShellSectionProps) -> JSX
-appShellSection = mkTrivialComponent appShellSectionComponent
+appShellSection
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellSection
+  => Union attrsImpl attrsImpl_ Props_AppShellSectionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellSection = element (unsafeCoerce appShellSectionComponent) <<< toNative
 
 appShellSection_ :: Array JSX -> JSX
-appShellSection_ children = appShellSection _ { children = children }
+appShellSection_ children = appShellSection { children }
 
-foreign import appShellSectionComponent :: ReactComponent AppShellSectionPropsImpl
+foreign import appShellSectionComponent :: ReactComponent (Record Props_AppShellSectionImpl)
 
-appShellScrollableSection :: (AppShellSectionProps -> AppShellSectionProps) -> JSX
-appShellScrollableSection = mkTrivialComponent appShellSectionComponent
+appShellScrollableSection
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellSection
+  => Union attrsImpl attrsImpl_ Props_AppShellSectionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellScrollableSection = element (unsafeCoerce appShellScrollableSectionComponent) <<< toNative
 
 appShellScrollableSection_ :: Array JSX -> JSX
-appShellScrollableSection_ children = appShellScrollableSection _ { children = children }
+appShellScrollableSection_ children = appShellScrollableSection { children }
 
-foreign import appShellScrollableSectionComponent :: ReactComponent AppShellSectionPropsImpl
+foreign import appShellScrollableSectionComponent :: ReactComponent (Record Props_AppShellSectionImpl)
 
-type AppShellSectionProps =
-  MantineComponent
+type Props_AppShellSection =
+  Props_Common
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
-type AppShellSectionPropsImpl =
-  MantineComponentImpl
+type Props_AppShellSectionImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , grow     :: Boolean
     )
 
-appShellMain :: (AppShellMainProps -> AppShellMainProps) -> JSX
-appShellMain = mkTrivialComponent appShellMainComponent
+appShellMain
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellMain
+  => Union attrsImpl attrsImpl_ Props_AppShellMainImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellMain = element (unsafeCoerce appShellMainComponent) <<< toNative
 
-foreign import appShellMainComponent :: ReactComponent AppShellMainPropsImpl
+foreign import appShellMainComponent :: ReactComponent (Record Props_AppShellMainImpl)
 
-type AppShellMainProps     = MantineComponent     ( children :: Array JSX )
-type AppShellMainPropsImpl = MantineComponentImpl ( children :: Array JSX )
+type Props_AppShellMain     = Props_Common     ( children :: Array JSX )
+type Props_AppShellMainImpl = Props_CommonImpl ( children :: Array JSX )
 
-appShellNavbar :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
-appShellNavbar = mkTrivialComponent appShellNavbarComponent
+appShellNavbar
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellComponent
+  => Union attrsImpl attrsImpl_ Props_AppShellComponentImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellNavbar = element (unsafeCoerce appShellNavbarComponent) <<< toNative
 
 appShellNavbar_ :: Array JSX -> JSX
-appShellNavbar_ children = appShellNavbar _ { children = children }
+appShellNavbar_ children = appShellNavbar { children }
 
-foreign import appShellNavbarComponent :: ReactComponent AppShellComponentPropsImpl
+foreign import appShellNavbarComponent :: ReactComponent (Record Props_AppShellComponentImpl)
 
-appShellHeader :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
-appShellHeader = mkTrivialComponent appShellHeaderComponent
+appShellHeader
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellComponent
+  => Union attrsImpl attrsImpl_ Props_AppShellComponentImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellHeader = element (unsafeCoerce appShellHeaderComponent) <<< toNative
 
 appShellHeader_ :: Array JSX -> JSX
-appShellHeader_ children = appShellHeader _ { children = children }
+appShellHeader_ children = appShellHeader { children }
 
-foreign import appShellHeaderComponent :: ReactComponent AppShellComponentPropsImpl
+foreign import appShellHeaderComponent :: ReactComponent (Record Props_AppShellComponentImpl)
 
-appShellAside :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
-appShellAside = mkTrivialComponent appShellAsideComponent
+appShellAside
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellComponent
+  => Union attrsImpl attrsImpl_ Props_AppShellComponentImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellAside = element (unsafeCoerce appShellAsideComponent) <<< toNative
 
 appShellAside_ :: Array JSX -> JSX
-appShellAside_ children = appShellAside _ { children = children }
+appShellAside_ children = appShellAside { children }
 
-foreign import appShellAsideComponent  :: ReactComponent AppShellComponentPropsImpl
+foreign import appShellAsideComponent  :: ReactComponent (Record Props_AppShellComponentImpl)
 
-appShellFooter :: (AppShellComponentProps -> AppShellComponentProps) -> JSX
-appShellFooter = mkTrivialComponent appShellFooterComponent
+appShellFooter
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AppShellComponent
+  => Union attrsImpl attrsImpl_ Props_AppShellComponentImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+appShellFooter = element (unsafeCoerce appShellFooterComponent) <<< toNative
 
 appShellFooter_ :: Array JSX -> JSX
-appShellFooter_ children = appShellFooter _ { children = children }
+appShellFooter_ children = appShellFooter { children }
 
-foreign import appShellFooterComponent :: ReactComponent AppShellComponentPropsImpl
+foreign import appShellFooterComponent :: ReactComponent (Record Props_AppShellComponentImpl)
 
-type AppShellComponentProps =
-  MantineComponent
+type Props_AppShellComponent =
+  Props_Common
     ( children   :: Array JSX
     , withBorder :: Boolean
-    , zIndex     :: Optional ZIndex
+    , zIndex     :: ZIndex
     )
 
-type AppShellComponentPropsImpl =
-  MantineComponentImpl
+type Props_AppShellComponentImpl =
+  Props_CommonImpl
     ( children   :: Array JSX
     , withBorder :: Boolean
-    , zIndex     :: OptionalImpl ZIndexImpl
+    , zIndex     :: ZIndexImpl
     )

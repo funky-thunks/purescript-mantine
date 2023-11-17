@@ -1,31 +1,32 @@
 module Mantine.Core.DataDisplay.ThemeIcon
   ( themeIcon
-  , ThemeIconProps
+  , Props_ThemeIcon
+  , Props_ThemeIconImpl
   , ThemeIconVariant(..)
+  , ThemeIconVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-themeIcon :: (ThemeIconProps -> ThemeIconProps) -> JSX
-themeIcon = mkComponent themeIconComponent themeIconToImpl defaultThemeIconProps
+themeIcon
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ThemeIcon
+  => Union attrsImpl attrsImpl_ Props_ThemeIconImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+themeIcon = element (unsafeCoerce themeIconComponent) <<< toNative
 
-foreign import themeIconComponent :: ReactComponent ThemeIconPropsImpl
+foreign import themeIconComponent :: ReactComponent (Record Props_ThemeIconImpl)
 
-type ThemeIconProps =
-  MantineComponent
+type Props_ThemeIcon =
+  Props_Common
     ( children :: Array JSX
-    , color    :: Optional MantineColor
+    , color    :: MantineColor
+    , gradient :: MantineGradient
     , radius   :: MantineNumberSize
     , size     :: MantineNumberSize
     , variant  :: ThemeIconVariant
     )
-
-defaultThemeIconProps :: ThemeIconProps
-defaultThemeIconProps =
-  defaultMantineComponent
-    { size:   Preset Medium
-    , radius: Preset Small
-    }
 
 data ThemeIconVariant
   = ThemeIconFilled
@@ -33,35 +34,25 @@ data ThemeIconVariant
   | ThemeIconOutline
   | ThemeIconDefault
   | ThemeIconWhite
-  | ThemeIconGradient MantineGradient
-
-instance DefaultValue ThemeIconVariant where
-  defaultValue = ThemeIconFilled
+  | ThemeIconGradient
 
 type ThemeIconVariantImpl = OptionalImpl String
 
 instance ToFFI ThemeIconVariant ThemeIconVariantImpl where
   toNative = toNative <<< Optional <<< case _ of
-    ThemeIconFilled     -> Nothing
-    ThemeIconLight      -> Just "light"
-    ThemeIconOutline    -> Just "outline"
-    ThemeIconDefault    -> Just "default"
-    ThemeIconWhite      -> Just "white"
-    ThemeIconGradient _ -> Just "gradient"
+    ThemeIconFilled   -> Nothing
+    ThemeIconLight    -> Just "light"
+    ThemeIconOutline  -> Just "outline"
+    ThemeIconDefault  -> Just "default"
+    ThemeIconWhite    -> Just "white"
+    ThemeIconGradient -> Just "gradient"
 
-type ThemeIconPropsImpl =
-  MantineComponentImpl
+type Props_ThemeIconImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , color    :: OptionalImpl MantineColorImpl
-    , gradient :: OptionalImpl MantineGradientImpl
+    , color    :: MantineColorImpl
+    , gradient :: MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
     , variant  :: ThemeIconVariantImpl
     )
-
-themeIconToImpl :: ThemeIconProps -> ThemeIconPropsImpl
-themeIconToImpl props =
-  let gradient = Optional $ case props.variant of
-        ThemeIconGradient g -> pure g
-        _                   -> Nothing
-   in toNative ({ gradient } `union` props)

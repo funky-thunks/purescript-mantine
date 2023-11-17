@@ -1,31 +1,37 @@
 module Mantine.Core.Layout.Stack
   ( stack
   , stack_
-  , StackProps
+  , Props_Stack
+  , Props_StackImpl
   ) where
 
 import Mantine.Core.Prelude
 
-stack :: (StackProps -> StackProps) -> JSX
-stack = mkTrivialComponent stackComponent
+stack
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Stack
+  => Union attrsImpl attrsImpl_ Props_StackImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+stack = element (unsafeCoerce stackComponent) <<< toNative
 
 stack_ :: Array JSX -> JSX
-stack_ children = stack _ { children = children }
+stack_ children = stack { children }
 
-foreign import stackComponent :: ReactComponent StackPropsImpl
+foreign import stackComponent :: ReactComponent (Record Props_StackImpl)
 
-type StackProps =
-  MantineComponent
-    ( align    :: Optional AlignItems
+type Props_Stack =
+  Props_Common
+    ( align    :: AlignItems
     , children :: Array JSX
-    , gap      :: Optional MantineSpacing
-    , justify  :: Optional JustifyContent
+    , gap      :: MantineSpacing
+    , justify  :: JustifyContent
     )
 
-type StackPropsImpl =
-  MantineComponentImpl
-    ( align    :: OptionalImpl AlignItemsImpl
+type Props_StackImpl =
+  Props_CommonImpl
+    ( align    :: AlignItemsImpl
     , children :: Array JSX
-    , gap      :: OptionalImpl MantineSpacingImpl
-    , justify  :: OptionalImpl JustifyContentImpl
+    , gap      :: MantineSpacingImpl
+    , justify  :: JustifyContentImpl
     )

@@ -1,21 +1,26 @@
 module Mantine.Core.Miscellaneous.FocusTrap
   ( focusTrap
   , focusTrap_
-  , FocusTrapProps
+  , Props_FocusTrap
   ) where
 
 import Mantine.Core.Prelude
 
-focusTrap :: (FocusTrapProps -> FocusTrapProps) -> JSX
-focusTrap = mkComponent focusTrapComponent identity defaultValue
+focusTrap
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_FocusTrap
+  => Union attrsImpl attrsImpl_ Props_FocusTrap
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+focusTrap = element (unsafeCoerce focusTrapComponent) <<< toNative
 
 focusTrap_ :: Array JSX -> JSX
-focusTrap_ children = focusTrap _ { children = children }
+focusTrap_ children = focusTrap { children }
 
-foreign import focusTrapComponent :: ReactComponent FocusTrapProps
+foreign import focusTrapComponent :: ReactComponent (Record Props_FocusTrap)
 
-type FocusTrapProps =
-  { active   :: Boolean
+type Props_FocusTrap =
+  ( active   :: Boolean
   , children :: Array JSX
   , refProp  :: String
-  }
+  )

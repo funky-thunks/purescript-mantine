@@ -1,86 +1,91 @@
 module Mantine.Core.Layout.Grid
   ( grid
   , grid_
-  , GridProps
+  , Props_Grid
+  , Props_GridImpl
 
   , gridCol
   , gridCol_
-  , GridColProps
+  , Props_GridCol
+  , Props_GridColImpl
   , GridColSpan(..)
+  , GridColSpanImpl
   ) where
 
 import Data.Int (toNumber)
 import Mantine.Core.Prelude
 
-grid :: (GridProps -> GridProps) -> JSX
-grid = mkComponentWithDefault gridComponent defaultGridProps
+grid
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Grid
+  => Union attrsImpl attrsImpl_ Props_GridImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+grid = element (unsafeCoerce gridComponent) <<< toNative
 
 grid_ :: Array JSX -> JSX
-grid_ children = grid _ { children = children }
+grid_ children = grid { children }
 
-foreign import gridComponent :: ReactComponent GridPropsImpl
+foreign import gridComponent :: ReactComponent (Record Props_GridImpl)
 
-type GridProps =
-  MantineComponent
+type Props_Grid =
+  Props_Common
     ( align    :: AlignItems
     , children :: Array JSX
     , columns  :: Int
     , grow     :: Boolean
-    , gutter   :: Optional (FixedOrResponsive MantineSpacing)
+    , gutter   :: FixedOrResponsive MantineSpacing
     , justify  :: JustifyContent
     )
 
-defaultGridProps :: GridProps
-defaultGridProps =
-  defaultMantineComponent
-    { align:   AlignItemsStretch
-    , columns: 12
-    , justify: JustifyContentFlexStart
-    }
-
-type GridPropsImpl =
-  MantineComponentImpl
+type Props_GridImpl =
+  Props_CommonImpl
     ( align    :: AlignItemsImpl
     , children :: Array JSX
     , columns  :: Number
     , grow     :: Boolean
-    , gutter   :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
+    , gutter   :: FixedOrResponsiveImpl MantineSpacingImpl
     , justify  :: JustifyContentImpl
     )
 
-gridCol :: (GridColProps -> GridColProps) -> JSX
-gridCol = mkTrivialComponent gridColComponent
+gridCol
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_GridCol
+  => Union attrsImpl attrsImpl_ Props_GridColImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+gridCol = element (unsafeCoerce gridColComponent) <<< toNative
 
 gridCol_ :: Array JSX -> JSX
-gridCol_ children = gridCol _ { children = children }
+gridCol_ children = gridCol { children }
 
-foreign import gridColComponent :: ReactComponent GridColPropsImpl
+foreign import gridColComponent :: ReactComponent (Record Props_GridColImpl)
 
-type GridColProps =
-  MantineComponent
+type Props_GridCol =
+  Props_Common
     ( children :: Array JSX
-    , offset   :: Optional (FixedOrResponsive Pixels)
-    , order    :: Optional (FixedOrResponsive Int)
-    , span     :: Optional (FixedOrResponsive GridColSpan)
+    , offset   :: FixedOrResponsive Pixels
+    , order    :: FixedOrResponsive Int
+    , span     :: FixedOrResponsive GridColSpan
     )
 
 data GridColSpan
-  = ColSpanNumber Int
-  | ColSpanAuto
-  | ColSpanContent
+  = GridColSpanNumber Int
+  | GridColSpanAuto
+  | GridColSpanContent
 
-type ColSpanImpl = Number |+| String
+type GridColSpanImpl = Number |+| String
 
-instance ToFFI GridColSpan ColSpanImpl where
+instance ToFFI GridColSpan GridColSpanImpl where
   toNative = case _ of
-    ColSpanNumber n -> asOneOf (toNumber n)
-    ColSpanAuto     -> asOneOf "auto"
-    ColSpanContent  -> asOneOf "content"
+    GridColSpanNumber n -> asOneOf (toNumber n)
+    GridColSpanAuto     -> asOneOf "auto"
+    GridColSpanContent  -> asOneOf "content"
 
-type GridColPropsImpl =
-  MantineComponentImpl
+type Props_GridColImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , offset   :: OptionalImpl (FixedOrResponsiveImpl Pixels)
-    , order    :: OptionalImpl (FixedOrResponsiveImpl Number)
-    , span     :: OptionalImpl (FixedOrResponsiveImpl ColSpanImpl)
+    , offset   :: FixedOrResponsiveImpl Pixels
+    , order    :: FixedOrResponsiveImpl Number
+    , span     :: FixedOrResponsiveImpl GridColSpanImpl
     )

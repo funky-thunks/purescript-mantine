@@ -1,75 +1,49 @@
 module Mantine.Core.Navigation.NavLink
   ( navLink
-  , NavLinkProps
-  , NavLink(..)
+  , Props_NavLink
+  , Props_NavLinkImpl
   , NavLinkVariant(..)
-  , MandatoryNavLinkProps
+  , NavLinkVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-navLink :: MandatoryNavLinkProps -> (NavLinkProps -> NavLinkProps) -> JSX
-navLink = mkComponent navLinkComponent navLinkToImpl <<< defaultMantineComponent
+navLink
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_NavLink
+  => Union attrsImpl attrsImpl_ Props_NavLinkImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+navLink = element (unsafeCoerce navLinkComponent) <<< toNative
 
-foreign import navLinkComponent :: ReactComponent NavLinkPropsImpl
+foreign import navLinkComponent :: ReactComponent (Record Props_NavLinkImpl)
 
-type NavLinkProps =
-  MantineComponent
+type Props_NavLink =
+  Props_Common
     ( active                      :: Boolean
     , children                    :: Array JSX
-    , childrenOffset              :: Optional MantineNumberSize
-    , color                       :: Optional MantineColor
-    , content                     :: NavLink
-    , defaultOpened               :: Boolean
-    , description                 :: Optional JSX
-    , disableRightSectionRotation :: Boolean
-    , disabled                    :: Boolean
-    , label                       :: JSX
-    , leftSection                 :: Optional JSX
-    , noWrap                      :: Boolean
-    , onChange                    :: ValueHandler Boolean
-    , opened                      :: Boolean
-    , rightSection                :: Optional JSX
-    , variant                     :: NavLinkVariant
-    )
-
-type MandatoryNavLinkProps =
-  { label   :: JSX
-  , content :: NavLink
-  }
-
-data NavLink
-  = NavLink   String
-  | NavButton EventHandler
-
-type NavLinkPropsImpl =
-  MantineComponentImpl
-    ( active                      :: Boolean
-    , children                    :: Array JSX
-    , childrenOffset              :: OptionalImpl MantineNumberSizeImpl
-    , color                       :: OptionalImpl MantineColorImpl
+    , childrenOffset              :: MantineNumberSize
+    , color                       :: MantineColor
     , component                   :: String
     , defaultOpened               :: Boolean
-    , description                 :: OptionalImpl JSX
+    , description                 :: JSX
     , disableRightSectionRotation :: Boolean
     , disabled                    :: Boolean
-    , href                        :: OptionalImpl String
+    , href                        :: String
     , label                       :: JSX
-    , leftSection                 :: OptionalImpl JSX
+    , leftSection                 :: JSX
     , noWrap                      :: Boolean
-    , onChange                    :: ValueHandlerImpl Boolean
-    , onClick                     :: OptionalImpl EventHandler
+    , onChange                    :: ValueHandler Boolean
+    , onClick                     :: EventHandler
     , opened                      :: Boolean
-    , rightSection                :: OptionalImpl JSX
-    , variant                     :: NavLinkVariantImpl
+    , rightSection                :: JSX
+    , variant                     :: NavLinkVariant
     )
 
 data NavLinkVariant
   = NavLinkLight
   | NavLinkFilled
   | NavLinkSubtle
-
-instance DefaultValue NavLinkVariant where defaultValue = NavLinkLight
 
 type NavLinkVariantImpl = String
 
@@ -79,10 +53,24 @@ instance ToFFI NavLinkVariant NavLinkVariantImpl where
     NavLinkFilled -> "filled"
     NavLinkSubtle -> "subtle"
 
-navLinkToImpl :: NavLinkProps -> NavLinkPropsImpl
-navLinkToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "content")
-      navigationProps = case props.content of
-        NavLink   href    -> { component: "a",      href: pure href,        onClick: Optional Nothing }
-        NavButton onClick -> { component: "button", href: Optional Nothing, onClick: pure onClick     }
-   in toNative navigationProps `union` rest props
+type Props_NavLinkImpl =
+  Props_CommonImpl
+    ( active                      :: Boolean
+    , children                    :: Array JSX
+    , childrenOffset              :: MantineNumberSizeImpl
+    , color                       :: MantineColorImpl
+    , component                   :: String
+    , defaultOpened               :: Boolean
+    , description                 :: JSX
+    , disableRightSectionRotation :: Boolean
+    , disabled                    :: Boolean
+    , href                        :: String
+    , label                       :: JSX
+    , leftSection                 :: JSX
+    , noWrap                      :: Boolean
+    , onChange                    :: ValueHandlerImpl Boolean
+    , onClick                     :: EventHandler
+    , opened                      :: Boolean
+    , rightSection                :: JSX
+    , variant                     :: NavLinkVariantImpl
+    )

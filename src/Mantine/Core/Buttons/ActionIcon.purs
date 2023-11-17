@@ -1,60 +1,69 @@
 module Mantine.Core.Buttons.ActionIcon
   ( actionIcon
-  , ActionIconProps
+  , actionIcon_
+  , Props_ActionIcon
+  , Props_ActionIconImpl
   , ActionIconVariant(..)
+  , ActionIconVariantImpl
 
   , actionIconGroup
   , actionIconGroup_
+  , Props_ActionIconGroup
+  , Props_ActionIconGroupImpl
   , ActionIconGroupOrientation(..)
-  , ActionIconGroupProps
+  , ActionIconGroupOrientationImpl
 
-  , defaultActionIconProps
-  , actionIconToImpl
-  , ActionIconPropsImpl
-  , ActionIconPropsRow
-  , ActionIconPropsImplRow
-  , ActionIconVariantImpl
+  , Props_ActionIconRow
+  , Props_ActionIconImplRow
   ) where
 
-import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
+import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
 import Mantine.Core.Prelude
+import Prim.Row (class Nub)
 import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
 
-actionIcon :: ReactIcon -> (ActionIconProps -> ActionIconProps) -> JSX
-actionIcon = mkComponent actionIconComponent actionIconToImpl <<< defaultActionIconProps
+actionIcon
+  :: forall attrs attrs_ attrsImpl attrsImpl_ attrsImpl'
+   . Union attrs     attrs_     Props_ActionIcon
+  => Union attrsImpl attrsImpl_ Props_ActionIconImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Nub ( children :: Array JSX | attrsImpl) attrsImpl'
+  => ReactIcon -> Record attrs -> JSX
+actionIcon icon attrs =
+  element (unsafeCoerce actionIconComponent) ({ children: [ icon_ icon ] } `merge` toNative attrs)
 
-foreign import actionIconComponent :: ReactComponent ActionIconPropsImpl
+actionIcon_ :: ReactIcon -> JSX
+actionIcon_ icon = actionIcon icon {}
 
-type ActionIconProps = MantineComponent ActionIconPropsRow
+foreign import actionIconComponent :: ReactComponent (Record Props_ActionIconImpl)
 
-type ActionIconPropsRow =
-  ( color       :: Optional MantineColor
+type Props_ActionIcon = Props_Common Props_ActionIconRow
+
+type Props_ActionIconRow =
+  ( color       :: MantineColor
   , disabled    :: Boolean
-  , icon        :: ReactIcon
+  , gradient    :: MantineGradient
   , loading     :: Boolean
-  , loaderProps :: Optional LoaderProps
-  , onClick     :: Optional EventHandler
-  , radius      :: Optional MantineNumberSize
-  , size        :: Optional MantineNumberSize
+  , loaderProps :: Record Props_Loader
+  , onClick     :: EventHandler
+  , radius      :: MantineNumberSize
+  , size        :: MantineNumberSize
   , variant     :: ActionIconVariant
   )
 
-defaultActionIconProps :: ReactIcon -> ActionIconProps
-defaultActionIconProps icon = defaultMantineComponent { icon }
+type Props_ActionIconImpl = Props_CommonImpl Props_ActionIconImplRow
 
-type ActionIconPropsImpl = MantineComponentImpl ActionIconPropsImplRow
-
-type ActionIconPropsImplRow =
+type Props_ActionIconImplRow =
   ( children    :: Array JSX
-  , color       :: OptionalImpl MantineColorImpl
+  , color       :: MantineColorImpl
   , disabled    :: Boolean
-  , gradient    :: OptionalImpl MantineGradientImpl
-  , loaderProps :: OptionalImpl LoaderPropsImpl
+  , gradient    :: MantineGradientImpl
+  , loaderProps :: Record Props_LoaderImpl
   , loading     :: Boolean
-  , onClick     :: OptionalImpl EventHandler
-  , radius      :: OptionalImpl MantineNumberSizeImpl
-  , size        :: OptionalImpl MantineNumberSizeImpl
+  , onClick     :: EventHandler
+  , radius      :: MantineNumberSizeImpl
+  , size        :: MantineNumberSizeImpl
   , variant     :: ActionIconVariantImpl
   )
 
@@ -65,9 +74,7 @@ data ActionIconVariant
   | ActionIconDefault
   | ActionIconFilled
   | ActionIconSubtle
-  | ActionIconGradient MantineGradient
-
-instance DefaultValue ActionIconVariant where defaultValue = ActionIconDefault
+  | ActionIconGradient
 
 type ActionIconVariantImpl = OptionalImpl String
 
@@ -79,30 +86,24 @@ instance ToFFI ActionIconVariant ActionIconVariantImpl where
     ActionIconDefault     -> Nothing
     ActionIconFilled      -> pure "filled"
     ActionIconSubtle      -> pure "subtle"
-    ActionIconGradient _  -> pure "gradient"
+    ActionIconGradient    -> pure "gradient"
 
-getGradient :: ActionIconVariant -> Optional MantineGradient
-getGradient = Optional <<< case _ of
-  ActionIconGradient g -> Just g
-  _                    -> Nothing
-
-actionIconToImpl :: ActionIconProps -> ActionIconPropsImpl
-actionIconToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "icon")
-      gradient = toNative (getGradient props.variant)
-   in { children: pure (icon_ props.icon), gradient } `union` rest props
-
-actionIconGroup :: (ActionIconGroupProps -> ActionIconGroupProps) -> JSX
-actionIconGroup = mkTrivialComponent actionIconGroupComponent
+actionIconGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ActionIconGroup
+  => Union attrsImpl attrsImpl_ Props_ActionIconGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+actionIconGroup = element (unsafeCoerce actionIconGroupComponent) <<< toNative
 
 actionIconGroup_ :: Array JSX -> JSX
-actionIconGroup_ children = actionIconGroup _ { children = children }
+actionIconGroup_ children = actionIconGroup { children }
 
-foreign import actionIconGroupComponent :: ReactComponent ActionIconGroupPropsImpl
+foreign import actionIconGroupComponent :: ReactComponent (Record Props_ActionIconGroupImpl)
 
-type ActionIconGroupProps =
-  MantineComponent
-    ( borderWidth :: Optional MantineNumberSize
+type Props_ActionIconGroup =
+  Props_Common
+    ( borderWidth :: MantineNumberSize
     , children    :: Array JSX
     , orientation :: ActionIconGroupOrientation
     )
@@ -111,9 +112,6 @@ data ActionIconGroupOrientation
   = ActionIconGroupOrientationHorizontal
   | ActionIconGroupOrientationVertical
 
-instance DefaultValue ActionIconGroupOrientation where
-  defaultValue = ActionIconGroupOrientationHorizontal
-
 type ActionIconGroupOrientationImpl = String
 
 instance ToFFI ActionIconGroupOrientation ActionIconGroupOrientationImpl where
@@ -121,9 +119,9 @@ instance ToFFI ActionIconGroupOrientation ActionIconGroupOrientationImpl where
     ActionIconGroupOrientationHorizontal -> "horizontal"
     ActionIconGroupOrientationVertical   -> "vertical"
 
-type ActionIconGroupPropsImpl =
-  MantineComponentImpl
-    ( borderWidth :: OptionalImpl MantineNumberSizeImpl
+type Props_ActionIconGroupImpl =
+  Props_CommonImpl
+    ( borderWidth :: MantineNumberSizeImpl
     , children    :: Array JSX
     , orientation :: ActionIconGroupOrientationImpl
     )

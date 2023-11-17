@@ -1,20 +1,24 @@
 module Mantine.Core.Combobox.TagsInput
   ( tagsInput
-  , TagsInputProps
+  , Props_TagsInput
+  , Props_TagsInputImpl
   ) where
 
-import Data.Maybe (fromMaybe)
-import Effect.Uncurried (mkEffectFn1)
-import Mantine.Core.Combobox.Select (BaseSelectPropsRow, BaseSelectPropsRowImpl, baseSelectToImpl)
+import Mantine.Core.Combobox.Select (BaseSelectPropsRow, BaseSelectPropsRowImpl)
 import Mantine.Core.Prelude
 
-tagsInput :: (TagsInputProps -> TagsInputProps) -> JSX
-tagsInput = mkComponent tagsInputComponent tagsInputPropsToImpl defaultMantineComponent_
+tagsInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TagsInput
+  => Union attrsImpl attrsImpl_ Props_TagsInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tagsInput = element (unsafeCoerce tagsInputComponent) <<< toNative
 
-foreign import tagsInputComponent :: ReactComponent TagsInputPropsImpl
+foreign import tagsInputComponent :: ReactComponent (Record Props_TagsInputImpl)
 
-type TagsInputProps =
-  MantineComponent
+type Props_TagsInput =
+  Props_Common
     ( allowDuplicates :: Boolean
     , maxTags         :: Maybe Int
     , onDuplicate     :: ValueHandler String
@@ -22,14 +26,11 @@ type TagsInputProps =
     | BaseSelectPropsRow (Array String)
     )
 
-type TagsInputPropsImpl =
-  MantineComponentImpl
+type Props_TagsInputImpl =
+  Props_CommonImpl
     ( allowDuplicates :: Boolean
     , maxTags         :: Nullable Number
     , onDuplicate     :: ValueHandlerImpl String
     , splitChars      :: Nullable (Array String)
     | BaseSelectPropsRowImpl (Array String)
     )
-
-tagsInputPropsToImpl :: TagsInputProps -> TagsInputPropsImpl
-tagsInputPropsToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< toMaybe))

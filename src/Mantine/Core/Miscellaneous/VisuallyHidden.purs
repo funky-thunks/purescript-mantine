@@ -4,12 +4,15 @@ module Mantine.Core.Miscellaneous.VisuallyHidden
 
 import Mantine.Core.Prelude
 
-visuallyHidden :: (VisuallyHiddenProps -> VisuallyHiddenProps) -> JSX
-visuallyHidden = mkComponent visuallyHiddenComponent toNative defaultValue
+visuallyHidden
+  :: forall attrs attrs_
+   . Union attrs attrs_ Props_VisuallyHidden
+  => Record attrs -> JSX
+visuallyHidden = element (unsafeCoerce visuallyHiddenComponent)
 
 visuallyHidden_ :: Array JSX -> JSX
-visuallyHidden_ children = visuallyHidden _ { children = children }
+visuallyHidden_ children = visuallyHidden { children }
 
-type VisuallyHiddenProps = { children :: Array JSX }
+type Props_VisuallyHidden = ( children :: Array JSX )
 
-foreign import visuallyHiddenComponent :: ReactComponent VisuallyHiddenProps
+foreign import visuallyHiddenComponent :: ReactComponent (Record Props_VisuallyHidden)

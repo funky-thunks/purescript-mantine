@@ -1,82 +1,102 @@
 module Mantine.Core.Feedback.Progress
   ( progress
-  , ProgressProps
+  , Props_Progress
+  , Props_ProgressImpl
 
   , progressRoot
-  , ProgressRootProps
-  , ProgressRootPropsRow
+  , Props_ProgressRoot
+  , Props_ProgressRootImpl
+  , Props_ProgressRootRow
+  , Props_ProgressRootImplRow
 
   , progressSection
-  , ProgressSectionProps
-  , ProgressSectionPropsRow
+  , Props_ProgressSection
+  , Props_ProgressSectionImpl
+  , Props_ProgressSectionRow
+  , Props_ProgressSectionImplRow
   ) where
 
 import Mantine.Core.Prelude
 
-progress :: (ProgressProps -> ProgressProps) -> JSX
-progress = mkTrivialComponent progressComponent
+progress
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Progress
+  => Union attrsImpl attrsImpl_ Props_ProgressImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+progress = element (unsafeCoerce progressComponent) <<< toNative
 
-foreign import progressComponent :: ReactComponent ProgressPropsImpl
+foreign import progressComponent :: ReactComponent (Record Props_ProgressImpl)
 
-progressRoot :: (ProgressRootProps -> ProgressRootProps) -> JSX
-progressRoot = mkTrivialComponent progressRootComponent
+progressRoot
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ProgressRoot
+  => Union attrsImpl attrsImpl_ Props_ProgressRootImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+progressRoot = element (unsafeCoerce progressRootComponent) <<< toNative
 
-foreign import progressRootComponent :: ReactComponent ProgressRootPropsImpl
+foreign import progressRootComponent :: ReactComponent (Record Props_ProgressRootImpl)
 
-progressSection :: (ProgressSectionProps -> ProgressSectionProps) -> JSX
-progressSection = mkTrivialComponent progressSectionComponent
+progressSection
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ProgressSection
+  => Union attrsImpl attrsImpl_ Props_ProgressSectionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+progressSection = element (unsafeCoerce progressSectionComponent) <<< toNative
 
-foreign import progressSectionComponent :: ReactComponent ProgressSectionPropsImpl
+foreign import progressSectionComponent :: ReactComponent (Record Props_ProgressSectionImpl)
 
-type ProgressProps =
-  MantineComponent (ProgressSectionPropsRow ProgressRootPropsRow)
+type Props_Progress =
+  Props_Common (Props_ProgressSectionRow Props_ProgressRootRow)
 
-type ProgressRootPropsRow =
-  ( radius :: Optional MantineNumberSize
-  , size   :: Optional MantineNumberSize
+type Props_ProgressRootRow =
+  ( radius :: MantineNumberSize
+  , size   :: MantineNumberSize
   )
 
-type ProgressRootProps = MantineComponent ProgressRootPropsRow
+type Props_ProgressRoot = Props_Common Props_ProgressRootRow
 
-type ProgressSectionProps =
-  MantineComponent
-    ( ProgressSectionPropsRow
-      ( onMouseEnter :: Optional EventHandler
-      , onMouseLeave :: Optional EventHandler
+type Props_ProgressSection =
+  Props_Common
+    ( Props_ProgressSectionRow
+      ( onMouseEnter :: EventHandler
+      , onMouseLeave :: EventHandler
       , withAria     :: Boolean
       )
     )
 
-type ProgressSectionPropsRow rest =
+type Props_ProgressSectionRow rest =
   ( animated :: Boolean
-  , color    :: Optional MantineColor
+  , color    :: MantineColor
   , striped  :: Boolean
   , value    :: Number
   | rest
   )
 
-type ProgressPropsImpl =
-  MantineComponentImpl (ProgressSectionPropsImplRow ProgressRootPropsImplRow)
+type Props_ProgressImpl =
+  Props_CommonImpl (Props_ProgressSectionImplRow Props_ProgressRootImplRow)
 
-type ProgressRootPropsImplRow =
-  ( radius :: OptionalImpl MantineNumberSizeImpl
-  , size   :: OptionalImpl MantineNumberSizeImpl
+type Props_ProgressRootImplRow =
+  ( radius :: MantineNumberSizeImpl
+  , size   :: MantineNumberSizeImpl
   )
 
-type ProgressRootPropsImpl = MantineComponentImpl ProgressRootPropsImplRow
+type Props_ProgressRootImpl = Props_CommonImpl Props_ProgressRootImplRow
 
-type ProgressSectionPropsImpl =
-  MantineComponentImpl
-    ( ProgressSectionPropsImplRow
-      ( onMouseEnter :: OptionalImpl EventHandler
-      , onMouseLeave :: OptionalImpl EventHandler
+type Props_ProgressSectionImpl =
+  Props_CommonImpl
+    ( Props_ProgressSectionImplRow
+      ( onMouseEnter :: EventHandler
+      , onMouseLeave :: EventHandler
       , withAria     :: Boolean
       )
     )
 
-type ProgressSectionPropsImplRow rest =
+type Props_ProgressSectionImplRow rest =
   ( animated :: Boolean
-  , color    :: OptionalImpl MantineColorImpl
+  , color    :: MantineColorImpl
   , striped  :: Boolean
   , value    :: Number
   | rest

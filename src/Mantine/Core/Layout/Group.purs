@@ -1,37 +1,43 @@
 module Mantine.Core.Layout.Group
   ( group
   , group_
-  , GroupProps
+  , Props_Group
+  , Props_GroupImpl
   ) where
 
 import Mantine.Core.Prelude
 
-group :: (GroupProps -> GroupProps) -> JSX
-group = mkTrivialComponent groupComponent
+group
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Group
+  => Union attrsImpl attrsImpl_ Props_GroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+group = element (unsafeCoerce groupComponent) <<< toNative
 
 group_ :: Array JSX -> JSX
-group_ children = group _ { children = children }
+group_ children = group { children }
 
-foreign import groupComponent :: ReactComponent GroupPropsImpl
+foreign import groupComponent :: ReactComponent (Record Props_GroupImpl)
 
-type GroupProps =
-  MantineComponent
-    ( align               :: Optional AlignItems
+type Props_Group =
+  Props_Common
+    ( align               :: AlignItems
     , children            :: Array JSX
-    , gap                 :: Optional MantineSpacing
+    , gap                 :: MantineSpacing
     , grow                :: Boolean
-    , justify             :: Optional JustifyContent
+    , justify             :: JustifyContent
     , preventGrowOverflow :: Boolean
     , wrap                :: FlexWrap
     )
 
-type GroupPropsImpl =
-  MantineComponentImpl
-    ( align               :: OptionalImpl AlignItemsImpl
+type Props_GroupImpl =
+  Props_CommonImpl
+    ( align               :: AlignItemsImpl
     , children            :: Array JSX
-    , gap                 :: OptionalImpl MantineSpacingImpl
+    , gap                 :: MantineSpacingImpl
     , grow                :: Boolean
-    , justify             :: OptionalImpl JustifyContentImpl
+    , justify             :: JustifyContentImpl
     , preventGrowOverflow :: Boolean
     , wrap                :: FlexWrapImpl
     )

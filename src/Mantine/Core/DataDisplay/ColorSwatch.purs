@@ -1,40 +1,43 @@
 module Mantine.Core.DataDisplay.ColorSwatch
   ( colorSwatch
   , colorSwatch_
-  , ColorSwatchProps
+  , Props_ColorSwatch
+  , Props_ColorSwatchImpl
   ) where
 
 import Mantine.Core.Prelude
 
-colorSwatch :: MantineColor -> (ColorSwatchProps -> ColorSwatchProps) -> JSX
-colorSwatch = mkComponent colorSwatchComponent toNative <<< defaultColorSwatch
+colorSwatch
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ColorSwatch
+  => Union attrsImpl attrsImpl_ Props_ColorSwatchImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+colorSwatch = element (unsafeCoerce colorSwatchComponent) <<< toNative
 
 colorSwatch_ :: MantineColor -> JSX
-colorSwatch_ c = colorSwatch c identity
+colorSwatch_ color = colorSwatch { color }
 
-foreign import colorSwatchComponent :: ReactComponent ColorSwatchPropsImpl
+foreign import colorSwatchComponent :: ReactComponent (Record Props_ColorSwatchImpl)
 
-defaultColorSwatch :: MantineColor -> ColorSwatchProps
-defaultColorSwatch color = defaultMantineComponent { color }
-
-type ColorSwatchProps =
-  MantineComponent (
+type Props_ColorSwatch =
+  Props_Common (
     Polymorphic
       ( children   :: Array JSX
       , color      :: MantineColor
-      , radius     :: Optional MantineNumberSize
-      , size       :: Optional Pixels
+      , radius     :: MantineNumberSize
+      , size       :: Pixels
       , withShadow :: Boolean
       )
   )
 
-type ColorSwatchPropsImpl =
-  MantineComponentImpl (
+type Props_ColorSwatchImpl =
+  Props_CommonImpl (
     PolymorphicImpl
       ( children   :: Array JSX
       , color      :: MantineColorImpl
-      , radius     :: OptionalImpl MantineNumberSizeImpl
-      , size       :: OptionalImpl PixelsImpl
+      , radius     :: MantineNumberSizeImpl
+      , size       :: PixelsImpl
       , withShadow :: Boolean
       )
   )

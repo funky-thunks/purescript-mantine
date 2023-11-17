@@ -1,35 +1,42 @@
 module Mantine.Core.Overlays.Dialog
   ( dialog
-  , DialogProps
+  , Props_Dialog
+  , Props_DialogImpl
   , DialogPosition
+  , DialogPositionImpl
   ) where
 
 import Mantine.Core.Prelude
 
-dialog :: (DialogProps -> DialogProps) -> JSX
-dialog = mkComponentWithDefault dialogComponent defaultDialogProps
+dialog
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Dialog
+  => Union attrsImpl attrsImpl_ Props_DialogImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+dialog = element (unsafeCoerce dialogComponent) <<< toNative
 
-foreign import dialogComponent :: ReactComponent DialogPropsImpl
+foreign import dialogComponent :: ReactComponent (Record Props_DialogImpl)
 
 -- Not supported properties
 --   { portalProps :: Omit<PortalProps, "children">
 --   }
 
-type DialogProps =
-  MantineComponent
+type Props_Dialog =
+  Props_Common
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
-    , opened          :: Optional Boolean
-    , position        :: Optional DialogPosition
-    , radius          :: Optional MantineNumberSize
-    , shadow          :: Optional MantineShadow
-    , size            :: Optional Dimension
+    , opened          :: Boolean
+    , position        :: DialogPosition
+    , radius          :: MantineNumberSize
+    , shadow          :: MantineShadow
+    , size            :: Dimension
     , transitionProps :: MantineTransitionProps
     , withBorder      :: Boolean
-    , withCloseButton :: Optional Boolean
-    , withinPortal    :: Optional Boolean
-    , zIndex          :: Optional ZIndex
+    , withCloseButton :: Boolean
+    , withinPortal    :: Boolean
+    , zIndex          :: ZIndex
     )
 
 type DialogPosition =
@@ -39,24 +46,21 @@ type DialogPosition =
   , top    :: Optional Dimension
   }
 
-defaultDialogProps :: DialogProps
-defaultDialogProps = defaultMantineComponent { onClose: pure unit }
-
-type DialogPropsImpl =
-  MantineComponentImpl
+type Props_DialogImpl =
+  Props_CommonImpl
     ( children        :: Array JSX
     , keepMounted     :: Boolean
     , onClose         :: Effect Unit
-    , opened          :: OptionalImpl Boolean
-    , position        :: OptionalImpl DialogPositionImpl
-    , radius          :: OptionalImpl MantineNumberSizeImpl
-    , shadow          :: OptionalImpl MantineShadowImpl
-    , size            :: OptionalImpl DimensionImpl
+    , opened          :: Boolean
+    , position        :: DialogPositionImpl
+    , radius          :: MantineNumberSizeImpl
+    , shadow          :: MantineShadowImpl
+    , size            :: DimensionImpl
     , transitionProps :: MantineTransitionPropsImpl
     , withBorder      :: Boolean
-    , withCloseButton :: OptionalImpl Boolean
-    , withinPortal    :: OptionalImpl Boolean
-    , zIndex          :: OptionalImpl ZIndexImpl
+    , withCloseButton :: Boolean
+    , withinPortal    :: Boolean
+    , zIndex          :: ZIndexImpl
     )
 
 type DialogPositionImpl =

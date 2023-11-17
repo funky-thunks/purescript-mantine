@@ -1,18 +1,28 @@
 module Mantine.Core.Overlays.Hovering
   ( hoverCard
-  , HoverCardProps
+  , Props_HoverCard
+  , Props_HoverCardImpl
+
   , hoverCardTarget
-  , hoverCardDropdown
+  , Props_HoverTarget
+  , Props_HoverTargetImpl
 
   , popover
-  , PopoverProps
+  , Props_Popover
+
   , popoverTarget
+  , Props_PopoverTarget
+  , Props_PopoverTargetImpl
+
+  , hoverCardDropdown
   , popoverDropdown
+  , Props_HoveringDropdown
+  , Props_HoveringDropdownImpl
 
   , HoveringCommons
   , HoveringCommonsImpl
-  , HoveringDropdownProps
   , HoveringTarget
+  , HoveringTargetImpl
   , HoverableArrowPosition(..)
   , HoverableArrowPositionImpl
   , HoverableComponent
@@ -22,59 +32,72 @@ module Mantine.Core.Overlays.Hovering
   , HoverPopoverWidth(..)
   , HoverPopoverWidthImpl
   , HoverPopupType(..)
-  , PopoverPropsImpl
+  , HoverPopupTypeImpl
+
+  , Props_PopoverImpl
   ) where
 
 import Mantine.Core.Overlays.Modal (ModalTransitionProps, ModalTransitionPropsImpl)
 import Mantine.Core.Prelude
-import React.Basic.DOM as DOM
-import Mantine.FFI (class RecordToFFI)
-import Prim.RowList (class RowToList)
 
-hoverCard :: (HoverCardProps -> HoverCardProps) -> JSX
-hoverCard = mkComponentWithDefault hoverCardComponent defaultHoverCardProps
+hoverCard
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_HoverCard
+  => Union attrsImpl attrsImpl_ Props_HoverCardImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+hoverCard = element (unsafeCoerce hoverCardComponent) <<< toNative
 
-foreign import hoverCardComponent :: ReactComponent HoverCardPropsImpl
+foreign import hoverCardComponent :: ReactComponent (Record Props_HoverCardImpl)
 
-defaultHoverCardProps :: HoverCardProps
-defaultHoverCardProps = defaultMantineComponent defaultHoveringProps
-
-type HoverCardProps =
+type Props_HoverCard =
   HoveringCommons
-    ( closeDelay      :: Optional Milliseconds
-    , initiallyOpened :: Optional Boolean
-    , openDelay       :: Optional Milliseconds
+    ( closeDelay      :: Milliseconds
+    , initiallyOpened :: Boolean
+    , openDelay       :: Milliseconds
     )
 
-type HoverCardPropsImpl =
+type Props_HoverCardImpl =
   HoveringCommonsImpl
-    ( closeDelay      :: OptionalImpl MillisecondsImpl
-    , initiallyOpened :: OptionalImpl Boolean
-    , openDelay       :: OptionalImpl MillisecondsImpl
+    ( closeDelay      :: MillisecondsImpl
+    , initiallyOpened :: Boolean
+    , openDelay       :: MillisecondsImpl
     )
 
-hoverCardTarget :: (HoverTargetProps -> HoverTargetProps) -> JSX
-hoverCardTarget = mkComponent hoverCardTargetComponent hoveringTargetToImpl defaultMantineComponent_
+hoverCardTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_HoverTarget
+  => Union attrsImpl attrsImpl_ Props_HoverTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+hoverCardTarget = element (unsafeCoerce hoverCardTargetComponent) <<< toNative
 
-foreign import hoverCardTargetComponent :: ReactComponent HoverTargetPropsImpl
+foreign import hoverCardTargetComponent :: ReactComponent (Record Props_HoverTargetImpl)
 
-type HoverTargetProps     = HoveringTarget     (eventPropsWrapperName :: Optional     String)
-type HoverTargetPropsImpl = HoveringTargetImpl (eventPropsWrapperName :: OptionalImpl String)
+type Props_HoverTarget     = HoveringTarget     (eventPropsWrapperName :: String)
+type Props_HoverTargetImpl = HoveringTargetImpl (eventPropsWrapperName :: String)
 
-hoverCardDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
-hoverCardDropdown = mkTrivialComponent hoverCardDropdownComponent
+hoverCardDropdown
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_HoveringDropdown
+  => Union attrsImpl attrsImpl_ Props_HoveringDropdownImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+hoverCardDropdown = element (unsafeCoerce hoverCardDropdownComponent) <<< toNative
 
-foreign import hoverCardDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
+foreign import hoverCardDropdownComponent :: ReactComponent (Record Props_HoveringDropdownImpl)
 
-popover :: (PopoverProps -> PopoverProps) -> JSX
-popover = mkComponentWithDefault popoverComponent defaultPopoverProps
+popover
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Popover
+  => Union attrsImpl attrsImpl_ Props_PopoverImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+popover = element (unsafeCoerce popoverComponent) <<< toNative
 
-foreign import popoverComponent :: ReactComponent PopoverPropsImpl
+foreign import popoverComponent :: ReactComponent (Record Props_PopoverImpl)
 
-defaultPopoverProps :: PopoverProps
-defaultPopoverProps = defaultMantineComponent defaultHoveringProps
-
-type NonDefaultableHoveringProps =
+type Props_NonDefaultableHovering =
   { closeOnClickOutside :: Boolean
   , closeOnEscape       :: Boolean
   , onClose             :: Effect Unit
@@ -83,51 +106,51 @@ type NonDefaultableHoveringProps =
   , withinPortal        :: Boolean
   }
 
-defaultHoveringProps :: NonDefaultableHoveringProps
-defaultHoveringProps =
-  { closeOnClickOutside: true
-  , closeOnEscape:       true
-  , onClose:             pure unit
-  , onOpen:              pure unit
-  , withRoles:           true
-  , withinPortal:        true
-  }
+type Props_Popover     = HoveringCommons     ()
+type Props_PopoverImpl = HoveringCommonsImpl ()
 
-type PopoverProps     = HoveringCommons     ()
-type PopoverPropsImpl = HoveringCommonsImpl ()
+popoverTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_PopoverTarget
+  => Union attrsImpl attrsImpl_ Props_PopoverTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+popoverTarget = element (unsafeCoerce popoverTargetComponent) <<< toNative
 
-popoverTarget :: (PopoverTargetProps -> PopoverTargetProps) -> JSX
-popoverTarget = mkComponent popoverTargetComponent hoveringTargetToImpl defaultMantineComponent_
+type Props_PopoverTarget     = HoveringTarget     ()
+type Props_PopoverTargetImpl = HoveringTargetImpl ()
 
-type PopoverTargetProps     = HoveringTarget     ()
-type PopoverTargetPropsImpl = HoveringTargetImpl ()
+foreign import popoverTargetComponent :: ReactComponent (Record Props_PopoverTargetImpl)
 
-foreign import popoverTargetComponent :: ReactComponent PopoverTargetPropsImpl
+popoverDropdown
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_HoveringDropdown
+  => Union attrsImpl attrsImpl_ Props_HoveringDropdownImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+popoverDropdown = element (unsafeCoerce popoverDropdownComponent) <<< toNative
 
-popoverDropdown :: (HoveringDropdownProps -> HoveringDropdownProps) -> JSX
-popoverDropdown = mkTrivialComponent popoverDropdownComponent
-
-foreign import popoverDropdownComponent :: ReactComponent HoveringDropdownPropsImpl
+foreign import popoverDropdownComponent :: ReactComponent (Record Props_HoveringDropdownImpl)
 
 type HoverableComponent rest =
-  MantineComponent
-    ( arrowOffset          :: Optional Number
-    , arrowPosition        :: Optional HoverableArrowPosition
-    , arrowRadius          :: Optional Number
-    , arrowSize            :: Optional Number
+  Props_Common
+    ( arrowOffset          :: Number
+    , arrowPosition        :: HoverableArrowPosition
+    , arrowRadius          :: Number
+    , arrowSize            :: Number
     , children             :: Array JSX
     , disabled             :: Boolean
     , keepMounted          :: Boolean
-    , offset               :: Optional Number
+    , offset               :: Number
     , onPositionChange     :: ValueHandler HoverableFloatingPosition
-    , opened               :: Optional Boolean
+    , opened               :: Boolean
     , position             :: HoverableFloatingPosition
  -- , positionDependencies :: any[] -- TODO
-    , radius               :: Optional MantineNumberSize
+    , radius               :: MantineNumberSize
     , transitionProps      :: ModalTransitionProps
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
-    , zIndex               :: Optional ZIndex
+    , zIndex               :: ZIndex
     | rest
     )
 
@@ -136,14 +159,14 @@ type HoveringCommons rest =
     ( clickOutsideEvents  :: Array String
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
-    , defaultOpened       :: Optional Boolean
-    , id                  :: Optional String
+    , defaultOpened       :: Boolean
+    , id                  :: String
  -- , middlewares         :: PopoverMiddlewares -- TODO
     , onChange            :: ValueHandler Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , returnFocus         :: Boolean
-    , shadow              :: Optional MantineShadow
+    , shadow              :: MantineShadow
     , trapFocus           :: Boolean
     , width               :: HoverPopoverWidth
     , withRoles           :: Boolean
@@ -163,9 +186,6 @@ data HoverableFloatingPosition
   | HoverableFloatingPositionRightEnd
   | HoverableFloatingPositionBottomEnd
   | HoverableFloatingPositionLeftEnd
-
-instance DefaultValue HoverableFloatingPosition where
-  defaultValue = HoverableFloatingPositionBottom
 
 type HoverableFloatingPositionImpl = String
 
@@ -198,38 +218,36 @@ instance FromFFI String HoverableFloatingPosition where
     "right-start"  -> HoverableFloatingPositionRightStart
     "bottom-start" -> HoverableFloatingPositionBottomStart
     "left-start"   -> HoverableFloatingPositionLeftStart
-    _              -> defaultValue
+    _              -> HoverableFloatingPositionBottom
 
-data HoverPopoverWidth = AsTarget | Fixed Number
-
-instance DefaultValue HoverPopoverWidth where defaultValue = AsTarget
+data HoverPopoverWidth = AsTarget | FixedWidth Number
 
 type HoverPopoverWidthImpl = String |+| Number
 
 instance ToFFI HoverPopoverWidth HoverPopoverWidthImpl where
   toNative = case _ of
-    AsTarget -> asOneOf "target"
-    Fixed n  -> asOneOf n
+    AsTarget     -> asOneOf "target"
+    FixedWidth n -> asOneOf n
 
 type HoverableComponentImpl rest =
-  MantineComponentImpl
-    ( arrowOffset          :: OptionalImpl Number
-    , arrowPosition        :: OptionalImpl HoverableArrowPositionImpl
-    , arrowRadius          :: OptionalImpl Number
-    , arrowSize            :: OptionalImpl Number
+  Props_CommonImpl
+    ( arrowOffset          :: Number
+    , arrowPosition        :: HoverableArrowPositionImpl
+    , arrowRadius          :: Number
+    , arrowSize            :: Number
     , children             :: Array JSX
     , disabled             :: Boolean
     , keepMounted          :: Boolean
-    , offset               :: OptionalImpl Number
+    , offset               :: Number
     , onPositionChange     :: ValueHandlerImpl HoverableFloatingPositionImpl
-    , opened               :: OptionalImpl Boolean
+    , opened               :: Boolean
     , position             :: HoverableFloatingPositionImpl
  -- , positionDependencies :: any[] -- TODO
-    , radius               :: OptionalImpl MantineNumberSizeImpl
+    , radius               :: MantineNumberSizeImpl
     , transitionProps      :: ModalTransitionPropsImpl
     , withArrow            :: Boolean
     , withinPortal         :: Boolean
-    , zIndex               :: OptionalImpl ZIndexImpl
+    , zIndex               :: ZIndexImpl
     | rest
     )
 
@@ -238,14 +256,14 @@ type HoveringCommonsImpl rest =
     ( clickOutsideEvents  :: Array String
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
-    , defaultOpened       :: OptionalImpl Boolean
-    , id                  :: OptionalImpl String
+    , defaultOpened       :: Boolean
+    , id                  :: String
  -- , middlewares         :: PopoverMiddlewares -- TODO
     , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , returnFocus         :: Boolean
-    , shadow              :: OptionalImpl MantineShadowImpl
+    , shadow              :: MantineShadowImpl
     , trapFocus           :: Boolean
     , width               :: HoverPopoverWidthImpl
     , withRoles           :: Boolean
@@ -264,18 +282,16 @@ instance ToFFI HoverableArrowPosition HoverableArrowPositionImpl where
     HoverableArrowPositionSide   -> "side"
 
 type HoveringTarget rest =
-  MantineComponent
+  Props_Common
     ( children  :: Array JSX
     , popupType :: HoverPopupType
-    , refProp   :: Optional String
+    , refProp   :: String
     | rest
     )
 
 data HoverPopupType
   = HoverPopupTypeDialog
   | HoverPopupTypeCustom String
-
-instance DefaultValue HoverPopupType where defaultValue = HoverPopupTypeDialog
 
 type HoverPopupTypeImpl = String
 
@@ -285,21 +301,12 @@ instance ToFFI HoverPopupType HoverPopupTypeImpl where
     HoverPopupTypeCustom s -> s
 
 type HoveringTargetImpl rest =
-  MantineComponentImpl
+  Props_CommonImpl
     ( children  :: Array JSX
     , popupType :: HoverPopupTypeImpl
-    , refProp   :: OptionalImpl String
+    , refProp   :: String
     | rest
     )
 
-hoveringTargetToImpl :: forall rest restImpl others
-                      . ToFFI (Record rest) (Record restImpl)
-                     => RecordToFFI others (children :: Array JSX | rest) (children :: Array JSX | restImpl)
-                     => RowToList ( children :: Array JSX | rest) others
-                     => { children :: Array JSX | rest } -> { children :: Array JSX | restImpl }
-hoveringTargetToImpl =
-  let wrapChildren props = props { children = [ DOM.div_ props.children ] }
-   in toNative >>> wrapChildren
-
-type HoveringDropdownProps     = MantineComponent     (children :: Array JSX)
-type HoveringDropdownPropsImpl = MantineComponentImpl (children :: Array JSX)
+type Props_HoveringDropdown     = Props_Common     (children :: Array JSX)
+type Props_HoveringDropdownImpl = Props_CommonImpl (children :: Array JSX)

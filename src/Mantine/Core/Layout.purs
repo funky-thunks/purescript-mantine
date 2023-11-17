@@ -11,13 +11,13 @@ module Mantine.Core.Layout
   , module Mantine.Core.Layout.Stack
   ) where
 
-import Mantine.Core.Layout.AppShell (AppShellCollapse, AppShellComponentProps, AppShellHorizontalConfiguration, AppShellLayout(..), AppShellMainProps, AppShellPadding(..), AppShellProps, AppShellResponsiveSize, AppShellRules(..), AppShellSectionProps, AppShellSize(..), AppShellVerticalConfiguration, appShell, appShellAside, appShellAside_, appShellFooter, appShellFooter_, appShellHeader, appShellHeader_, appShellMain, appShellNavbar, appShellNavbar_, appShellScrollableSection, appShellScrollableSection_, appShellSection, appShellSection_)
-import Mantine.Core.Layout.AspectRatio (AspectRatioProps, aspectRatio)
-import Mantine.Core.Layout.Center (CenterProps, center, center_)
-import Mantine.Core.Layout.Container (ContainerProps, container, container_)
-import Mantine.Core.Layout.Flex (FlexProps, flex, flex_)
-import Mantine.Core.Layout.Grid (GridColProps, GridColSpan(..), GridProps, grid, gridCol, gridCol_, grid_)
-import Mantine.Core.Layout.Group (GroupProps, group, group_)
-import Mantine.Core.Layout.SimpleGrid (SimpleGridProps, simpleGrid, simpleGrid_)
-import Mantine.Core.Layout.Space (SpaceProps, space)
-import Mantine.Core.Layout.Stack (StackProps, stack, stack_)
+import Mantine.Core.Layout.AppShell (AppShellCollapse, AppShellHorizontalConfiguration, AppShellHorizontalConfigurationImpl, AppShellLayout(..), AppShellPadding(..), AppShellPaddingImpl, AppShellResponsiveSize, AppShellRules(..), AppShellRulesImpl, AppShellSize(..), AppShellSizeImpl, AppShellVerticalConfiguration, AppShellVerticalConfigurationImpl, Props_AppShell, Props_AppShellComponent, Props_AppShellComponentImpl, Props_AppShellImpl, Props_AppShellMain, Props_AppShellMainImpl, Props_AppShellSection, Props_AppShellSectionImpl, appShell, appShellAside, appShellAside_, appShellFooter, appShellFooter_, appShellHeader, appShellHeader_, appShellMain, appShellNavbar, appShellNavbar_, appShellScrollableSection, appShellScrollableSection_, appShellSection, appShellSection_)
+import Mantine.Core.Layout.AspectRatio (Props_AspectRatio, Props_AspectRatioImpl, aspectRatio)
+import Mantine.Core.Layout.Container (Props_Container, Props_ContainerImpl, container, container_)
+import Mantine.Core.Layout.Center (Props_Center, Props_CenterImpl, center, center_)
+import Mantine.Core.Layout.Flex (Props_Flex, Props_FlexImpl, flex, flex_)
+import Mantine.Core.Layout.Grid (GridColSpan(..), GridColSpanImpl, Props_Grid, Props_GridCol, Props_GridColImpl, Props_GridImpl, grid, gridCol, gridCol_, grid_)
+import Mantine.Core.Layout.Group (Props_Group, Props_GroupImpl, group, group_)
+import Mantine.Core.Layout.SimpleGrid (Props_SimpleGrid, Props_SimpleGridImpl, simpleGrid, simpleGrid_)
+import Mantine.Core.Layout.Space (Props_Space, Props_SpaceImpl, space)
+import Mantine.Core.Layout.Stack (Props_Stack, Props_StackImpl, stack, stack_)
