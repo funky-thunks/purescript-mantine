@@ -47,7 +47,7 @@ module Mantine.Core.Common
   , MantineComponentImpl
   , MantineComponentImplRow
 
-  , ValueHandler(..)
+  , ValueHandler
   , ValueHandlerImpl
   , CheckerHandler(..)
   , CheckerHandlerImpl
@@ -79,16 +79,15 @@ import Prelude hiding (bind)
 import Data.Default (class DefaultValue, defaultValue)
 import Data.Either (Either(..))
 import Data.Foldable (foldMap)
-import Data.Functor.Contravariant (class Contravariant)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Natural (Natural)
-import Data.Newtype (class Newtype, unwrap, wrap)
+import Data.Newtype (class Newtype, unwrap)
 import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1, mkEffectFn1, runEffectFn1)
+import Effect.Uncurried (EffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
@@ -745,22 +744,8 @@ type MantineComponentImplRow r =
   | r
   )
 
-newtype ValueHandler value = ValueHandler (value -> Effect Unit)
-derive instance Newtype (ValueHandler value) _
-
-instance Contravariant ValueHandler where
-  cmap f vh = wrap (unwrap vh <<< f)
-
-instance DefaultValue (ValueHandler value) where
-  defaultValue = ValueHandler (const (pure unit))
-
+type ValueHandler     value       = value -> Effect Unit
 type ValueHandlerImpl nativeValue = EffectFn1 nativeValue Unit
-
-instance FromFFI nativeValue value => ToFFI (ValueHandler value) (ValueHandlerImpl nativeValue) where
-  toNative (ValueHandler vh) = mkEffectFn1 (vh <<< fromNative)
-
-instance ToFFI value nativeValue => FromFFI (ValueHandlerImpl nativeValue) (ValueHandler value) where
-  fromNative vh = ValueHandler (runEffectFn1 vh <<< toNative)
 
 newtype CheckerHandler = CheckerHandler (Boolean -> Effect Unit)
 derive instance Newtype CheckerHandler _
