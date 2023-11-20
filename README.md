@@ -20,9 +20,8 @@ in  upstream
     { dependencies =
       [ "aff"
       , "aff-promise"
+      , "arrays"
       , "console"
-      , "contravariant"
-      , "default-values"
       , "effect"
       , "either"
       , "exceptions"
@@ -47,6 +46,7 @@ in  upstream
       , "strings"
       , "tuples"
       , "typelevel-prelude"
+      , "unsafe-coerce"
       , "untagged-union"
       , "web-dom"
       , "web-events"
@@ -55,7 +55,7 @@ in  upstream
       , "web-uievents"
       ]
     , repo = "https://github.com/funky-thunks/purescript-mantine"
-    , version = "765d0aef223d0385040fc9e05c50e5a7c45a0130"
+    , version = "82d9de8038cd57ef36b91d128e1ee3325309a8e9"
     }
 ```
 
