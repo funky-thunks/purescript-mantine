@@ -1,0 +1,23 @@
+module Examples.Core.Prelude
+  ( module Prelude
+  , module Data.Array
+  , module Data.Foldable
+  , module Data.Maybe
+  , module Data.Monoid
+  , module Data.String
+  , module React.Basic
+  , module React.Basic.DOM.Events
+  , module React.Basic.Events
+  , module React.Basic.Hooks
+  ) where
+
+import Prelude -- (Unit, const, discard, identity, map, mempty, pure, unit, ($), (=<<), (<<<), (>>>), (<$), (<$>), (==), (/=), (<>), (&&), (||))
+import Data.Array (elem, filter, last)
+import Data.Foldable (foldMap)
+import Data.Maybe (Maybe(..), maybe)
+import Data.Monoid (guard)
+import Data.String (length)
+import React.Basic (JSX)
+import React.Basic.DOM.Events (nativeEvent)
+import React.Basic.Events (handler, handler_)
+import React.Basic.Hooks (Component, (/\), component)
