@@ -13,12 +13,23 @@ module Mantine.Core.Combobox.Combobox
   , Offset(..)
   , OffsetImpl
 
+  , useCombobox
+  , UseCombobox
+  , Options_UseCombobox
+  , Options_UseComboboxImpl
   , ComboboxStore
   , ComboboxStoreImpl
   , ComboboxDropdownEventSource(..)
   , ComboboxDropdownEventSourceImpl
   , ComboboxSelectedOption(..)
   , ComboboxSelectedOptionImpl
+  , ScrollBehavior(..)
+  , ScrollBehaviorImpl
+
+  , comboboxOptions
+  , comboboxOptions_
+  , Props_ComboboxOptions
+  , Props_ComboboxOptionsImpl
 
   , comboboxOption
   , Props_ComboboxOption
@@ -31,14 +42,17 @@ module Mantine.Core.Combobox.Combobox
   , Props_ComboboxTargetImpl
 
   , comboboxDropdownTarget
+  , comboboxDropdownTarget_
   , Props_ComboboxDropdownTarget
   , Props_ComboboxDropdownTargetImpl
 
   , comboboxEventsTarget
+  , comboboxEventsTarget_
   , Props_ComboboxEventsTarget
   , Props_ComboboxEventsTargetImpl
 
   , comboboxDropdown
+  , comboboxDropdown_
   , Props_ComboboxDropdown
   , Props_ComboboxDropdownImpl
 
@@ -51,8 +65,54 @@ module Mantine.Core.Combobox.Combobox
   ) where
 
 import Mantine.Core.Prelude
+import Effect.Uncurried ( runEffectFn1)
+import React.Basic.Hooks (Hook, unsafeHook)
 import Web.HTML.HTMLElement (HTMLElement)
 import Web.HTML.HTMLInputElement (HTMLInputElement)
+
+type Options_UseCombobox =
+  ( defaultOpened   :: Boolean
+  , opened          :: Boolean
+  , onOpenedChange  :: ComboboxStore -> Boolean                     -> Effect Unit
+  , onDropdownClose :: ComboboxStore -> ComboboxDropdownEventSource -> Effect Unit
+  , onDropdownOpen  :: ComboboxStore -> ComboboxDropdownEventSource -> Effect Unit
+  , loop            :: Boolean
+  , scrollBehavior  :: ScrollBehavior
+  )
+
+type Options_UseComboboxImpl =
+  ( defaultOpened   :: Boolean
+  , opened          :: Boolean
+  , onOpenedChange  :: EffectFn2 ComboboxStoreImpl Boolean                         Unit
+  , onDropdownClose :: EffectFn2 ComboboxStoreImpl ComboboxDropdownEventSourceImpl Unit
+  , onDropdownOpen  :: EffectFn2 ComboboxStoreImpl ComboboxDropdownEventSourceImpl Unit
+  , loop            :: Boolean
+  , scrollBehavior  :: ScrollBehaviorImpl
+  )
+
+data ScrollBehavior
+  = ScrollBehaviorSmooth
+  | ScrollBehaviorInstant
+  | ScrollBehaviorAuto
+
+type ScrollBehaviorImpl = String
+
+instance ToFFI ScrollBehavior ScrollBehaviorImpl where
+  toNative = case _ of
+    ScrollBehaviorSmooth  -> "smooth"
+    ScrollBehaviorInstant -> "instant"
+    ScrollBehaviorAuto    -> "auto"
+
+foreign import useComboboxImpl :: EffectFn1 (Record Options_UseComboboxImpl) ComboboxStoreImpl
+foreign import data UseCombobox :: Type -> Type
+
+useCombobox :: forall opts opts_ optsImpl optsImpl_
+             . Union opts     opts_     Options_UseCombobox
+            => Union optsImpl optsImpl_ Options_UseComboboxImpl
+            => ToFFI (Record opts)  (Record optsImpl)
+            => ToFFI (Record opts_) (Record optsImpl_)
+            => Record opts -> Hook UseCombobox ComboboxStore
+useCombobox arg1 = unsafeHook (fromNative <$> runEffectFn1 useComboboxImpl (unsafeCoerce (toNative arg1)))
 
 combobox
   :: forall attrs attrs_ attrsImpl attrsImpl_
@@ -119,7 +179,7 @@ type ComboboxStore =
   , setListId                 :: ValueHandler String
   , targetRef                 :: Ref (Nullable HTMLElement)
   , toggleDropdown            :: ValueHandler ComboboxDropdownEventSource
-  , updateSelectedOptionIndex :: ValueHandler ComboboxSelectedOption
+  , updateSelectedOptionIndex :: ValueHandler (Maybe ComboboxSelectedOption)
   }
 
 data ComboboxDropdownEventSource
@@ -177,19 +237,19 @@ type ComboboxStoreImpl =
   , setListId                 :: ValueHandlerImpl String
   , targetRef                 :: Ref (Nullable HTMLElement)
   , toggleDropdown            :: ValueHandlerImpl ComboboxDropdownEventSourceImpl
-  , updateSelectedOptionIndex :: ValueHandlerImpl ComboboxSelectedOptionImpl
+  , updateSelectedOptionIndex :: ValueHandlerImpl (Nullable ComboboxSelectedOptionImpl)
   }
 
 data Offset
-  = InPixels Pixels
-  | ByAxes FloatingAxesOffsets
+  = OffsetInPixels Pixels
+  | OffsetByAxes FloatingAxesOffsets
 
 type OffsetImpl = Number |+| FloatingAxesOffsetsImpl
 
 instance ToFFI Offset OffsetImpl where
   toNative = case _ of
-    InPixels p -> asOneOf (toNative p)
-    ByAxes fao -> asOneOf (toNative fao)
+    OffsetInPixels p -> asOneOf (toNative p)
+    OffsetByAxes fao -> asOneOf (toNative fao)
 
 type FloatingAxesOffsets =
   { mainAxis      :: Optional Number
@@ -303,6 +363,22 @@ type Props_ComboboxImpl =
     , zIndex                      :: ZIndexImpl
     )
 
+comboboxOptions
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxOptions
+  => Union attrsImpl attrsImpl_ Props_ComboboxOptionsImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxOptions = element (unsafeCoerce comboboxOptionsComponent) <<< toNative
+
+comboboxOptions_ :: Array JSX -> JSX
+comboboxOptions_ children = comboboxOptions { children }
+
+foreign import comboboxOptionsComponent :: ReactComponent (Record Props_ComboboxOptionsImpl)
+
+type Props_ComboboxOptions     = Props_Common     ( children :: Array JSX )
+type Props_ComboboxOptionsImpl = Props_CommonImpl ( children :: Array JSX )
+
 comboboxOption
   :: forall attrs attrs_ attrsImpl attrsImpl_
    . Union attrs     attrs_     Props_ComboboxOption
@@ -313,7 +389,7 @@ comboboxOption = element (unsafeCoerce comboboxOptionComponent) <<< toNative
 
 foreign import comboboxOptionComponent :: ReactComponent (Record Props_ComboboxOptionImpl)
 
-type Props_ComboboxOption = Props_Common Props_ComboboxOptionRow
+type Props_ComboboxOption = Props_Common ( children :: Array JSX | Props_ComboboxOptionRow )
 type Props_ComboboxOptionRow =
     ( active   :: Boolean
     , disabled :: Boolean
@@ -321,7 +397,7 @@ type Props_ComboboxOptionRow =
     , value    :: String
     )
 
-type Props_ComboboxOptionImpl = Props_CommonImpl Props_ComboboxOptionRowImpl
+type Props_ComboboxOptionImpl = Props_CommonImpl ( children :: Array JSX | Props_ComboboxOptionRowImpl )
 type Props_ComboboxOptionRowImpl =
     ( active   :: Boolean
     , disabled :: Boolean
@@ -367,6 +443,9 @@ comboboxDropdownTarget
   => Record attrs -> JSX
 comboboxDropdownTarget = element (unsafeCoerce comboboxDropdownTargetComponent) <<< toNative
 
+comboboxDropdownTarget_ :: Array JSX -> JSX
+comboboxDropdownTarget_ children = comboboxDropdownTarget { children }
+
 foreign import comboboxDropdownTargetComponent :: ReactComponent (Record Props_ComboboxDropdownTargetImpl)
 
 type Props_ComboboxDropdownTarget =
@@ -388,6 +467,9 @@ comboboxEventsTarget
   => ToFFI (Record attrs) (Record attrsImpl)
   => Record attrs -> JSX
 comboboxEventsTarget = element (unsafeCoerce comboboxEventsTargetComponent) <<< toNative
+
+comboboxEventsTarget_ :: Array JSX -> JSX
+comboboxEventsTarget_ children = comboboxEventsTarget { children }
 
 foreign import comboboxEventsTargetComponent :: ReactComponent (Record Props_ComboboxEventsTargetImpl)
 
@@ -419,10 +501,13 @@ comboboxDropdown
   => Record attrs -> JSX
 comboboxDropdown = element (unsafeCoerce comboboxDropdownComponent) <<< toNative
 
+comboboxDropdown_ :: Array JSX -> JSX
+comboboxDropdown_ children = comboboxDropdown { children }
+
 foreign import comboboxDropdownComponent :: ReactComponent (Record Props_ComboboxDropdownImpl)
 
-type Props_ComboboxDropdown     = Props_Common     ( hidden :: Boolean )
-type Props_ComboboxDropdownImpl = Props_CommonImpl ( hidden :: Boolean )
+type Props_ComboboxDropdown     = Props_Common     ( children :: Array JSX, hidden :: Boolean )
+type Props_ComboboxDropdownImpl = Props_CommonImpl ( children :: Array JSX, hidden :: Boolean )
 
 comboboxGroup
   :: forall attrs attrs_ attrsImpl attrsImpl_
