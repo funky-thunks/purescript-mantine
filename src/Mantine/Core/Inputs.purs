@@ -23,7 +23,7 @@ module Mantine.Core.Inputs
   ) where
 
 import Mantine.Core.Inputs.Checkables (CheckableLabelPosition(..), CheckableLabelPositionImpl, Props_CheckableComponent, Props_CheckableComponentImpl, Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
-import Mantine.Core.Inputs.Checkbox (Props_Checkbox, Props_CheckboxGroup, Props_CheckboxGroupImpl, Props_CheckboxImpl, checkbox, checkboxGroup, checkboxGroup_)
+import Mantine.Core.Inputs.Checkbox (Props_CheckIcon, Props_CheckIconImpl, Props_Checkbox, Props_CheckboxGroup, Props_CheckboxGroupImpl, Props_CheckboxImpl, checkIcon, checkIcon_, checkbox, checkboxGroup, checkboxGroup_)
 import Mantine.Core.Inputs.Chip (ChipType(..), ChipTypeImpl, ChipVariant(..), ChipVariantImpl, Props_Chip, Props_ChipGroup, Props_ChipGroupImpl, Props_ChipImpl, chip, chipGroup, multipleChipGroup)
 import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
 import Mantine.Core.Inputs.ColorInput (PopoverProps, PopoverPropsImpl, Props_ColorInput, Props_ColorInputImpl, colorInput)

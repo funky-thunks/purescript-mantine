@@ -7,6 +7,11 @@ module Mantine.Core.Inputs.Checkbox
   , checkboxGroup_
   , Props_CheckboxGroup
   , Props_CheckboxGroupImpl
+
+  , checkIcon
+  , checkIcon_
+  , Props_CheckIcon
+  , Props_CheckIconImpl
   ) where
 
 import Mantine.Core.Inputs.Checkables (Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
@@ -54,3 +59,19 @@ foreign import checkboxGroupComponent :: ReactComponent (Record Props_CheckboxGr
 
 type Props_CheckboxGroup     = Props_InputGroupComponent     (Array String) ()
 type Props_CheckboxGroupImpl = Props_InputGroupComponentImpl (Array String) ()
+
+checkIcon
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CheckIcon
+  => Union attrsImpl attrsImpl_ Props_CheckIconImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+checkIcon = element (unsafeCoerce checkIconComponent) <<< toNative
+
+checkIcon_ :: JSX
+checkIcon_ = checkIcon {}
+
+foreign import checkIconComponent :: ReactComponent (Record Props_CheckIconImpl)
+
+type Props_CheckIcon     = ( size :: MantineNumberSize     )
+type Props_CheckIconImpl = ( size :: MantineNumberSizeImpl )
