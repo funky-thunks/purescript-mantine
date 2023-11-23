@@ -48,5 +48,5 @@ radioGroup_ children = radioGroup { children }
 
 foreign import radioGroupComponent :: ReactComponent (Record Props_RadioGroupImpl)
 
-type Props_RadioGroup     = Props_InputGroupComponent     String (name :: String)
-type Props_RadioGroupImpl = Props_InputGroupComponentImpl String (name :: String)
+type Props_RadioGroup     = Props_InputGroupComponent     String ()
+type Props_RadioGroupImpl = Props_InputGroupComponentImpl String ()

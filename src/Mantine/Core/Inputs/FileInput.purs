@@ -34,10 +34,7 @@ type Props_FileInput =
     , capture          :: CaptureMode
     , clearButtonProps :: ClearButtonProps
     , clearable        :: Boolean
-    , form             :: String
     , multiple         :: Boolean
-    , name             :: String
-    , readOnly         :: Boolean
     | Controlled File
     )
 
@@ -57,9 +54,6 @@ type Props_FileInputImpl =
     , capture          :: CaptureModeImpl
     , clearButtonProps :: ClearButtonPropsImpl
     , clearable        :: Boolean
-    , form             :: String
     , multiple         :: Boolean
-    , name             :: String
-    , readOnly         :: Boolean
     | ControlledImpl File
     )

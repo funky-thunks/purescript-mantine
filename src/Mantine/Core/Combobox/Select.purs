@@ -72,21 +72,18 @@ type BaseSelectPropsRow items =
     , data                      :: Array SelectItem
     , defaultDropdownOpened     :: Boolean
     , defaultSearchValue        :: String
-    , defaultValue              :: items
     , dropdownOpened            :: Boolean
     , filter                    :: SelectItem -> Boolean
     , limit                     :: Int
     , maxDropdownHeight         :: Pixels
-    , onChange                  :: items -> Effect Unit
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandler String
     , onSearchChange            :: ValueHandler String
     , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: items
     , withScrollArea            :: Boolean
-    | ClearablePropsRow + WithInputContainer + Props_InputRow
+    | Controlled_ items + ClearablePropsRow + WithInputContainer + Props_InputRow
     )
 
 type ClearablePropsRow rest =
@@ -126,21 +123,18 @@ type BaseSelectPropsRowImpl items =
     , data                      :: Array SelectItemImpl
     , defaultDropdownOpened     :: Boolean
     , defaultSearchValue        :: String
-    , defaultValue              :: items
     , dropdownOpened            :: Boolean
     , filter                    :: SelectItemImpl -> Boolean
     , limit                     :: Number
     , maxDropdownHeight         :: PixelsImpl
-    , onChange                  :: EffectFn1 (Nullable items) Unit
     , onDropdownClose           :: Effect Unit
     , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandlerImpl String
     , onSearchChange            :: ValueHandlerImpl String
     , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: items
     , withScrollArea            :: Boolean
-    | ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl
+    | ControlledImpl_ items + ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl
     )
 
 type ClearablePropsRowImpl restImpl =

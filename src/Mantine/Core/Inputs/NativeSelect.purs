@@ -20,14 +20,12 @@ foreign import nativeSelectComponent :: ReactComponent (Record Props_NativeSelec
 
 type Props_NativeSelect =
   Props_InputComponent
-    ( data     :: Array SelectItem
-    , onChange :: InputHandler
-    , value    :: String
+    ( data :: Array SelectItem
+    | Controlled String
     )
 
 type Props_NativeSelectImpl =
   Props_InputComponentImpl
-    ( data     :: Array SelectItemImpl
-    , onChange :: InputHandlerImpl
-    , value    :: String
+    ( data :: Array SelectItemImpl
+    | ControlledImpl String
     )

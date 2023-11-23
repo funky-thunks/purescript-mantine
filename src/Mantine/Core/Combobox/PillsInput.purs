@@ -37,10 +37,9 @@ pillsInputField = element (unsafeCoerce pillsInputFieldComponent) <<< toNative
 foreign import pillsInputFieldComponent :: ReactComponent (Record Props_PillsInputFieldImpl)
 
 type Props_PillsInputField =
-  Props_Common
-    ( placeholder :: String
-    , pointer     :: Boolean
-    , type        :: PillsInputFieldType
+  Props_InputComponent
+    ( type :: PillsInputFieldType
+    | RawControlled String
     )
 
 data PillsInputFieldType
@@ -57,8 +56,7 @@ instance ToFFI PillsInputFieldType PillsInputFieldTypeImpl where
     PillsInputFieldTypeVisible -> "visible"
 
 type Props_PillsInputFieldImpl =
-  Props_CommonImpl
-    ( placeholder :: String
-    , pointer     :: Boolean
-    , type        :: PillsInputFieldTypeImpl
+  Props_InputComponentImpl
+    ( type :: PillsInputFieldTypeImpl
+    | RawControlledImpl String
     )

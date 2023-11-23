@@ -241,8 +241,8 @@ tableTr_ key children = tableTr { key, children }
 
 foreign import tableTrComponent :: ReactComponent (Record Props_TableTrImpl)
 
-type Props_TableTr     = WithChildren     ( key :: String )
-type Props_TableTrImpl = WithChildrenImpl ( key :: String )
+type Props_TableTr     = WithChildren     ()
+type Props_TableTrImpl = WithChildrenImpl ()
 
 type WithChildren     rest = Props_Common     ( children :: Array JSX | rest )
 type WithChildrenImpl rest = Props_CommonImpl ( children :: Array JSX | rest )

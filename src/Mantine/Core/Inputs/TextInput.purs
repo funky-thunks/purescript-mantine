@@ -17,14 +17,5 @@ textInput = element (unsafeCoerce textInputComponent) <<< toNative
 
 foreign import textInputComponent :: ReactComponent (Record Props_TextInputImpl)
 
-type Props_TextInput =
-  Props_InputComponent
-    ( onChange :: InputHandler
-    , value    :: String
-    )
-
-type Props_TextInputImpl =
-  Props_InputComponentImpl
-    ( onChange :: InputHandlerImpl
-    , value    :: String
-    )
+type Props_TextInput     = Props_InputComponent     (Controlled     String)
+type Props_TextInputImpl = Props_InputComponentImpl (ControlledImpl String)

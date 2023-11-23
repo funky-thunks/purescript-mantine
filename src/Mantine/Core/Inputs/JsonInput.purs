@@ -25,23 +25,19 @@ foreign import jsonInputComponent :: ReactComponent (Record Props_JsonInputImpl)
 type Props_JsonInput =
   Props_InputComponent
     ( autosize        :: Boolean
-    , defaultValue    :: String
     , formatOnBlur    :: Boolean
     , maxRows         :: Int
     , minRows         :: Int
-    , onChange        :: InputHandler
     , validationError :: JSX
-    , value           :: String
+    | Controlled String
     )
 
 type Props_JsonInputImpl =
   Props_InputComponentImpl
     ( autosize        :: Boolean
-    , defaultValue    :: String
     , formatOnBlur    :: Boolean
     , maxRows         :: Number
     , minRows         :: Number
-    , onChange        :: InputHandlerImpl
     , validationError :: JSX
-    , value           :: String
+    | ControlledImpl String
     )

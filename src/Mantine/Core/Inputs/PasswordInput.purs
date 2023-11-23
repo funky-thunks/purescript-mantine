@@ -23,23 +23,21 @@ foreign import passwordInputComponent :: ReactComponent (Record Props_PasswordIn
 type Props_PasswordInput =
   Props_InputComponent
     ( defaultVisible              :: Boolean
-    , onChange                    :: InputHandler
     , onVisibilityChange          :: ValueHandler Boolean
-    , value                       :: String
     , visibilityToggleButtonProps :: ToggleOptions
     , visibilityToggleIcon        :: { reveal :: Boolean, size :: Number } -> JSX
     , visible                     :: Boolean
+    | Controlled String
     )
 
 type Props_PasswordInputImpl =
   Props_InputComponentImpl
     ( defaultVisible              :: Boolean
-    , onChange                    :: InputHandlerImpl
     , onVisibilityChange          :: ValueHandlerImpl Boolean
-    , value                       :: String
     , visibilityToggleButtonProps :: ToggleButtonProps
     , visibilityToggleIcon        :: { reveal :: Boolean, size :: Number } -> JSX
     , visible                     :: Boolean
+    | ControlledImpl String
     )
 
 newtype ToggleOptions = ToggleOptions { focusable :: Boolean, label :: String }

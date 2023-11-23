@@ -60,6 +60,11 @@ module Mantine.Core.Common
   , ControlledImpl
   , ControlledImpl_
 
+  , RawControlled
+  , RawControlled_
+  , RawControlledImpl
+  , RawControlledImpl_
+
   , Breakpoint(..)
   , BreakpointImpl
 
@@ -74,7 +79,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Natural (Natural)
 import Data.Newtype (class Newtype, unwrap)
-import Data.Nullable (Nullable)
+import Data.Nullable (Nullable, toMaybe)
 import Data.Number (fromString)
 import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
@@ -84,10 +89,11 @@ import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
-import React.Basic.Events (EventHandler, handler)
+import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
 import React.Basic.DOM (CSS)
 import React.Basic.DOM.Events (targetChecked, targetValue)
 import Untagged.Union (type (|+|), asOneOf, toEither1)
+import Unsafe.Coerce (unsafeCoerce)
 
 data MantineColor
   = Dark
@@ -275,25 +281,25 @@ data MantineSize
   | ExtraLarge
 
 data MantineNumberSize
-  = Custom Pixels
-  | InRems Rem
-  | Preset MantineSize
+  = SizeInPixels Pixels
+  | SizeInRems   Rem
+  | Preset       MantineSize
 
-type MantineShadow = MantineSize
+type MantineShadow     = MantineSize
 type MantineShadowImpl = MantineSizeImpl
 
 instance ToFFI MantineNumberSize MantineNumberSizeImpl where
   toNative = case _ of
-    Custom n -> asOneOf n
-    InRems r -> asOneOf (show r <> "rem")
-    Preset s -> asOneOf (toNative s)
+    SizeInPixels n -> asOneOf n
+    SizeInRems   r -> asOneOf (show r <> "rem")
+    Preset       s -> asOneOf (toNative s)
 
 instance FromFFI MantineNumberSizeImpl MantineNumberSize where
   fromNative = toEither1 >>> case _ of
-    Left  n -> Custom n
+    Left  n -> SizeInPixels n
     Right s ->
       case stripSuffix (Pattern "rem") s >>= fromString of
-        Just r  -> InRems r
+        Just r  -> SizeInRems r
         Nothing -> Preset (fromNative s)
 
 type MantineNumberSizeImpl = Number |+| MantineSizeImpl
@@ -551,13 +557,16 @@ type RemImpl = Rem
 type ZIndex = Number
 type ZIndexImpl = ZIndex
 
-data Dimension = Pixels Pixels | Rem Rem | Dimension String
+data Dimension
+  = DimensionInPixels Pixels
+  | DimensionInRems   Rem
+  | Dimension String
 
 instance ToFFI Dimension DimensionImpl where
   toNative = case _ of
-    Pixels    p -> asOneOf p
-    Rem       r -> asOneOf (show r <> "rem")
-    Dimension n -> asOneOf n
+    DimensionInPixels p -> asOneOf p
+    DimensionInRems   r -> asOneOf (show r <> "rem")
+    Dimension         n -> asOneOf n
 
 type DimensionImpl = Number |+| String
 
@@ -643,13 +652,22 @@ type CheckerHandlerImpl = EventHandler
 instance ToFFI CheckerHandler CheckerHandlerImpl where
   toNative (CheckerHandler ch) = handler targetChecked (foldMap ch)
 
-newtype InputHandler = InputHandler (String -> Effect Unit)
-derive instance Newtype InputHandler _
+data InputHandler value
+  = InputTargetHandler        (value -> Effect Unit)
+  | InputCurrentTargetHandler (value -> Effect Unit)
 
 type InputHandlerImpl = EventHandler
 
-instance ToFFI InputHandler InputHandlerImpl where
-  toNative (InputHandler ch) = handler targetValue (foldMap ch)
+instance FromFFI String value => ToFFI (InputHandler value) InputHandlerImpl where
+  toNative =
+    let mkHandler h ch = handler h (foldMap (ch <<< fromNative))
+     in case _ of
+          InputTargetHandler        ch -> mkHandler targetValue        ch
+          InputCurrentTargetHandler ch -> mkHandler currentTargetValue ch
+
+-- Unfortunately the following wasn't implemented in React.Basic.DOM.Events
+currentTargetValue :: EventFn SyntheticEvent (Maybe String)
+currentTargetValue = unsafeEventFn \e -> toMaybe (unsafeCoerce e).currentTarget.value
 
 type Polymorphic rest =
   ( component        :: String
@@ -720,6 +738,22 @@ type ControlledImpl_ value rest =
   | rest
   )
 
+type RawControlled  value = RawControlled_ value ()
+type RawControlled_ value rest =
+  ( defaultValue :: Maybe        value
+  , onChange     :: InputHandler value
+  , value        :: Maybe        value
+  | rest
+  )
+
+type RawControlledImpl  value = RawControlledImpl_ value ()
+type RawControlledImpl_ value rest =
+  ( defaultValue :: Nullable         value
+  , onChange     :: InputHandlerImpl
+  , value        :: Nullable         value
+  | rest
+  )
+
 data Breakpoint
   = BreakpointExtraSmall
   | BreakpointSmall
@@ -762,6 +796,7 @@ type Props_Common r =
   , bg          :: MantineColor
   , c           :: MantineColor
   , className   :: String
+  , key         :: String
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
@@ -795,6 +830,7 @@ type Props_CommonImpl r =
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl
   , className   :: String
+  , key         :: String
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean

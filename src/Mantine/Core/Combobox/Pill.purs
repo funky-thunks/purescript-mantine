@@ -34,7 +34,6 @@ type Props_Pill =
   Props_Common
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: String
     , onRemove         :: Effect Unit
     , radius           :: MantineNumberSize
     , size             :: MantineSize
@@ -45,7 +44,6 @@ type Props_PillImpl =
   Props_CommonImpl
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: String
     , onRemove         :: Effect Unit
     , radius           :: MantineNumberSizeImpl
     , size             :: MantineSizeImpl

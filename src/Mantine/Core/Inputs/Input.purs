@@ -21,6 +21,7 @@ module Mantine.Core.Inputs.Input
   , Props_InputBaseRowImpl
   , Props_InputBaseRow_
   , Props_InputBaseRowImpl_
+  , Props_input
 
   , inputWrapper
   , Props_InputWrapper
@@ -152,8 +153,7 @@ type Props_Input = Props_Common Props_InputRow
 
 type Props_InputRow = Props_InputRow_ ()
 type Props_InputRow_ rest =
-  ( disabled                  :: Boolean
-  , leftSection               :: JSX
+  ( leftSection               :: JSX
   , leftSectionPointerEvents  :: PointerEvents
   , leftSectionWidth          :: Pixels
   , multiline                 :: Boolean
@@ -178,23 +178,20 @@ type Props_InputBaseRow = Props_InputBaseRow_ ()
 type Props_InputBaseRow_ rest =
   ( description       :: JSX
   , error             :: JSX
-  , id                :: String
   , inputWrapperOrder :: Array InputWrapperOrder
   , label             :: JSX
-  , placeholder       :: String
   , required          :: Boolean
   , size              :: MantineSize
   , variant           :: InputVariant
   , withAsterisk      :: Boolean
-  | rest
+  | Props_input rest
   )
 
 type Props_InputImpl = Props_CommonImpl Props_InputRowImpl
 
 type Props_InputRowImpl = Props_InputRowImpl_ ()
 type Props_InputRowImpl_ rest =
-  ( disabled                  :: Boolean
-  , leftSection               :: JSX
+  ( leftSection               :: JSX
   , leftSectionPointerEvents  :: PointerEventsImpl
   , leftSectionWidth          :: PixelsImpl
   , multiline                 :: Boolean
@@ -219,14 +216,89 @@ type Props_InputBaseRowImpl = Props_InputBaseRowImpl_ ()
 type Props_InputBaseRowImpl_ rest =
   ( description       :: JSX
   , error             :: JSX
-  , id                :: String
   , inputWrapperOrder :: Array InputWrapperOrderImpl
   , label             :: JSX
-  , placeholder       :: String
   , required          :: Boolean
   , size              :: MantineSizeImpl
   , variant           :: InputVariantImpl
   , withAsterisk      :: Boolean
+  | Props_input rest
+  )
+
+-- This base rowlist is a ripoff of react-basic-dom
+type Props_input rest =
+  ( autoCapitalize        :: String
+  , autoComplete          :: String
+  , autoCorrect           :: String
+  , autoFocus             :: Boolean
+  , autoPlay              :: Boolean
+  , autoSave              :: String
+  , disabled              :: Boolean
+  , form                  :: String
+  , formAction            :: String
+  , formEncType           :: String
+  , formMethod            :: String
+  , formNoValidate        :: Boolean
+  , formTarget            :: String
+  , id                    :: String
+  , inputMode             :: String
+  , name                  :: String
+  , noValidate            :: Boolean
+  , onAnimationEnd        :: EventHandler
+  , onAnimationIteration  :: EventHandler
+  , onAnimationStart      :: EventHandler
+  , onBlur                :: EventHandler
+  , onClick               :: EventHandler
+  , onCompositionEnd      :: EventHandler
+  , onCompositionStart    :: EventHandler
+  , onCompositionUpdate   :: EventHandler
+  , onContextMenu         :: EventHandler
+  , onCopy                :: EventHandler
+  , onCut                 :: EventHandler
+  , onDoubleClick         :: EventHandler
+  , onDrag                :: EventHandler
+  , onDragEnd             :: EventHandler
+  , onDragEnter           :: EventHandler
+  , onDragExit            :: EventHandler
+  , onDragLeave           :: EventHandler
+  , onDragOver            :: EventHandler
+  , onDragStart           :: EventHandler
+  , onDrop                :: EventHandler
+  , onFocus               :: EventHandler
+  , onGotPointerCapture   :: EventHandler
+  , onInvalid             :: EventHandler
+  , onKeyDown             :: EventHandler
+  , onKeyPress            :: EventHandler
+  , onKeyUp               :: EventHandler
+  , onLostPointerCapture  :: EventHandler
+  , onMouseDown           :: EventHandler
+  , onMouseEnter          :: EventHandler
+  , onMouseLeave          :: EventHandler
+  , onMouseMove           :: EventHandler
+  , onMouseOut            :: EventHandler
+  , onMouseOver           :: EventHandler
+  , onMouseUp             :: EventHandler
+  , onPaste               :: EventHandler
+  , onPointerCancel       :: EventHandler
+  , onPointerDown         :: EventHandler
+  , onPointerEnter        :: EventHandler
+  , onPointerLeave        :: EventHandler
+  , onPointerMove         :: EventHandler
+  , onPointerOut          :: EventHandler
+  , onPointerOver         :: EventHandler
+  , onPointerUp           :: EventHandler
+  , onSelect              :: EventHandler
+  , onSubmit              :: EventHandler
+  , onTouchCancel         :: EventHandler
+  , onTouchEnd            :: EventHandler
+  , onTouchMove           :: EventHandler
+  , onTouchStart          :: EventHandler
+  , onTransitionEnd       :: EventHandler
+  , onWheel               :: EventHandler
+  , pattern               :: String
+  , placeholder           :: String
+  , readOnly              :: Boolean
+  , title                 :: String
   | rest
   )
 
