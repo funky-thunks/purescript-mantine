@@ -1,7 +1,9 @@
 module Mantine.Dates.DatesProvider
   ( datesProvider
   , Props_DatesProvider
+  , Props_DatesProviderImpl
   , DatesSettings
+  , DatesSettingsImpl
   , Locale(..)
   , Timezone(..)
   ) where

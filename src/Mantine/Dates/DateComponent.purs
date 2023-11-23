@@ -53,7 +53,7 @@ type DateComponent rest =
     , columnsToScroll     :: Int
     , date                :: JSDate
     , decadeLabelFormat   :: DecadeLabelFormat
-    , getYearControlProps :: (DateFunction PickerControlProps)
+    , getYearControlProps :: DateFunction PickerControlProps
     , locale              :: String
     , maxDate             :: JSDate
     , minDate             :: JSDate
@@ -207,7 +207,6 @@ type Props_DateInputBaseRow =
   , labelSeparator :: String
   , modalProps     :: Record Props_SubModal
   , popoverProps   :: Record Props_Popover
-  , readOnly       :: Boolean
   , sortDates      :: Boolean
   , valueFormat    :: String
   )
@@ -229,7 +228,6 @@ type Props_DateInputBaseRowImpl =
   , labelSeparator :: String
   , modalProps     :: Record Props_SubModalImpl
   , popoverProps   :: Record Props_PopoverImpl
-  , readOnly       :: Boolean
   , sortDates      :: Boolean
   , valueFormat    :: String
   )

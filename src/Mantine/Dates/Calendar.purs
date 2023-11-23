@@ -1,31 +1,41 @@
 module Mantine.Dates.Calendar
   ( calendar
   , Props_Calendar
+  , Props_CalendarImpl
 
   , datePicker
   , Props_DatePicker
+  , Props_DatePickerImpl
   , Props_DatePicker_
+  , Props_DatePickerImpl_
   , DatePickerType
+  , DatePickerTypeImpl
 
   , dateInput
   , Props_DateInput
+  , Props_DateInputImpl
 
   , datePickerInput
   , Props_DatePickerInput
+  , Props_DatePickerInputImpl
 
   , dateTimePicker
   , Props_DateTimePicker
+  , Props_DateTimePickerImpl
 
   , timeInput
   , Props_TimeInput
+  , Props_TimeInputImpl
 
   , DatePickerLevel1Component
+  , DatePickerLevel1ComponentImpl
   , DatePickerLevel2Component
+  , DatePickerLevel2ComponentImpl
   , DatePickerLevel3Component
-  , DatePickerTypeImpl
+  , DatePickerLevel3ComponentImpl
   ) where
 
-import Mantine.Core.Buttons.ActionIcon (Props_ActionIcon, Props_ActionIconImpl)
+import Mantine.Core.Buttons.ActionIcon (Props_ActionIconRow, Props_ActionIconImplRow)
 import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Overlays.Hovering (Props_Popover, Props_PopoverImpl)
 import Mantine.Core.Overlays.Modal (Props_SubModal, Props_SubModalImpl)
@@ -180,9 +190,8 @@ type Props_DateTimePicker =
     , labelSeparator    :: String
     , modalProps        :: Record Props_SubModal
     , popoverProps      :: Record Props_Popover
-    , readOnly          :: Boolean
     , sortDates         :: Boolean
-    , submitButtonProps :: Record Props_ActionIcon
+    , submitButtonProps :: Record Props_ActionIconRow
     , timeInputProps    :: Record Props_TimeInput
     , valueFormat       :: String
     , withSeconds       :: Boolean
@@ -195,9 +204,8 @@ type Props_DateTimePickerImpl =
     , labelSeparator    :: String
     , modalProps        :: Record Props_SubModalImpl
     , popoverProps      :: Record Props_PopoverImpl
-    , readOnly          :: Boolean
     , sortDates         :: Boolean
-    , submitButtonProps :: Record Props_ActionIconImpl
+    , submitButtonProps :: Record Props_ActionIconImplRow
     , timeInputProps    :: Record Props_TimeInputImpl
     , valueFormat       :: String
     , withSeconds       :: Boolean

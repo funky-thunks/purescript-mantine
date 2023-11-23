@@ -44,19 +44,18 @@ type Props_ActionIconRow =
   ( color       :: MantineColor
   , disabled    :: Boolean
   , gradient    :: MantineGradient
-  , loading     :: Boolean
   , loaderProps :: Record Props_Loader
+  , loading     :: Boolean
   , onClick     :: EventHandler
   , radius      :: MantineNumberSize
   , size        :: MantineNumberSize
   , variant     :: ActionIconVariant
   )
 
-type Props_ActionIconImpl = Props_CommonImpl Props_ActionIconImplRow
+type Props_ActionIconImpl = Props_CommonImpl ( children :: Array JSX | Props_ActionIconImplRow )
 
 type Props_ActionIconImplRow =
-  ( children    :: Array JSX
-  , color       :: MantineColorImpl
+  ( color       :: MantineColorImpl
   , disabled    :: Boolean
   , gradient    :: MantineGradientImpl
   , loaderProps :: Record Props_LoaderImpl

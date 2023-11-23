@@ -47,6 +47,7 @@ import Web.Event.Event (Event)
 import Web.File.File (File)
 import Web.HTML (HTMLElement)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
+import Web.UIEvent.MouseEvent (MouseEvent)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
@@ -123,6 +124,9 @@ instance ToFFI Event Event where
   toNative = identity
 
 instance ToFFI KeyboardEvent KeyboardEvent where
+  toNative = identity
+
+instance ToFFI MouseEvent MouseEvent where
   toNative = identity
 
 instance ToFFI EventHandler EventHandler where
@@ -231,6 +235,9 @@ instance FromFFI Event Event where
   fromNative = identity
 
 instance FromFFI KeyboardEvent KeyboardEvent where
+  fromNative = identity
+
+instance FromFFI MouseEvent MouseEvent where
   fromNative = identity
 
 instance FromFFI EventHandler EventHandler where

@@ -1,19 +1,26 @@
 module Mantine.Dates.YearMonthPickers
   ( yearPicker
   , Props_YearPicker
+  , Props_YearPickerImpl
 
   , monthPicker
   , Props_MonthPicker
+  , Props_MonthPickerImpl
   , Props_MonthPickerBase
+  , Props_MonthPickerBaseImpl
   , MonthPickerLevel(..)
+  , MonthPickerLevelImpl
 
   , monthPickerInput
   , Props_MonthPickerInput
+  , Props_MonthPickerInputImpl
 
   , yearPickerInput
   , Props_YearPickerInput
+  , Props_YearPickerInputImpl
 
   , Props_YearMonthPicker
+  , Props_YearMonthPickerImpl
   ) where
 
 import Mantine.Dates.Calendar (DatePickerType, DatePickerTypeImpl)
