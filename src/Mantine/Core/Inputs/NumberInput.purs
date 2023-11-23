@@ -1,52 +1,60 @@
 module Mantine.Core.Inputs.NumberInput
   ( numberInput
+  , Props_NumberInput
+  , Props_NumberInputImpl
   , NumberClampBehavior(..)
+  , NumberClampBehaviorImpl
   , NumberInput(..)
-  , NumberInputProps
+  , NumberInputImpl
   , NumberInputHandlers
   , NumberInputType(..)
+  , NumberInputTypeImpl
   , ThousandsGroupStyle(..)
-  , ThousandSeparator(..)
-
-  , ThousandSeparatorImpl
   , ThousandsGroupStyleImpl
+  , ThousandSeparator(..)
+  , ThousandSeparatorImpl
   ) where
 
 import Data.Either (Either(..))
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 import Untagged.Union (toEither1)
 
-numberInput :: (NumberInputProps -> NumberInputProps) -> JSX
-numberInput = mkTrivialComponent numberInputComponent
+numberInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_NumberInput
+  => Union attrsImpl attrsImpl_ Props_NumberInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+numberInput = element (unsafeCoerce numberInputComponent) <<< toNative
 
-foreign import numberInputComponent :: ReactComponent NumberInputPropsImpl
+foreign import numberInputComponent :: ReactComponent (Record Props_NumberInputImpl)
 
 -- Not supported properties:
 -- { isAllowed     :: NumberFormatValues -> Boolean
 -- , onValueChange :: OnValueChange -- Called when value changes with react-number-format payload
 -- }
 
-type NumberInputProps =
-  InputComponent
+type Props_NumberInput =
+  Props_InputComponent
     ( allowDecimal             :: Boolean
     , allowLeadingZeros        :: Boolean
     , allowNegative            :: Boolean
-    , allowedDecimalSeparators :: Optional (Array String)
-    , clampBehavior            :: Optional NumberClampBehavior
-    , decimalScale             :: Optional Number
-    , decimalSeparator         :: Optional String
+    , allowedDecimalSeparators :: Array String
+    , clampBehavior            :: NumberClampBehavior
+    , decimalScale             :: Number
+    , decimalSeparator         :: String
     , fixedDecimalScale        :: Boolean
-    , handlersRef              :: Optional (Ref NumberInputHandlers)
+    , handlersRef              :: Ref NumberInputHandlers
     , hideControls             :: Boolean
-    , max                      :: Optional Number
-    , min                      :: Optional Number
-    , prefix                   :: Optional String
-    , startValue               :: Optional Number
-    , step                     :: Optional Number
-    , suffix                   :: Optional String
-    , thousandSeparator        :: Optional ThousandSeparator
-    , thousandsGroupStyle      :: Optional ThousandsGroupStyle
+    , max                      :: Number
+    , min                      :: Number
+    , prefix                   :: String
+    , startValue               :: Number
+    , step                     :: Number
+    , suffix                   :: String
+    , thousandSeparator        :: ThousandSeparator
+    , thousandsGroupStyle      :: ThousandsGroupStyle
     , type                     :: NumberInputType
     , valueIsNumericString     :: Boolean
     | Controlled NumberInput
@@ -65,19 +73,19 @@ instance ToFFI NumberClampBehavior NumberClampBehaviorImpl where
     NumberClampBehaviorBlur   -> "blur"
     NumberClampBehaviorStrict -> "strict"
 
-data NumberInput = ValidInput Number | Invalid
+data NumberInput = ValidInput Number | InvalidInput
 
 type NumberInputImpl = Number |+| String
 
 instance ToFFI NumberInput NumberInputImpl where
   toNative = case _ of
     ValidInput n -> asOneOf n
-    Invalid      -> asOneOf ""
+    InvalidInput -> asOneOf ""
 
 instance FromFFI NumberInputImpl NumberInput where
   fromNative = toEither1 >>> case _ of
     Left  n -> ValidInput n
-    Right _ -> Invalid
+    Right _ -> InvalidInput
 
 type NumberInputHandlers =
   { increment :: Effect Unit
@@ -112,8 +120,6 @@ instance ToFFI ThousandSeparator ThousandSeparatorImpl where
 
 data NumberInputType = NumberInputTypeText | NumberInputTypeNumber
 
-instance DefaultValue NumberInputType where defaultValue = NumberInputTypeText
-
 type NumberInputTypeImpl = String
 
 instance ToFFI NumberInputType NumberInputTypeImpl where
@@ -121,26 +127,26 @@ instance ToFFI NumberInputType NumberInputTypeImpl where
     NumberInputTypeText   -> "text"
     NumberInputTypeNumber -> "number"
 
-type NumberInputPropsImpl =
-  InputComponentImpl
+type Props_NumberInputImpl =
+  Props_InputComponentImpl
     ( allowDecimal             :: Boolean
     , allowLeadingZeros        :: Boolean
     , allowNegative            :: Boolean
-    , allowedDecimalSeparators :: OptionalImpl (Array String)
-    , clampBehavior            :: OptionalImpl NumberClampBehaviorImpl
-    , decimalScale             :: OptionalImpl Number
-    , decimalSeparator         :: OptionalImpl String
+    , allowedDecimalSeparators :: Array String
+    , clampBehavior            :: NumberClampBehaviorImpl
+    , decimalScale             :: Number
+    , decimalSeparator         :: String
     , fixedDecimalScale        :: Boolean
-    , handlersRef              :: OptionalImpl (Ref NumberInputHandlers)
+    , handlersRef              :: Ref NumberInputHandlers
     , hideControls             :: Boolean
-    , max                      :: OptionalImpl Number
-    , min                      :: OptionalImpl Number
-    , prefix                   :: OptionalImpl String
-    , startValue               :: OptionalImpl Number
-    , step                     :: OptionalImpl Number
-    , suffix                   :: OptionalImpl String
-    , thousandSeparator        :: OptionalImpl ThousandSeparatorImpl
-    , thousandsGroupStyle      :: OptionalImpl ThousandsGroupStyleImpl
+    , max                      :: Number
+    , min                      :: Number
+    , prefix                   :: String
+    , startValue               :: Number
+    , step                     :: Number
+    , suffix                   :: String
+    , thousandSeparator        :: ThousandSeparatorImpl
+    , thousandsGroupStyle      :: ThousandsGroupStyleImpl
     , type                     :: NumberInputTypeImpl
     , valueIsNumericString     :: Boolean
     | ControlledImpl NumberInputImpl

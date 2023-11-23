@@ -1,31 +1,37 @@
 module Mantine.Core.Layout.SimpleGrid
   ( simpleGrid
   , simpleGrid_
-  , SimpleGridProps
+  , Props_SimpleGrid
+  , Props_SimpleGridImpl
   ) where
 
 import Mantine.Core.Prelude
 
-simpleGrid :: (SimpleGridProps -> SimpleGridProps) -> JSX
-simpleGrid = mkTrivialComponent simpleGridComponent
+simpleGrid
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_SimpleGrid
+  => Union attrsImpl attrsImpl_ Props_SimpleGridImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+simpleGrid = element (unsafeCoerce simpleGridComponent) <<< toNative
 
 simpleGrid_ :: Array JSX -> JSX
-simpleGrid_ children = simpleGrid _ { children = children }
+simpleGrid_ children = simpleGrid { children }
 
-foreign import simpleGridComponent :: ReactComponent SimpleGridPropsImpl
+foreign import simpleGridComponent :: ReactComponent (Record Props_SimpleGridImpl)
 
-type SimpleGridProps =
-  MantineComponent
+type Props_SimpleGrid =
+  Props_Common
     ( children        :: Array JSX
-    , cols            :: Optional (FixedOrResponsive Int)
-    , spacing         :: Optional (FixedOrResponsive MantineSpacing)
-    , verticalSpacing :: Optional (FixedOrResponsive MantineSpacing)
+    , cols            :: FixedOrResponsive Int
+    , spacing         :: FixedOrResponsive MantineSpacing
+    , verticalSpacing :: FixedOrResponsive MantineSpacing
     )
 
-type SimpleGridPropsImpl =
-  MantineComponentImpl
+type Props_SimpleGridImpl =
+  Props_CommonImpl
     ( children        :: Array JSX
-    , cols            :: OptionalImpl (FixedOrResponsiveImpl Number)
-    , spacing         :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
-    , verticalSpacing :: OptionalImpl (FixedOrResponsiveImpl MantineSpacingImpl)
+    , cols            :: FixedOrResponsiveImpl Number
+    , spacing         :: FixedOrResponsiveImpl MantineSpacingImpl
+    , verticalSpacing :: FixedOrResponsiveImpl MantineSpacingImpl
     )

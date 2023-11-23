@@ -1,49 +1,77 @@
 module Mantine.Core.Inputs.Checkbox
   ( checkbox
-  , CheckboxProps
+  , Props_Checkbox
+  , Props_CheckboxImpl
 
   , checkboxGroup
   , checkboxGroup_
-  , CheckboxGroupProps
+  , Props_CheckboxGroup
+  , Props_CheckboxGroupImpl
+
+  , checkIcon
+  , checkIcon_
+  , Props_CheckIcon
+  , Props_CheckIconImpl
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
-import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
+import Mantine.Core.Inputs.Checkables (Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputGroupComponent, Props_InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
-checkbox :: (CheckboxProps -> CheckboxProps) -> JSX
-checkbox = mkComponent checkboxComponent toNativeCheckbox defaultMantineComponent_
+checkbox
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Checkbox
+  => Union attrsImpl attrsImpl_ Props_CheckboxImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+checkbox = element (unsafeCoerce checkboxComponent) <<< toNative
 
-foreign import checkboxComponent :: ReactComponent CheckboxPropsImpl
+foreign import checkboxComponent :: ReactComponent (Record Props_CheckboxImpl)
 
-type CheckboxProps =
-  CheckableFieldComponent
+type Props_Checkbox =
+  Props_CheckableFieldComponent
     ( disabled      :: Boolean
-    , icon          :: Optional ({ indeterminate :: Boolean, className :: String } -> JSX)
-    , iconColor     :: Optional MantineColor
-    , indeterminate :: Optional Boolean
+    , icon          :: { indeterminate :: Boolean, className :: String } -> JSX
+    , iconColor     :: MantineColor
+    , indeterminate :: Boolean
     )
 
-type CheckboxPropsImpl =
-  CheckableFieldComponentImpl
+type Props_CheckboxImpl =
+  Props_CheckableFieldComponentImpl
     ( disabled      :: Boolean
-    , icon          :: OptionalImpl ({ indeterminate :: Boolean, className :: String } -> JSX)
-    , iconColor     :: OptionalImpl MantineColorImpl
-    , indeterminate :: OptionalImpl Boolean
+    , icon          :: { indeterminate :: Boolean, className :: String } -> JSX
+    , iconColor     :: MantineColorImpl
+    , indeterminate :: Boolean
     )
 
-toNativeCheckbox :: CheckboxProps -> CheckboxPropsImpl
-toNativeCheckbox props =
-  let rest = toNative <<< delete (Proxy :: Proxy "icon")
-   in { icon: toOptionalImpl props.icon } `union` rest props
-
-checkboxGroup :: (CheckboxGroupProps -> CheckboxGroupProps) -> JSX
-checkboxGroup = mkTrivialComponent checkboxGroupComponent
+checkboxGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CheckboxGroup
+  => Union attrsImpl attrsImpl_ Props_CheckboxGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+checkboxGroup = element (unsafeCoerce checkboxGroupComponent) <<< toNative
 
 checkboxGroup_ :: Array JSX -> JSX
-checkboxGroup_ children = checkboxGroup _ { children = children }
+checkboxGroup_ children = checkboxGroup { children }
 
-foreign import checkboxGroupComponent :: ReactComponent CheckboxGroupPropsImpl
+foreign import checkboxGroupComponent :: ReactComponent (Record Props_CheckboxGroupImpl)
 
-type CheckboxGroupProps     = InputGroupComponent     (Array String) ()
-type CheckboxGroupPropsImpl = InputGroupComponentImpl (Array String) ()
+type Props_CheckboxGroup     = Props_InputGroupComponent     (Array String) ()
+type Props_CheckboxGroupImpl = Props_InputGroupComponentImpl (Array String) ()
+
+checkIcon
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CheckIcon
+  => Union attrsImpl attrsImpl_ Props_CheckIconImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+checkIcon = element (unsafeCoerce checkIconComponent) <<< toNative
+
+checkIcon_ :: JSX
+checkIcon_ = checkIcon {}
+
+foreign import checkIconComponent :: ReactComponent (Record Props_CheckIconImpl)
+
+type Props_CheckIcon     = ( size :: MantineNumberSize     )
+type Props_CheckIconImpl = ( size :: MantineNumberSizeImpl )

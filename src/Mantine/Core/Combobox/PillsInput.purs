@@ -1,42 +1,51 @@
 module Mantine.Core.Combobox.PillsInput
   ( pillsInput
-  , PillsInputProps
+  , Props_PillsInput
+  , Props_PillsInputImpl
 
   , pillsInputField
-  , PillsInputFieldProps
+  , Props_PillsInputField
+  , Props_PillsInputFieldImpl
   , PillsInputFieldType(..)
+  , PillsInputFieldTypeImpl
   ) where
 
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-pillsInput :: (PillsInputProps -> PillsInputProps) -> JSX
-pillsInput = mkTrivialComponent pillsInputComponent
+pillsInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_PillsInput
+  => Union attrsImpl attrsImpl_ Props_PillsInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pillsInput = element (unsafeCoerce pillsInputComponent) <<< toNative
 
-foreign import pillsInputComponent :: ReactComponent PillsInputPropsImpl
+foreign import pillsInputComponent :: ReactComponent (Record Props_PillsInputImpl)
 
-type PillsInputProps     = InputComponent     ()
-type PillsInputPropsImpl = InputComponentImpl ()
+type Props_PillsInput     = Props_InputComponent     ( children :: Array JSX )
+type Props_PillsInputImpl = Props_InputComponentImpl ( children :: Array JSX )
 
-pillsInputField :: (PillsInputFieldProps -> PillsInputFieldProps) -> JSX
-pillsInputField = mkTrivialComponent pillsInputFieldComponent
+pillsInputField
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_PillsInputField
+  => Union attrsImpl attrsImpl_ Props_PillsInputFieldImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pillsInputField = element (unsafeCoerce pillsInputFieldComponent) <<< toNative
 
-foreign import pillsInputFieldComponent :: ReactComponent PillsInputFieldPropsImpl
+foreign import pillsInputFieldComponent :: ReactComponent (Record Props_PillsInputFieldImpl)
 
-type PillsInputFieldProps =
-  MantineComponent
-    ( placeholder :: Optional String
-    , pointer     :: Boolean
-    , type        :: PillsInputFieldType
+type Props_PillsInputField =
+  Props_InputComponent
+    ( type :: PillsInputFieldType
+    | RawControlled String
     )
 
 data PillsInputFieldType
   = PillsInputFieldTypeHidden
   | PillsInputFieldTypeAuto
   | PillsInputFieldTypeVisible
-
-instance DefaultValue PillsInputFieldType where
-  defaultValue = PillsInputFieldTypeVisible
 
 type PillsInputFieldTypeImpl = String
 
@@ -46,9 +55,8 @@ instance ToFFI PillsInputFieldType PillsInputFieldTypeImpl where
     PillsInputFieldTypeAuto    -> "auto"
     PillsInputFieldTypeVisible -> "visible"
 
-type PillsInputFieldPropsImpl =
-  MantineComponentImpl
-    ( placeholder :: OptionalImpl String
-    , pointer     :: Boolean
-    , type        :: PillsInputFieldTypeImpl
+type Props_PillsInputFieldImpl =
+  Props_InputComponentImpl
+    ( type :: PillsInputFieldTypeImpl
+    | RawControlledImpl String
     )

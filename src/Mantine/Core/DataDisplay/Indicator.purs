@@ -1,30 +1,37 @@
 module Mantine.Core.DataDisplay.Indicator
   ( indicator
-  , IndicatorProps
+  , Props_Indicator
+  , Props_IndicatorImpl
   , IndicatorPosition(..)
+  , IndicatorPositionImpl
   ) where
 
 import Mantine.Core.Prelude
 
-indicator :: (IndicatorProps -> IndicatorProps) -> JSX
-indicator = mkTrivialComponent indicatorComponent
+indicator
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Indicator
+  => Union attrsImpl attrsImpl_ Props_IndicatorImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+indicator = element (unsafeCoerce indicatorComponent) <<< toNative
 
-foreign import indicatorComponent :: ReactComponent IndicatorPropsImpl
+foreign import indicatorComponent :: ReactComponent (Record Props_IndicatorImpl)
 
-type IndicatorProps =
-  MantineComponent
+type Props_Indicator =
+  Props_Common
     ( children   :: Array JSX
-    , color      :: Optional MantineColor
+    , color      :: MantineColor
     , disabled   :: Boolean
     , inline     :: Boolean
-    , label      :: Optional JSX
-    , offset     :: Optional Pixels
+    , label      :: JSX
+    , offset     :: Pixels
     , position   :: IndicatorPosition
     , processing :: Boolean
-    , radius     :: Optional MantineNumberSize
-    , size       :: Optional Pixels
+    , radius     :: MantineNumberSize
+    , size       :: Pixels
     , withBorder :: Boolean
-    , zIndex     :: Optional ZIndex
+    , zIndex     :: ZIndex
     )
 
 data IndicatorPosition
@@ -37,8 +44,6 @@ data IndicatorPosition
   | MiddleCenter
   | MiddleEnd
   | MiddleStart
-
-instance DefaultValue IndicatorPosition where defaultValue = TopEnd
 
 type IndicatorPositionImpl = String
 
@@ -54,18 +59,18 @@ instance ToFFI IndicatorPosition IndicatorPositionImpl where
     MiddleEnd    -> "middle-end"
     MiddleStart  -> "middle-start"
 
-type IndicatorPropsImpl =
-  MantineComponentImpl
+type Props_IndicatorImpl =
+  Props_CommonImpl
     ( children   :: Array JSX
-    , color      :: OptionalImpl MantineColorImpl
+    , color      :: MantineColorImpl
     , disabled   :: Boolean
     , inline     :: Boolean
-    , label      :: OptionalImpl JSX
-    , offset     :: OptionalImpl PixelsImpl
+    , label      :: JSX
+    , offset     :: PixelsImpl
     , position   :: IndicatorPositionImpl
     , processing :: Boolean
-    , radius     :: OptionalImpl MantineNumberSizeImpl
-    , size       :: OptionalImpl PixelsImpl
+    , radius     :: MantineNumberSizeImpl
+    , size       :: PixelsImpl
     , withBorder :: Boolean
-    , zIndex     :: OptionalImpl ZIndexImpl
+    , zIndex     :: ZIndexImpl
     )

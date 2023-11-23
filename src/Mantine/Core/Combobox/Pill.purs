@@ -1,64 +1,80 @@
 module Mantine.Core.Combobox.Pill
   ( pill
-  , PillProps
+  , pill_
+  , Props_Pill
+  , Props_PillImpl
 
   , pillGroup
-  , PillGroupProps
+  , pillGroup_
+  , Props_PillGroup
+  , Props_PillGroupImpl
   ) where
 
 import Mantine.Core.Prelude
+import React.Basic.DOM as DOM
 
-pill :: (PillProps -> PillProps) -> JSX
-pill = mkComponentWithDefault pillComponent defaultPillProps
+pill
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Pill
+  => Union attrsImpl attrsImpl_ Props_PillImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pill = element (unsafeCoerce pillComponent) <<< toNative
 
-foreign import pillComponent :: ReactComponent PillPropsImpl
+pill_ :: String -> JSX
+pill_ t = pill { children: [ DOM.text t ] }
+
+foreign import pillComponent :: ReactComponent (Record Props_PillImpl)
 
 -- Not supported properties
 --   { removeButtonProps :: React.ComponentPropsWithoutRef<"button">
 --   }
 
-type PillProps =
-  MantineComponent
+type Props_Pill =
+  Props_Common
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: Optional String
     , onRemove         :: Effect Unit
-    , radius           :: Optional MantineNumberSize
-    , size             :: Optional MantineSize
+    , radius           :: MantineNumberSize
+    , size             :: MantineSize
     , withRemoveButton :: Boolean
     )
 
-defaultPillProps :: PillProps
-defaultPillProps = defaultMantineComponent { onRemove: pure unit }
-
-type PillPropsImpl =
-  MantineComponentImpl
+type Props_PillImpl =
+  Props_CommonImpl
     ( children         :: Array JSX
     , disabled         :: Boolean
-    , key              :: OptionalImpl String
     , onRemove         :: Effect Unit
-    , radius           :: OptionalImpl MantineNumberSizeImpl
-    , size             :: OptionalImpl MantineSizeImpl
+    , radius           :: MantineNumberSizeImpl
+    , size             :: MantineSizeImpl
     , withRemoveButton :: Boolean
     )
 
-pillGroup :: (PillGroupProps -> PillGroupProps) -> JSX
-pillGroup = mkTrivialComponent pillGroupComponent
+pillGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_PillGroup
+  => Union attrsImpl attrsImpl_ Props_PillGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pillGroup = element (unsafeCoerce pillGroupComponent) <<< toNative
 
-foreign import pillGroupComponent :: ReactComponent PillGroupPropsImpl
+pillGroup_ :: Array JSX -> JSX
+pillGroup_ children =  pillGroup { children }
 
-type PillGroupProps =
-  MantineComponent
+foreign import pillGroupComponent :: ReactComponent (Record Props_PillGroupImpl)
+
+type Props_PillGroup =
+  Props_Common
     ( children :: Array JSX
     , disabled :: Boolean
-    , gap      :: Optional MantineNumberSize
-    , size     :: Optional MantineNumberSize
+    , gap      :: MantineNumberSize
+    , size     :: MantineNumberSize
     )
 
-type PillGroupPropsImpl =
-  MantineComponentImpl
+type Props_PillGroupImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , disabled :: Boolean
-    , gap      :: OptionalImpl MantineNumberSizeImpl
-    , size     :: OptionalImpl MantineNumberSizeImpl
+    , gap      :: MantineNumberSizeImpl
+    , size     :: MantineNumberSizeImpl
     )

@@ -1,35 +1,41 @@
 module Mantine.Core.Overlays.LoadingOverlay
   ( loadingOverlay
   , loadingOverlay'
-  , LoadingOverlayProps
+  , Props_LoadingOverlay
+  , Props_LoadingOverlayImpl
   ) where
 
-import Mantine.Core.Feedback.Loader (LoaderProps, LoaderPropsImpl)
-import Mantine.Core.Overlays.Overlay (OverlayProps, OverlayPropsImpl)
+import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
+import Mantine.Core.Overlays.Overlay (Props_Overlay, Props_OverlayImpl)
 import Mantine.Core.Prelude
 
-loadingOverlay :: (LoadingOverlayProps -> LoadingOverlayProps) -> JSX
-loadingOverlay = mkTrivialComponent loadingOverlayComponent
+loadingOverlay
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_LoadingOverlay
+  => Union attrsImpl attrsImpl_ Props_LoadingOverlayImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+loadingOverlay = element (unsafeCoerce loadingOverlayComponent) <<< toNative
 
 loadingOverlay' :: Boolean -> JSX
-loadingOverlay' visible = loadingOverlay _ { visible = visible }
+loadingOverlay' visible = loadingOverlay { visible }
 
-foreign import loadingOverlayComponent :: ReactComponent LoadingOverlayPropsImpl
+foreign import loadingOverlayComponent :: ReactComponent (Record Props_LoadingOverlayImpl)
 
-type LoadingOverlayProps =
-  MantineComponent
-    ( loaderProps     :: LoaderProps
-    , overlayProps    :: OverlayProps
+type Props_LoadingOverlay =
+  Props_Common
+    ( loaderProps     :: Record Props_Loader
+    , overlayProps    :: Record Props_Overlay
     , transitionProps :: MantineTransitionProps
     , visible         :: Boolean
-    , zIndex          :: Optional ZIndex
+    , zIndex          :: ZIndex
     )
 
-type LoadingOverlayPropsImpl =
-  MantineComponentImpl
-    ( loaderProps     :: LoaderPropsImpl
-    , overlayProps    :: OverlayPropsImpl
+type Props_LoadingOverlayImpl =
+  Props_CommonImpl
+    ( loaderProps     :: Record Props_LoaderImpl
+    , overlayProps    :: Record Props_OverlayImpl
     , transitionProps :: MantineTransitionPropsImpl
     , visible         :: Boolean
-    , zIndex          :: OptionalImpl ZIndexImpl
+    , zIndex          :: ZIndexImpl
     )

@@ -7,18 +7,24 @@ module Mantine.Core.Typography.Title
   , title4
   , title5
   , title6
-  , TitleProps
+  , Props_Title
+  , Props_TitleImpl
   , TitleOrder(..)
+  , TitleOrderImpl
   ) where
 
 import Mantine.Core.Prelude
 import React.Basic.DOM as DOM
 
-title :: (TitleProps -> TitleProps) -> JSX
-title = mkTrivialComponent titleComponent
+title :: forall attrs attrs_ attrsImpl attrsImpl_
+       . Union attrs     attrs_     Props_Title
+      => Union attrsImpl attrsImpl_ Props_TitleImpl
+      => ToFFI (Record attrs) (Record attrsImpl)
+      => Record attrs -> JSX
+title = element (unsafeCoerce titleComponent) <<< toNative
 
 title_ :: TitleOrder -> String -> JSX
-title_ order t = title _ { order = pure order, children = [ DOM.text t ] }
+title_ order t = title { order, children: [ DOM.text t ] }
 
 title1 :: String -> JSX
 title1  = title_ Title1
@@ -38,13 +44,13 @@ title5  = title_ Title5
 title6 :: String -> JSX
 title6  = title_ Title6
 
-foreign import titleComponent :: ReactComponent TitlePropsImpl
+foreign import titleComponent :: ReactComponent (Record Props_TitleImpl)
 
-type TitleProps =
-  MantineComponent
+type Props_Title =
+  Props_Common
     ( children :: Array JSX
-    , order    :: Optional TitleOrder
-    , size     :: Optional MantineNumberSize
+    , order    :: TitleOrder
+    , size     :: MantineNumberSize
     )
 
 data TitleOrder
@@ -66,9 +72,9 @@ instance ToFFI TitleOrder TitleOrderImpl where
     Title5 -> 5
     Title6 -> 6
 
-type TitlePropsImpl =
-  MantineComponentImpl
+type Props_TitleImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , order    :: OptionalImpl TitleOrderImpl
-    , size     :: OptionalImpl MantineNumberSizeImpl
+    , order    :: TitleOrderImpl
+    , size     :: MantineNumberSizeImpl
     )

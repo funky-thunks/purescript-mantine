@@ -1,30 +1,37 @@
 module Mantine.Core.Overlays.Affix
   ( affix
   , affix_
-  , AffixProps
+  , Props_Affix
+  , Props_AffixImpl
   , AffixPosition
+  , AffixPositionImpl
   ) where
 
 import Mantine.Core.Prelude
 
-affix :: (AffixProps -> AffixProps) -> JSX
-affix = mkComponentWithDefault affixComponent defaultAffixProps
+affix
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Affix
+  => Union attrsImpl attrsImpl_ Props_AffixImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+affix = element (unsafeCoerce affixComponent) <<< toNative
 
 affix_ :: Array JSX -> JSX
-affix_ children = affix _ { children = children }
+affix_ children = affix { children }
 
-foreign import affixComponent :: ReactComponent AffixPropsImpl
+foreign import affixComponent :: ReactComponent (Record Props_AffixImpl)
 
 -- Not supported properties
 --   { portalProps :: Omit<PortalProps, "children">
 --   }
 
-type AffixProps =
-  MantineComponent
+type Props_Affix =
+  Props_Common
     ( children     :: Array JSX
-    , position     :: Optional AffixPosition
+    , position     :: AffixPosition
     , withinPortal :: Boolean
-    , zIndex       :: Optional ZIndex
+    , zIndex       :: ZIndex
     )
 
 type AffixPosition =
@@ -34,15 +41,12 @@ type AffixPosition =
   , right  :: Optional Dimension
   }
 
-defaultAffixProps :: AffixProps
-defaultAffixProps = defaultMantineComponent { withinPortal: true }
-
-type AffixPropsImpl =
-  MantineComponentImpl
+type Props_AffixImpl =
+  Props_CommonImpl
     ( children     :: Array JSX
-    , position     :: OptionalImpl AffixPositionImpl
+    , position     :: AffixPositionImpl
     , withinPortal :: Boolean
-    , zIndex       :: OptionalImpl ZIndexImpl
+    , zIndex       :: ZIndexImpl
     )
 
 type AffixPositionImpl =

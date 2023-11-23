@@ -1,30 +1,34 @@
 module Mantine.Core.Inputs.Textarea
   ( textarea
-  , TextareaProps
+  , Props_Textarea
+  , Props_TextareaImpl
   ) where
 
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-textarea :: (TextareaProps -> TextareaProps) -> JSX
-textarea = mkTrivialComponent textareaComponent
+textarea
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Textarea
+  => Union attrsImpl attrsImpl_ Props_TextareaImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+textarea = element (unsafeCoerce textareaComponent) <<< toNative
 
-foreign import textareaComponent :: ReactComponent TextareaPropsImpl
+foreign import textareaComponent :: ReactComponent (Record Props_TextareaImpl)
 
-type TextareaProps =
-  InputComponent
+type Props_Textarea =
+  Props_InputComponent
     ( autosize :: Boolean
-    , maxRows  :: Optional Int
-    , minRows  :: Optional Int
-    , onChange :: InputHandler
-    , value    :: Optional String
+    , maxRows  :: Int
+    , minRows  :: Int
+    | Controlled String
     )
 
-type TextareaPropsImpl =
-  InputComponentImpl
+type Props_TextareaImpl =
+  Props_InputComponentImpl
     ( autosize :: Boolean
-    , maxRows  :: OptionalImpl Number
-    , minRows  :: OptionalImpl Number
-    , onChange :: InputHandlerImpl
-    , value    :: OptionalImpl String
+    , maxRows  :: Number
+    , minRows  :: Number
+    | ControlledImpl String
     )

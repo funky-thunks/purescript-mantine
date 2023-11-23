@@ -1,39 +1,31 @@
 module Mantine.Core.Buttons.CopyButton
   ( copyButton
-  , CopyButtonProps
-  , CopyButtonMandatoryProps
-  , CopyButtonMandatoryPropsRow
+  , Props_CopyButton
+  , Props_CopyButtonImpl
   ) where
 
 import Mantine.Core.Prelude
 
-copyButton :: CopyButtonMandatoryProps -> (CopyButtonProps -> CopyButtonProps) -> JSX
-copyButton = mkComponent copyButtonComponent copyButtonPropsToImpl <<< defaultMantineComponent
+copyButton
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CopyButton
+  => Union attrsImpl attrsImpl_ Props_CopyButtonImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+copyButton = element (unsafeCoerce copyButtonComponent) <<< toNative
 
-foreign import copyButtonComponent :: ReactComponent CopyButtonPropsImpl
+foreign import copyButtonComponent :: ReactComponent (Record Props_CopyButtonImpl)
 
-type CopyButtonProps =
-  MantineComponent
-    ( timeout :: Optional Number
-    | CopyButtonMandatoryPropsRow
-    )
-
-type CopyButtonMandatoryProps = Record CopyButtonMandatoryPropsRow
-
-type CopyButtonMandatoryPropsRow =
-  ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-  , value    :: String
-  )
-
-type CopyButtonPropsImpl =
-  MantineComponentImpl
+type Props_CopyButton =
+  Props_Common
     ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
-    , timeout  :: OptionalImpl Number
+    , timeout  :: Number
     , value    :: String
     )
 
-copyButtonPropsToImpl :: CopyButtonProps -> CopyButtonPropsImpl
-copyButtonPropsToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "children")
-   in { children: props.children } `union` rest props
+type Props_CopyButtonImpl =
+  Props_CommonImpl
+    ( children :: { copied :: Boolean, copy :: Effect Unit } -> JSX
+    , timeout  :: Number
+    , value    :: String
+    )

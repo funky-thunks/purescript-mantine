@@ -1,63 +1,83 @@
 module Mantine.Dates.Calendar
   ( calendar
-  , CalendarProps
+  , Props_Calendar
+  , Props_CalendarImpl
 
   , datePicker
-  , DatePickerProps
-  , DatePickerProps_
+  , Props_DatePicker
+  , Props_DatePickerImpl
+  , Props_DatePicker_
+  , Props_DatePickerImpl_
   , DatePickerType
+  , DatePickerTypeImpl
 
   , dateInput
-  , DateInputProps
+  , Props_DateInput
+  , Props_DateInputImpl
 
   , datePickerInput
-  , DatePickerInputProps
+  , Props_DatePickerInput
+  , Props_DatePickerInputImpl
 
   , dateTimePicker
-  , DateTimePickerProps
+  , Props_DateTimePicker
+  , Props_DateTimePickerImpl
 
   , timeInput
-  , TimeInputProps
+  , Props_TimeInput
+  , Props_TimeInputImpl
 
   , DatePickerLevel1Component
+  , DatePickerLevel1ComponentImpl
   , DatePickerLevel2Component
+  , DatePickerLevel2ComponentImpl
   , DatePickerLevel3Component
-  , DatePickerTypeImpl
+  , DatePickerLevel3ComponentImpl
   ) where
 
-import Mantine.Core.Buttons.ActionIcon (ActionIconProps, ActionIconPropsImpl, actionIconToImpl)
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
-import Mantine.Core.Overlays.Hovering (PopoverProps, PopoverPropsImpl)
-import Mantine.Core.Overlays.Modal (SubModalProps, SubModalPropsImpl)
+import Mantine.Core.Buttons.ActionIcon (Props_ActionIconRow, Props_ActionIconImplRow)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
+import Mantine.Core.Overlays.Hovering (Props_Popover, Props_PopoverImpl)
+import Mantine.Core.Overlays.Modal (Props_SubModal, Props_SubModalImpl)
 import Mantine.Dates.Prelude
 import Web.UIEvent.MouseEvent (MouseEvent)
 
-calendar :: (CalendarProps -> CalendarProps) -> JSX
-calendar = mkTrivialComponent calendarComponent
+calendar
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Calendar
+  => Union attrsImpl attrsImpl_ Props_CalendarImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+calendar = element (unsafeCoerce calendarComponent) <<< toNative
 
-foreign import calendarComponent :: ReactComponent CalendarPropsImpl
+foreign import calendarComponent :: ReactComponent (Record Props_CalendarImpl)
 
-type CalendarProps =
+type Props_Calendar =
   DatePickerLevel3Component
     ( minLevel :: CalendarLevel
-    , size     :: Optional MantineSize
+    , size     :: MantineSize
     , static   :: Boolean
     )
 
-type CalendarPropsImpl =
+type Props_CalendarImpl =
   DatePickerLevel3ComponentImpl
     ( minLevel :: CalendarLevelImpl
-    , size     :: OptionalImpl MantineSizeImpl
+    , size     :: MantineSizeImpl
     , static   :: Boolean
     )
 
-datePicker :: (DatePickerProps -> DatePickerProps) -> JSX
-datePicker = mkComponentWithDefault datePickerComponent defaultDatePickerProps
+datePicker
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_DatePicker
+  => Union attrsImpl attrsImpl_ Props_DatePickerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+datePicker = element (unsafeCoerce datePickerComponent) <<< toNative
 
-foreign import datePickerComponent :: ReactComponent DatePickerPropsImpl
+foreign import datePickerComponent :: ReactComponent (Record Props_DatePickerImpl)
 
-type DatePickerProps = DatePickerProps_ (size :: Optional MantineSize)
-type DatePickerProps_ rest =
+type Props_DatePicker = Props_DatePicker_ (size :: MantineSize)
+type Props_DatePicker_ rest =
   DatePickerLevel3Component
     ( allowDeselect          :: Boolean
     , allowSingleDateInRange :: Boolean
@@ -65,15 +85,10 @@ type DatePickerProps_ rest =
     | Controlled_ DateValue rest
     )
 
-defaultDatePickerProps :: DatePickerProps
-defaultDatePickerProps = defaultMantineComponent { allowDeselect: true }
-
 data DatePickerType
   = DatePickerTypeDefault
   | DatePickerTypeRange
   | DatePickerTypeMultiple
-
-instance DefaultValue DatePickerType where defaultValue = DatePickerTypeDefault
 
 type DatePickerTypeImpl = String
 
@@ -83,8 +98,8 @@ instance ToFFI DatePickerType DatePickerTypeImpl where
     DatePickerTypeRange    -> "range"
     DatePickerTypeMultiple -> "multiple"
 
-type DatePickerPropsImpl = DatePickerPropsImpl_ (size :: OptionalImpl MantineSizeImpl)
-type DatePickerPropsImpl_ rest =
+type Props_DatePickerImpl = Props_DatePickerImpl_ (size :: MantineSizeImpl)
+type Props_DatePickerImpl_ rest =
   DatePickerLevel3ComponentImpl
     ( allowDeselect          :: Boolean
     , allowSingleDateInRange :: Boolean
@@ -92,22 +107,27 @@ type DatePickerPropsImpl_ rest =
     | ControlledImpl_ DateValueImpl rest
     )
 
-dateInput :: (DateInputProps -> DateInputProps) -> JSX
-dateInput = mkComponent dateInputComponent dateInputToImpl defaultDateInputProps
+dateInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_DateInput
+  => Union attrsImpl attrsImpl_ Props_DateInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+dateInput = element (unsafeCoerce dateInputComponent) <<< toNative
 
-foreign import dateInputComponent :: ReactComponent DateInputPropsImpl
+foreign import dateInputComponent :: ReactComponent (Record Props_DateInputImpl)
 
 -- Not supported properties
 --   { getDayProps :: Maybe (JSDate -> Omit<Partial<DayProps>, "classNames" | "styles" | "vars">)
 --   }
 
-type DateInputProps =
+type Props_DateInput =
   DatePickerLevel1Component
     ( allowDeselect    :: Boolean
-    , dateParser       :: Optional (String -> Maybe JSDate)
-    , defaultDate      :: Optional JSDate
+    , dateParser       :: String -> Maybe JSDate
+    , defaultDate      :: JSDate
     , fixOnBlur        :: Boolean
-    , maxLevel         :: Optional CalendarLevel
+    , maxLevel         :: CalendarLevel
     , nextDisabled     :: Boolean
     , onLevelClick     :: Effect Unit
     , onNext           :: Effect Unit
@@ -116,31 +136,16 @@ type DateInputProps =
     , previousDisabled :: Boolean
     , withNext         :: Boolean
     , withPrevious     :: Boolean
-    | Controlled_ DateValue + DateInputBaseProps
+    | Controlled_ DateValue + Props_DateInputBase
     )
 
-defaultDateInputProps :: DateInputProps
-defaultDateInputProps =
-  defaultMantineComponent
-    { allowDeselect:    true
-    , fixOnBlur:        true
-    , nextDisabled:     true
-    , onLevelClick:     pure unit
-    , onNext:           pure unit
-    , onPrevious:       pure unit
-    , preserveTime:     true
-    , previousDisabled: true
-    , withNext:         true
-    , withPrevious:     true
-    }
-
-type DateInputPropsImpl =
+type Props_DateInputImpl =
   DatePickerLevel1ComponentImpl
     ( allowDeselect    :: Boolean
-    , dateParser       :: OptionalImpl (String -> Nullable JSDate)
-    , defaultDate      :: OptionalImpl JSDate
+    , dateParser       :: String -> Nullable JSDate
+    , defaultDate      :: JSDate
     , fixOnBlur        :: Boolean
-    , maxLevel         :: OptionalImpl CalendarLevelImpl
+    , maxLevel         :: CalendarLevelImpl
     , nextDisabled     :: Boolean
     , onLevelClick     :: Effect Unit
     , onNext           :: Effect Unit
@@ -149,84 +154,70 @@ type DateInputPropsImpl =
     , previousDisabled :: Boolean
     , withNext         :: Boolean
     , withPrevious     :: Boolean
-    | ControlledImpl_ DateValueImpl + DateInputBasePropsImpl
+    | ControlledImpl_ DateValueImpl + Props_DateInputBaseImpl
     )
 
-dateInputToImpl :: DateInputProps -> DateInputPropsImpl
-dateInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "clearable")
-                      <<< delete (Proxy :: Proxy "dateParser")
-      dateParser = toOptionalImpl ((\f -> f >>> toNullable) <$> props.dateParser)
-   in { dateParser } `union` toNative props.clearable `union` rest props
+datePickerInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_DatePickerInput
+  => Union attrsImpl attrsImpl_ Props_DatePickerInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+datePickerInput = element (unsafeCoerce datePickerInputComponent) <<< toNative
 
-datePickerInput :: (DatePickerInputProps -> DatePickerInputProps) -> JSX
-datePickerInput = mkComponent datePickerInputComponent datePickerInputToImpl defaultDatePickerInputProps
+foreign import datePickerInputComponent :: ReactComponent (Record Props_DatePickerInputImpl)
 
-foreign import datePickerInputComponent :: ReactComponent DatePickerInputPropsImpl
+type Props_DatePickerInput     = Props_DatePicker_     Props_DateInputBase
+type Props_DatePickerInputImpl = Props_DatePickerImpl_ Props_DateInputBaseImpl
 
-type DatePickerInputProps     = DatePickerProps_     DateInputBaseProps
-type DatePickerInputPropsImpl = DatePickerPropsImpl_ DateInputBasePropsImpl
+dateTimePicker
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_DateTimePicker
+  => Union attrsImpl attrsImpl_ Props_DateTimePickerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+dateTimePicker = element (unsafeCoerce dateTimePickerComponent) <<< toNative
 
-defaultDatePickerInputProps :: DatePickerInputProps
-defaultDatePickerInputProps = defaultMantineComponent { allowDeselect: true }
-
-datePickerInputToImpl :: DatePickerInputProps -> DatePickerInputPropsImpl
-datePickerInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "clearable")
-   in toNative props.clearable `union` rest props
-
-dateTimePicker :: (DateTimePickerProps -> DateTimePickerProps) -> JSX
-dateTimePicker = mkComponent dateTimePickerComponent dateTimePickerToImpl defaultMantineComponent_
-
-foreign import dateTimePickerComponent :: ReactComponent DateTimePickerPropsImpl
+foreign import dateTimePickerComponent :: ReactComponent (Record Props_DateTimePickerImpl)
 
 -- Not supported properties
 --   { getDayProps :: Maybe (JSDate -> Omit<Partial<DayProps>, "classNames" | "styles" | "vars">)
 --   }
 
-type DateTimePickerProps =
+type Props_DateTimePicker =
   DatePickerLevel2Component
-    ( dropdownType      :: Optional DropdownType
-    , labelSeparator    :: Optional String
-    , modalProps        :: Optional SubModalProps
-    , popoverProps      :: Optional PopoverProps
-    , readOnly          :: Boolean
+    ( dropdownType      :: DropdownType
+    , labelSeparator    :: String
+    , modalProps        :: Record Props_SubModal
+    , popoverProps      :: Record Props_Popover
     , sortDates         :: Boolean
-    , submitButtonProps :: Optional ActionIconProps
-    , timeInputProps    :: Optional TimeInputProps
-    , valueFormat       :: Optional String
+    , submitButtonProps :: Record Props_ActionIconRow
+    , timeInputProps    :: Record Props_TimeInput
+    , valueFormat       :: String
     , withSeconds       :: Boolean
     | Controlled_ DateValue + InputProps
     )
 
-type DateTimePickerPropsImpl =
+type Props_DateTimePickerImpl =
   DatePickerLevel2ComponentImpl
-    ( dropdownType      :: OptionalImpl DropdownTypeImpl
-    , labelSeparator    :: OptionalImpl String
-    , modalProps        :: OptionalImpl SubModalPropsImpl
-    , popoverProps      :: OptionalImpl PopoverPropsImpl
-    , readOnly          :: Boolean
+    ( dropdownType      :: DropdownTypeImpl
+    , labelSeparator    :: String
+    , modalProps        :: Record Props_SubModalImpl
+    , popoverProps      :: Record Props_PopoverImpl
     , sortDates         :: Boolean
-    , submitButtonProps :: OptionalImpl ActionIconPropsImpl
-    , timeInputProps    :: OptionalImpl TimeInputPropsImpl
-    , valueFormat       :: OptionalImpl String
+    , submitButtonProps :: Record Props_ActionIconImplRow
+    , timeInputProps    :: Record Props_TimeInputImpl
+    , valueFormat       :: String
     , withSeconds       :: Boolean
     | ControlledImpl_ DateValueImpl + InputPropsImpl
     )
 
-dateTimePickerToImpl :: DateTimePickerProps -> DateTimePickerPropsImpl
-dateTimePickerToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "clearable")
-                      <<< delete (Proxy :: Proxy "submitButtonProps")
-      submitButtonProps = toOptionalImpl (actionIconToImpl <$> props.submitButtonProps)
-   in toNative props.clearable `union` { submitButtonProps } `union` rest props
-
 type DatePickerLevel3Component rest =
   DatePickerLevel2Component
-    ( defaultDate       :: Optional JSDate
-    , maxLevel          :: Optional CalendarLevel
-    , onMonthMouseEnter :: Optional (MouseEvent -> JSDate -> Effect Unit)
-    , onYearMouseEnter  :: Optional (MouseEvent -> JSDate -> Effect Unit)
+    ( defaultDate       :: JSDate
+    , maxLevel          :: CalendarLevel
+    , onMonthMouseEnter :: MouseEvent -> JSDate -> Effect Unit
+    , onYearMouseEnter  :: MouseEvent -> JSDate -> Effect Unit
     | rest
     )
 
@@ -239,39 +230,39 @@ type DatePickerLevel2Component rest =
 
 type DatePickerLevel1Component rest =
   DateComponent
-    ( defaultLevel         :: Optional CalendarLevel
-    , excludeDate          :: Optional (DateFunction Boolean)
-    , firstDayOfWeek       :: Optional DayOfWeek
-    , getDayAriaLabel      :: Optional (DateFunction String)
-    , getMonthControlProps :: Optional (DateFunction PickerControlProps)
+    ( defaultLevel         :: CalendarLevel
+    , excludeDate          :: DateFunction Boolean
+    , firstDayOfWeek       :: DayOfWeek
+    , getDayAriaLabel      :: DateFunction String
+    , getMonthControlProps :: DateFunction PickerControlProps
     , hasNextLevel         :: Boolean
     , hideOutsideDates     :: Boolean
     , hideWeekdays         :: Boolean
-    , level                :: Optional CalendarLevel
-    , monthLabelFormat     :: Optional DateFormat
-    , monthsListFormat     :: Optional String
-    , nextIcon             :: Optional JSX
-    , nextLabel            :: Optional String
+    , level                :: CalendarLevel
+    , monthLabelFormat     :: DateFormat
+    , monthsListFormat     :: String
+    , nextIcon             :: JSX
+    , nextLabel            :: String
     , onLevelChange        :: ValueHandler CalendarLevel
     , onNextMonth          :: ValueHandler JSDate
     , onNextYear           :: ValueHandler JSDate
     , onPreviousMonth      :: ValueHandler JSDate
     , onPreviousYear       :: ValueHandler JSDate
-    , previousIcon         :: Optional JSX
+    , previousIcon         :: JSX
     , previousLabel        :: String
-    , renderDay            :: Optional (DateFunction JSX)
-    , weekdayFormat        :: Optional DateFormat
-    , weekendDays          :: Optional (Array DayOfWeek)
-    , yearLabelFormat      :: Optional DateFormat
+    , renderDay            :: DateFunction JSX
+    , weekdayFormat        :: DateFormat
+    , weekendDays          :: Array DayOfWeek
+    , yearLabelFormat      :: DateFormat
     | rest
     )
 
 type DatePickerLevel3ComponentImpl rest =
   DatePickerLevel2ComponentImpl
-    ( defaultDate       :: OptionalImpl JSDate
-    , maxLevel          :: OptionalImpl CalendarLevelImpl
-    , onMonthMouseEnter :: OptionalImpl (EffectFn2 MouseEvent JSDate Unit)
-    , onYearMouseEnter  :: OptionalImpl (EffectFn2 MouseEvent JSDate Unit)
+    ( defaultDate       :: JSDate
+    , maxLevel          :: CalendarLevelImpl
+    , onMonthMouseEnter :: EffectFn2 MouseEvent JSDate Unit
+    , onYearMouseEnter  :: EffectFn2 MouseEvent JSDate Unit
     | rest
     )
 
@@ -284,37 +275,42 @@ type DatePickerLevel2ComponentImpl rest =
 
 type DatePickerLevel1ComponentImpl rest =
   DateComponentImpl
-    ( defaultLevel         :: OptionalImpl CalendarLevelImpl
-    , excludeDate          :: OptionalImpl (DateFunctionImpl Boolean)
-    , firstDayOfWeek       :: OptionalImpl DayOfWeekImpl
-    , getDayAriaLabel      :: OptionalImpl (DateFunctionImpl String)
-    , getMonthControlProps :: OptionalImpl (DateFunctionImpl PickerControlPropsImpl)
+    ( defaultLevel         :: CalendarLevelImpl
+    , excludeDate          :: DateFunctionImpl Boolean
+    , firstDayOfWeek       :: DayOfWeekImpl
+    , getDayAriaLabel      :: DateFunctionImpl String
+    , getMonthControlProps :: DateFunctionImpl PickerControlPropsImpl
     , hasNextLevel         :: Boolean
     , hideOutsideDates     :: Boolean
     , hideWeekdays         :: Boolean
-    , level                :: OptionalImpl CalendarLevelImpl
-    , monthLabelFormat     :: OptionalImpl DateFormatImpl
-    , monthsListFormat     :: OptionalImpl String
-    , nextIcon             :: OptionalImpl JSX
-    , nextLabel            :: OptionalImpl String
+    , level                :: CalendarLevelImpl
+    , monthLabelFormat     :: DateFormatImpl
+    , monthsListFormat     :: String
+    , nextIcon             :: JSX
+    , nextLabel            :: String
     , onLevelChange        :: ValueHandlerImpl CalendarLevelImpl
     , onNextMonth          :: ValueHandlerImpl JSDate
     , onNextYear           :: ValueHandlerImpl JSDate
     , onPreviousMonth      :: ValueHandlerImpl JSDate
     , onPreviousYear       :: ValueHandlerImpl JSDate
-    , previousIcon         :: OptionalImpl JSX
+    , previousIcon         :: JSX
     , previousLabel        :: String
-    , renderDay            :: OptionalImpl (DateFunctionImpl JSX)
-    , weekdayFormat        :: OptionalImpl DateFormatImpl
-    , weekendDays          :: OptionalImpl (Array DayOfWeekImpl)
-    , yearLabelFormat      :: OptionalImpl DateFormatImpl
+    , renderDay            :: DateFunctionImpl JSX
+    , weekdayFormat        :: DateFormatImpl
+    , weekendDays          :: Array DayOfWeekImpl
+    , yearLabelFormat      :: DateFormatImpl
     | rest
     )
 
-timeInput :: (TimeInputProps -> TimeInputProps) -> JSX
-timeInput = mkTrivialComponent timeInputComponent
+timeInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TimeInput
+  => Union attrsImpl attrsImpl_ Props_TimeInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+timeInput = element (unsafeCoerce timeInputComponent) <<< toNative
 
-foreign import timeInputComponent :: ReactComponent TimeInputPropsImpl
+foreign import timeInputComponent :: ReactComponent (Record Props_TimeInputImpl)
 
-type TimeInputProps     = InputComponent     (withSeconds :: Boolean)
-type TimeInputPropsImpl = InputComponentImpl (withSeconds :: Boolean)
+type Props_TimeInput     = Props_InputComponent     (withSeconds :: Boolean)
+type Props_TimeInputImpl = Props_InputComponentImpl (withSeconds :: Boolean)

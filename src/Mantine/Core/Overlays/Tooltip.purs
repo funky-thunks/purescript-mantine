@@ -1,73 +1,82 @@
 module Mantine.Core.Overlays.Tooltip
   ( tooltip
   , tooltipFloating
-  , TooltipProps
+  , Props_Tooltip
+  , Props_TooltipImpl
 
   , TooltipActivationEvents
 
   , tooltipGroup
-  , TooltipGroupProps
+  , Props_TooltipGroup
+  , Props_TooltipGroupImpl
   , TooltipGroupRow
   ) where
 
-import Mantine.Core.Overlays.Hovering (HoverableComponent, HoverableComponentImpl, HoverableFloatingPosition(..))
+import Mantine.Core.Overlays.Hovering (HoverableComponent, HoverableComponentImpl)
 import Mantine.Core.Prelude
 
-tooltip :: (TooltipProps -> TooltipProps) -> JSX
-tooltip = mkComponentWithDefault tooltipComponent defaultTooltipProps
+tooltip
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Tooltip
+  => Union attrsImpl attrsImpl_ Props_TooltipImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tooltip = element (unsafeCoerce tooltipComponent) <<< toNative
 
-tooltipFloating :: (TooltipProps -> TooltipProps) -> JSX
-tooltipFloating = mkComponentWithDefault tooltipFloatingComponent defaultTooltipProps
+tooltipFloating
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Tooltip
+  => Union attrsImpl attrsImpl_ Props_TooltipImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tooltipFloating = element (unsafeCoerce tooltipFloatingComponent) <<< toNative
 
-foreign import tooltipComponent         :: ReactComponent TooltipPropsImpl
-foreign import tooltipFloatingComponent :: ReactComponent TooltipPropsImpl
+foreign import tooltipComponent         :: ReactComponent (Record Props_TooltipImpl)
+foreign import tooltipFloatingComponent :: ReactComponent (Record Props_TooltipImpl)
 
 -- Not supported properties
 --   { portalProps          :: Omit<PortalProps, "children" | "withinPortal">
 --   , positionDependencies :: any[]
 --   }
 
-type TooltipProps =
+type Props_Tooltip =
   HoverableComponent
-    ( closeDelay :: Optional Milliseconds
-    , color      :: Optional MantineColor
+    ( closeDelay :: Milliseconds
+    , color      :: MantineColor
     , events     :: TooltipActivationEvents
     , inline     :: Boolean
-    , label      :: Optional JSX
+    , label      :: JSX
     , multiline  :: Boolean
-    , openDelay  :: Optional Milliseconds
-    , refProp    :: Optional String
+    , openDelay  :: Milliseconds
+    , refProp    :: String
     )
-
-defaultTooltipProps :: TooltipProps
-defaultTooltipProps =
-  defaultMantineComponent
-    { events:      { focus: false, hover: true, touch: false }
-    , position:    HoverableFloatingPositionTop
-    , withinPortal: true
-    }
 
 type TooltipActivationEvents = { hover :: Boolean, focus :: Boolean, touch :: Boolean }
 
-type TooltipPropsImpl =
+type Props_TooltipImpl =
   HoverableComponentImpl
-    ( closeDelay :: OptionalImpl MillisecondsImpl
-    , color      :: OptionalImpl MantineColorImpl
+    ( closeDelay :: MillisecondsImpl
+    , color      :: MantineColorImpl
     , events     :: TooltipActivationEvents
     , inline     :: Boolean
-    , label      :: OptionalImpl JSX
+    , label      :: JSX
     , multiline  :: Boolean
-    , openDelay  :: OptionalImpl MillisecondsImpl
-    , refProp    :: OptionalImpl String
+    , openDelay  :: MillisecondsImpl
+    , refProp    :: String
     )
 
-tooltipGroup :: (TooltipGroupProps -> TooltipGroupProps) -> JSX
-tooltipGroup = mkTrivialComponent tooltipGroupComponent
+tooltipGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TooltipGroup
+  => Union attrsImpl attrsImpl_ Props_TooltipGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tooltipGroup = element (unsafeCoerce tooltipGroupComponent) <<< toNative
 
-foreign import tooltipGroupComponent :: ReactComponent TooltipGroupPropsImpl
+foreign import tooltipGroupComponent :: ReactComponent (Record Props_TooltipGroupImpl)
 
-type TooltipGroupProps     = MantineComponent     TooltipGroupRow
-type TooltipGroupPropsImpl = MantineComponentImpl TooltipGroupRow
+type Props_TooltipGroup     = Props_Common     TooltipGroupRow
+type Props_TooltipGroupImpl = Props_CommonImpl TooltipGroupRow
 
 type TooltipGroupRow =
   ( children   :: Array JSX

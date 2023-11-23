@@ -1,40 +1,51 @@
 module Mantine.Core.Inputs.Slider
   ( slider
-  , SliderProps
-  , SliderCommonProps
+  , Props_Slider
+  , Props_SliderImpl
+  , Props_SliderCommon
+  , Props_SliderCommonImpl
   , SliderMark
+  , SliderMarkImpl
 
   , rangeSlider
-  , RangeSliderProps
+  , Props_RangeSlider
+  , Props_RangeSliderImpl
   , SliderRange(..)
-
-  , LabelFormatter(..)
-  , ScaleFunction(..)
   ) where
 
 import Mantine.Core.Prelude
 
-slider :: (SliderProps -> SliderProps) -> JSX
-slider = mkTrivialComponent sliderComponent
+slider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Slider
+  => Union attrsImpl attrsImpl_ Props_SliderImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+slider = element (unsafeCoerce sliderComponent) <<< toNative
 
-foreign import sliderComponent :: ReactComponent SliderPropsImpl
+foreign import sliderComponent :: ReactComponent (Record Props_SliderImpl)
 
-type SliderProps =
-  MantineComponent
-    ( thumbLabel :: Optional String
-    | SliderCommonProps Number
+type Props_Slider =
+  Props_Common
+    ( thumbLabel :: String
+    | Props_SliderCommon Number
     )
 
-type SliderPropsImpl =
-  MantineComponentImpl
-    ( thumbLabel :: OptionalImpl String
-    | SliderCommonPropsImpl Number
+type Props_SliderImpl =
+  Props_CommonImpl
+    ( thumbLabel :: String
+    | Props_SliderCommonImpl Number
     )
 
-rangeSlider :: (RangeSliderProps -> RangeSliderProps) -> JSX
-rangeSlider = mkTrivialComponent rangeSliderComponent
+rangeSlider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_RangeSlider
+  => Union attrsImpl attrsImpl_ Props_RangeSliderImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+rangeSlider = element (unsafeCoerce rangeSliderComponent) <<< toNative
 
-foreign import rangeSliderComponent :: ReactComponent RangeSliderPropsImpl
+foreign import rangeSliderComponent :: ReactComponent (Record Props_RangeSliderImpl)
 
 newtype SliderRange =
   SliderRange
@@ -50,48 +61,48 @@ instance FromFFI (Array Number) SliderRange where
     [from, to] -> SliderRange { from, to }
     _          -> SliderRange { from: 0.0, to: 0.0 }
 
-type RangeSliderProps =
-  MantineComponent
-    ( maxRange       :: Optional Number
-    , minRange       :: Optional Number
-    , thumbFromLabel :: Optional String
-    , thumbToLabel   :: Optional String
-    | SliderCommonProps SliderRange
+type Props_RangeSlider =
+  Props_Common
+    ( maxRange       :: Number
+    , minRange       :: Number
+    , thumbFromLabel :: String
+    , thumbToLabel   :: String
+    | Props_SliderCommon SliderRange
     )
 
-type RangeSliderPropsImpl =
-  MantineComponentImpl
-    ( maxRange       :: OptionalImpl Number
-    , minRange       :: OptionalImpl Number
-    , thumbFromLabel :: OptionalImpl String
-    , thumbToLabel   :: OptionalImpl String
-    | SliderCommonPropsImpl (Array Number)
+type Props_RangeSliderImpl =
+  Props_CommonImpl
+    ( maxRange       :: Number
+    , minRange       :: Number
+    , thumbFromLabel :: String
+    , thumbToLabel   :: String
+    | Props_SliderCommonImpl (Array Number)
     )
 
 -- Not supported properties
 --   { hiddenInputProps :: Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "ref">
 --   }
 
-type SliderCommonProps value =
-  ( color                :: Optional MantineColor
+type Props_SliderCommon value =
+  ( color                :: MantineColor
   , disabled             :: Boolean
   , inverted             :: Boolean
-  , label                :: Optional LabelFormatter
+  , label                :: Number -> JSX
   , labelAlwaysOn        :: Boolean
   , labelTransitionProps :: MantineTransitionProps
   , marks                :: Array SliderMark
-  , max                  :: Optional Number
-  , min                  :: Optional Number
-  , name                 :: Optional String
+  , max                  :: Number
+  , min                  :: Number
+  , name                 :: String
   , onChangeEnd          :: ValueHandler value
-  , precision            :: Optional Number
-  , radius               :: Optional MantineNumberSize
-  , scale                :: ScaleFunction
+  , precision            :: Number
+  , radius               :: MantineNumberSize
+  , scale                :: Number -> Number
   , showLabelOnHover     :: Boolean
-  , size                 :: Optional MantineNumberSize
-  , step                 :: Optional Number
-  , thumbChildren        :: Optional JSX
-  , thumbSize            :: Optional Pixels
+  , size                 :: MantineNumberSize
+  , step                 :: Number
+  , thumbChildren        :: JSX
+  , thumbSize            :: Pixels
   | Controlled value
   )
 
@@ -100,43 +111,26 @@ type SliderMark =
   , label :: Optional JSX
   }
 
-newtype LabelFormatter = LabelFormatter (Number -> JSX)
-
-type LabelFormatterImpl = Number -> JSX
-
-instance ToFFI LabelFormatter LabelFormatterImpl where
-  toNative (LabelFormatter lf) = lf
-
-newtype ScaleFunction = ScaleFunction (Number -> Number)
-
-instance DefaultValue ScaleFunction where
-  defaultValue = ScaleFunction identity
-
-type ScaleFunctionImpl = Number -> Number
-
-instance ToFFI ScaleFunction ScaleFunctionImpl where
-  toNative (ScaleFunction sf) = sf
-
-type SliderCommonPropsImpl value =
-  ( color                :: OptionalImpl MantineColorImpl
+type Props_SliderCommonImpl value =
+  ( color                :: MantineColorImpl
   , disabled             :: Boolean
   , inverted             :: Boolean
-  , label                :: OptionalImpl LabelFormatterImpl
+  , label                :: Number -> JSX
   , labelAlwaysOn        :: Boolean
   , labelTransitionProps :: MantineTransitionPropsImpl
   , marks                :: Array SliderMarkImpl
-  , max                  :: OptionalImpl Number
-  , min                  :: OptionalImpl Number
-  , name                 :: OptionalImpl String
+  , max                  :: Number
+  , min                  :: Number
+  , name                 :: String
   , onChangeEnd          :: ValueHandlerImpl value
-  , precision            :: OptionalImpl Number
-  , radius               :: OptionalImpl MantineNumberSizeImpl
-  , scale                :: ScaleFunctionImpl
+  , precision            :: Number
+  , radius               :: MantineNumberSizeImpl
+  , scale                :: Number -> Number
   , showLabelOnHover     :: Boolean
-  , size                 :: OptionalImpl MantineNumberSizeImpl
-  , step                 :: OptionalImpl Number
-  , thumbChildren        :: OptionalImpl JSX
-  , thumbSize            :: OptionalImpl PixelsImpl
+  , size                 :: MantineNumberSizeImpl
+  , step                 :: Number
+  , thumbChildren        :: JSX
+  , thumbSize            :: PixelsImpl
   | ControlledImpl value
   )
 

@@ -1,34 +1,42 @@
 module Mantine.Core.Overlays.Modal
   ( modal
   , modal_
-  , ModalProps
-  , SubModalProps
-  , ModalProps_
+  , Props_Modal
+  , Props_ModalImpl
+  , Props_SubModal
+  , Props_SubModalImpl
+  , Props_Modal_
+  , Props_ModalImpl_
 
   , drawer
-  , DrawerProps
+  , Props_Drawer
+  , Props_DrawerImpl
   , DrawerPosition(..)
+  , DrawerPositionImpl
 
   , ModalComponent
   , ModalComponentImpl
   , ModalNonDefaultable
   , ModalTransitionProps
   , ModalTransitionPropsImpl
-  , SubModalPropsImpl
-  , ModalPropsImpl_
   ) where
 
-import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl)
-import Mantine.Core.Overlays.Overlay (OverlayProps, OverlayPropsImpl)
+import Mantine.Core.Buttons.CloseButton (Props_CloseButton, Props_CloseButtonImpl)
+import Mantine.Core.Overlays.Overlay (Props_Overlay, Props_OverlayImpl)
 import Mantine.Core.Prelude
 
-modal :: (ModalProps -> ModalProps) -> JSX
-modal = mkComponentWithDefault modalComponent defaultModalProps
+modal
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Modal
+  => Union attrsImpl attrsImpl_ Props_ModalImpl
+  => ToFFI (Record attrs)  (Record attrsImpl)
+  => Record attrs -> JSX
+modal = element (unsafeCoerce modalComponent) <<< toNative
 
 modal_ :: Array JSX -> JSX
-modal_ children = modal _ { children = children }
+modal_ children = modal { children }
 
-foreign import modalComponent :: ReactComponent ModalPropsImpl
+foreign import modalComponent :: ReactComponent (Record Props_ModalImpl)
 
 -- Not supported properties
 --    { closeButtonProps    :: ModalBaseCloseButtonProps
@@ -38,57 +46,53 @@ foreign import modalComponent :: ReactComponent ModalPropsImpl
 --    , yOffset             :: MarginTop<string | number>
 --    }
 
-type ModalProps = ModalProps_ (children :: Array JSX)
-type SubModalProps = ModalProps_ ()
-type ModalProps_ rest =
+type Props_Modal    = Props_Modal_ (children :: Array JSX)
+type Props_SubModal = Props_Modal_ ()
+type Props_Modal_ rest =
   ModalComponent
     ( centered   :: Boolean
     , fullScreen :: Boolean
-    , radius     :: Optional MantineNumberSize
+    , radius     :: MantineNumberSize
     | rest
     )
 
-defaultModalProps :: ModalProps
-defaultModalProps = defaultMantineComponent defaultModalComponent
-
-type ModalPropsImpl = ModalPropsImpl_ (children :: Array JSX)
-type SubModalPropsImpl = ModalPropsImpl_ ()
-type ModalPropsImpl_ rest =
+type Props_ModalImpl = Props_ModalImpl_ (children :: Array JSX)
+type Props_SubModalImpl = Props_ModalImpl_ ()
+type Props_ModalImpl_ rest =
   ModalComponentImpl
     ( centered   :: Boolean
     , fullScreen :: Boolean
-    , radius     :: OptionalImpl MantineNumberSizeImpl
+    , radius     :: MantineNumberSizeImpl
     | rest
     )
 
-drawer :: (DrawerProps -> DrawerProps) -> JSX
-drawer = mkComponentWithDefault drawerComponent defaultDrawerProps
+drawer
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Drawer
+  => Union attrsImpl attrsImpl_ Props_DrawerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+drawer = element (unsafeCoerce drawerComponent) <<< toNative
 
-foreign import drawerComponent :: ReactComponent DrawerPropsImpl
+foreign import drawerComponent :: ReactComponent (Record Props_DrawerImpl)
 
 -- Not supported properties
 --   { portalProps         :: Omit<PortalProps, "children">
 --   , scrollAreaComponent :: ScrollAreaComponent
 --   }
 
-type DrawerProps =
+type Props_Drawer =
   ModalComponent
     ( children         :: Array JSX
-    , closeButtonProps :: Optional CloseButtonProps
+    , closeButtonProps :: Record Props_CloseButton
     , position         :: DrawerPosition
     )
-
-defaultDrawerProps :: DrawerProps
-defaultDrawerProps = defaultMantineComponent defaultModalComponent
 
 data DrawerPosition
   = DrawerPositionBottom
   | DrawerPositionLeft
   | DrawerPositionRight
   | DrawerPositionTop
-
-instance DefaultValue DrawerPosition where
-  defaultValue = DrawerPositionLeft
 
 type DrawerPositionImpl = String
 
@@ -99,25 +103,25 @@ instance ToFFI DrawerPosition DrawerPositionImpl where
     DrawerPositionRight  -> "right"
     DrawerPositionTop    -> "top"
 
-type DrawerPropsImpl =
+type Props_DrawerImpl =
   ModalComponentImpl
     ( children         :: Array JSX
-    , closeButtonProps :: OptionalImpl CloseButtonPropsImpl
+    , closeButtonProps :: Record Props_CloseButtonImpl
     , position         :: DrawerPositionImpl
     )
 
 type ModalComponent rest =
-  MantineComponent
-    ( id              :: Optional String
+  Props_Common
+    ( id              :: String
     , keepMounted     :: Boolean
     , opened          :: Boolean
-    , overlayProps    :: OverlayProps
-    , padding         :: Optional MantineNumberSize
-    , shadow          :: Optional MantineShadow
-    , size            :: Optional Dimension
-    , title           :: Optional JSX
+    , overlayProps    :: Record Props_Overlay
+    , padding         :: MantineNumberSize
+    , shadow          :: MantineShadow
+    , size            :: Dimension
+    , title           :: JSX
     , transitionProps :: ModalTransitionProps
-    , zIndex          :: Optional ZIndex
+    , zIndex          :: ZIndex
     | ModalNonDefaultable rest
     )
 
@@ -134,31 +138,18 @@ type ModalNonDefaultable rest =
   | rest
   )
 
-defaultModalComponent :: Record (ModalNonDefaultable ())
-defaultModalComponent =
-  { closeOnClickOutside: true
-  , closeOnEscape:       true
-  , lockScroll:          true
-  , onClose:             pure unit
-  , returnFocus:         true
-  , trapFocus:           true
-  , withCloseButton:     true
-  , withOverlay:         true
-  , withinPortal:        true
-  }
-
 type ModalComponentImpl rest =
-  MantineComponentImpl
-    ( id              :: OptionalImpl String
+  Props_CommonImpl
+    ( id              :: String
     , keepMounted     :: Boolean
     , opened          :: Boolean
-    , overlayProps    :: OverlayPropsImpl
-    , padding         :: OptionalImpl MantineNumberSizeImpl
-    , shadow          :: OptionalImpl MantineShadowImpl
-    , size            :: OptionalImpl DimensionImpl
-    , title           :: OptionalImpl JSX
+    , overlayProps    :: Record Props_OverlayImpl
+    , padding         :: MantineNumberSizeImpl
+    , shadow          :: MantineShadowImpl
+    , size            :: DimensionImpl
+    , title           :: JSX
     , transitionProps :: ModalTransitionPropsImpl
-    , zIndex          :: OptionalImpl ZIndexImpl
+    , zIndex          :: ZIndexImpl
     | ModalNonDefaultable rest
     )
 

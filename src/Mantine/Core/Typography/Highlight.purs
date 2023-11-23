@@ -1,49 +1,45 @@
 module Mantine.Core.Typography.Highlight
   ( highlight
-  , HighlightProps
+  , highlight_
+  , Props_Highlight
+  , Props_HighlightImpl
   ) where
 
 import Mantine.Core.Prelude
-import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
+import Mantine.Core.Typography.Text (Props_TextBase, Props_TextBaseImpl)
 import React.Basic.DOM as DOM
 import React.Basic.Emotion (Style)
 
-highlight :: (HighlightProps -> HighlightProps) -> JSX
-highlight = mkComponent highlightComponent highlightToImpl defaultMantineComponent_
+highlight
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Highlight
+  => Union attrsImpl attrsImpl_ Props_HighlightImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+highlight = element (unsafeCoerce highlightComponent) <<< toNative
 
-foreign import highlightComponent :: ReactComponent HighlightPropsImpl
 
-type HighlightProps =
-  MantineComponent
-    ( children        :: String
-    , color           :: Optional MantineColor
-    , highlight       :: Array String
-    , highlightStyles :: Optional Style
-    , span            :: Boolean
-    | TextPropsRow
-    )
+highlight_ :: String -> JSX
+highlight_ t = highlight { children: [ DOM.text t ] }
 
-type HighlightPropsImpl =
-  MantineComponentImpl
+foreign import highlightComponent :: ReactComponent (Record Props_HighlightImpl)
+
+type Props_Highlight =
+  Props_Common
     ( children        :: Array JSX
-    , color           :: OptionalImpl MantineColorImpl
+    , color           :: MantineColor
     , highlight       :: Array String
-    , highlightStyles :: OptionalImpl Style
+    , highlightStyles :: Style
     , span            :: Boolean
-    | TextPropsImplRow
+    | Props_TextBase
     )
 
-highlightToImpl :: HighlightProps -> HighlightPropsImpl
-highlightToImpl props =
-  let rest = toNative <<< wrapChildren <<< dropLocalProps
-      wrapChildren p = p { children = [ DOM.text p.children ] }
-      dropLocalProps =
-            delete (Proxy :: Proxy "color")
-        <<< delete (Proxy :: Proxy "highlight")
-        <<< delete (Proxy :: Proxy "highlightStyles")
-      highlightProps =
-        { color:           props.color
-        , highlight:       props.highlight
-        , highlightStyles: props.highlightStyles
-        }
-   in toNative highlightProps `union` rest props
+type Props_HighlightImpl =
+  Props_CommonImpl
+    ( children        :: Array JSX
+    , color           :: MantineColorImpl
+    , highlight       :: Array String
+    , highlightStyles :: Style
+    , span            :: Boolean
+    | Props_TextBaseImpl
+    )

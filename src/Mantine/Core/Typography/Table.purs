@@ -1,89 +1,95 @@
 module Mantine.Core.Typography.Table
   ( table
   , table_
-  , TableProps
+  , Props_Table
+  , Props_TableImpl
   , TableCaptionSide(..)
+  , TableCaptionSideImpl
 
   , tableCaption
   , tableCaption_
-  , TableCaptionProps
+  , Props_TableCaption
+  , Props_TableCaptionImpl
 
   , tableScrollContainer
   , tableScrollContainer_
-  , TableScrollContainerProps
+  , Props_TableScrollContainer
+  , Props_TableScrollContainerImpl
 
   , tableTbody
   , tableTbody_
-  , TableTbodyProps
+  , Props_TableTbody
+  , Props_TableTbodyImpl
 
   , tableTd
   , tableTd_
-  , TableTdProps
+  , Props_TableTd
+  , Props_TableTdImpl
 
   , tableTfoot
   , tableTfoot_
-  , TableTfootProps
+  , Props_TableTfoot
+  , Props_TableTfootImpl
 
   , tableTh
   , tableTh_
-  , TableThProps
+  , Props_TableTh
+  , Props_TableThImpl
 
   , tableThead
   , tableThead_
-  , TableTheadProps
+  , Props_TableThead
+  , Props_TableTheadImpl
 
   , tableTr
   , tableTr_
-  , TableTrProps
+  , Props_TableTr
+  , Props_TableTrImpl
 
   , WithChildren
+  , WithChildrenImpl
   ) where
 
 import Mantine.Core.Prelude
 
-table :: (TableProps -> TableProps) -> JSX
-table = mkComponentWithDefault tableComponent defaultTableProps
+table
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Table
+  => Union attrsImpl attrsImpl_ Props_TableImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+table = element (unsafeCoerce tableComponent) <<< toNative
 
 table_ :: Array JSX -> JSX
-table_ children = table _ { children = children }
+table_ children = table { children }
 
-foreign import tableComponent :: ReactComponent TablePropsImpl
+foreign import tableComponent :: ReactComponent (Record Props_TableImpl)
 
 -- Not supported properties
 --   { data :: TableData
 --   }
 
-type TableProps =
+type Props_Table =
   WithChildren
-    ( borderColor           :: Optional MantineColor
+    ( borderColor           :: MantineColor
     , captionSide           :: TableCaptionSide
     , highlightOnHover      :: Boolean
-    , highlightOnHoverColor :: Optional MantineColor
+    , highlightOnHoverColor :: MantineColor
     , horizontalSpacing     :: MantineNumberSize
     , layout                :: TableLayout
     , stickyHeader          :: Boolean
-    , stickyHeaderOffset    :: Optional MantineNumberSize
+    , stickyHeaderOffset    :: MantineNumberSize
     , striped               :: Boolean
-    , stripedColor          :: Optional MantineColor
+    , stripedColor          :: MantineColor
     , verticalSpacing       :: MantineNumberSize
     , withColumnBorders     :: Boolean
     , withRowBorders        :: Boolean
     , withTableBorder       :: Boolean
     )
 
-defaultTableProps :: TableProps
-defaultTableProps =
-  defaultMantineComponent
-    { horizontalSpacing: Preset ExtraSmall
-    , verticalSpacing:   Custom 7.0
-    , withRowBorders:    true
-    }
-
 data TableCaptionSide
   = TableCaptionSideBottom
   | TableCaptionSideTop
-
-instance DefaultValue TableCaptionSide where defaultValue = TableCaptionSideTop
 
 type TableCaptionSideImpl = String
 
@@ -92,114 +98,151 @@ instance ToFFI TableCaptionSide TableCaptionSideImpl where
     TableCaptionSideBottom -> "bottom"
     TableCaptionSideTop    -> "top"
 
-type TablePropsImpl =
+type Props_TableImpl =
   WithChildrenImpl
-    ( borderColor           :: OptionalImpl MantineColorImpl
+    ( borderColor           :: MantineColorImpl
     , captionSide           :: TableCaptionSideImpl
     , highlightOnHover      :: Boolean
-    , highlightOnHoverColor :: OptionalImpl MantineColorImpl
+    , highlightOnHoverColor :: MantineColorImpl
     , horizontalSpacing     :: MantineNumberSizeImpl
     , layout                :: TableLayoutImpl
     , stickyHeader          :: Boolean
-    , stickyHeaderOffset    :: OptionalImpl MantineNumberSizeImpl
+    , stickyHeaderOffset    :: MantineNumberSizeImpl
     , striped               :: Boolean
-    , stripedColor          :: OptionalImpl MantineColorImpl
+    , stripedColor          :: MantineColorImpl
     , verticalSpacing       :: MantineNumberSizeImpl
     , withColumnBorders     :: Boolean
     , withRowBorders        :: Boolean
     , withTableBorder       :: Boolean
     )
 
-tableCaption :: (TableCaptionProps -> TableCaptionProps) -> JSX
-tableCaption = mkTrivialComponent tableCaptionComponent
+tableCaption
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableCaption
+  => Union attrsImpl attrsImpl_ Props_TableCaptionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableCaption = element (unsafeCoerce tableCaptionComponent) <<< toNative
 
 tableCaption_ :: Array JSX -> JSX
-tableCaption_ children = tableCaption _ { children = children }
+tableCaption_ children = tableCaption { children }
 
-foreign import tableCaptionComponent :: ReactComponent TableCaptionPropsImpl
+foreign import tableCaptionComponent :: ReactComponent (Record Props_TableCaptionImpl)
 
-type TableCaptionProps     = WithChildren     ()
-type TableCaptionPropsImpl = WithChildrenImpl ()
+type Props_TableCaption     = WithChildren     ()
+type Props_TableCaptionImpl = WithChildrenImpl ()
 
-tableScrollContainer :: (TableScrollContainerProps -> TableScrollContainerProps) -> JSX
-tableScrollContainer = mkTrivialComponent tableScrollContainerComponent
+tableScrollContainer
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableScrollContainer
+  => Union attrsImpl attrsImpl_ Props_TableScrollContainerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableScrollContainer = element (unsafeCoerce tableScrollContainerComponent) <<< toNative
 
 tableScrollContainer_ :: Array JSX -> JSX
-tableScrollContainer_ children = tableScrollContainer _ { children = children }
+tableScrollContainer_ children = tableScrollContainer { children }
 
-foreign import tableScrollContainerComponent :: ReactComponent TableScrollContainerPropsImpl
+foreign import tableScrollContainerComponent :: ReactComponent (Record Props_TableScrollContainerImpl)
 
-type TableScrollContainerProps     = WithChildren     ()
-type TableScrollContainerPropsImpl = WithChildrenImpl ()
+type Props_TableScrollContainer     = WithChildren     ()
+type Props_TableScrollContainerImpl = WithChildrenImpl ()
 
-tableTbody :: (TableTbodyProps -> TableTbodyProps) -> JSX
-tableTbody = mkTrivialComponent tableTbodyComponent
+tableTbody
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableTbody
+  => Union attrsImpl attrsImpl_ Props_TableTbodyImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableTbody = element (unsafeCoerce tableTbodyComponent) <<< toNative
 
 tableTbody_ :: Array JSX -> JSX
-tableTbody_ children = tableTbody _ { children = children }
+tableTbody_ children = tableTbody { children }
 
-foreign import tableTbodyComponent :: ReactComponent TableTbodyPropsImpl
+foreign import tableTbodyComponent :: ReactComponent (Record Props_TableTbodyImpl)
 
-type TableTbodyProps     = WithChildren     ()
-type TableTbodyPropsImpl = WithChildrenImpl ()
+type Props_TableTbody     = WithChildren     ()
+type Props_TableTbodyImpl = WithChildrenImpl ()
 
-tableTd :: (TableTdProps -> TableTdProps) -> JSX
-tableTd = mkTrivialComponent tableTdComponent
+tableTd
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableTd
+  => Union attrsImpl attrsImpl_ Props_TableTdImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableTd = element (unsafeCoerce tableTdComponent) <<< toNative
 
 tableTd_ :: Array JSX -> JSX
-tableTd_ children = tableTd _ { children = children }
+tableTd_ children = tableTd { children }
 
-foreign import tableTdComponent :: ReactComponent TableTdPropsImpl
+foreign import tableTdComponent :: ReactComponent (Record Props_TableTdImpl)
 
-type TableTdProps     = WithChildren     ()
-type TableTdPropsImpl = WithChildrenImpl ()
+type Props_TableTd     = WithChildren     ()
+type Props_TableTdImpl = WithChildrenImpl ()
 
-tableTfoot :: (TableTfootProps -> TableTfootProps) -> JSX
-tableTfoot = mkTrivialComponent tableTfootComponent
+tableTfoot
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableTfoot
+  => Union attrsImpl attrsImpl_ Props_TableTfootImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableTfoot = element (unsafeCoerce tableTfootComponent) <<< toNative
 
 tableTfoot_ :: Array JSX -> JSX
-tableTfoot_ children = tableTfoot _ { children = children }
+tableTfoot_ children = tableTfoot { children }
 
-foreign import tableTfootComponent :: ReactComponent TableTfootPropsImpl
+foreign import tableTfootComponent :: ReactComponent (Record Props_TableTfootImpl)
 
-type TableTfootProps     = WithChildren     ()
-type TableTfootPropsImpl = WithChildrenImpl ()
+type Props_TableTfoot     = WithChildren     ()
+type Props_TableTfootImpl = WithChildrenImpl ()
 
-tableTh :: (TableThProps -> TableThProps) -> JSX
-tableTh = mkTrivialComponent tableThComponent
+tableTh
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableTh
+  => Union attrsImpl attrsImpl_ Props_TableThImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableTh = element (unsafeCoerce tableThComponent) <<< toNative
 
 tableTh_ :: Array JSX -> JSX
-tableTh_ children = tableTh _ { children = children }
+tableTh_ children = tableTh { children }
 
-foreign import tableThComponent :: ReactComponent TableThPropsImpl
+foreign import tableThComponent :: ReactComponent (Record Props_TableThImpl)
 
-type TableThProps     = WithChildren     ()
-type TableThPropsImpl = WithChildrenImpl ()
+type Props_TableTh     = WithChildren     ()
+type Props_TableThImpl = WithChildrenImpl ()
 
-tableThead :: (TableTheadProps -> TableTheadProps) -> JSX
-tableThead = mkTrivialComponent tableTheadComponent
+tableThead
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableThead
+  => Union attrsImpl attrsImpl_ Props_TableTheadImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableThead = element (unsafeCoerce tableTheadComponent) <<< toNative
 
 tableThead_ :: Array JSX -> JSX
-tableThead_ children = tableThead _ { children = children }
+tableThead_ children = tableThead { children }
 
-foreign import tableTheadComponent :: ReactComponent TableTheadPropsImpl
+foreign import tableTheadComponent :: ReactComponent (Record Props_TableTheadImpl)
 
-type TableTheadProps     = WithChildren     ()
-type TableTheadPropsImpl = WithChildrenImpl ()
+type Props_TableThead     = WithChildren     ()
+type Props_TableTheadImpl = WithChildrenImpl ()
 
-tableTr :: String -> (TableTrProps -> TableTrProps) -> JSX
-tableTr = mkComponentWithDefault tableTrComponent <<< defaultTableTr
+tableTr
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_TableTr
+  => Union attrsImpl attrsImpl_ Props_TableTrImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+tableTr = element (unsafeCoerce tableTrComponent) <<< toNative
 
 tableTr_ :: String -> Array JSX -> JSX
-tableTr_ key children = (tableTr key) _ { children = children }
+tableTr_ key children = tableTr { key, children }
 
-foreign import tableTrComponent :: ReactComponent TableTrPropsImpl
+foreign import tableTrComponent :: ReactComponent (Record Props_TableTrImpl)
 
-type TableTrProps     = WithChildren     ( key :: String )
-type TableTrPropsImpl = WithChildrenImpl ( key :: String )
+type Props_TableTr     = WithChildren     ()
+type Props_TableTrImpl = WithChildrenImpl ()
 
-defaultTableTr :: String -> TableTrProps
-defaultTableTr key = defaultMantineComponent { key }
-
-type WithChildren     rest = MantineComponent     ( children :: Array JSX | rest )
-type WithChildrenImpl rest = MantineComponentImpl ( children :: Array JSX | rest )
+type WithChildren     rest = Props_Common     ( children :: Array JSX | rest )
+type WithChildrenImpl rest = Props_CommonImpl ( children :: Array JSX | rest )

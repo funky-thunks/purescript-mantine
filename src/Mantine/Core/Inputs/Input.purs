@@ -7,39 +7,44 @@ module Mantine.Core.Inputs.Input
   , InputTypeImpl
 
   , input
-  , InputProps
-  , InputPropsRow
-  , InputPropsRow_
-  , InputGroupPropsRow
-  , InputGroupPropsRow_
-  , InputBasePropsRow
-  , InputBasePropsRow_
-
-  , InputPropsRowImpl
-  , InputPropsRowImpl_
-  , InputGroupPropsRowImpl
-  , InputGroupPropsRowImpl_
-  , InputBasePropsRowImpl
-  , InputBasePropsRowImpl_
+  , Props_Input
+  , Props_InputImpl
+  , Props_InputRow
+  , Props_InputRowImpl
+  , Props_InputRow_
+  , Props_InputRowImpl_
+  , Props_InputGroupRow
+  , Props_InputGroupRowImpl
+  , Props_InputGroupRow_
+  , Props_InputGroupRowImpl_
+  , Props_InputBaseRow
+  , Props_InputBaseRowImpl
+  , Props_InputBaseRow_
+  , Props_InputBaseRowImpl_
+  , Props_input
 
   , inputWrapper
-  , InputWrapperProps
+  , Props_InputWrapper
+  , Props_InputWrapperImpl
   , InputWrapperElement(..)
   , InputWrapperElementImpl
 
   , inputLabel
-  , InputLabelProps
+  , Props_InputLabel
+  , Props_InputLabelImpl
 
   , inputDescription
-  , InputDescriptionProps
+  , Props_InputDescription
+  , Props_InputDescriptionImpl
 
   , inputError
-  , InputErrorProps
+  , Props_InputError
+  , Props_InputErrorImpl
 
-  , InputComponent
-  , InputComponentImpl
-  , InputGroupComponent
-  , InputGroupComponentImpl
+  , Props_InputComponent
+  , Props_InputComponentImpl
+  , Props_InputGroupComponent
+  , Props_InputGroupComponentImpl
   , WithInputContainer
   , WithInputContainerImpl
   ) where
@@ -50,8 +55,6 @@ data InputVariant
   = InputVariantDefault
   | InputVariantUnstyled
   | InputVariantFilled
-
-instance DefaultValue InputVariant where defaultValue = InputVariantDefault
 
 type InputVariantImpl = OptionalImpl String
 
@@ -127,12 +130,17 @@ instance ToFFI InputType InputTypeImpl where
     InputTypeUrl           -> "url"
     InputTypeWeek          -> "week"
 
-input :: (InputProps -> InputProps) -> JSX
-input = mkTrivialComponent inputComponent
+input
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Input
+  => Union attrsImpl attrsImpl_ Props_InputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+input = element (unsafeCoerce inputComponent) <<< toNative
 
-foreign import inputComponent :: ReactComponent InputPropsImpl
+foreign import inputComponent :: ReactComponent (Record Props_InputImpl)
 
-type InputProps = MantineComponent InputPropsRow
+type Props_Input = Props_Common Props_InputRow
 
 -- Not supported properties
 --   { descriptionProps  :: Record<string, any>
@@ -143,91 +151,166 @@ type InputProps = MantineComponent InputPropsRow
 --   , wrapperProps      :: Record<string, any>
 --   }
 
-type InputPropsRow = InputPropsRow_ ()
-
-type InputPropsRow_ rest =
-  ( disabled                  :: Boolean
-  , leftSection               :: Optional JSX
-  , leftSectionPointerEvents  :: Optional PointerEvents
-  , leftSectionWidth          :: Optional Pixels
+type Props_InputRow = Props_InputRow_ ()
+type Props_InputRow_ rest =
+  ( leftSection               :: JSX
+  , leftSectionPointerEvents  :: PointerEvents
+  , leftSectionWidth          :: Pixels
   , multiline                 :: Boolean
   , pointer                   :: Boolean
-  , radius                    :: Optional MantineNumberSize
-  , rightSection              :: Optional JSX
-  , rightSectionPointerEvents :: Optional PointerEvents
-  , rightSectionWidth         :: Optional Pixels
+  , radius                    :: MantineNumberSize
+  , rightSection              :: JSX
+  , rightSectionPointerEvents :: PointerEvents
+  , rightSectionWidth         :: Pixels
   , withAria                  :: Boolean
-  , withErrorStyles           :: Optional Boolean
-  | InputBasePropsRow_ rest
+  , withErrorStyles           :: Boolean
+  | Props_InputBaseRow_ rest
   )
 
-type InputGroupPropsRow items = InputGroupPropsRow_ items ()
-type InputGroupPropsRow_ items rest =
+type Props_InputGroupRow items = Props_InputGroupRow_ items ()
+type Props_InputGroupRow_ items rest =
   ( children     :: Array JSX
-  , labelElement :: Optional InputWrapperElement
-  | Controlled_ items + InputBasePropsRow_ rest
+  , labelElement :: InputWrapperElement
+  | Controlled_ items + Props_InputBaseRow_ rest
   )
 
-type InputBasePropsRow = InputBasePropsRow_ ()
-type InputBasePropsRow_ rest =
-  ( description       :: Optional JSX
-  , error             :: Optional JSX
-  , id                :: Optional String
-  , inputWrapperOrder :: Optional (Array InputWrapperOrder)
-  , label             :: Optional JSX
-  , placeholder       :: Optional String
+type Props_InputBaseRow = Props_InputBaseRow_ ()
+type Props_InputBaseRow_ rest =
+  ( description       :: JSX
+  , error             :: JSX
+  , inputWrapperOrder :: Array InputWrapperOrder
+  , label             :: JSX
   , required          :: Boolean
-  , size              :: Optional MantineSize
+  , size              :: MantineSize
   , variant           :: InputVariant
   , withAsterisk      :: Boolean
-  | rest
+  | Props_input rest
   )
 
-type InputPropsImpl = MantineComponentImpl InputPropsRowImpl
+type Props_InputImpl = Props_CommonImpl Props_InputRowImpl
 
-type InputPropsRowImpl = InputPropsRowImpl_ ()
-type InputPropsRowImpl_ rest =
-  ( disabled                  :: Boolean
-  , leftSection               :: OptionalImpl JSX
-  , leftSectionPointerEvents  :: OptionalImpl PointerEventsImpl
-  , leftSectionWidth          :: OptionalImpl PixelsImpl
+type Props_InputRowImpl = Props_InputRowImpl_ ()
+type Props_InputRowImpl_ rest =
+  ( leftSection               :: JSX
+  , leftSectionPointerEvents  :: PointerEventsImpl
+  , leftSectionWidth          :: PixelsImpl
   , multiline                 :: Boolean
   , pointer                   :: Boolean
-  , radius                    :: OptionalImpl MantineNumberSizeImpl
-  , rightSection              :: OptionalImpl JSX
-  , rightSectionPointerEvents :: OptionalImpl PointerEventsImpl
-  , rightSectionWidth         :: OptionalImpl PixelsImpl
+  , radius                    :: MantineNumberSizeImpl
+  , rightSection              :: JSX
+  , rightSectionPointerEvents :: PointerEventsImpl
+  , rightSectionWidth         :: PixelsImpl
   , withAria                  :: Boolean
-  , withErrorStyles           :: OptionalImpl Boolean
-  | InputBasePropsRowImpl_ rest
+  , withErrorStyles           :: Boolean
+  | Props_InputBaseRowImpl_ rest
   )
 
-type InputGroupPropsRowImpl items = InputGroupPropsRowImpl_ items ()
-type InputGroupPropsRowImpl_ items rest =
+type Props_InputGroupRowImpl items = Props_InputGroupRowImpl_ items ()
+type Props_InputGroupRowImpl_ items rest =
   ( children     :: Array JSX
-  , labelElement :: OptionalImpl InputWrapperElementImpl
-  | ControlledImpl_ items + InputBasePropsRowImpl_ rest
+  , labelElement :: InputWrapperElementImpl
+  | ControlledImpl_ items + Props_InputBaseRowImpl_ rest
   )
 
-type InputBasePropsRowImpl = InputBasePropsRowImpl_ ()
-type InputBasePropsRowImpl_ rest =
-  ( description       :: OptionalImpl JSX
-  , error             :: OptionalImpl JSX
-  , id                :: OptionalImpl String
-  , inputWrapperOrder :: OptionalImpl (Array InputWrapperOrderImpl)
-  , label             :: OptionalImpl JSX
-  , placeholder       :: OptionalImpl String
+type Props_InputBaseRowImpl = Props_InputBaseRowImpl_ ()
+type Props_InputBaseRowImpl_ rest =
+  ( description       :: JSX
+  , error             :: JSX
+  , inputWrapperOrder :: Array InputWrapperOrderImpl
+  , label             :: JSX
   , required          :: Boolean
-  , size              :: OptionalImpl MantineSizeImpl
+  , size              :: MantineSizeImpl
   , variant           :: InputVariantImpl
   , withAsterisk      :: Boolean
+  | Props_input rest
+  )
+
+-- This base rowlist is a ripoff of react-basic-dom
+type Props_input rest =
+  ( autoCapitalize        :: String
+  , autoComplete          :: String
+  , autoCorrect           :: String
+  , autoFocus             :: Boolean
+  , autoPlay              :: Boolean
+  , autoSave              :: String
+  , disabled              :: Boolean
+  , form                  :: String
+  , formAction            :: String
+  , formEncType           :: String
+  , formMethod            :: String
+  , formNoValidate        :: Boolean
+  , formTarget            :: String
+  , id                    :: String
+  , inputMode             :: String
+  , name                  :: String
+  , noValidate            :: Boolean
+  , onAnimationEnd        :: EventHandler
+  , onAnimationIteration  :: EventHandler
+  , onAnimationStart      :: EventHandler
+  , onBlur                :: EventHandler
+  , onClick               :: EventHandler
+  , onCompositionEnd      :: EventHandler
+  , onCompositionStart    :: EventHandler
+  , onCompositionUpdate   :: EventHandler
+  , onContextMenu         :: EventHandler
+  , onCopy                :: EventHandler
+  , onCut                 :: EventHandler
+  , onDoubleClick         :: EventHandler
+  , onDrag                :: EventHandler
+  , onDragEnd             :: EventHandler
+  , onDragEnter           :: EventHandler
+  , onDragExit            :: EventHandler
+  , onDragLeave           :: EventHandler
+  , onDragOver            :: EventHandler
+  , onDragStart           :: EventHandler
+  , onDrop                :: EventHandler
+  , onFocus               :: EventHandler
+  , onGotPointerCapture   :: EventHandler
+  , onInvalid             :: EventHandler
+  , onKeyDown             :: EventHandler
+  , onKeyPress            :: EventHandler
+  , onKeyUp               :: EventHandler
+  , onLostPointerCapture  :: EventHandler
+  , onMouseDown           :: EventHandler
+  , onMouseEnter          :: EventHandler
+  , onMouseLeave          :: EventHandler
+  , onMouseMove           :: EventHandler
+  , onMouseOut            :: EventHandler
+  , onMouseOver           :: EventHandler
+  , onMouseUp             :: EventHandler
+  , onPaste               :: EventHandler
+  , onPointerCancel       :: EventHandler
+  , onPointerDown         :: EventHandler
+  , onPointerEnter        :: EventHandler
+  , onPointerLeave        :: EventHandler
+  , onPointerMove         :: EventHandler
+  , onPointerOut          :: EventHandler
+  , onPointerOver         :: EventHandler
+  , onPointerUp           :: EventHandler
+  , onSelect              :: EventHandler
+  , onSubmit              :: EventHandler
+  , onTouchCancel         :: EventHandler
+  , onTouchEnd            :: EventHandler
+  , onTouchMove           :: EventHandler
+  , onTouchStart          :: EventHandler
+  , onTransitionEnd       :: EventHandler
+  , onWheel               :: EventHandler
+  , pattern               :: String
+  , placeholder           :: String
+  , readOnly              :: Boolean
+  , title                 :: String
   | rest
   )
 
-inputWrapper :: (InputWrapperProps -> InputWrapperProps) -> JSX
-inputWrapper = mkTrivialComponent inputWrapperComponent
+inputWrapper
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_InputWrapper
+  => Union attrsImpl attrsImpl_ Props_InputWrapperImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+inputWrapper = element (unsafeCoerce inputWrapperComponent) <<< toNative
 
-foreign import inputWrapperComponent :: ReactComponent InputWrapperPropsImpl
+foreign import inputWrapperComponent :: ReactComponent (Record Props_InputWrapperImpl)
 
 -- Not supported properties
 --   { descriptionProps :: Record<string, any>
@@ -235,18 +318,18 @@ foreign import inputWrapperComponent :: ReactComponent InputWrapperPropsImpl
 --   , labelProps       :: Record<string, any>
 --   }
 
-type InputWrapperProps =
-  MantineComponent (
+type Props_InputWrapper =
+  Props_Common (
     WithInputContainer
       ( children          :: Array JSX
-      , description       :: Optional JSX
-      , error             :: Optional JSX
-      , id                :: Optional String
-      , inputWrapperOrder :: Optional (Array InputWrapperOrder)
-      , label             :: Optional JSX
-      , labelElement      :: Optional InputWrapperElement
+      , description       :: JSX
+      , error             :: JSX
+      , id                :: String
+      , inputWrapperOrder :: Array InputWrapperOrder
+      , label             :: JSX
+      , labelElement      :: InputWrapperElement
       , required          :: Boolean
-      , size              :: Optional MantineSize
+      , size              :: MantineSize
       , withAsterisk      :: Boolean
       )
   )
@@ -260,95 +343,110 @@ instance ToFFI InputWrapperElement InputWrapperElementImpl where
     InputWrapperDiv   -> "div"
     InputWrapperLabel -> "label"
 
-type InputWrapperPropsImpl =
-  MantineComponentImpl (
+type Props_InputWrapperImpl =
+  Props_CommonImpl (
     WithInputContainerImpl
       ( children          :: Array JSX
-      , description       :: OptionalImpl JSX
-      , error             :: OptionalImpl JSX
-      , id                :: OptionalImpl String
-      , inputWrapperOrder :: OptionalImpl (Array InputWrapperOrderImpl)
-      , label             :: OptionalImpl JSX
-      , labelElement      :: OptionalImpl InputWrapperElementImpl
+      , description       :: JSX
+      , error             :: JSX
+      , id                :: String
+      , inputWrapperOrder :: Array InputWrapperOrderImpl
+      , label             :: JSX
+      , labelElement      :: InputWrapperElementImpl
       , required          :: Boolean
-      , size              :: OptionalImpl MantineSizeImpl
+      , size              :: MantineSizeImpl
       , withAsterisk      :: Boolean
       )
   )
 
-inputLabel :: (InputLabelProps -> InputLabelProps) -> JSX
-inputLabel = mkTrivialComponent inputLabelComponent
+inputLabel
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_InputLabel
+  => Union attrsImpl attrsImpl_ Props_InputLabelImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+inputLabel = element (unsafeCoerce inputLabelComponent) <<< toNative
 
-foreign import inputLabelComponent :: ReactComponent InputLabelPropsImpl
+foreign import inputLabelComponent :: ReactComponent (Record Props_InputLabelImpl)
 
-type InputLabelProps =
-  MantineComponent
+type Props_InputLabel =
+  Props_Common
     ( children     :: Array JSX
-    , labelElement :: Optional InputWrapperElement
+    , labelElement :: InputWrapperElement
     , required     :: Boolean
-    , size         :: Optional MantineSize
+    , size         :: MantineSize
     )
 
-type InputLabelPropsImpl =
-  MantineComponentImpl
+type Props_InputLabelImpl =
+  Props_CommonImpl
     ( children     :: Array JSX
-    , labelElement :: OptionalImpl InputWrapperElementImpl
+    , labelElement :: InputWrapperElementImpl
     , required     :: Boolean
-    , size         :: OptionalImpl MantineSizeImpl
+    , size         :: MantineSizeImpl
     )
 
-inputDescription :: (InputDescriptionProps -> InputDescriptionProps) -> JSX
-inputDescription = mkTrivialComponent inputDescriptionComponent
+inputDescription
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_InputDescription
+  => Union attrsImpl attrsImpl_ Props_InputDescriptionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+inputDescription = element (unsafeCoerce inputDescriptionComponent) <<< toNative
 
-foreign import inputDescriptionComponent :: ReactComponent InputDescriptionPropsImpl
+foreign import inputDescriptionComponent :: ReactComponent (Record Props_InputDescriptionImpl)
 
-type InputDescriptionProps =
-  MantineComponent
+type Props_InputDescription =
+  Props_Common
     ( children :: Array JSX
-    , size     :: Optional MantineSize
+    , size     :: MantineSize
     )
 
-type InputDescriptionPropsImpl =
-  MantineComponentImpl
+type Props_InputDescriptionImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , size     :: OptionalImpl MantineSizeImpl
+    , size     :: MantineSizeImpl
     )
 
-inputError :: (InputErrorProps -> InputErrorProps) -> JSX
-inputError = mkTrivialComponent inputErrorComponent
+inputError
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_InputError
+  => Union attrsImpl attrsImpl_ Props_InputErrorImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+inputError = element (unsafeCoerce inputErrorComponent) <<< toNative
 
-foreign import inputErrorComponent :: ReactComponent InputErrorPropsImpl
+foreign import inputErrorComponent :: ReactComponent (Record Props_InputErrorImpl)
 
-type InputErrorProps =
-  MantineComponent
+type Props_InputError =
+  Props_Common
     ( children :: Array JSX
-    , size     :: Optional MantineSize
+    , size     :: MantineSize
     )
 
-type InputErrorPropsImpl =
-  MantineComponentImpl
+type Props_InputErrorImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , size     :: OptionalImpl MantineSizeImpl
+    , size     :: MantineSizeImpl
     )
 
 type WithInputContainer rest =
-  ( inputContainer :: Optional (JSX -> JSX)
+  ( inputContainer :: JSX -> JSX
   | rest
   )
 
 type WithInputContainerImpl rest =
-  ( inputContainer :: OptionalImpl (JSX -> JSX)
+  ( inputContainer :: JSX -> JSX
   | rest
   )
 
-type InputComponent rest =
-  MantineComponent (WithInputContainer + InputPropsRow_ rest)
+type Props_InputComponent rest =
+  Props_Common + WithInputContainer + Props_InputRow_ rest
 
-type InputComponentImpl rest =
-  MantineComponentImpl (WithInputContainerImpl + InputPropsRowImpl_ rest)
+type Props_InputComponentImpl rest =
+  Props_CommonImpl + WithInputContainerImpl + Props_InputRowImpl_ rest
 
-type InputGroupComponent items rest =
-  MantineComponent (WithInputContainer + InputGroupPropsRow_ items rest)
+type Props_InputGroupComponent items rest =
+  Props_Common + WithInputContainer + Props_InputGroupRow_ items rest
 
-type InputGroupComponentImpl items rest =
-  MantineComponentImpl (WithInputContainerImpl + InputGroupPropsRowImpl_ items rest)
+type Props_InputGroupComponentImpl items rest =
+  Props_CommonImpl + WithInputContainerImpl + Props_InputGroupRowImpl_ items rest

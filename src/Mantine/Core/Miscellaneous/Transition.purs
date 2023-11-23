@@ -1,49 +1,46 @@
 module Mantine.Core.Miscellaneous.Transition
   ( transition
-  , TransitionProps
+  , Props_Transition
+  , Props_TransitionImpl
   ) where
 
 import Mantine.Core.Prelude
 import React.Basic.Emotion (Style)
 
-transition :: (Style -> JSX) -> (TransitionProps -> TransitionProps) -> JSX
-transition = mkComponentWithDefault transitionComponent <<< defaultTransitionProps
+transition
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Transition
+  => Union attrsImpl attrsImpl_ Props_TransitionImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+transition = element (unsafeCoerce transitionComponent) <<< toNative
 
-foreign import transitionComponent :: ReactComponent TransitionPropsImpl
+foreign import transitionComponent :: ReactComponent (Record Props_TransitionImpl)
 
-type TransitionProps =
-  { children       :: Style -> JSX
-  , duration       :: Optional Milliseconds
-  , exitDuration   :: Optional Milliseconds
+type Props_Transition =
+  ( children       :: Style -> JSX
+  , duration       :: Milliseconds
+  , exitDuration   :: Milliseconds
   , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
   , onExit         :: Effect Unit
   , onExited       :: Effect Unit
-  , timingFunction :: Optional MantineTransitionTimingFunction
-  , transition     :: Optional MantineTransition
-  }
+  , timingFunction :: MantineTransitionTimingFunction
+  , transition     :: MantineTransition
+  )
 
-defaultTransitionProps :: (Style -> JSX) -> TransitionProps
-defaultTransitionProps children =
-  { children
-  , onEnter:   pure unit
-  , onEntered: pure unit
-  , onExit:    pure unit
-  , onExited:  pure unit
-  } `union` defaultValue
-
-type TransitionPropsImpl =
-  { children       :: Style -> JSX
-  , duration       :: OptionalImpl MillisecondsImpl
-  , exitDuration   :: OptionalImpl MillisecondsImpl
+type Props_TransitionImpl =
+  ( children       :: Style -> JSX
+  , duration       :: MillisecondsImpl
+  , exitDuration   :: MillisecondsImpl
   , keepMounted    :: Boolean
   , mounted        :: Boolean
   , onEnter        :: Effect Unit
   , onEntered      :: Effect Unit
   , onExit         :: Effect Unit
   , onExited       :: Effect Unit
-  , timingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
-  , transition     :: OptionalImpl MantineTransitionImpl
-  }
+  , timingFunction :: MantineTransitionTimingFunctionImpl
+  , transition     :: MantineTransitionImpl
+  )

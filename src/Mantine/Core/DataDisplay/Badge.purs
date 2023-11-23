@@ -1,28 +1,36 @@
 module Mantine.Core.DataDisplay.Badge
   ( badge
   , badge_
-  , BadgeProps
+  , Props_Badge
+  , Props_BadgeImpl
   , BadgeVariant(..)
+  , BadgeVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-badge :: (BadgeProps -> BadgeProps) -> JSX
-badge = mkComponent badgeComponent badgeToImpl defaultBadgeProps
+badge
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Badge
+  => Union attrsImpl attrsImpl_ Props_BadgeImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+badge = element (unsafeCoerce badgeComponent) <<< toNative
 
 badge_ :: Array JSX -> JSX
-badge_ children = badge _ { children = children }
+badge_ children = badge { children }
 
-foreign import badgeComponent :: ReactComponent BadgePropsImpl
+foreign import badgeComponent :: ReactComponent (Record Props_BadgeImpl)
 
-type BadgeProps =
-  MantineComponent
+type Props_Badge =
+  Props_Common
     ( children     :: Array JSX
-    , color        :: Optional MantineColor
+    , color        :: MantineColor
     , fullWidth    :: Boolean
-    , leftSection  :: Optional JSX
+    , gradient     :: MantineGradient
+    , leftSection  :: JSX
     , radius       :: MantineNumberSize
-    , rightSection :: Optional JSX
+    , rightSection :: JSX
     , size         :: MantineSize
     , variant      :: BadgeVariant
     )
@@ -34,10 +42,7 @@ data BadgeVariant
   | BadgeVariantDot
   | BadgeVariantTransparent
   | BadgeVariantDefault
-  | BadgeVariantGradient MantineGradient
-
-instance DefaultValue BadgeVariant where
-  defaultValue = BadgeVariantFilled
+  | BadgeVariantGradient
 
 type BadgeVariantImpl = String
 
@@ -49,32 +54,17 @@ instance ToFFI BadgeVariant BadgeVariantImpl where
     BadgeVariantDot         -> "dot"
     BadgeVariantTransparent -> "transparent"
     BadgeVariantDefault     -> "default"
-    BadgeVariantGradient _  -> "gradient"
+    BadgeVariantGradient    -> "gradient"
 
-defaultBadgeProps :: BadgeProps
-defaultBadgeProps =
-  defaultMantineComponent
-    { size:   Medium
-    , radius: Preset ExtraLarge
-    }
-
-type BadgePropsImpl =
-  MantineComponentImpl
+type Props_BadgeImpl =
+  Props_CommonImpl
     ( children     :: Array JSX
-    , color        :: OptionalImpl MantineColorImpl
+    , color        :: MantineColorImpl
     , fullWidth    :: Boolean
-    , gradient     :: OptionalImpl MantineGradientImpl
-    , leftSection  :: OptionalImpl JSX
+    , gradient     :: MantineGradientImpl
+    , leftSection  :: JSX
     , radius       :: MantineNumberSizeImpl
-    , rightSection :: OptionalImpl JSX
+    , rightSection :: JSX
     , size         :: MantineSizeImpl
     , variant      :: BadgeVariantImpl
     )
-
-badgeToImpl :: BadgeProps -> BadgePropsImpl
-badgeToImpl props = toNative (props `union` { gradient: getGradient props.variant })
-
-getGradient :: BadgeVariant -> Optional MantineGradient
-getGradient = Optional <<< case _ of
-  BadgeVariantGradient g -> pure g
-  _                      -> Nothing

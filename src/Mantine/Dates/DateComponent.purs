@@ -20,20 +20,20 @@ module Mantine.Dates.DateComponent
   , DateValue(..)
   , DateValueImpl
 
-  , DateFunction(..)
+  , DateFunction
   , DateFunctionImpl
 
   , InputProps
   , InputPropsImpl
 
-  , DateInputBaseProps
-  , DateInputBasePropsImpl
+  , Props_DateInputBase
+  , Props_DateInputBaseImpl
 
   , ClearableInputProps_
   , ClearableInputPropsImpl_
 
-  , DateInputBasePropsRow
-  , DateInputBasePropsRowImpl
+  , Props_DateInputBaseRow
+  , Props_DateInputBaseRowImpl
   , DropdownType(..)
   , DropdownTypeImpl
   ) where
@@ -41,47 +41,47 @@ module Mantine.Dates.DateComponent
 import Data.JSDate (JSDate)
 import Foreign (Foreign, unsafeToForeign, unsafeFromForeign)
 import Mantine.Core.Combobox.Select (ClearablePropsRow, ClearablePropsRowImpl)
-import Mantine.Core.Inputs.Input (InputPropsRow_, InputPropsRowImpl_, WithInputContainer, WithInputContainerImpl)
-import Mantine.Core.Overlays.Hovering (PopoverProps, PopoverPropsImpl)
-import Mantine.Core.Overlays.Modal (SubModalProps, SubModalPropsImpl)
+import Mantine.Core.Inputs.Input (Props_InputRow_, Props_InputRowImpl_, WithInputContainer, WithInputContainerImpl)
+import Mantine.Core.Overlays.Hovering (Props_Popover, Props_PopoverImpl)
+import Mantine.Core.Overlays.Modal (Props_SubModal, Props_SubModalImpl)
 import Mantine.Core.Prelude
 import Untagged.Union (toEither1)
 
 type DateComponent rest =
-  MantineComponent
-    ( ariaLabels          :: Maybe String
-    , columnsToScroll     :: Maybe Int
-    , date                :: Maybe JSDate
-    , decadeLabelFormat   :: Maybe DecadeLabelFormat
-    , getYearControlProps :: Maybe (DateFunction PickerControlProps)
-    , locale              :: Maybe String
-    , maxDate             :: Maybe JSDate
-    , minDate             :: Maybe JSDate
-    , numberOfColumns     :: Maybe Int
+  Props_Common
+    ( ariaLabels          :: String
+    , columnsToScroll     :: Int
+    , date                :: JSDate
+    , decadeLabelFormat   :: DecadeLabelFormat
+    , getYearControlProps :: DateFunction PickerControlProps
+    , locale              :: String
+    , maxDate             :: JSDate
+    , minDate             :: JSDate
+    , numberOfColumns     :: Int
     , onDateChange        :: ValueHandler JSDate
     , onNextDecade        :: ValueHandler JSDate
     , onPreviousDecade    :: ValueHandler JSDate
-    , withCellSpacing     :: Maybe Boolean
-    , yearsListFormat     :: Maybe String
+    , withCellSpacing     :: Boolean
+    , yearsListFormat     :: String
     | rest
     )
 
 type DateComponentImpl rest =
-  MantineComponentImpl
-    ( ariaLabels          :: Nullable String
-    , columnsToScroll     :: Nullable Number
-    , date                :: Nullable JSDate
-    , decadeLabelFormat   :: Nullable DecadeLabelFormatImpl
-    , getYearControlProps :: Nullable (DateFunctionImpl PickerControlPropsImpl)
-    , locale              :: Nullable String
-    , maxDate             :: Nullable JSDate
-    , minDate             :: Nullable JSDate
-    , numberOfColumns     :: Nullable Number
+  Props_CommonImpl
+    ( ariaLabels          :: String
+    , columnsToScroll     :: Number
+    , date                :: JSDate
+    , decadeLabelFormat   :: DecadeLabelFormatImpl
+    , getYearControlProps :: DateFunctionImpl PickerControlPropsImpl
+    , locale              :: String
+    , maxDate             :: JSDate
+    , minDate             :: JSDate
+    , numberOfColumns     :: Number
     , onDateChange        :: ValueHandlerImpl JSDate
     , onNextDecade        :: ValueHandlerImpl JSDate
     , onPreviousDecade    :: ValueHandlerImpl JSDate
-    , withCellSpacing     :: Nullable Boolean
-    , yearsListFormat     :: Nullable String
+    , withCellSpacing     :: Boolean
+    , yearsListFormat     :: String
     | rest
     )
 
@@ -92,7 +92,7 @@ type PickerControlProps =
   , inRange      :: Boolean
   , firstInRange :: Boolean
   , lastInRange  :: Boolean
-  , size         :: Maybe MantineSize
+  , size         :: MantineSize
   }
 
 type PickerControlPropsImpl =
@@ -102,7 +102,7 @@ type PickerControlPropsImpl =
   , inRange      :: Boolean
   , firstInRange :: Boolean
   , lastInRange  :: Boolean
-  , size         :: Nullable MantineSizeImpl
+  , size         :: MantineSizeImpl
   }
 
 data DateFormat
@@ -136,8 +136,6 @@ data DayOfWeek
   | Saturday
   | Sunday
 
-instance DefaultValue DayOfWeek where defaultValue = Monday
-
 type DayOfWeekImpl = Number
 
 instance ToFFI DayOfWeek DayOfWeekImpl where
@@ -155,8 +153,6 @@ data CalendarLevel
   | CalendarLevelYear
   | CalendarLevelMonth
 
-instance DefaultValue CalendarLevel where defaultValue = CalendarLevelMonth
-
 type CalendarLevelImpl = String
 
 instance ToFFI CalendarLevel CalendarLevelImpl where
@@ -170,7 +166,7 @@ instance FromFFI CalendarLevelImpl CalendarLevel where
     "decade" -> CalendarLevelDecade
     "year"   -> CalendarLevelYear
     "month"  -> CalendarLevelMonth
-    _ -> defaultValue
+    _        -> CalendarLevelMonth
 
 data DateValue
   = DateValue JSDate
@@ -193,31 +189,26 @@ instance FromFFI DateValueImpl DateValue where
         fromDate = DateValue <<< unsafeFromForeign
      in toEither1 >>> either fromDate fromArray
 
-newtype DateFunction value = DateFunction (JSDate -> value)
-
+type DateFunction     value = JSDate -> value
 type DateFunctionImpl value = JSDate -> value
 
-instance ToFFI value valueImpl => ToFFI (DateFunction value) (DateFunctionImpl valueImpl) where
-  toNative (DateFunction df) = df >>> toNative
-
-type ClearableInputProps_     rest = ClearablePropsRow     + WithInputContainer     + InputPropsRow_     rest
-type ClearableInputPropsImpl_ rest = ClearablePropsRowImpl + WithInputContainerImpl + InputPropsRowImpl_ rest
+type ClearableInputProps_     rest = ClearablePropsRow     + WithInputContainer     + Props_InputRow_     rest
+type ClearableInputPropsImpl_ rest = ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl_ rest
 
 type InputProps      = ClearableInputProps_     ()
 type InputPropsImpl  = ClearableInputPropsImpl_ ()
 
-type DateInputBaseProps     = ClearableInputProps_     DateInputBasePropsRow
-type DateInputBasePropsImpl = ClearableInputPropsImpl_ DateInputBasePropsRowImpl
+type Props_DateInputBase     = ClearableInputProps_     Props_DateInputBaseRow
+type Props_DateInputBaseImpl = ClearableInputPropsImpl_ Props_DateInputBaseRowImpl
 
-type DateInputBasePropsRow =
+type Props_DateInputBaseRow =
   ( closeOnChange  :: Boolean
-  , dropdownType   :: Maybe DropdownType
-  , labelSeparator :: Maybe String
-  , modalProps     :: Maybe SubModalProps
-  , popoverProps   :: Maybe PopoverProps
-  , readOnly       :: Boolean
+  , dropdownType   :: DropdownType
+  , labelSeparator :: String
+  , modalProps     :: Record Props_SubModal
+  , popoverProps   :: Record Props_Popover
   , sortDates      :: Boolean
-  , valueFormat    :: Maybe String
+  , valueFormat    :: String
   )
 
 data DropdownType
@@ -231,13 +222,12 @@ instance ToFFI DropdownType DropdownTypeImpl where
     DropdownTypePopover -> "popover"
     DropdownTypeModal   -> "modal"
 
-type DateInputBasePropsRowImpl =
+type Props_DateInputBaseRowImpl =
   ( closeOnChange  :: Boolean
-  , dropdownType   :: Nullable DropdownTypeImpl
-  , labelSeparator :: Nullable String
-  , modalProps     :: Nullable SubModalPropsImpl
-  , popoverProps   :: Nullable PopoverPropsImpl
-  , readOnly       :: Boolean
+  , dropdownType   :: DropdownTypeImpl
+  , labelSeparator :: String
+  , modalProps     :: Record Props_SubModalImpl
+  , popoverProps   :: Record Props_PopoverImpl
   , sortDates      :: Boolean
-  , valueFormat    :: Nullable String
+  , valueFormat    :: String
   )

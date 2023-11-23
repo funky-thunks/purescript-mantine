@@ -1,32 +1,35 @@
 module Mantine.Core.DataDisplay.Image
   ( image
-  , ImageProps
+  , Props_Image
+  , Props_ImageImpl
   ) where
 
 import Mantine.Core.Prelude
 
-image :: (ImageProps -> ImageProps) -> JSX
-image = mkComponentWithDefault imageComponent defaultImageProps
+image
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Image
+  => Union attrsImpl attrsImpl_ Props_ImageImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+image = element (unsafeCoerce imageComponent) <<< toNative
 
-foreign import imageComponent :: ReactComponent ImagePropsImpl
+foreign import imageComponent :: ReactComponent (Record Props_ImageImpl)
 
-defaultImageProps :: ImageProps
-defaultImageProps = defaultMantineComponent { onError: handler_ (pure unit) }
-
-type ImageProps =
-  MantineComponent
-    ( fallbackSrc :: Optional String
-    , fit         :: Optional ObjectFit
+type Props_Image =
+  Props_Common
+    ( fallbackSrc :: String
+    , fit         :: ObjectFit
     , onError     :: EventHandler
-    , radius      :: Optional MantineNumberSize
-    , src         :: Optional String
+    , radius      :: MantineNumberSize
+    , src         :: String
     )
 
-type ImagePropsImpl =
-  MantineComponentImpl
-    ( fallbackSrc :: OptionalImpl String
-    , fit         :: OptionalImpl ObjectFitImpl
+type Props_ImageImpl =
+  Props_CommonImpl
+    ( fallbackSrc :: String
+    , fit         :: ObjectFitImpl
     , onError     :: EventHandler
-    , radius      :: OptionalImpl MantineNumberSizeImpl
-    , src         :: OptionalImpl String
+    , radius      :: MantineNumberSizeImpl
+    , src         :: String
     )

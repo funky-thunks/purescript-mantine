@@ -19,10 +19,9 @@ import Control.Applicative (class Applicative, class Apply)
 import Control.Bind (class Bind)
 import Control.Monad (class Monad)
 import Control.Promise (Promise, toAff)
-import Data.Default (class DefaultValue)
 import Data.Either (Either, either)
 import Data.Functor (class Functor)
-import Data.Int (toNumber)
+import Data.Int (floor, toNumber)
 import Data.JSDate (JSDate)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toMaybe, toNullable)
@@ -44,8 +43,11 @@ import React.Basic.Hooks (JSX)
 import Record (delete, get, insert)
 import Type.Proxy (Proxy(..))
 import Untagged.Union (class InOneOf, type (|+|), UndefinedOr, asOneOf, maybeToUor, uorToMaybe)
+import Web.Event.Event (Event)
 import Web.File.File (File)
 import Web.HTML (HTMLElement)
+import Web.UIEvent.KeyboardEvent (KeyboardEvent)
+import Web.UIEvent.MouseEvent (MouseEvent)
 
 class ToFFI ps js | ps -> js where
   toNative :: ps -> js
@@ -85,7 +87,6 @@ derive newtype instance Apply         Optional
 derive newtype instance Applicative   Optional
 derive newtype instance Bind          Optional
 derive newtype instance Monad         Optional
-derive newtype instance DefaultValue (Optional v)
 
 type OptionalImpl v = UndefinedOr v
 
@@ -110,9 +111,6 @@ instance ToFFI CSS CSS where
 instance ToFFI JSX JSX where
   toNative = identity
 
-instance ToFFI (JSX -> JSX) (JSX -> JSX) where
-  toNative = identity
-
 instance ToFFI HTMLElement HTMLElement where
   toNative = identity
 
@@ -122,7 +120,13 @@ instance ToFFI File File where
 instance ToFFI Style Style where
   toNative = identity
 
-instance ToFFI (Style -> JSX) (Style -> JSX) where
+instance ToFFI Event Event where
+  toNative = identity
+
+instance ToFFI KeyboardEvent KeyboardEvent where
+  toNative = identity
+
+instance ToFFI MouseEvent MouseEvent where
   toNative = identity
 
 instance ToFFI EventHandler EventHandler where
@@ -134,11 +138,12 @@ instance ToFFI (Ref referenced) (Ref referenced) where
 instance ToFFI result native => ToFFI (Effect result) (Effect native) where
   toNative = map toNative
 
-instance ToFFI (arg0 -> Effect result) (EffectFn1 arg0 result) where
-  toNative = mkEffectFn1
-
-instance ToFFI (arg0 -> arg1 -> Effect result) (EffectFn2 arg0 arg1 result) where
-  toNative = mkEffectFn2
+instance (FromFFI arg0JS arg0PS, ToFFI resultPS resultJS) => ToFFI (arg0PS -> Effect resultPS) (EffectFn1 arg0JS resultJS) where
+  toNative f = mkEffectFn1 (toNative <<< f <<< fromNative)
+else instance (FromFFI arg0JS arg0PS, FromFFI arg1JS arg1PS, ToFFI resultPS resultJS) => ToFFI (arg0PS -> arg1PS -> Effect resultPS) (EffectFn2 arg0JS arg1JS resultJS) where
+  toNative f = mkEffectFn2 (\ arg0 arg1 -> toNative (f (fromNative arg0) (fromNative arg1)))
+else instance (FromFFI arg0JS arg0PS, ToFFI resultPS resultJS) => ToFFI (arg0PS -> resultPS) (arg0JS -> resultJS) where
+  toNative f = toNative <<< f <<< fromNative
 
 instance ToFFI JSDate JSDate where
   toNative = identity
@@ -193,6 +198,9 @@ instance FromFFI Boolean Boolean where
 instance FromFFI Char Char where
   fromNative = identity
 
+instance FromFFI Number Int where
+  fromNative = floor
+
 instance FromFFI Number Number where
   fromNative = identity
 
@@ -223,6 +231,15 @@ instance FromFFI File File where
 instance FromFFI Style Style where
   fromNative = identity
 
+instance FromFFI Event Event where
+  fromNative = identity
+
+instance FromFFI KeyboardEvent KeyboardEvent where
+  fromNative = identity
+
+instance FromFFI MouseEvent MouseEvent where
+  fromNative = identity
+
 instance FromFFI EventHandler EventHandler where
   fromNative = identity
 
@@ -232,8 +249,8 @@ instance FromFFI (Ref referenced) (Ref referenced) where
 instance FromFFI native result => FromFFI (Effect native) (Effect result) where
   fromNative = map fromNative
 
-instance FromFFI (EffectFn1 arg0 result) (arg0 -> Effect result) where
-  fromNative = runEffectFn1
+instance (FromFFI resultJS resultPS, ToFFI arg0PS arg0JS) => FromFFI (EffectFn1 arg0JS resultJS) (arg0PS -> Effect resultPS) where
+  fromNative vh = map fromNative <<< runEffectFn1 vh <<< toNative
 
 instance FromFFI JSDate JSDate where
   fromNative = identity

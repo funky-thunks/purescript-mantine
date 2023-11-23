@@ -1,21 +1,30 @@
 module Mantine.Core.Overlays.Menu
   ( menu
   , menu_
-  , MenuProps
+  , Props_Menu
+  , Props_MenuImpl
   , MenuArrowPosition(..)
+  , MenuArrowPositionImpl
   , MenuFloatingPosition(..)
+  , MenuFloatingPositionImpl
   , MenuPopoverWidth(..)
+  , MenuPopoverWidthImpl
   , MenuTrigger(..)
+  , MenuTriggerImpl
 
   , menuItem
   , menuItem_
-  , MenuItemProps
+  , Props_MenuItem
+  , Props_MenuItemImpl
+  , ClickHandler(..)
+  , ClickHandlerImpl
 
   , menuDropdown
 
   , menuTarget
   , menuTarget_
-  , MenuTargetProps
+  , Props_MenuTarget
+  , Props_MenuTargetImpl
 
   , menuLabel
   , menuDivider
@@ -25,102 +34,88 @@ import Mantine.Core.Prelude
 import React.Basic (element)
 import React.Basic.DOM.Events (preventDefault)
 
-menu :: (MenuProps -> MenuProps) -> JSX
-menu = mkComponentWithDefault menuComponent defaultMenuProps
-
 menu_ :: Array JSX -> JSX
-menu_ children = menu _ { children = children }
+menu_ children = menu { children }
 
-foreign import menuComponent :: ReactComponent MenuPropsImpl
+foreign import menuComponent :: ReactComponent (Record Props_MenuImpl)
 
 -- Not supported properties
 --   { portalProps          :: Omit<PortalProps, "children">
 --   , positionDependencies :: any[]
 --   }
 
-type MenuProps =
-  MantineComponent
-    ( arrowOffset         :: Optional Pixels
-    , arrowPosition       :: Optional MenuArrowPosition
-    , arrowRadius         :: Optional Pixels
-    , arrowSize           :: Optional Pixels
+type Props_Menu =
+  Props_Common
+    ( arrowOffset         :: Pixels
+    , arrowPosition       :: MenuArrowPosition
+    , arrowRadius         :: Pixels
+    , arrowSize           :: Pixels
     , children            :: Array JSX
-    , clickOutsideEvents  :: Optional (Array String)
-    , closeDelay          :: Optional Milliseconds
+    , clickOutsideEvents  :: (Array String)
+    , closeDelay          :: Milliseconds
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
     , closeOnItemClick    :: Boolean
-    , defaultOpened       :: Optional Boolean
+    , defaultOpened       :: Boolean
     , disabled            :: Boolean
-    , id                  :: Optional String
+    , id                  :: String
     , keepMounted         :: Boolean
     , loop                :: Boolean
     , middlewares         :: PopoverMiddlewares
-    , offset              :: Optional Pixels
+    , offset              :: Pixels
     , onChange            :: ValueHandler Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , onPositionChange    :: ValueHandler MenuFloatingPosition
-    , openDelay           :: Optional Milliseconds
-    , opened              :: Optional Boolean
+    , openDelay           :: Milliseconds
+    , opened              :: Boolean
     , position            :: MenuFloatingPosition
-    , radius              :: Optional MantineNumberSize
+    , radius              :: MantineNumberSize
     , returnFocus         :: Boolean
-    , shadow              :: Optional MantineShadow
+    , shadow              :: MantineShadow
     , transitionProps     :: MantineTransitionProps
-    , trigger             :: Optional MenuTrigger
-    , width               :: Optional MenuPopoverWidth
+    , trigger             :: MenuTrigger
+    , width               :: MenuPopoverWidth
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: Optional ZIndex
+    , zIndex              :: ZIndex
     )
 
-defaultMenuProps :: MenuProps
-defaultMenuProps =
-  defaultMantineComponent
-    { closeOnClickOutside: true
-    , closeOnEscape:       true
-    , closeOnItemClick:    true
-    , onClose:             pure unit
-    , onOpen:              pure unit
-    , withinPortal:        true
-    }
-
-type MenuPropsImpl =
-  MantineComponentImpl
-    ( arrowOffset         :: OptionalImpl PixelsImpl
-    , arrowPosition       :: OptionalImpl MenuArrowPositionImpl
-    , arrowRadius         :: OptionalImpl PixelsImpl
-    , arrowSize           :: OptionalImpl PixelsImpl
+type Props_MenuImpl =
+  Props_CommonImpl
+    ( arrowOffset         :: PixelsImpl
+    , arrowPosition       :: MenuArrowPositionImpl
+    , arrowRadius         :: PixelsImpl
+    , arrowSize           :: PixelsImpl
     , children            :: Array JSX
-    , clickOutsideEvents  :: OptionalImpl (Array String)
-    , closeDelay          :: OptionalImpl MillisecondsImpl
+    , clickOutsideEvents  :: (Array String)
+    , closeDelay          :: MillisecondsImpl
     , closeOnClickOutside :: Boolean
     , closeOnEscape       :: Boolean
     , closeOnItemClick    :: Boolean
-    , defaultOpened       :: OptionalImpl Boolean
+    , defaultOpened       :: Boolean
     , disabled            :: Boolean
-    , id                  :: OptionalImpl String
+    , id                  :: String
     , keepMounted         :: Boolean
     , loop                :: Boolean
     , middlewares         :: PopoverMiddlewaresImpl
-    , offset              :: OptionalImpl PixelsImpl
+    , offset              :: PixelsImpl
     , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , onPositionChange    :: ValueHandlerImpl MenuFloatingPositionImpl
-    , openDelay           :: OptionalImpl MillisecondsImpl
-    , opened              :: OptionalImpl Boolean
+    , openDelay           :: MillisecondsImpl
+    , opened              :: Boolean
     , position            :: MenuFloatingPositionImpl
-    , radius              :: OptionalImpl MantineNumberSizeImpl
+    , radius              :: MantineNumberSizeImpl
     , returnFocus         :: Boolean
-    , shadow              :: OptionalImpl MantineShadowImpl
+    , shadow              :: MantineShadowImpl
     , transitionProps     :: MantineTransitionPropsImpl
-    , trigger             :: OptionalImpl MenuTriggerImpl
-    , width               :: OptionalImpl MenuPopoverWidthImpl
+    , trigger             :: MenuTriggerImpl
+    , width               :: MenuPopoverWidthImpl
     , withArrow           :: Boolean
     , withinPortal        :: Boolean
-    , zIndex              :: OptionalImpl ZIndexImpl
+    , zIndex              :: ZIndexImpl
     )
 
 data MenuPopoverWidth
@@ -159,9 +154,6 @@ data MenuFloatingPosition
   | MenuFloatingPositionBottomEnd
   | MenuFloatingPositionLeftEnd
 
-instance DefaultValue MenuFloatingPosition where
-  defaultValue = MenuFloatingPositionBottom
-
 type MenuFloatingPositionImpl = String
 
 instance ToFFI MenuFloatingPosition MenuFloatingPositionImpl where
@@ -193,7 +185,7 @@ instance FromFFI String MenuFloatingPosition where
     "right-end"    -> MenuFloatingPositionRightEnd
     "bottom-end"   -> MenuFloatingPositionBottomEnd
     "left-end"     -> MenuFloatingPositionLeftEnd
-    _              -> defaultValue
+    _              -> MenuFloatingPositionBottom
 
 data MenuArrowPosition
   = MenuArrowPositionCenter
@@ -208,69 +200,63 @@ instance ToFFI MenuArrowPosition MenuArrowPositionImpl where
 
 -- ----------------------------------------------------------------------------
 
-menuItem :: Effect Unit -> (MenuItemProps -> MenuItemProps) -> JSX
-menuItem = mkComponent menuItemComponent menuItemToImpl <<< defaultMenuItemProps
-
 menuItem_ :: Effect Unit -> JSX -> JSX
-menuItem_ onClick children = (menuItem onClick) _ { children = pure children }
+menuItem_ onClick children =
+  menuItem { children: pure children
+           , onClick: ClickHandler onClick
+           }
 
-foreign import menuItemComponent :: ReactComponent MenuItemPropsImpl
+foreign import menuItemComponent :: ReactComponent (Record Props_MenuItemImpl)
 
-type MenuItemProps =
-  MantineComponent
+type Props_MenuItem =
+  Props_Common
     ( children         :: Array JSX
-    , closeMenuOnClick :: Optional Boolean
-    , color            :: Optional MantineColor
+    , closeMenuOnClick :: Boolean
+    , color            :: MantineColor
     , disabled         :: Boolean
-    , leftSection      :: Optional JSX
-    , onClick          :: Effect Unit
-    , rightSection     :: Optional JSX
+    , leftSection      :: JSX
+    , onClick          :: ClickHandler
+    , rightSection     :: JSX
     )
 
-defaultMenuItemProps :: Effect Unit -> MenuItemProps
-defaultMenuItemProps onClick = defaultMantineComponent { onClick }
-
-type MenuItemPropsImpl =
-  MantineComponentImpl
+type Props_MenuItemImpl =
+  Props_CommonImpl
     ( children         :: Array JSX
-    , closeMenuOnClick :: OptionalImpl Boolean
-    , color            :: OptionalImpl MantineColorImpl
+    , closeMenuOnClick :: Boolean
+    , color            :: MantineColorImpl
     , disabled         :: Boolean
-    , leftSection      :: OptionalImpl JSX
+    , leftSection      :: JSX
     , onClick          :: EventHandler
-    , rightSection     :: OptionalImpl JSX
+    , rightSection     :: JSX
     )
 
-menuItemToImpl :: MenuItemProps -> MenuItemPropsImpl
-menuItemToImpl props =
-  let rest = toNative
-         <<< delete (Proxy :: Proxy "onClick")
-   in { onClick: handler preventDefault (const props.onClick)
-      } `union` rest props
+newtype ClickHandler = ClickHandler (Effect Unit)
+
+type ClickHandlerImpl = EventHandler
+
+instance ToFFI ClickHandler ClickHandlerImpl where
+  toNative (ClickHandler h) = handler preventDefault (const h)
 
 menuDropdown :: Array JSX -> JSX
 menuDropdown children = element menuDropdownComponent { children }
 
 foreign import menuDropdownComponent :: ReactComponent { children :: Array JSX }
 
-menuTarget :: (MenuTargetProps -> MenuTargetProps) -> JSX
-menuTarget = mkTrivialComponent menuTargetComponent
-
 menuTarget_ :: JSX -> JSX
-menuTarget_ target = menuTarget _ { children = pure target }
+menuTarget_ target = menuTarget { children: pure target }
 
-foreign import menuTargetComponent :: ReactComponent MenuTargetPropsImpl
+foreign import menuTargetComponent :: ReactComponent (Record Props_MenuTargetImpl)
 
-type MenuTargetProps =
-  MantineComponent
+type Props_MenuTarget =
+  Props_Common
     ( children :: Array JSX
-    , refProp  :: Optional String
+    , refProp  :: String
     )
 
-type MenuTargetPropsImpl =
-  MantineComponentImpl
+type Props_MenuTargetImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , refProp  :: OptionalImpl String
+    , refProp  :: String
     )
 
 menuLabel :: JSX -> JSX
@@ -282,3 +268,27 @@ menuDivider :: JSX
 menuDivider = element menuDividerComponent {}
 
 foreign import menuDividerComponent :: ReactComponent {}
+
+menu
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Menu
+  => Union attrsImpl attrsImpl_ Props_MenuImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+menu = element (unsafeCoerce menuComponent) <<< toNative
+
+menuItem
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_MenuItem
+  => Union attrsImpl attrsImpl_ Props_MenuItemImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+menuItem = element (unsafeCoerce menuItemComponent) <<< toNative
+
+menuTarget
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_MenuTarget
+  => Union attrsImpl attrsImpl_ Props_MenuTargetImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+menuTarget = element (unsafeCoerce menuTargetComponent) <<< toNative

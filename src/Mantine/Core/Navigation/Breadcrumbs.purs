@@ -1,25 +1,31 @@
 module Mantine.Core.Navigation.Breadcrumbs
   ( breadcrumbs
-  , BreadcrumbsProps
+  , Props_Breadcrumbs
+  , Props_BreadcrumbsImpl
   ) where
 
 import Mantine.Core.Prelude
 
-breadcrumbs :: (BreadcrumbsProps -> BreadcrumbsProps) -> JSX
-breadcrumbs = mkTrivialComponent breadcrumbsComponent
+breadcrumbs
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Breadcrumbs
+  => Union attrsImpl attrsImpl_ Props_BreadcrumbsImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+breadcrumbs = element (unsafeCoerce breadcrumbsComponent) <<< toNative
 
-foreign import breadcrumbsComponent :: ReactComponent BreadcrumbsPropsImpl
+foreign import breadcrumbsComponent :: ReactComponent (Record Props_BreadcrumbsImpl)
 
-type BreadcrumbsProps =
-  MantineComponent
+type Props_Breadcrumbs =
+  Props_Common
     ( children        :: Array JSX
-    , separator       :: Optional JSX
-    , separatorMargin :: Optional MantineSpacing
+    , separator       :: JSX
+    , separatorMargin :: MantineSpacing
     )
 
-type BreadcrumbsPropsImpl =
-  MantineComponentImpl
+type Props_BreadcrumbsImpl =
+  Props_CommonImpl
     ( children        :: Array JSX
-    , separator       :: OptionalImpl JSX
-    , separatorMargin :: OptionalImpl MantineSpacingImpl
+    , separator       :: JSX
+    , separatorMargin :: MantineSpacingImpl
     )

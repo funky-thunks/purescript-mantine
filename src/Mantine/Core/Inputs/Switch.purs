@@ -1,56 +1,54 @@
 module Mantine.Core.Inputs.Switch
   ( switch
-  , SwitchProps
-  , SwitchInnerLabels
+  , Props_Switch
+  , Props_SwitchImpl
 
   , switchGroup
   , switchGroup_
-  , SwitchGroupProps
+  , Props_SwitchGroup
+  , Props_SwitchGroupImpl
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableFieldComponent, CheckableFieldComponentImpl)
-import Mantine.Core.Inputs.Input (InputGroupComponent, InputGroupComponentImpl)
+import Mantine.Core.Inputs.Checkables (Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputGroupComponent, Props_InputGroupComponentImpl)
 import Mantine.Core.Prelude
 
-switch :: (SwitchProps -> SwitchProps) -> JSX
-switch = mkComponent switchComponent switchToImpl defaultMantineComponent_
+switch
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Switch
+  => Union attrsImpl attrsImpl_ Props_SwitchImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+switch = element (unsafeCoerce switchComponent) <<< toNative
 
-foreign import switchComponent :: ReactComponent SwitchPropsImpl
+foreign import switchComponent :: ReactComponent (Record Props_SwitchImpl)
 
-type SwitchProps =
-  CheckableFieldComponent
-    ( innerLabels :: Optional SwitchInnerLabels
-    , thumbIcon   :: Optional JSX
+type Props_Switch =
+  Props_CheckableFieldComponent
+    ( offLabel  :: JSX
+    , onLabel   :: JSX
+    , thumbIcon :: JSX
     )
 
-type SwitchInnerLabels =
-  { on  :: JSX
-  , off :: JSX
-  }
-
-type SwitchPropsImpl =
-  CheckableFieldComponentImpl
-    ( offLabel  :: OptionalImpl JSX
-    , onLabel   :: OptionalImpl JSX
-    , thumbIcon :: OptionalImpl JSX
+type Props_SwitchImpl =
+  Props_CheckableFieldComponentImpl
+    ( offLabel  :: JSX
+    , onLabel   :: JSX
+    , thumbIcon :: JSX
     )
 
-switchToImpl :: SwitchProps -> SwitchPropsImpl
-switchToImpl =
-  let flattenLabels props =
-        delete (Proxy :: Proxy "innerLabels") props `union`
-          { offLabel: _.off <$> props.innerLabels
-          , onLabel:  _.on  <$> props.innerLabels
-          }
-   in toNative <<< flattenLabels
-
-switchGroup :: (SwitchGroupProps -> SwitchGroupProps) -> JSX
-switchGroup = mkTrivialComponent switchGroupComponent
+switchGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_SwitchGroup
+  => Union attrsImpl attrsImpl_ Props_SwitchGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+switchGroup = element (unsafeCoerce switchGroupComponent) <<< toNative
 
 switchGroup_ :: Array JSX -> JSX
-switchGroup_ children = switchGroup _ { children = children }
+switchGroup_ children = switchGroup { children }
 
-foreign import switchGroupComponent :: ReactComponent SwitchGroupPropsImpl
+foreign import switchGroupComponent :: ReactComponent (Record Props_SwitchGroupImpl)
 
-type SwitchGroupProps     = InputGroupComponent     (Array String) ()
-type SwitchGroupPropsImpl = InputGroupComponentImpl (Array String) ()
+type Props_SwitchGroup     = Props_InputGroupComponent     (Array String) ()
+type Props_SwitchGroupImpl = Props_InputGroupComponentImpl (Array String) ()

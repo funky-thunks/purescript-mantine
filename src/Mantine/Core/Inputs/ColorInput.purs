@@ -1,27 +1,34 @@
 module Mantine.Core.Inputs.ColorInput
   ( colorInput
-  , ColorInputProps
+  , Props_ColorInput
+  , Props_ColorInputImpl
   , PopoverProps
+  , PopoverPropsImpl
   ) where
 
 import Mantine.Core.Inputs.ColorPicker (ColorPicking, ColorPickingImpl)
-import Mantine.Core.Inputs.Input (InputComponent, InputComponentImpl)
+import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
-colorInput :: (ColorInputProps -> ColorInputProps) -> JSX
-colorInput = mkComponentWithDefault colorInputComponent defaultColorInputProps
+colorInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ColorInput
+  => Union attrsImpl attrsImpl_ Props_ColorInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+colorInput = element (unsafeCoerce colorInputComponent) <<< toNative
 
-foreign import colorInputComponent :: ReactComponent ColorInputPropsImpl
+foreign import colorInputComponent :: ReactComponent (Record Props_ColorInputImpl)
 
 -- Not supported properties
 --   { eyeDropperButtonProps :: Record<string, any>
 --   }
 
-type ColorInputProps =
-  InputComponent
+type Props_ColorInput =
+  Props_InputComponent
     ( closeOnColorSwatchClick :: Boolean
     , disallowInput           :: Boolean
-    , eyeDropperIcon          :: Optional JSX
+    , eyeDropperIcon          :: JSX
     , fixOnBlur               :: Boolean
     , popoverProps            :: PopoverProps
     , withEyeDropper          :: Boolean
@@ -40,14 +47,11 @@ type PopoverProps =
   , withinPortal    :: Boolean
   }
 
-defaultColorInputProps :: ColorInputProps
-defaultColorInputProps = defaultMantineComponent { swatchesPerRow: 10 }
-
-type ColorInputPropsImpl =
-  InputComponentImpl
+type Props_ColorInputImpl =
+  Props_InputComponentImpl
     ( closeOnColorSwatchClick :: Boolean
     , disallowInput           :: Boolean
-    , eyeDropperIcon          :: OptionalImpl JSX
+    , eyeDropperIcon          :: JSX
     , fixOnBlur               :: Boolean
     , popoverProps            :: PopoverPropsImpl
     , withEyeDropper          :: Boolean

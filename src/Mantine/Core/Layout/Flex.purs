@@ -1,39 +1,45 @@
 module Mantine.Core.Layout.Flex
   ( flex
   , flex_
-  , FlexProps
+  , Props_Flex
+  , Props_FlexImpl
   ) where
 
 import Mantine.Core.Prelude
 
-flex :: (FlexProps -> FlexProps) -> JSX
-flex = mkTrivialComponent flexComponent
+flex
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Flex
+  => Union attrsImpl attrsImpl_ Props_FlexImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+flex = element (unsafeCoerce flexComponent) <<< toNative
 
 flex_ :: Array JSX -> JSX
-flex_ children = flex _ { children = children }
+flex_ children = flex { children }
 
-foreign import flexComponent :: ReactComponent FlexPropsImpl
+foreign import flexComponent :: ReactComponent (Record Props_FlexImpl)
 
-type FlexProps =
-  MantineComponent
-    ( align     :: Optional AlignItems
+type Props_Flex =
+  Props_Common
+    ( align     :: AlignItems
     , children  :: Array JSX
-    , columnGap :: Optional MantineSize
-    , direction :: Optional FlexDirection
-    , gap       :: Optional MantineSize
-    , justify   :: Optional JustifyContent
-    , rowGap    :: Optional MantineSize
+    , columnGap :: MantineSize
+    , direction :: FlexDirection
+    , gap       :: MantineSize
+    , justify   :: JustifyContent
+    , rowGap    :: MantineSize
     , wrap      :: FlexWrap
     )
 
-type FlexPropsImpl =
-  MantineComponentImpl
-    ( align     :: OptionalImpl AlignItemsImpl
+type Props_FlexImpl =
+  Props_CommonImpl
+    ( align     :: AlignItemsImpl
     , children  :: Array JSX
-    , columnGap :: OptionalImpl MantineSizeImpl
-    , direction :: OptionalImpl FlexDirectionImpl
-    , gap       :: OptionalImpl MantineSizeImpl
-    , justify   :: OptionalImpl JustifyContentImpl
-    , rowGap    :: OptionalImpl MantineSizeImpl
+    , columnGap :: MantineSizeImpl
+    , direction :: FlexDirectionImpl
+    , gap       :: MantineSizeImpl
+    , justify   :: JustifyContentImpl
+    , rowGap    :: MantineSizeImpl
     , wrap      :: FlexWrapImpl
     )

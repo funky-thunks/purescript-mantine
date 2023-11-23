@@ -1,33 +1,37 @@
 module Mantine.Core.Navigation.Anchor
   ( anchor
-  , AnchorProps
+  , Props_Anchor
+  , Props_AnchorImpl
   , AnchorUnderline(..)
+  , AnchorUnderlineImpl
   ) where
 
-import Mantine.Core.Typography.Text (TextPropsRow, TextPropsImplRow)
+import Mantine.Core.Typography.Text (Props_TextBase, Props_TextBaseImpl)
 import Mantine.Core.Prelude
 
-anchor :: (AnchorProps -> AnchorProps) -> JSX
-anchor = mkTrivialComponent anchorComponent
+anchor
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Anchor
+  => Union attrsImpl attrsImpl_ Props_AnchorImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+anchor = element (unsafeCoerce anchorComponent) <<< toNative
 
-foreign import anchorComponent :: ReactComponent AnchorPropsImpl
+foreign import anchorComponent :: ReactComponent (Record Props_AnchorImpl)
 
-type AnchorProps =
-  MantineComponent
+type Props_Anchor =
+  Props_Common
     ( children  :: Array JSX
     , href      :: String
-    , target    :: Optional String
+    , target    :: String
     , underline :: AnchorUnderline
-    | Polymorphic TextPropsRow
+    | Polymorphic Props_TextBase
     )
 
 data AnchorUnderline
   = AnchorUnderlineAlways
   | AnchorUnderlineHover
   | AnchorUnderlineNever
-
-instance DefaultValue AnchorUnderline where
-  defaultValue = AnchorUnderlineHover
 
 type AnchorUnderlineImpl = String
 
@@ -37,11 +41,11 @@ instance ToFFI AnchorUnderline AnchorUnderlineImpl where
    AnchorUnderlineHover  -> "hover"
    AnchorUnderlineNever  -> "never"
 
-type AnchorPropsImpl =
-  MantineComponentImpl
+type Props_AnchorImpl =
+  Props_CommonImpl
     ( children  :: Array JSX
     , href      :: String
-    , target    :: OptionalImpl String
+    , target    :: String
     , underline :: AnchorUnderlineImpl
-    | PolymorphicImpl TextPropsImplRow
+    | PolymorphicImpl Props_TextBaseImpl
     )

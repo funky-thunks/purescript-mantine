@@ -1,33 +1,38 @@
 module Mantine.Core.Miscellaneous.Divider
   ( divider
   , divider_
-  , DividerProps
+  , Props_Divider
+  , Props_DividerImpl
   , DividerLabelPosition(..)
+  , DividerLabelPositionImpl
   , DividerVariant(..)
+  , DividerVariantImpl
   ) where
 
 import Mantine.Core.Prelude
 
-divider :: (DividerProps -> DividerProps) -> JSX
-divider = mkComponentWithDefault dividerComponent defaultDividerProps
+divider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Divider
+  => Union attrsImpl attrsImpl_ Props_DividerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+divider = element (unsafeCoerce dividerComponent) <<< toNative
 
 divider_ :: JSX
-divider_ = divider identity
+divider_ = divider {}
 
-foreign import dividerComponent :: ReactComponent DividerPropsImpl
+foreign import dividerComponent :: ReactComponent (Record Props_DividerImpl)
 
-type DividerProps =
-  MantineComponent
-    ( color         :: Optional MantineColor
-    , label         :: Optional JSX
-    , labelPosition :: Optional DividerLabelPosition
+type Props_Divider =
+  Props_Common
+    ( color         :: MantineColor
+    , label         :: JSX
+    , labelPosition :: DividerLabelPosition
     , orientation   :: Orientation
-    , size          :: Optional MantineNumberSize
-    , variant       :: Optional DividerVariant
+    , size          :: MantineNumberSize
+    , variant       :: DividerVariant
     )
-
-defaultDividerProps :: DividerProps
-defaultDividerProps = defaultMantineComponent { orientation: Horizontal }
 
 data DividerLabelPosition
   = DividerLabelPositionLeft
@@ -55,12 +60,12 @@ instance ToFFI DividerVariant DividerVariantImpl where
     DividerVariantDotted -> "dotted"
     DividerVariantSolid  -> "solid"
 
-type DividerPropsImpl =
-  MantineComponentImpl
-    ( color         :: OptionalImpl MantineColorImpl
-    , label         :: OptionalImpl JSX
-    , labelPosition :: OptionalImpl DividerLabelPositionImpl
+type Props_DividerImpl =
+  Props_CommonImpl
+    ( color         :: MantineColorImpl
+    , label         :: JSX
+    , labelPosition :: DividerLabelPositionImpl
     , orientation   :: OrientationImpl
-    , size          :: OptionalImpl MantineNumberSizeImpl
-    , variant       :: OptionalImpl DividerVariantImpl
+    , size          :: MantineNumberSizeImpl
+    , variant       :: DividerVariantImpl
     )

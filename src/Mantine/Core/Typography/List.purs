@@ -1,32 +1,40 @@
 module Mantine.Core.Typography.List
   ( list
   , list_
-  , ListProps
+  , Props_List
+  , Props_ListImpl
   , ListType(..)
+  , ListTypeImpl
 
   , listItem
   , listItem_
-  , ListItemProps
+  , Props_ListItem
+  , Props_ListItemImpl
   ) where
 
 import Mantine.Core.Prelude
 
-list :: (ListProps -> ListProps) -> JSX
-list = mkTrivialComponent listComponent
+list
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_List
+  => Union attrsImpl attrsImpl_ Props_ListImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+list = element (unsafeCoerce listComponent) <<< toNative
 
 list_ :: Array JSX -> JSX
-list_ children = list _ { children = children }
+list_ children = list { children }
 
-foreign import listComponent :: ReactComponent ListPropsImpl
+foreign import listComponent :: ReactComponent (Record Props_ListImpl)
 
-type ListProps =
-  MantineComponent
+type Props_List =
+  Props_Common
     ( center        :: Boolean
     , children      :: Array JSX
-    , icon          :: Optional JSX
-    , listStyleType :: Optional ListStyleType
-    , size          :: Optional MantineNumberSize
-    , spacing       :: Optional MantineNumberSize
+    , icon          :: JSX
+    , listStyleType :: ListStyleType
+    , size          :: MantineNumberSize
+    , spacing       :: MantineNumberSize
     , type          :: ListType
     , withPadding   :: Boolean
     )
@@ -35,8 +43,6 @@ data ListType
   = ListTypeOrdered
   | ListTypeUnordered
 
-instance DefaultValue ListType where defaultValue = ListTypeUnordered
-
 type ListTypeImpl = String
 
 instance ToFFI ListType ListTypeImpl where
@@ -44,34 +50,39 @@ instance ToFFI ListType ListTypeImpl where
     ListTypeOrdered   -> "ordered"
     ListTypeUnordered -> "unordered"
 
-type ListPropsImpl =
-  MantineComponentImpl
+type Props_ListImpl =
+  Props_CommonImpl
     ( center        :: Boolean
     , children      :: Array JSX
-    , icon          :: OptionalImpl JSX
-    , listStyleType :: OptionalImpl ListStyleTypeImpl
-    , size          :: OptionalImpl MantineNumberSizeImpl
-    , spacing       :: OptionalImpl MantineNumberSizeImpl
+    , icon          :: JSX
+    , listStyleType :: ListStyleTypeImpl
+    , size          :: MantineNumberSizeImpl
+    , spacing       :: MantineNumberSizeImpl
     , type          :: ListTypeImpl
     , withPadding   :: Boolean
     )
 
-listItem :: (ListItemProps -> ListItemProps) -> JSX
-listItem = mkTrivialComponent listItemComponent
+listItem
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ListItem
+  => Union attrsImpl attrsImpl_ Props_ListItemImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+listItem = element (unsafeCoerce listItemComponent) <<< toNative
 
 listItem_ :: Array JSX -> JSX
-listItem_ children = listItem _ { children = children }
+listItem_ children = listItem { children }
 
-foreign import listItemComponent :: ReactComponent ListItemPropsImpl
+foreign import listItemComponent :: ReactComponent (Record Props_ListItemImpl)
 
-type ListItemProps =
-  MantineComponent
+type Props_ListItem =
+  Props_Common
     ( children :: Array JSX
-    , icon     :: Optional JSX
+    , icon     :: JSX
     )
 
-type ListItemPropsImpl =
-  MantineComponentImpl
+type Props_ListItemImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , icon     :: OptionalImpl JSX
+    , icon     :: JSX
     )

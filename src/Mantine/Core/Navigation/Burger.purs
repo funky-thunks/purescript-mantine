@@ -1,34 +1,37 @@
 module Mantine.Core.Navigation.Burger
   ( burger
-  , BurgerProps
+  , Props_Burger
+  , Props_BurgerImpl
   ) where
 
 import Mantine.Core.Prelude
 
-burger :: (BurgerProps -> BurgerProps) -> JSX
-burger = mkComponentWithDefault burgerComponent defaultBurgerProps
+burger
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Burger
+  => Union attrsImpl attrsImpl_ Props_BurgerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+burger = element (unsafeCoerce burgerComponent) <<< toNative
 
-foreign import burgerComponent :: ReactComponent BurgerPropsImpl
+foreign import burgerComponent :: ReactComponent (Record Props_BurgerImpl)
 
-type BurgerProps =
-  MantineComponent
-    ( color                    :: Optional MantineColor
+type Props_Burger =
+  Props_Common
+    ( color                    :: MantineColor
     , onClick                  :: EventHandler
     , opened                   :: Boolean
-    , size                     :: Optional MantineNumberSize
-    , transitionDuration       :: Optional Milliseconds
-    , transitionTimingFunction :: Optional MantineTransitionTimingFunction
+    , size                     :: MantineNumberSize
+    , transitionDuration       :: Milliseconds
+    , transitionTimingFunction :: MantineTransitionTimingFunction
     )
 
-defaultBurgerProps :: BurgerProps
-defaultBurgerProps = defaultMantineComponent { onClick: handler_ (pure unit) }
-
-type BurgerPropsImpl =
-  MantineComponentImpl
-    ( color                    :: OptionalImpl MantineColorImpl
+type Props_BurgerImpl =
+  Props_CommonImpl
+    ( color                    :: MantineColorImpl
     , onClick                  :: EventHandler
     , opened                   :: Boolean
-    , size                     :: OptionalImpl MantineNumberSizeImpl
-    , transitionDuration       :: OptionalImpl MillisecondsImpl
-    , transitionTimingFunction :: OptionalImpl MantineTransitionTimingFunctionImpl
+    , size                     :: MantineNumberSizeImpl
+    , transitionDuration       :: MillisecondsImpl
+    , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
     )

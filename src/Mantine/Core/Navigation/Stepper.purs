@@ -1,46 +1,64 @@
 module Mantine.Core.Navigation.Stepper
   ( stepper
-  , StepperProps
+  , Props_Stepper
+  , Props_StepperImpl
+  , StepClickHandler(..)
+  , StepClickHandlerImpl
   , StepFragmentComponent(..)
+  , StepFragmentComponentImpl
   , StepperIconPosition(..)
+  , StepperIconPositionImpl
 
   , stepperStep
-  , StepperStepProps
+  , Props_StepperStep
+  , Props_StepperStepImpl
   , StepState(..)
+  , StepStateImpl
 
   , stepperCompleted_
+  , Props_StepperCompleted    
+  , Props_StepperCompletedImpl
   ) where
 
-import Data.Functor.Contravariant ((>$<))
 import Data.Int (floor)
+import Effect.Uncurried (mkEffectFn1)
 import Mantine.Core.Prelude
 
-stepper :: (StepperProps -> StepperProps) -> JSX
-stepper = mkComponent stepperComponent stepperPropsToImpl defaultStepperProps
+stepper
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Stepper
+  => Union attrsImpl attrsImpl_ Props_StepperImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+stepper = element (unsafeCoerce stepperComponent) <<< toNative
 
-foreign import stepperComponent :: ReactComponent StepperPropsImpl
+foreign import stepperComponent :: ReactComponent (Record Props_StepperImpl)
 
-type StepperProps =
-  MantineComponent
-    ( active               :: Optional Number
+type Props_Stepper =
+  Props_Common
+    ( active               :: Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
-    , color                :: Optional MantineColor
-    , completedIcon        :: Optional StepFragmentComponent
-    , contentPadding       :: Optional MantineNumberSize
-    , icon                 :: Optional StepFragmentComponent
+    , color                :: MantineColor
+    , completedIcon        :: StepFragmentComponent
+    , contentPadding       :: MantineNumberSize
+    , icon                 :: StepFragmentComponent
     , iconPosition         :: StepperIconPosition
-    , iconSize             :: Optional Pixels
-    , onStepClick          :: ValueHandler Int
-    , orientation          :: Optional Orientation
-    , progressIcon         :: Optional StepFragmentComponent
-    , radius               :: Optional MantineNumberSize
-    , size                 :: Optional MantineSize
+    , iconSize             :: Pixels
+    , onStepClick          :: StepClickHandler
+    , orientation          :: Orientation
+    , progressIcon         :: StepFragmentComponent
+    , radius               :: MantineNumberSize
+    , size                 :: MantineSize
     , wrap                 :: Boolean
     )
 
-defaultStepperProps :: StepperProps
-defaultStepperProps = { wrap: true } `union` defaultValue
+newtype StepClickHandler = StepClickHandler (Int -> Effect Unit)
+
+type StepClickHandlerImpl = EffectFn1 Number Unit
+
+instance ToFFI StepClickHandler StepClickHandlerImpl where
+  toNative (StepClickHandler sch) = mkEffectFn1 (sch <<< floor)
 
 data StepFragmentComponent = Constant JSX
                            | StepDependent (Int -> JSX)
@@ -58,9 +76,6 @@ data StepperIconPosition
   = StepperIconPositionLeft
   | StepperIconPositionRight
 
-instance DefaultValue StepperIconPosition where
-  defaultValue = StepperIconPositionLeft
-
 type StepperIconPositionImpl = String
 
 instance ToFFI StepperIconPosition StepperIconPositionImpl where
@@ -68,50 +83,52 @@ instance ToFFI StepperIconPosition StepperIconPositionImpl where
     StepperIconPositionLeft  -> "left"
     StepperIconPositionRight -> "right"
 
-type StepperPropsImpl =
-  MantineComponentImpl
-    ( active               :: OptionalImpl Number
+type Props_StepperImpl =
+  Props_CommonImpl
+    ( active               :: Number
     , allowNextStepsSelect :: Boolean
     , children             :: Array JSX
-    , color                :: OptionalImpl MantineColorImpl
-    , completedIcon        :: OptionalImpl StepFragmentComponentImpl
-    , contentPadding       :: OptionalImpl MantineNumberSizeImpl
-    , icon                 :: OptionalImpl StepFragmentComponentImpl
+    , color                :: MantineColorImpl
+    , completedIcon        :: StepFragmentComponentImpl
+    , contentPadding       :: MantineNumberSizeImpl
+    , icon                 :: StepFragmentComponentImpl
     , iconPosition         :: StepperIconPositionImpl
-    , iconSize             :: OptionalImpl PixelsImpl
-    , onStepClick          :: ValueHandlerImpl Number
-    , orientation          :: OptionalImpl OrientationImpl
-    , progressIcon         :: OptionalImpl StepFragmentComponentImpl
-    , radius               :: OptionalImpl MantineNumberSizeImpl
-    , size                 :: OptionalImpl MantineSizeImpl
+    , iconSize             :: PixelsImpl
+    , onStepClick          :: StepClickHandlerImpl
+    , orientation          :: OrientationImpl
+    , progressIcon         :: StepFragmentComponentImpl
+    , radius               :: MantineNumberSizeImpl
+    , size                 :: MantineSizeImpl
     , wrap                 :: Boolean
     )
 
-stepperPropsToImpl :: StepperProps -> StepperPropsImpl
-stepperPropsToImpl props = toNative $ props { onStepClick = floor >$< props.onStepClick }
+stepperStep
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_StepperStep
+  => Union attrsImpl attrsImpl_ Props_StepperStepImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+stepperStep = element (unsafeCoerce stepperStepComponent) <<< toNative
 
-stepperStep :: (StepperStepProps -> StepperStepProps) -> JSX
-stepperStep = mkTrivialComponent stepperStepComponent
+foreign import stepperStepComponent :: ReactComponent (Record Props_StepperStepImpl)
 
-foreign import stepperStepComponent :: ReactComponent StepperStepPropsImpl
-
-type StepperStepProps =
-  MantineComponent
+type Props_StepperStep =
+  Props_Common
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
-    , color           :: Optional MantineColor
-    , completedIcon   :: Optional StepFragmentComponent
-    , description     :: Optional StepFragmentComponent
-    , icon            :: Optional StepFragmentComponent
+    , color           :: MantineColor
+    , completedIcon   :: StepFragmentComponent
+    , description     :: StepFragmentComponent
+    , icon            :: StepFragmentComponent
     , iconPosition    :: StepperIconPosition
-    , iconSize        :: Optional Pixels
-    , label           :: Optional StepFragmentComponent
+    , iconSize        :: Pixels
+    , label           :: StepFragmentComponent
     , loading         :: Boolean
-    , orientation     :: Optional Orientation
-    , progressIcon    :: Optional StepFragmentComponent
-    , state           :: Optional StepState
-    , step            :: Optional Number
+    , orientation     :: Orientation
+    , progressIcon    :: StepFragmentComponent
+    , state           :: StepState
+    , step            :: Number
     , withIcon        :: Boolean
     )
 
@@ -128,33 +145,38 @@ instance ToFFI StepState StepStateImpl where
     StepStateProgress  -> "stepProgress"
     StepStateCompleted -> "stepCompleted"
 
-type StepperStepPropsImpl =
-  MantineComponentImpl
+type Props_StepperStepImpl =
+  Props_CommonImpl
     ( allowStepClick  :: Boolean
     , allowStepSelect :: Boolean
     , children        :: Array JSX
-    , color           :: OptionalImpl MantineColorImpl
-    , completedIcon   :: OptionalImpl StepFragmentComponentImpl
-    , description     :: OptionalImpl StepFragmentComponentImpl
-    , icon            :: OptionalImpl StepFragmentComponentImpl
+    , color           :: MantineColorImpl
+    , completedIcon   :: StepFragmentComponentImpl
+    , description     :: StepFragmentComponentImpl
+    , icon            :: StepFragmentComponentImpl
     , iconPosition    :: StepperIconPositionImpl
-    , iconSize        :: OptionalImpl PixelsImpl
-    , label           :: OptionalImpl StepFragmentComponentImpl
+    , iconSize        :: PixelsImpl
+    , label           :: StepFragmentComponentImpl
     , loading         :: Boolean
-    , orientation     :: OptionalImpl OrientationImpl
-    , progressIcon    :: OptionalImpl StepFragmentComponentImpl
-    , state           :: OptionalImpl StepStateImpl
-    , step            :: OptionalImpl Number
+    , orientation     :: OrientationImpl
+    , progressIcon    :: StepFragmentComponentImpl
+    , state           :: StepStateImpl
+    , step            :: Number
     , withIcon        :: Boolean
     )
 
-stepperCompleted :: (StepperCompletedProps -> StepperCompletedProps) -> JSX
-stepperCompleted = mkTrivialComponent stepperCompletedComponent
+stepperCompleted
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_StepperCompleted
+  => Union attrsImpl attrsImpl_ Props_StepperCompletedImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+stepperCompleted = element (unsafeCoerce stepperCompletedComponent) <<< toNative
 
 stepperCompleted_ :: Array JSX -> JSX
-stepperCompleted_ children = stepperCompleted _ { children = children }
+stepperCompleted_ children = stepperCompleted { children }
 
-foreign import stepperCompletedComponent :: ReactComponent StepperCompletedPropsImpl
+foreign import stepperCompletedComponent :: ReactComponent (Record Props_StepperCompletedImpl)
 
-type StepperCompletedProps     = MantineComponent     ( children :: Array JSX )
-type StepperCompletedPropsImpl = MantineComponentImpl ( children :: Array JSX )
+type Props_StepperCompleted     = Props_Common     ( children :: Array JSX )
+type Props_StepperCompletedImpl = Props_CommonImpl ( children :: Array JSX )

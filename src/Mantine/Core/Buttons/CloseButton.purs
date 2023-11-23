@@ -1,33 +1,38 @@
 module Mantine.Core.Buttons.CloseButton
   ( closeButton
-  , CloseButtonProps
+  , Props_CloseButton
 
-  , CloseButtonPropsImpl
+  , Props_CloseButtonImpl
   ) where
 
 import Mantine.Core.Prelude
 
-closeButton :: (CloseButtonProps -> CloseButtonProps) -> JSX
-closeButton = mkTrivialComponent closeButtonComponent
+closeButton
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_CloseButton
+  => Union attrsImpl attrsImpl_ Props_CloseButtonImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+closeButton = element (unsafeCoerce closeButtonComponent) <<< toNative
 
-foreign import closeButtonComponent :: ReactComponent CloseButtonPropsImpl
+foreign import closeButtonComponent :: ReactComponent (Record Props_CloseButtonImpl)
 
-type CloseButtonProps =
-  MantineComponent
+type Props_CloseButton =
+  Props_Common
     ( children :: Array JSX
     , disabled :: Boolean
-    , iconSize :: Optional MantineNumberSize
-    , onClick  :: Optional EventHandler
-    , radius   :: Optional MantineNumberSize
-    , size     :: Optional MantineNumberSize
+    , iconSize :: MantineNumberSize
+    , onClick  :: EventHandler
+    , radius   :: MantineNumberSize
+    , size     :: MantineNumberSize
     )
 
-type CloseButtonPropsImpl =
-  MantineComponentImpl
+type Props_CloseButtonImpl =
+  Props_CommonImpl
     ( children :: Array JSX
     , disabled :: Boolean
-    , iconSize :: OptionalImpl MantineNumberSizeImpl
-    , onClick  :: OptionalImpl EventHandler
-    , radius   :: OptionalImpl MantineNumberSizeImpl
-    , size     :: OptionalImpl MantineNumberSizeImpl
+    , iconSize :: MantineNumberSizeImpl
+    , onClick  :: EventHandler
+    , radius   :: MantineNumberSizeImpl
+    , size     :: MantineNumberSizeImpl
     )

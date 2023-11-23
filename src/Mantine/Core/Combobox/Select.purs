@@ -1,101 +1,100 @@
 module Mantine.Core.Combobox.Select
   ( select
-  , SelectProps
+  , Props_Select
+  , Props_SelectImpl
 
   , multiSelect
-  , MultiSelectProps
+  , Props_MultiSelect
+  , Props_MultiSelectImpl
 
   , CheckIconPosition(..)
+  , CheckIconPositionImpl
   , ClearablePropsRow
-  , Clearable(..)
-  , ClearableImpl
+  , ClearablePropsRowImpl
   , SelectItem
+  , SelectItemImpl
   , SelectPropsRow
+  , SelectPropsRowImpl
   , BaseSelectPropsRow
+  , BaseSelectPropsRowImpl
 
   , module Mantine.Core.Inputs.ClearButtonProps
-
-  , SelectItemImpl
-  , BaseSelectPropsRowImpl
-  , ClearablePropsRowImpl
-  , baseSelectToImpl
   ) where
 
-import Prelude (join)
-import Data.Maybe (fromMaybe)
-import Effect.Uncurried (mkEffectFn1)
-import Mantine.Core.Combobox.Combobox (ComboboxProps, ComboboxPropsImpl)
+import Mantine.Core.Combobox.Combobox (Props_Combobox, Props_ComboboxImpl)
 import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
-import Mantine.Core.Inputs.Input (InputPropsRow, InputPropsRowImpl, WithInputContainer, WithInputContainerImpl)
+import Mantine.Core.Inputs.Input (Props_InputRow, Props_InputRowImpl, WithInputContainer, WithInputContainerImpl)
 import Mantine.Core.Prelude
-import Prim.Row (class Lacks)
-import Prim.RowList (class RowToList)
-import Mantine.FFI (class RecordToFFI)
 
-select :: (SelectProps -> SelectProps) -> JSX
-select = mkComponent selectComponent selectToImpl defaultMantineComponent_
+select
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Select
+  => Union attrsImpl attrsImpl_ Props_SelectImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+select = element (unsafeCoerce selectComponent) <<< toNative
 
-foreign import selectComponent :: ReactComponent SelectPropsImpl
+foreign import selectComponent :: ReactComponent (Record Props_SelectImpl)
 
-type SelectProps =
-  MantineComponent
-    ( allowDeselect :: Optional Boolean
+type Props_Select =
+  Props_Common
+    ( allowDeselect :: Boolean
     | SelectPropsRow (Maybe String)
     )
 
-multiSelect :: (MultiSelectProps -> MultiSelectProps) -> JSX
-multiSelect = mkComponent multiSelectComponent multiSelectToImpl defaultMantineComponent_
+multiSelect
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_MultiSelect
+  => Union attrsImpl attrsImpl_ Props_MultiSelectImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+multiSelect = element (unsafeCoerce multiSelectComponent) <<< toNative
 
-foreign import multiSelectComponent :: ReactComponent MultiSelectPropsImpl
+foreign import multiSelectComponent :: ReactComponent (Record Props_MultiSelectImpl)
 
-type MultiSelectProps =
-  MantineComponent
+type Props_MultiSelect =
+  Props_Common
     ( hidePickedOptions :: Boolean
-    , maxValues         :: Optional Int
+    , maxValues         :: Int
     | SelectPropsRow (Array String)
     )
 
 type SelectPropsRow items =
     ( checkIconPosition   :: CheckIconPosition
-    , nothingFoundMessage :: Optional JSX
+    , nothingFoundMessage :: JSX
     , searchable          :: Boolean
     , withCheckIcon       :: Boolean
     | BaseSelectPropsRow items
     )
 
 type BaseSelectPropsRow items =
-    ( comboboxProps             :: Optional ComboboxProps
+    ( comboboxProps             :: Record Props_Combobox
     , data                      :: Array SelectItem
-    , defaultDropdownOpened     :: Optional Boolean
-    , defaultSearchValue        :: Optional String
-    , defaultValue              :: Optional items
-    , dropdownOpened            :: Optional Boolean
-    , filter                    :: Optional (SelectItem -> Boolean)
-    , limit                     :: Optional Int
-    , maxDropdownHeight         :: Optional Pixels
-    , onChange                  :: Optional (items -> Effect Unit)
-    , onDropdownClose           :: Optional (Effect Unit)
-    , onDropdownOpen            :: Optional (Effect Unit)
+    , defaultDropdownOpened     :: Boolean
+    , defaultSearchValue        :: String
+    , dropdownOpened            :: Boolean
+    , filter                    :: SelectItem -> Boolean
+    , limit                     :: Int
+    , maxDropdownHeight         :: Pixels
+    , onDropdownClose           :: Effect Unit
+    , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandler String
     , onSearchChange            :: ValueHandler String
-    , searchValue               :: Optional String
+    , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: Optional items
-    , withScrollArea            :: Optional Boolean
-    | ClearablePropsRow + WithInputContainer + InputPropsRow
+    , withScrollArea            :: Boolean
+    | Controlled_ items + ClearablePropsRow + WithInputContainer + Props_InputRow
     )
 
 type ClearablePropsRow rest =
-  ( clearable :: Clearable
+  ( clearable        :: Boolean
+  , clearButtonProps :: ClearButtonProps
   | rest
   )
 
 data CheckIconPosition
   = CheckIconPositionLeft
   | CheckIconPositionRight
-
-instance DefaultValue CheckIconPosition where
-  defaultValue = CheckIconPositionLeft
 
 type CheckIconPositionImpl = String
 
@@ -111,52 +110,36 @@ type SelectItem =
   , group    :: Optional String
   }
 
-data Clearable
-  = NotClearable
-  | Clearable ClearButtonProps
-
-instance DefaultValue Clearable where defaultValue = NotClearable
-
-type ClearableImpl = { | ClearablePropsRowImpl () }
-
-instance ToFFI Clearable ClearableImpl where
-  toNative = toNative <<< case _ of
-    Clearable p  -> { clearable: true,  clearButtonProps: Optional (pure p) }
-    NotClearable -> { clearable: false, clearButtonProps: Optional  Nothing }
-
 type SelectPropsRowImpl items =
     ( checkIconPosition   :: CheckIconPositionImpl
-    , nothingFoundMessage :: OptionalImpl JSX
+    , nothingFoundMessage :: JSX
     , searchable          :: Boolean
     , withCheckIcon       :: Boolean
     | BaseSelectPropsRowImpl items
     )
 
 type BaseSelectPropsRowImpl items =
-    ( comboboxProps             :: OptionalImpl ComboboxPropsImpl
+    ( comboboxProps             :: Record Props_ComboboxImpl
     , data                      :: Array SelectItemImpl
-    , defaultDropdownOpened     :: OptionalImpl Boolean
-    , defaultSearchValue        :: OptionalImpl String
-    , defaultValue              :: OptionalImpl items
-    , dropdownOpened            :: OptionalImpl Boolean
-    , filter                    :: OptionalImpl (SelectItemImpl -> Boolean)
-    , limit                     :: OptionalImpl Number
-    , maxDropdownHeight         :: OptionalImpl PixelsImpl
-    , onChange                  :: OptionalImpl (EffectFn1 (Nullable items) Unit)
-    , onDropdownClose           :: OptionalImpl (Effect Unit)
-    , onDropdownOpen            :: OptionalImpl (Effect Unit)
+    , defaultDropdownOpened     :: Boolean
+    , defaultSearchValue        :: String
+    , dropdownOpened            :: Boolean
+    , filter                    :: SelectItemImpl -> Boolean
+    , limit                     :: Number
+    , maxDropdownHeight         :: PixelsImpl
+    , onDropdownClose           :: Effect Unit
+    , onDropdownOpen            :: Effect Unit
     , onOptionSubmit            :: ValueHandlerImpl String
     , onSearchChange            :: ValueHandlerImpl String
-    , searchValue               :: OptionalImpl String
+    , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
-    , value                     :: OptionalImpl items
-    , withScrollArea            :: OptionalImpl Boolean
-    | ClearablePropsRowImpl + WithInputContainerImpl + InputPropsRowImpl
+    , withScrollArea            :: Boolean
+    | ControlledImpl_ items + ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl
     )
 
 type ClearablePropsRowImpl restImpl =
   ( clearable        :: Boolean
-  , clearButtonProps :: OptionalImpl ClearButtonPropsImpl
+  , clearButtonProps :: ClearButtonPropsImpl
   | restImpl
   )
 
@@ -167,52 +150,15 @@ type SelectItemImpl =
   , group    :: OptionalImpl String
   }
 
-type SelectPropsImpl =
-  MantineComponentImpl
-    ( allowDeselect :: OptionalImpl Boolean
+type Props_SelectImpl =
+  Props_CommonImpl
+    ( allowDeselect :: Boolean
     | SelectPropsRowImpl (Nullable String)
     )
 
-selectToImpl :: SelectProps -> SelectPropsImpl
-selectToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< join <<< map toMaybe <<< toMaybe))
-
-type MultiSelectPropsImpl =
-  MantineComponentImpl
+type Props_MultiSelectImpl =
+  Props_CommonImpl
     ( hidePickedOptions :: Boolean
-    , maxValues         :: OptionalImpl Number
+    , maxValues         :: Number
     | SelectPropsRowImpl (Array String)
     )
-
-multiSelectToImpl :: MultiSelectProps -> MultiSelectPropsImpl
-multiSelectToImpl = baseSelectToImpl (\h -> mkEffectFn1 (h <<< fromMaybe [] <<< toMaybe))
-
-baseSelectToImpl :: forall items itemsImpl otherPropsRow otherPropsRowList otherPropsRowImpl
-  . RowToList otherPropsRow otherPropsRowList
-  => RecordToFFI otherPropsRowList otherPropsRow otherPropsRowImpl
-  => Lacks "clearable" otherPropsRow
-  => Lacks "filter"    otherPropsRow
-  => Lacks "onChange"  otherPropsRow
-  => ToFFI items itemsImpl
-  => ((items -> Effect Unit) -> (EffectFn1 (Nullable itemsImpl) Unit))
-  -> { filter   :: Optional (SelectItem -> Boolean)
-     , onChange :: Optional (items  -> Effect Unit)
-     | ClearablePropsRow + otherPropsRow
-     }
-  -> { filter   :: OptionalImpl (SelectItemImpl -> Boolean)
-     , onChange :: OptionalImpl (EffectFn1 (Nullable itemsImpl) Unit)
-     | ClearablePropsRowImpl + otherPropsRowImpl
-     }
-baseSelectToImpl onChangeToNative props =
-  let otherProps =
-        { filter:   toOptionalImpl $ (\f -> f <<< fromNative) <$> props.filter
-        , onChange: toOptionalImpl $ onChangeToNative <$> props.onChange
-        }
-
-      rest = toNative
-         <<< delete (Proxy :: Proxy "clearable")
-         <<< delete (Proxy :: Proxy "filter")
-         <<< delete (Proxy :: Proxy "onChange")
-
-      clearableProps = toNative props.clearable
-
-   in clearableProps `union` otherProps `union` rest props

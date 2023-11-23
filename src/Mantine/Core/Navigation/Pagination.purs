@@ -1,9 +1,12 @@
 module Mantine.Core.Navigation.Pagination
   ( pagination
   , pagination_
+  , Props_Pagination
+  , Props_PaginationImpl
   , Page(..)
+  , PageImpl
   , PageCount(..)
-  , PaginationProps
+  , PageCountImpl
   ) where
 
 import Prelude (class Eq, class Ord, class Show)
@@ -13,13 +16,18 @@ import Mantine.Core.Prelude
 
 -- Not supported components: Pagination.Root and its children: Pagination.First, Pagination.Previous, Pagination.Items, Pagination.Next, Pagination.Last
 
-pagination :: (PaginationProps -> PaginationProps) -> JSX
-pagination = mkComponentWithDefault paginationComponent defaultPaginationProps
+pagination
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Pagination
+  => Union attrsImpl attrsImpl_ Props_PaginationImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+pagination = element (unsafeCoerce paginationComponent) <<< toNative
 
 pagination_ :: JSX
-pagination_ = pagination identity
+pagination_ = pagination {}
 
-foreign import paginationComponent :: ReactComponent PaginationPropsImpl
+foreign import paginationComponent :: ReactComponent (Record Props_PaginationImpl)
 
 -- Not supported properties
 --   { dotsIcon        :: PaginationIcon
@@ -31,12 +39,12 @@ foreign import paginationComponent :: ReactComponent PaginationPropsImpl
 --   , previousIcon    :: PaginationIcon
 --   }
 
-type PaginationProps =
-  MantineComponent
+type Props_Pagination =
+  Props_Common
     ( boundaries     :: PageCount
-    , color          :: Optional MantineColor
+    , color          :: MantineColor
     , disabled       :: Boolean
-    , gap            :: Optional MantineNumberSize
+    , gap            :: MantineNumberSize
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit
@@ -49,21 +57,6 @@ type PaginationProps =
     , withEdges      :: Boolean
     | Controlled Page
     )
-
-defaultPaginationProps :: PaginationProps
-defaultPaginationProps =
-  defaultMantineComponent
-    { boundaries:     PageCount 1
-    , onFirstPage:    pure unit
-    , onLastPage:     pure unit
-    , onNextPage:     pure unit
-    , onPreviousPage: pure unit
-    , radius:         Preset Small
-    , siblings:       PageCount 1
-    , size:           Preset Medium
-    , total:          PageCount 1
-    , withControls:   true
-    }
 
 newtype Page = Page Int
 
@@ -92,12 +85,12 @@ type PageCountImpl = Number
 instance ToFFI PageCount PageCountImpl where
   toNative = toNumber <<< unwrap
 
-type PaginationPropsImpl =
-  MantineComponentImpl
+type Props_PaginationImpl =
+  Props_CommonImpl
     ( boundaries     :: PageCountImpl
-    , color          :: OptionalImpl MantineColorImpl
+    , color          :: MantineColorImpl
     , disabled       :: Boolean
-    , gap            :: OptionalImpl MantineNumberSizeImpl
+    , gap            :: MantineNumberSizeImpl
     , onFirstPage    :: Effect Unit
     , onLastPage     :: Effect Unit
     , onNextPage     :: Effect Unit

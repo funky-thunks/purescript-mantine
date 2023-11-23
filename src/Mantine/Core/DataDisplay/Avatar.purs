@@ -1,31 +1,40 @@
 module Mantine.Core.DataDisplay.Avatar
   ( avatar
-  , AvatarProps
+  , Props_Avatar
+  , Props_AvatarImpl
   , AvatarVariant(..)
+  , AvatarVariantImpl
 
   , avatarGroup
-  , AvatarGroupProps
+  , Props_AvatarGroup
+  , Props_AvatarGroupImpl
   ) where
 
 import Mantine.Core.Prelude
 
-avatar :: (AvatarProps -> AvatarProps) -> JSX
-avatar = mkComponent avatarComponent avatarToImpl defaultAvatarProps
+avatar
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Avatar
+  => Union attrsImpl attrsImpl_ Props_AvatarImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+avatar = element (unsafeCoerce avatarComponent) <<< toNative
 
-foreign import avatarComponent :: ReactComponent AvatarPropsImpl
+foreign import avatarComponent :: ReactComponent (Record Props_AvatarImpl)
 
 -- Not supported properties
 --   { imageProps :: React.ComponentPropsWithoutRef<"img">
 --   }
 
-type AvatarProps =
-  MantineComponent
-    ( alt      :: Optional String
+type Props_Avatar =
+  Props_Common
+    ( alt      :: String
     , children :: Array JSX
-    , color    :: Optional MantineColor
+    , color    :: MantineColor
+    , gradient :: MantineGradient
     , radius   :: MantineNumberSize
     , size     :: MantineNumberSize
-    , src      :: Optional String
+    , src      :: String
     , variant  :: AvatarVariant
     )
 
@@ -36,9 +45,7 @@ data AvatarVariant
   | AvatarVariantTransparent
   | AvatarVariantWhite
   | AvatarVariantDefault
-  | AvatarVariantGradient MantineGradient
-
-instance DefaultValue AvatarVariant where defaultValue = AvatarVariantLight
+  | AvatarVariantGradient
 
 type AvatarVariantImpl = String
 
@@ -50,48 +57,38 @@ instance ToFFI AvatarVariant AvatarVariantImpl where
     AvatarVariantTransparent -> "transparent"
     AvatarVariantWhite       -> "white"
     AvatarVariantDefault     -> "default"
-    AvatarVariantGradient _  -> "gradient"
+    AvatarVariantGradient    -> "gradient"
 
-defaultAvatarProps :: AvatarProps
-defaultAvatarProps =
-  defaultMantineComponent
-    { size:   Preset Medium
-    , radius: Preset Small
-    }
-
-type AvatarPropsImpl =
-  MantineComponentImpl
-    ( alt      :: OptionalImpl String
+type Props_AvatarImpl =
+  Props_CommonImpl
+    ( alt      :: String
     , children :: Array JSX
-    , color    :: OptionalImpl MantineColorImpl
-    , gradient :: OptionalImpl MantineGradientImpl
+    , color    :: MantineColorImpl
+    , gradient :: MantineGradientImpl
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
-    , src      :: OptionalImpl String
+    , src      :: String
     , variant  :: AvatarVariantImpl
     )
 
-avatarToImpl :: AvatarProps -> AvatarPropsImpl
-avatarToImpl props = toNative (props `union` { gradient: getGradient props.variant })
+avatarGroup
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AvatarGroup
+  => Union attrsImpl attrsImpl_ Props_AvatarGroupImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+avatarGroup = element (unsafeCoerce avatarGroupComponent) <<< toNative
 
-getGradient :: AvatarVariant -> Optional MantineGradient
-getGradient = Optional <<< case _ of
-  AvatarVariantGradient g -> pure g
-  _                       -> Nothing
+foreign import avatarGroupComponent :: ReactComponent (Record Props_AvatarGroupImpl)
 
-avatarGroup :: (AvatarGroupProps -> AvatarGroupProps) -> JSX
-avatarGroup = mkTrivialComponent avatarGroupComponent
-
-foreign import avatarGroupComponent :: ReactComponent AvatarGroupPropsImpl
-
-type AvatarGroupProps =
-  MantineComponent
+type Props_AvatarGroup =
+  Props_Common
     ( children :: Array JSX
-    , spacing  :: Optional MantineNumberSize
+    , spacing  :: MantineNumberSize
     )
 
-type AvatarGroupPropsImpl =
-  MantineComponentImpl
+type Props_AvatarGroupImpl =
+  Props_CommonImpl
     ( children :: Array JSX
-    , spacing  :: OptionalImpl MantineNumberSizeImpl
+    , spacing  :: MantineNumberSizeImpl
     )

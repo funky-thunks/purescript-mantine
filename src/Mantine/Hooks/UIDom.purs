@@ -335,10 +335,7 @@ type UseScrollIntoViewResultImpl =
   }
 
 useScrollIntoView :: UseScrollIntoViewOptions -> Hook UseScrollIntoView UseScrollIntoViewResult
-useScrollIntoView options =
-  let toImpl opts = rest opts `union` { easing: toOptionalImpl opts.easing }
-      rest = toNative <<< delete (Proxy :: Proxy "easing")
-   in unsafeHook (fromNative <$> runEffectFn1 useScrollIntoViewImpl (toImpl options))
+useScrollIntoView = mkHook1 useScrollIntoViewImpl
 
 type ViewportDimensions =
   { height :: Number

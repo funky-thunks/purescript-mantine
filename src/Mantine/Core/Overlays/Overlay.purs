@@ -1,39 +1,44 @@
 module Mantine.Core.Overlays.Overlay
   ( overlay
-  , OverlayProps
+  , Props_Overlay
 
-  , OverlayPropsImpl
+  , Props_OverlayImpl
   ) where
 
 import Mantine.Core.Prelude
 
-overlay :: (OverlayProps -> OverlayProps) -> JSX
-overlay = mkComponent overlayComponent toNative defaultMantineComponent_
+overlay
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Overlay
+  => Union attrsImpl attrsImpl_ Props_OverlayImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+overlay = element (unsafeCoerce overlayComponent) <<< toNative
 
-foreign import overlayComponent :: ReactComponent OverlayPropsImpl
+foreign import overlayComponent :: ReactComponent (Record Props_OverlayImpl)
 
-type OverlayProps =
-  MantineComponent
-    ( backgroundOpacity :: Optional Number
-    , blur              :: Optional Number
+type Props_Overlay =
+  Props_Common
+    ( backgroundOpacity :: Number
+    , blur              :: Int
     , center            :: Boolean
     , children          :: Array JSX
-    , color             :: Optional MantineColor
+    , color             :: MantineColor
     , fixed             :: Boolean
-    , gradient          :: Optional String
-    , radius            :: Optional MantineNumberSize
-    , zIndex            :: Optional ZIndex
+    , gradient          :: String
+    , radius            :: MantineNumberSize
+    , zIndex            :: ZIndex
     )
 
-type OverlayPropsImpl =
-  MantineComponentImpl
-    ( backgroundOpacity :: OptionalImpl Number
-    , blur              :: OptionalImpl Number
+type Props_OverlayImpl =
+  Props_CommonImpl
+    ( backgroundOpacity :: Number
+    , blur              :: Number
     , center            :: Boolean
     , children          :: Array JSX
-    , color             :: OptionalImpl MantineColorImpl
+    , color             :: MantineColorImpl
     , fixed             :: Boolean
-    , gradient          :: OptionalImpl String
-    , radius            :: OptionalImpl MantineNumberSizeImpl
-    , zIndex            :: OptionalImpl ZIndexImpl
+    , gradient          :: String
+    , radius            :: MantineNumberSizeImpl
+    , zIndex            :: ZIndexImpl
     )

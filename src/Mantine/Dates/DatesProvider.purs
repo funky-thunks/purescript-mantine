@@ -1,24 +1,29 @@
 module Mantine.Dates.DatesProvider
   ( datesProvider
-  , DatesProviderProps
+  , Props_DatesProvider
+  , Props_DatesProviderImpl
+  , DatesSettings
+  , DatesSettingsImpl
   , Locale(..)
   , Timezone(..)
   ) where
 
 import Mantine.Dates.Prelude
 
-datesProvider :: (DatesProviderProps -> DatesProviderProps) -> JSX
-datesProvider = mkComponent datesProviderComponent datesProviderToImpl defaultValue
+datesProvider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_DatesProvider
+  => Union attrsImpl attrsImpl_ Props_DatesProviderImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+datesProvider = element (unsafeCoerce datesProviderComponent) <<< toNative
 
-foreign import datesProviderComponent :: ReactComponent DatesProviderPropsImpl
+foreign import datesProviderComponent :: ReactComponent (Record Props_DatesProviderImpl)
 
-type DatesProviderProps =
-  { children       :: Array JSX
-  , locale         :: Optional Locale
-  , timezone       :: Optional Timezone
-  , firstDayOfWeek :: Optional DayOfWeek
-  , weekendDays    :: Optional (Array DayOfWeek)
-  }
+type Props_DatesProvider =
+  ( children :: Array JSX
+  , settings :: DatesSettings
+  )
 
 newtype Locale = Locale String
 
@@ -30,9 +35,16 @@ newtype Timezone = Timezone String
 instance ToFFI Timezone String where
   toNative (Timezone tz) = tz
 
-type DatesProviderPropsImpl =
-  { children :: Array JSX
+type Props_DatesProviderImpl =
+  ( children :: Array JSX
   , settings :: DatesSettingsImpl
+  )
+
+type DatesSettings =
+  { locale         :: Optional String
+  , firstDayOfWeek :: Optional Number
+  , weekendDays    :: Optional (Array Number)
+  , timezone       :: Optional String
   }
 
 type DatesSettingsImpl =
@@ -41,8 +53,3 @@ type DatesSettingsImpl =
   , weekendDays    :: OptionalImpl (Array Number)
   , timezone       :: OptionalImpl String
   }
-
-datesProviderToImpl :: DatesProviderProps -> DatesProviderPropsImpl
-datesProviderToImpl props@{ children } =
-  let settings = toNative (delete (Proxy :: Proxy "children") props)
-   in { children, settings }

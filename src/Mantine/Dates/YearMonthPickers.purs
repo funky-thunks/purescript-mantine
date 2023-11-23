@@ -1,77 +1,92 @@
 module Mantine.Dates.YearMonthPickers
   ( yearPicker
-  , YearPickerProps
+  , Props_YearPicker
+  , Props_YearPickerImpl
 
   , monthPicker
-  , MonthPickerProps
-  , MonthPickerBaseProps
+  , Props_MonthPicker
+  , Props_MonthPickerImpl
+  , Props_MonthPickerBase
+  , Props_MonthPickerBaseImpl
   , MonthPickerLevel(..)
+  , MonthPickerLevelImpl
 
   , monthPickerInput
-  , MonthPickerInputProps
+  , Props_MonthPickerInput
+  , Props_MonthPickerInputImpl
 
   , yearPickerInput
-  , YearPickerInputProps
+  , Props_YearPickerInput
+  , Props_YearPickerInputImpl
 
-  , YearMonthPickerProps
+  , Props_YearMonthPicker
+  , Props_YearMonthPickerImpl
   ) where
 
 import Mantine.Dates.Calendar (DatePickerType, DatePickerTypeImpl)
 import Mantine.Dates.Prelude
 
-yearPicker :: (YearPickerProps -> YearPickerProps) -> JSX
-yearPicker = mkTrivialComponent yearPickerComponent
+yearPicker
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_YearPicker
+  => Union attrsImpl attrsImpl_ Props_YearPickerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+yearPicker = element (unsafeCoerce yearPickerComponent) <<< toNative
 
-foreign import yearPickerComponent :: ReactComponent YearPickerPropsImpl
+foreign import yearPickerComponent :: ReactComponent (Record Props_YearPickerImpl)
 
-type YearPickerProps =
-  YearMonthPickerProps
+type Props_YearPicker =
+  Props_YearMonthPicker
     ( onYearSelect :: ValueHandler JSDate
-    , size         :: Optional MantineSize
+    , size         :: MantineSize
     )
 
-type YearPickerPropsImpl =
-  YearMonthPickerPropsImpl
+type Props_YearPickerImpl =
+  Props_YearMonthPickerImpl
     ( onYearSelect :: ValueHandlerImpl JSDate
-    , size         :: OptionalImpl MantineSizeImpl
+    , size         :: MantineSizeImpl
     )
 
-monthPicker :: (MonthPickerProps -> MonthPickerProps) -> JSX
-monthPicker = mkTrivialComponent monthPickerComponent
+monthPicker
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_MonthPicker
+  => Union attrsImpl attrsImpl_ Props_MonthPickerImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+monthPicker = element (unsafeCoerce monthPickerComponent) <<< toNative
 
-foreign import monthPickerComponent :: ReactComponent MonthPickerPropsImpl
+foreign import monthPickerComponent :: ReactComponent (Record Props_MonthPickerImpl)
 
-type MonthPickerProps =
-  MonthPickerBaseProps
+type Props_MonthPicker =
+  Props_MonthPickerBase
     ( onMonthSelect :: ValueHandler JSDate
-    , size          :: Optional MantineSize
+    , size          :: MantineSize
     )
 
-type MonthPickerPropsImpl =
-  MonthPickerBasePropsImpl
+type Props_MonthPickerImpl =
+  Props_MonthPickerBaseImpl
     ( onMonthSelect :: ValueHandlerImpl JSDate
-    , size          :: OptionalImpl MantineSizeImpl
+    , size          :: MantineSizeImpl
     )
 
-type MonthPickerBaseProps rest =
-  YearMonthPickerProps
-    ( defaultLevel         :: Optional MonthPickerLevel
-    , getMonthControlProps :: Optional (DateFunction PickerControlProps)
-    , level                :: Optional MonthPickerLevel
-    , maxLevel             :: Optional MonthPickerLevel
-    , monthsListFormat     :: Optional String
+type Props_MonthPickerBase rest =
+  Props_YearMonthPicker
+    ( defaultLevel         :: MonthPickerLevel
+    , getMonthControlProps :: DateFunction PickerControlProps
+    , level                :: MonthPickerLevel
+    , maxLevel             :: MonthPickerLevel
+    , monthsListFormat     :: String
     , onLevelChange        :: ValueHandler MonthPickerLevel
     , onNextYear           :: ValueHandler JSDate
     , onPreviousYear       :: ValueHandler JSDate
-    , yearLabelFormat      :: Optional DateFormat
+    , yearLabelFormat      :: DateFormat
     | rest
     )
 
 data MonthPickerLevel
   = MonthPickerLevelDecade
   | MonthPickerLevelYear
-
-instance DefaultValue MonthPickerLevel where defaultValue = MonthPickerLevelYear
 
 type MonthPickerLevelImpl = String
 
@@ -84,68 +99,68 @@ instance FromFFI MonthPickerLevelImpl MonthPickerLevel where
   fromNative = case _ of
     "decade" -> MonthPickerLevelDecade
     "year"   -> MonthPickerLevelYear
-    _ -> defaultValue
+    _        -> MonthPickerLevelYear
 
-type MonthPickerBasePropsImpl rest =
-  YearMonthPickerPropsImpl
-    ( defaultLevel         :: OptionalImpl MonthPickerLevelImpl
-    , getMonthControlProps :: OptionalImpl (DateFunctionImpl PickerControlPropsImpl)
-    , level                :: OptionalImpl MonthPickerLevelImpl
-    , maxLevel             :: OptionalImpl MonthPickerLevelImpl
-    , monthsListFormat     :: OptionalImpl String
+type Props_MonthPickerBaseImpl rest =
+  Props_YearMonthPickerImpl
+    ( defaultLevel         :: MonthPickerLevelImpl
+    , getMonthControlProps :: DateFunctionImpl PickerControlPropsImpl
+    , level                :: MonthPickerLevelImpl
+    , maxLevel             :: MonthPickerLevelImpl
+    , monthsListFormat     :: String
     , onLevelChange        :: ValueHandlerImpl MonthPickerLevelImpl
     , onNextYear           :: ValueHandlerImpl JSDate
     , onPreviousYear       :: ValueHandlerImpl JSDate
-    , yearLabelFormat      :: OptionalImpl DateFormatImpl
+    , yearLabelFormat      :: DateFormatImpl
     | rest
     )
 
-type YearMonthPickerProps rest =
+type Props_YearMonthPicker rest =
   DateComponent
-    ( allowDeselect          :: Optional Boolean
-    , allowSingleDateInRange :: Optional Boolean
-    , defaultDate            :: Optional JSDate
-    , defaultValue           :: Optional DateValue
+    ( allowDeselect          :: Boolean
+    , allowSingleDateInRange :: Boolean
+    , defaultDate            :: JSDate
+    , defaultValue           :: DateValue
     , onChange               :: ValueHandler DateValue
     , type                   :: DatePickerType
-    , value                  :: Optional DateValue
+    , value                  :: DateValue
     | rest
     )
 
-type YearMonthPickerPropsImpl rest =
+type Props_YearMonthPickerImpl rest =
   DateComponentImpl
-    ( allowDeselect          :: OptionalImpl Boolean
-    , allowSingleDateInRange :: OptionalImpl Boolean
-    , defaultDate            :: OptionalImpl JSDate
-    , defaultValue           :: OptionalImpl DateValueImpl
+    ( allowDeselect          :: Boolean
+    , allowSingleDateInRange :: Boolean
+    , defaultDate            :: JSDate
+    , defaultValue           :: DateValueImpl
     , onChange               :: ValueHandlerImpl DateValueImpl
     , type                   :: DatePickerTypeImpl
-    , value                  :: OptionalImpl DateValueImpl
+    , value                  :: DateValueImpl
     | rest
     )
 
-monthPickerInput :: (MonthPickerInputProps -> MonthPickerInputProps) -> JSX
-monthPickerInput = mkComponent monthPickerInputComponent monthPickerInputToImpl defaultMantineComponent_
+monthPickerInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_MonthPickerInput
+  => Union attrsImpl attrsImpl_ Props_MonthPickerInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+monthPickerInput = element (unsafeCoerce monthPickerInputComponent) <<< toNative
 
-foreign import monthPickerInputComponent :: ReactComponent MonthPickerInputPropsImpl
+foreign import monthPickerInputComponent :: ReactComponent (Record Props_MonthPickerInputImpl)
 
-type MonthPickerInputProps     = MonthPickerBaseProps     DateInputBaseProps
-type MonthPickerInputPropsImpl = MonthPickerBasePropsImpl DateInputBasePropsImpl
+type Props_MonthPickerInput     = Props_MonthPickerBase     Props_DateInputBase
+type Props_MonthPickerInputImpl = Props_MonthPickerBaseImpl Props_DateInputBaseImpl
 
-monthPickerInputToImpl :: MonthPickerInputProps -> MonthPickerInputPropsImpl
-monthPickerInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "clearable")
-   in toNative props.clearable `union` rest props
+yearPickerInput
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_YearPickerInput
+  => Union attrsImpl attrsImpl_ Props_YearPickerInputImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+yearPickerInput = element (unsafeCoerce yearPickerInputComponent) <<< toNative
 
-yearPickerInput :: (YearPickerInputProps -> YearPickerInputProps) -> JSX
-yearPickerInput = mkComponent yearPickerInputComponent yearPickerInputToImpl defaultMantineComponent_
+foreign import yearPickerInputComponent :: ReactComponent (Record Props_YearPickerInputImpl)
 
-foreign import yearPickerInputComponent :: ReactComponent YearPickerInputPropsImpl
-
-type YearPickerInputProps     = YearMonthPickerProps     DateInputBaseProps
-type YearPickerInputPropsImpl = YearMonthPickerPropsImpl DateInputBasePropsImpl
-
-yearPickerInputToImpl :: YearPickerInputProps -> YearPickerInputPropsImpl
-yearPickerInputToImpl props =
-  let rest = toNative <<< delete (Proxy :: Proxy "clearable")
-   in toNative props.clearable `union` rest props
+type Props_YearPickerInput     = Props_YearMonthPicker     Props_DateInputBase
+type Props_YearPickerInputImpl = Props_YearMonthPickerImpl Props_DateInputBaseImpl

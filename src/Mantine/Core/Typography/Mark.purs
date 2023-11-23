@@ -1,23 +1,29 @@
 module Mantine.Core.Typography.Mark
   ( mark
-  , MarkProps
+  , Props_Mark
+  , Props_MarkImpl
   ) where
 
 import Mantine.Core.Prelude
 
-mark :: (MarkProps -> MarkProps) -> JSX
-mark = mkTrivialComponent markComponent
+mark
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Mark
+  => Union attrsImpl attrsImpl_ Props_MarkImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+mark = element (unsafeCoerce markComponent) <<< toNative
 
-foreign import markComponent :: ReactComponent MarkPropsImpl
+foreign import markComponent :: ReactComponent (Record Props_MarkImpl)
 
-type MarkProps =
-  MantineComponent
+type Props_Mark =
+  Props_Common
     ( children :: String
-    , color    :: Optional MantineColor
+    , color    :: MantineColor
     )
 
-type MarkPropsImpl =
-  MantineComponentImpl
+type Props_MarkImpl =
+  Props_CommonImpl
     ( children :: String
-    , color    :: OptionalImpl MantineColorImpl
+    , color    :: MantineColorImpl
     )

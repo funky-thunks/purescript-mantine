@@ -1,51 +1,50 @@
 module Mantine.Core.Feedback.Notification
   ( notification
   , notification_
-  , NotificationProps
+  , Props_Notification
+  , Props_NotificationImpl
   ) where
 
-import Mantine.Core.Buttons.CloseButton (CloseButtonProps, CloseButtonPropsImpl)
+import Mantine.Core.Buttons.CloseButton (Props_CloseButton, Props_CloseButtonImpl)
 import Mantine.Core.Prelude
 
-notification :: (NotificationProps -> NotificationProps) -> JSX
-notification = mkComponentWithDefault notificationComponent defaultNotificationProps
+notification
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_Notification
+  => Union attrsImpl attrsImpl_ Props_NotificationImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+notification = element (unsafeCoerce notificationComponent) <<< toNative
 
 notification_ :: JSX -> JSX
-notification_ children = notification _ { children = children }
+notification_ children = notification { children }
 
-foreign import notificationComponent :: ReactComponent NotificationPropsImpl
+foreign import notificationComponent :: ReactComponent (Record Props_NotificationImpl)
 
-type NotificationProps =
-  MantineComponent
+type Props_Notification =
+  Props_Common
     ( children         :: JSX
-    , closeButtonProps :: Optional CloseButtonProps
-    , color            :: Optional MantineColor
-    , icon             :: Optional JSX
+    , closeButtonProps :: Record Props_CloseButton
+    , color            :: MantineColor
+    , icon             :: JSX
     , loading          :: Boolean
     , onClose          :: Effect Unit
-    , radius           :: Optional MantineNumberSize
-    , title            :: Optional JSX
+    , radius           :: MantineNumberSize
+    , title            :: JSX
     , withBorder       :: Boolean
     , withCloseButton  :: Boolean
     )
 
-defaultNotificationProps :: NotificationProps
-defaultNotificationProps =
-   defaultMantineComponent
-     { children: mempty
-     , onClose: pure unit
-     }
-
-type NotificationPropsImpl =
-  MantineComponentImpl
+type Props_NotificationImpl =
+  Props_CommonImpl
     ( children         :: JSX
-    , closeButtonProps :: OptionalImpl CloseButtonPropsImpl
-    , color            :: OptionalImpl MantineColorImpl
-    , icon             :: OptionalImpl JSX
+    , closeButtonProps :: Record Props_CloseButtonImpl
+    , color            :: MantineColorImpl
+    , icon             :: JSX
     , loading          :: Boolean
     , onClose          :: Effect Unit
-    , radius           :: OptionalImpl MantineNumberSizeImpl
-    , title            :: OptionalImpl JSX
+    , radius           :: MantineNumberSizeImpl
+    , title            :: JSX
     , withBorder       :: Boolean
     , withCloseButton  :: Boolean
     )
