@@ -21,7 +21,7 @@ module Mantine.Core.Combobox.Select
   , module Mantine.Core.Inputs.ClearButtonProps
   ) where
 
-import Mantine.Core.Combobox.Combobox (Props_Combobox, Props_ComboboxImpl)
+import Mantine.Core.Combobox.Combobox (Props_ComboboxInner, Props_ComboboxInnerImpl)
 import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
 import Mantine.Core.Inputs.Input (Props_InputRow, Props_InputRowImpl, WithInputContainer, WithInputContainerImpl)
 import Mantine.Core.Prelude
@@ -68,7 +68,7 @@ type SelectPropsRow items =
     )
 
 type BaseSelectPropsRow items =
-    ( comboboxProps             :: Record Props_Combobox
+    ( comboboxProps             :: Record Props_ComboboxInner
     , data                      :: Array SelectItem
     , defaultDropdownOpened     :: Boolean
     , defaultSearchValue        :: String
@@ -119,7 +119,7 @@ type SelectPropsRowImpl items =
     )
 
 type BaseSelectPropsRowImpl items =
-    ( comboboxProps             :: Record Props_ComboboxImpl
+    ( comboboxProps             :: Record Props_ComboboxInnerImpl
     , data                      :: Array SelectItemImpl
     , defaultDropdownOpened     :: Boolean
     , defaultSearchValue        :: String

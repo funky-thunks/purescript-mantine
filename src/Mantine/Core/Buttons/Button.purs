@@ -20,7 +20,7 @@ module Mantine.Core.Buttons.Button
 import Prelude (class Show, (<>))
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
+import Mantine.Core.Feedback.Loader (Props_LoaderInner, Props_LoaderInnerImpl)
 import Mantine.Core.Prelude
 
 button
@@ -38,20 +38,23 @@ foreign import buttonComponent :: ReactComponent (Record Props_ButtonImpl)
 
 type Props_Button =
   Props_Common
-    ( children     :: Array JSX
-    , color        :: MantineColor
-    , disabled     :: Boolean
-    , fullWidth    :: Boolean
-    , gradient     :: MantineGradient
-    , justify      :: JustifyContent
-    , leftSection  :: JSX
-    , loaderProps  :: Record Props_Loader
-    , loading      :: Boolean
-    , onClick      :: EventHandler
-    , radius       :: Radius
-    , rightSection :: JSX
-    , size         :: ButtonSize
-    , variant      :: ButtonVariant
+    ( children        :: Array JSX
+    , color           :: MantineColor
+    , component       :: String
+    , "data-disabled" :: Boolean
+    , disabled        :: Boolean
+    , fullWidth       :: Boolean
+    , gradient        :: MantineGradient
+    , href            :: String
+    , justify         :: JustifyContent
+    , leftSection     :: JSX
+    , loaderProps     :: Record Props_LoaderInner
+    , loading         :: Boolean
+    , onClick         :: EventHandler
+    , radius          :: Radius
+    , rightSection    :: JSX
+    , size            :: ButtonSize
+    , variant         :: ButtonVariant
     )
 
 data ButtonSize
@@ -74,6 +77,7 @@ data ButtonVariant
   | ButtonVariantTransparent
   | ButtonVariantWhite
   | ButtonVariantGradient
+  | ButtonVariantCustom String
 
 type ButtonVariantImpl = String
 
@@ -87,26 +91,30 @@ instance ToFFI ButtonVariant ButtonVariantImpl where
     ButtonVariantTransparent -> "transparent"
     ButtonVariantWhite       -> "white"
     ButtonVariantGradient    -> "gradient"
+    ButtonVariantCustom v    -> v
 
 derive instance genericVariant :: Generic ButtonVariant _
 instance showVariant :: Show ButtonVariant where show = genericShow
 
 type Props_ButtonImpl =
   Props_CommonImpl
-    ( children     :: Array JSX
-    , color        :: MantineColorImpl
-    , disabled     :: Boolean
-    , fullWidth    :: Boolean
-    , gradient     :: MantineGradientImpl
-    , justify      :: JustifyContentImpl
-    , leftSection  :: JSX
-    , loaderProps  :: Record Props_LoaderImpl
-    , loading      :: Boolean
-    , onClick      :: EventHandler
-    , radius       :: RadiusImpl
-    , rightSection :: JSX
-    , size         :: ButtonSizeImpl
-    , variant      :: ButtonVariantImpl
+    ( children        :: Array JSX
+    , color           :: MantineColorImpl
+    , component       :: String
+    , "data-disabled" :: Boolean
+    , disabled        :: Boolean
+    , fullWidth       :: Boolean
+    , gradient        :: MantineGradientImpl
+    , href            :: String
+    , justify         :: JustifyContentImpl
+    , leftSection     :: JSX
+    , loaderProps     :: Record Props_LoaderInnerImpl
+    , loading         :: Boolean
+    , onClick         :: EventHandler
+    , radius          :: RadiusImpl
+    , rightSection    :: JSX
+    , size            :: ButtonSizeImpl
+    , variant         :: ButtonVariantImpl
     )
 
 buttonGroup

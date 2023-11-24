@@ -32,14 +32,20 @@ module Mantine.Core.Inputs.Input
   , inputLabel
   , Props_InputLabel
   , Props_InputLabelImpl
+  , Props_InputLabelInner
+  , Props_InputLabelInnerImpl
 
   , inputDescription
   , Props_InputDescription
   , Props_InputDescriptionImpl
+  , Props_InputDescriptionInner
+  , Props_InputDescriptionInnerImpl
 
   , inputError
   , Props_InputError
   , Props_InputErrorImpl
+  , Props_InputErrorInner
+  , Props_InputErrorInnerImpl
 
   , Props_InputComponent
   , Props_InputComponentImpl
@@ -143,17 +149,17 @@ foreign import inputComponent :: ReactComponent (Record Props_InputImpl)
 type Props_Input = Props_Common Props_InputRow
 
 -- Not supported properties
---   { descriptionProps  :: Record<string, any>
---   , errorProps        :: Record<string, any>
---   , labelProps        :: Record<string, any>
---   , leftSectionProps  :: Record<string, any>
+--   { leftSectionProps  :: Record<string, any>
 --   , rightSectionProps :: Record<string, any>
 --   , wrapperProps      :: Record<string, any>
 --   }
 
 type Props_InputRow = Props_InputRow_ ()
 type Props_InputRow_ rest =
-  ( leftSection               :: JSX
+  ( descriptionProps          :: Record Props_InputDescriptionInner
+  , errorProps                :: Record Props_InputErrorInner
+  , labelProps                :: Record Props_InputLabelInner
+  , leftSection               :: JSX
   , leftSectionPointerEvents  :: PointerEvents
   , leftSectionWidth          :: Pixels
   , multiline                 :: Boolean
@@ -191,7 +197,10 @@ type Props_InputImpl = Props_CommonImpl Props_InputRowImpl
 
 type Props_InputRowImpl = Props_InputRowImpl_ ()
 type Props_InputRowImpl_ rest =
-  ( leftSection               :: JSX
+  ( descriptionProps          :: Record Props_InputDescriptionInnerImpl
+  , errorProps                :: Record Props_InputErrorInnerImpl
+  , labelProps                :: Record Props_InputLabelInnerImpl
+  , leftSection               :: JSX
   , leftSectionPointerEvents  :: PointerEventsImpl
   , leftSectionWidth          :: PixelsImpl
   , multiline                 :: Boolean
@@ -312,22 +321,19 @@ inputWrapper = element (unsafeCoerce inputWrapperComponent) <<< toNative
 
 foreign import inputWrapperComponent :: ReactComponent (Record Props_InputWrapperImpl)
 
--- Not supported properties
---   { descriptionProps :: Record<string, any>
---   , errorProps       :: Record<string, any>
---   , labelProps       :: Record<string, any>
---   }
-
 type Props_InputWrapper =
   Props_Common (
     WithInputContainer
       ( children          :: Array JSX
       , description       :: JSX
+      , descriptionProps  :: Record Props_InputDescriptionInner
       , error             :: JSX
+      , errorProps        :: Record Props_InputErrorInner
       , id                :: String
       , inputWrapperOrder :: Array InputWrapperOrder
       , label             :: JSX
       , labelElement      :: InputWrapperElement
+      , labelProps        :: Record Props_InputLabelInner
       , required          :: Boolean
       , size              :: MantineSize
       , withAsterisk      :: Boolean
@@ -348,11 +354,14 @@ type Props_InputWrapperImpl =
     WithInputContainerImpl
       ( children          :: Array JSX
       , description       :: JSX
+      , descriptionProps  :: Record Props_InputDescriptionInnerImpl
       , error             :: JSX
+      , errorProps        :: Record Props_InputErrorInnerImpl
       , id                :: String
       , inputWrapperOrder :: Array InputWrapperOrderImpl
       , label             :: JSX
       , labelElement      :: InputWrapperElementImpl
+      , labelProps        :: Record Props_InputLabelInnerImpl
       , required          :: Boolean
       , size              :: MantineSizeImpl
       , withAsterisk      :: Boolean
@@ -385,6 +394,18 @@ type Props_InputLabelImpl =
     , size         :: MantineSizeImpl
     )
 
+type Props_InputLabelInner =
+  ( labelElement :: Optional InputWrapperElement
+  , required     :: Optional Boolean
+  , size         :: Optional MantineSize
+  )
+
+type Props_InputLabelInnerImpl =
+  ( labelElement :: OptionalImpl InputWrapperElementImpl
+  , required     :: OptionalImpl Boolean
+  , size         :: OptionalImpl MantineSizeImpl
+  )
+
 inputDescription
   :: forall attrs attrs_ attrsImpl attrsImpl_
    . Union attrs     attrs_     Props_InputDescription
@@ -407,6 +428,14 @@ type Props_InputDescriptionImpl =
     , size     :: MantineSizeImpl
     )
 
+type Props_InputDescriptionInner =
+  ( size :: Optional MantineSize
+  )
+
+type Props_InputDescriptionInnerImpl =
+  ( size :: OptionalImpl MantineSizeImpl
+  )
+
 inputError
   :: forall attrs attrs_ attrsImpl attrsImpl_
    . Union attrs     attrs_     Props_InputError
@@ -428,6 +457,14 @@ type Props_InputErrorImpl =
     ( children :: Array JSX
     , size     :: MantineSizeImpl
     )
+
+type Props_InputErrorInner =
+  ( size :: Optional MantineSize
+  )
+
+type Props_InputErrorInnerImpl =
+  ( size :: OptionalImpl MantineSizeImpl
+  )
 
 type WithInputContainer rest =
   ( inputContainer :: JSX -> JSX

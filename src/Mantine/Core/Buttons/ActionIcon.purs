@@ -15,9 +15,12 @@ module Mantine.Core.Buttons.ActionIcon
 
   , Props_ActionIconRow
   , Props_ActionIconImplRow
+
+  , Props_ActionIconInner
+  , Props_ActionIconInnerImpl
   ) where
 
-import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
+import Mantine.Core.Feedback.Loader (Props_LoaderInner, Props_LoaderInnerImpl)
 import Mantine.Core.Prelude
 import Prim.Row (class Nub)
 import React.Icons (icon_)
@@ -44,12 +47,24 @@ type Props_ActionIconRow =
   ( color       :: MantineColor
   , disabled    :: Boolean
   , gradient    :: MantineGradient
-  , loaderProps :: Record Props_Loader
+  , loaderProps :: Record Props_LoaderInner
   , loading     :: Boolean
   , onClick     :: EventHandler
   , radius      :: MantineNumberSize
   , size        :: MantineNumberSize
   , variant     :: ActionIconVariant
+  )
+
+type Props_ActionIconInner =
+  ( color       :: Optional MantineColor
+  , disabled    :: Optional Boolean
+  , gradient    :: Optional MantineGradient
+  , loaderProps :: Optional (Record Props_LoaderInner)
+  , loading     :: Optional Boolean
+  , onClick     :: Optional EventHandler
+  , radius      :: Optional MantineNumberSize
+  , size        :: Optional MantineNumberSize
+  , variant     :: Optional ActionIconVariant
   )
 
 type Props_ActionIconImpl = Props_CommonImpl ( children :: Array JSX | Props_ActionIconImplRow )
@@ -58,12 +73,24 @@ type Props_ActionIconImplRow =
   ( color       :: MantineColorImpl
   , disabled    :: Boolean
   , gradient    :: MantineGradientImpl
-  , loaderProps :: Record Props_LoaderImpl
+  , loaderProps :: Record Props_LoaderInnerImpl
   , loading     :: Boolean
   , onClick     :: EventHandler
   , radius      :: MantineNumberSizeImpl
   , size        :: MantineNumberSizeImpl
   , variant     :: ActionIconVariantImpl
+  )
+
+type Props_ActionIconInnerImpl =
+  ( color       :: OptionalImpl MantineColorImpl
+  , disabled    :: OptionalImpl Boolean
+  , gradient    :: OptionalImpl MantineGradientImpl
+  , loaderProps :: OptionalImpl (Record Props_LoaderInnerImpl)
+  , loading     :: OptionalImpl Boolean
+  , onClick     :: OptionalImpl EventHandler
+  , radius      :: OptionalImpl MantineNumberSizeImpl
+  , size        :: OptionalImpl MantineNumberSizeImpl
+  , variant     :: OptionalImpl ActionIconVariantImpl
   )
 
 data ActionIconVariant

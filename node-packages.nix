@@ -198,6 +198,15 @@
           sha512 = "6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==";
           };
         };
+      "react-icons-4.7.1" = {
+        name = "react-icons";
+        packageName = "react-icons";
+        version = "4.7.1";
+        src = fetchurl {
+          url = "https://registry.npmjs.org/react-icons/-/react-icons-4.7.1.tgz";
+          sha512 = "yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw==";
+          };
+        };
       "react-is-16.13.1" = {
         name = "react-is";
         packageName = "react-is";
@@ -369,6 +378,7 @@
         (sources."prop-types-15.8.1")
         (sources."react-18.2.0")
         (sources."react-dom-18.2.0")
+        (sources."react-icons-4.7.1")
         (sources."react-is-16.13.1")
         (sources."react-number-format-5.3.1")
         (sources."react-remove-scroll-2.5.7")

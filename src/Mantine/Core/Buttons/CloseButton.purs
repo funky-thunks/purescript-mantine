@@ -1,8 +1,10 @@
 module Mantine.Core.Buttons.CloseButton
   ( closeButton
   , Props_CloseButton
-
   , Props_CloseButtonImpl
+
+  , Props_CloseButtonInner
+  , Props_CloseButtonInnerImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -35,4 +37,20 @@ type Props_CloseButtonImpl =
     , onClick  :: EventHandler
     , radius   :: MantineNumberSizeImpl
     , size     :: MantineNumberSizeImpl
+    )
+
+type Props_CloseButtonInner =
+    ( disabled :: Optional Boolean
+    , iconSize :: Optional MantineNumberSize
+    , onClick  :: Optional EventHandler
+    , radius   :: Optional MantineNumberSize
+    , size     :: Optional MantineNumberSize
+    )
+
+type Props_CloseButtonInnerImpl =
+    ( disabled :: OptionalImpl Boolean
+    , iconSize :: OptionalImpl MantineNumberSizeImpl
+    , onClick  :: OptionalImpl EventHandler
+    , radius   :: OptionalImpl MantineNumberSizeImpl
+    , size     :: OptionalImpl MantineNumberSizeImpl
     )
