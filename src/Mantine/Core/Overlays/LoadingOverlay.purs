@@ -6,7 +6,7 @@ module Mantine.Core.Overlays.LoadingOverlay
   ) where
 
 import Mantine.Core.Feedback.Loader (Props_LoaderInner, Props_LoaderInnerImpl)
-import Mantine.Core.Overlays.Overlay (Props_Overlay, Props_OverlayImpl)
+import Mantine.Core.Overlays.Overlay (Props_OverlayInner, Props_OverlayInnerImpl)
 import Mantine.Core.Prelude
 
 loadingOverlay
@@ -25,7 +25,7 @@ foreign import loadingOverlayComponent :: ReactComponent (Record Props_LoadingOv
 type Props_LoadingOverlay =
   Props_Common
     ( loaderProps     :: Record Props_LoaderInner
-    , overlayProps    :: Record Props_Overlay
+    , overlayProps    :: Record Props_OverlayInner
     , transitionProps :: MantineTransitionProps
     , visible         :: Boolean
     , zIndex          :: ZIndex
@@ -34,7 +34,7 @@ type Props_LoadingOverlay =
 type Props_LoadingOverlayImpl =
   Props_CommonImpl
     ( loaderProps     :: Record Props_LoaderInnerImpl
-    , overlayProps    :: Record Props_OverlayImpl
+    , overlayProps    :: Record Props_OverlayInnerImpl
     , transitionProps :: MantineTransitionPropsImpl
     , visible         :: Boolean
     , zIndex          :: ZIndexImpl

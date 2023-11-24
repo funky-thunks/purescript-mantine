@@ -21,8 +21,8 @@ module Mantine.Core.Overlays.Modal
   , ModalTransitionPropsImpl
   ) where
 
-import Mantine.Core.Buttons.CloseButton (Props_CloseButton, Props_CloseButtonImpl)
-import Mantine.Core.Overlays.Overlay (Props_Overlay, Props_OverlayImpl)
+import Mantine.Core.Buttons.CloseButton (Props_CloseButtonInner, Props_CloseButtonInnerImpl)
+import Mantine.Core.Overlays.Overlay (Props_OverlayInner, Props_OverlayInnerImpl)
 import Mantine.Core.Prelude
 
 modal
@@ -84,7 +84,7 @@ foreign import drawerComponent :: ReactComponent (Record Props_DrawerImpl)
 type Props_Drawer =
   ModalComponent
     ( children         :: Array JSX
-    , closeButtonProps :: Record Props_CloseButton
+    , closeButtonProps :: Record Props_CloseButtonInner
     , position         :: DrawerPosition
     )
 
@@ -106,7 +106,7 @@ instance ToFFI DrawerPosition DrawerPositionImpl where
 type Props_DrawerImpl =
   ModalComponentImpl
     ( children         :: Array JSX
-    , closeButtonProps :: Record Props_CloseButtonImpl
+    , closeButtonProps :: Record Props_CloseButtonInnerImpl
     , position         :: DrawerPositionImpl
     )
 
@@ -115,7 +115,7 @@ type ModalComponent rest =
     ( id              :: String
     , keepMounted     :: Boolean
     , opened          :: Boolean
-    , overlayProps    :: Record Props_Overlay
+    , overlayProps    :: Record Props_OverlayInner
     , padding         :: MantineNumberSize
     , shadow          :: MantineShadow
     , size            :: Dimension
@@ -143,7 +143,7 @@ type ModalComponentImpl rest =
     ( id              :: String
     , keepMounted     :: Boolean
     , opened          :: Boolean
-    , overlayProps    :: Record Props_OverlayImpl
+    , overlayProps    :: Record Props_OverlayInnerImpl
     , padding         :: MantineNumberSizeImpl
     , shadow          :: MantineShadowImpl
     , size            :: DimensionImpl

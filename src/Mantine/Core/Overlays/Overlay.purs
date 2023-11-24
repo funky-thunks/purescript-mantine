@@ -1,8 +1,10 @@
 module Mantine.Core.Overlays.Overlay
   ( overlay
   , Props_Overlay
-
   , Props_OverlayImpl
+
+  , Props_OverlayInner
+  , Props_OverlayInnerImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -42,3 +44,25 @@ type Props_OverlayImpl =
     , radius            :: MantineNumberSizeImpl
     , zIndex            :: ZIndexImpl
     )
+
+type Props_OverlayInner =
+  ( backgroundOpacity :: Optional Number
+  , blur              :: Optional Int
+  , center            :: Optional Boolean
+  , color             :: Optional MantineColor
+  , fixed             :: Optional Boolean
+  , gradient          :: Optional String
+  , radius            :: Optional MantineNumberSize
+  , zIndex            :: Optional ZIndex
+  )
+
+type Props_OverlayInnerImpl =
+  ( backgroundOpacity :: OptionalImpl Number
+  , blur              :: OptionalImpl Number
+  , center            :: OptionalImpl Boolean
+  , color             :: OptionalImpl MantineColorImpl
+  , fixed             :: OptionalImpl Boolean
+  , gradient          :: OptionalImpl String
+  , radius            :: OptionalImpl MantineNumberSizeImpl
+  , zIndex            :: OptionalImpl ZIndexImpl
+  )

@@ -12,6 +12,8 @@ module Mantine.Core.Combobox.Combobox
   , FloatingAxesOffsetsImpl
   , Offset(..)
   , OffsetImpl
+  , Props_ComboboxInner
+  , Props_ComboboxInnerImpl
 
   , useCombobox
   , UseCombobox
@@ -532,3 +534,61 @@ instance ToFFI EventsTargetType EventsTargetTypeImpl where
   toNative = case _ of
     EventsTargetTypeInput  -> "input"
     EventsTargetTypeButton -> "button"
+
+type Props_ComboboxInner =
+  ( arrowOffset                 :: Optional Pixels
+  , arrowPosition               :: Optional ComboboxArrowPosition
+  , arrowRadius                 :: Optional Pixels
+  , arrowSize                   :: Optional Pixels
+  , disabled                    :: Optional Boolean
+  , dropdownPadding             :: Optional Number
+  , keepMounted                 :: Optional Boolean
+  , middlewares                 :: Optional PopoverMiddlewares
+  , offset                      :: Optional Offset
+  , onClose                     :: Optional (Effect Unit)
+  , onOpen                      :: Optional (Effect Unit)
+  , onOptionSubmit              :: Optional (String -> Record Props_ComboboxOptionRow -> Effect Unit)
+  , onPositionChange            :: Optional (ValueHandler ComboboxFloatingPosition)
+  , position                    :: Optional ComboboxFloatingPosition
+  , radius                      :: Optional MantineNumberSize
+  , readOnly                    :: Optional Boolean
+  , resetSelectionOnOptionHover :: Optional Boolean
+  , returnFocus                 :: Optional Boolean
+  , shadow                      :: Optional MantineShadow
+  , size                        :: Optional MantineSize
+  , store                       :: Optional ComboboxStore
+  , transitionProps             :: Optional MantineTransitionProps
+  , width                       :: Optional ComboboxPopoverWidth
+  , withArrow                   :: Optional Boolean
+  , withinPortal                :: Optional Boolean
+  , zIndex                      :: Optional ZIndex
+  )
+
+type Props_ComboboxInnerImpl =
+  ( arrowOffset                 :: OptionalImpl PixelsImpl
+  , arrowPosition               :: OptionalImpl ComboboxArrowPositionImpl
+  , arrowRadius                 :: OptionalImpl PixelsImpl
+  , arrowSize                   :: OptionalImpl PixelsImpl
+  , disabled                    :: OptionalImpl Boolean
+  , dropdownPadding             :: OptionalImpl Number
+  , keepMounted                 :: OptionalImpl Boolean
+  , middlewares                 :: OptionalImpl PopoverMiddlewaresImpl
+  , offset                      :: OptionalImpl OffsetImpl
+  , onClose                     :: OptionalImpl (Effect Unit)
+  , onOpen                      :: OptionalImpl (Effect Unit)
+  , onOptionSubmit              :: OptionalImpl (EffectFn2 String (Record Props_ComboboxOptionRowImpl) Unit)
+  , onPositionChange            :: OptionalImpl (ValueHandlerImpl ComboboxFloatingPositionImpl)
+  , position                    :: OptionalImpl ComboboxFloatingPositionImpl
+  , radius                      :: OptionalImpl MantineNumberSizeImpl
+  , readOnly                    :: OptionalImpl Boolean
+  , resetSelectionOnOptionHover :: OptionalImpl Boolean
+  , returnFocus                 :: OptionalImpl Boolean
+  , shadow                      :: OptionalImpl MantineShadowImpl
+  , size                        :: OptionalImpl MantineSizeImpl
+  , store                       :: OptionalImpl ComboboxStoreImpl
+  , transitionProps             :: OptionalImpl MantineTransitionPropsImpl
+  , width                       :: OptionalImpl ComboboxPopoverWidthImpl
+  , withArrow                   :: OptionalImpl Boolean
+  , withinPortal                :: OptionalImpl Boolean
+  , zIndex                      :: OptionalImpl ZIndexImpl
+  )

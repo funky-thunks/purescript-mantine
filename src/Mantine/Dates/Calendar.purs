@@ -35,7 +35,7 @@ module Mantine.Dates.Calendar
   , DatePickerLevel3ComponentImpl
   ) where
 
-import Mantine.Core.Buttons.ActionIcon (Props_ActionIconRow, Props_ActionIconImplRow)
+import Mantine.Core.Buttons.ActionIcon (Props_ActionIconInner, Props_ActionIconInnerImpl)
 import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Overlays.Hovering (Props_Popover, Props_PopoverImpl)
 import Mantine.Core.Overlays.Modal (Props_SubModal, Props_SubModalImpl)
@@ -191,7 +191,7 @@ type Props_DateTimePicker =
     , modalProps        :: Record Props_SubModal
     , popoverProps      :: Record Props_Popover
     , sortDates         :: Boolean
-    , submitButtonProps :: Record Props_ActionIconRow
+    , submitButtonProps :: Record Props_ActionIconInner
     , timeInputProps    :: Record Props_TimeInput
     , valueFormat       :: String
     , withSeconds       :: Boolean
@@ -205,7 +205,7 @@ type Props_DateTimePickerImpl =
     , modalProps        :: Record Props_SubModalImpl
     , popoverProps      :: Record Props_PopoverImpl
     , sortDates         :: Boolean
-    , submitButtonProps :: Record Props_ActionIconImplRow
+    , submitButtonProps :: Record Props_ActionIconInnerImpl
     , timeInputProps    :: Record Props_TimeInputImpl
     , valueFormat       :: String
     , withSeconds       :: Boolean

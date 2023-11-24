@@ -5,7 +5,7 @@ module Mantine.Core.Feedback.Notification
   , Props_NotificationImpl
   ) where
 
-import Mantine.Core.Buttons.CloseButton (Props_CloseButton, Props_CloseButtonImpl)
+import Mantine.Core.Buttons.CloseButton (Props_CloseButtonInner, Props_CloseButtonInnerImpl)
 import Mantine.Core.Prelude
 
 notification
@@ -24,7 +24,7 @@ foreign import notificationComponent :: ReactComponent (Record Props_Notificatio
 type Props_Notification =
   Props_Common
     ( children         :: JSX
-    , closeButtonProps :: Record Props_CloseButton
+    , closeButtonProps :: Record Props_CloseButtonInner
     , color            :: MantineColor
     , icon             :: JSX
     , loading          :: Boolean
@@ -38,7 +38,7 @@ type Props_Notification =
 type Props_NotificationImpl =
   Props_CommonImpl
     ( children         :: JSX
-    , closeButtonProps :: Record Props_CloseButtonImpl
+    , closeButtonProps :: Record Props_CloseButtonInnerImpl
     , color            :: MantineColorImpl
     , icon             :: JSX
     , loading          :: Boolean

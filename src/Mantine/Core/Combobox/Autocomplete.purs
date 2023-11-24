@@ -5,7 +5,7 @@ module Mantine.Core.Combobox.Autocomplete
   , AutocompleteItem
   ) where
 
-import Mantine.Core.Combobox.Combobox (Props_Combobox, Props_ComboboxImpl)
+import Mantine.Core.Combobox.Combobox (Props_ComboboxInner, Props_ComboboxInnerImpl)
 import Mantine.Core.Inputs.Input (Props_InputComponent, Props_InputComponentImpl)
 import Mantine.Core.Prelude
 
@@ -27,7 +27,7 @@ foreign import autocompleteComponent :: ReactComponent (Record Props_Autocomplet
 
 type Props_Autocomplete =
   Props_InputComponent
-    ( comboboxProps             :: Record Props_Combobox
+    ( comboboxProps             :: Record Props_ComboboxInner
     , data                      :: Array AutocompleteItem
     , defaultDropdownOpened     :: Boolean
     , dropdownOpened            :: Boolean
@@ -48,7 +48,7 @@ type AutocompleteItem =
 
 type Props_AutocompleteImpl =
   Props_InputComponentImpl
-    ( comboboxProps             :: Record Props_ComboboxImpl
+    ( comboboxProps             :: Record Props_ComboboxInnerImpl
     , data                      :: Array AutocompleteItem
     , defaultDropdownOpened     :: Boolean
     , dropdownOpened            :: Boolean
