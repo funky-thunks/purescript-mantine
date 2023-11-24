@@ -23,8 +23,10 @@ import Data.Either (Either, either)
 import Data.Functor (class Functor)
 import Data.Int (floor, toNumber)
 import Data.JSDate (JSDate)
-import Data.Maybe (Maybe)
+import Data.Maybe (Maybe(..))
+import Data.Monoid (class Monoid)
 import Data.Nullable (Nullable, toMaybe, toNullable)
+import Data.Semigroup (class Semigroup)
 import Data.Show (class Show)
 import Data.Symbol (class IsSymbol)
 import Effect (Effect)
@@ -87,6 +89,13 @@ derive newtype instance Apply         Optional
 derive newtype instance Applicative   Optional
 derive newtype instance Bind          Optional
 derive newtype instance Monad         Optional
+
+instance Semigroup (Optional v) where
+  append (Optional (Just v)) _ = Optional (Just v)
+  append (Optional _       ) o = o
+
+instance Monoid (Optional v) where
+  mempty = Optional Nothing
 
 type OptionalImpl v = UndefinedOr v
 
