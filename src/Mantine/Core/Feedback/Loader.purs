@@ -2,9 +2,11 @@ module Mantine.Core.Feedback.Loader
   ( loader
   , loader_
   , Props_Loader
+  , Props_LoaderImpl
   , LoaderType(..)
 
-  , Props_LoaderImpl
+  , Props_LoaderInner
+  , Props_LoaderInnerImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -50,7 +52,19 @@ instance ToFFI LoaderType String where
 type Props_LoaderImpl =
   Props_CommonImpl
     ( children :: JSX
-    , color    :: String
+    , color    :: MantineColorImpl
     , size     :: MantineNumberSizeImpl
     , type     :: String
     )
+
+type Props_LoaderInner =
+  ( color :: Optional MantineColor
+  , size  :: Optional MantineNumberSize
+  , type  :: Optional LoaderType
+  )
+
+type Props_LoaderInnerImpl =
+  ( color :: OptionalImpl MantineColorImpl
+  , size  :: OptionalImpl MantineNumberSizeImpl
+  , type  :: OptionalImpl String
+  )

@@ -17,7 +17,7 @@ module Mantine.Core.Buttons.ActionIcon
   , Props_ActionIconImplRow
   ) where
 
-import Mantine.Core.Feedback.Loader (Props_Loader, Props_LoaderImpl)
+import Mantine.Core.Feedback.Loader (Props_LoaderInner, Props_LoaderInnerImpl)
 import Mantine.Core.Prelude
 import Prim.Row (class Nub)
 import React.Icons (icon_)
@@ -44,7 +44,7 @@ type Props_ActionIconRow =
   ( color       :: MantineColor
   , disabled    :: Boolean
   , gradient    :: MantineGradient
-  , loaderProps :: Record Props_Loader
+  , loaderProps :: Record Props_LoaderInner
   , loading     :: Boolean
   , onClick     :: EventHandler
   , radius      :: MantineNumberSize
@@ -58,7 +58,7 @@ type Props_ActionIconImplRow =
   ( color       :: MantineColorImpl
   , disabled    :: Boolean
   , gradient    :: MantineGradientImpl
-  , loaderProps :: Record Props_LoaderImpl
+  , loaderProps :: Record Props_LoaderInnerImpl
   , loading     :: Boolean
   , onClick     :: EventHandler
   , radius      :: MantineNumberSizeImpl
