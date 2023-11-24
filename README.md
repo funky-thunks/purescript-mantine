@@ -55,7 +55,7 @@ in  upstream
       , "web-uievents"
       ]
     , repo = "https://github.com/funky-thunks/purescript-mantine"
-    , version = "82d9de8038cd57ef36b91d128e1ee3325309a8e9"
+    , version = "53d539ce4fc2125e08ed88cbdcb33700ce810d3d"
     }
 ```
 
@@ -63,3 +63,9 @@ in  upstream
 npm install --save @mantine/core@7.2.1 @mantine/hooks@7.2.1 @mantine/dates@7.2.1 dayjs react
 spago install mantine
 ```
+
+## Usage
+
+It would be a good idea to first have a look at <https://mantine.dev>, but if
+you want to deep dive into the purescript bindings, you can have a look at the examples
+in the `examples/` directory.
