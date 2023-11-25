@@ -22,20 +22,22 @@ foreign import skeletonComponent :: ReactComponent (Record Props_SkeletonImpl)
 
 type Props_Skeleton =
   Props_Common
-    ( animate :: Boolean
-    , circle  :: Boolean
-    , height  :: Dimension
-    , radius  :: MantineNumberSize
-    , visible :: Boolean
-    , width   :: Dimension
+    ( animate  :: Boolean
+    , children :: Array JSX
+    , circle   :: Boolean
+    , height   :: Dimension
+    , radius   :: MantineNumberSize
+    , visible  :: Boolean
+    , width    :: Dimension
     )
 
 type Props_SkeletonImpl =
   Props_CommonImpl
-    ( animate :: Boolean
-    , circle  :: Boolean
-    , height  :: DimensionImpl
-    , radius  :: MantineNumberSizeImpl
-    , visible :: Boolean
-    , width   :: DimensionImpl
+    ( animate  :: Boolean
+    , children :: Array JSX
+    , circle   :: Boolean
+    , height   :: DimensionImpl
+    , radius   :: MantineNumberSizeImpl
+    , visible  :: Boolean
+    , width    :: DimensionImpl
     )
