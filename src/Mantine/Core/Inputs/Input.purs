@@ -182,7 +182,8 @@ type Props_InputGroupRow_ items rest =
 
 type Props_InputBaseRow = Props_InputBaseRow_ ()
 type Props_InputBaseRow_ rest =
-  ( description       :: JSX
+  ( "aria-label"      :: String
+  , description       :: JSX
   , error             :: JSX
   , inputWrapperOrder :: Array InputWrapperOrder
   , label             :: JSX
@@ -223,7 +224,8 @@ type Props_InputGroupRowImpl_ items rest =
 
 type Props_InputBaseRowImpl = Props_InputBaseRowImpl_ ()
 type Props_InputBaseRowImpl_ rest =
-  ( description       :: JSX
+  ( "aria-label"      :: String
+  , description       :: JSX
   , error             :: JSX
   , inputWrapperOrder :: Array InputWrapperOrderImpl
   , label             :: JSX

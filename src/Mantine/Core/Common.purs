@@ -89,11 +89,13 @@ import Foreign (Foreign)
 import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
+import React.Basic (Ref)
 import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
 import React.Basic.DOM (CSS)
 import React.Basic.DOM.Events (targetChecked, targetValue)
 import Untagged.Union (type (|+|), asOneOf, toEither1)
 import Unsafe.Coerce (unsafeCoerce)
+import Web.DOM (Node)
 
 data MantineColor
   = Dark
@@ -797,6 +799,7 @@ type Props_Common r =
   , c           :: MantineColor
   , className   :: String
   , key         :: String
+  , ref         :: Ref (Nullable Node)
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
@@ -831,6 +834,7 @@ type Props_CommonImpl r =
   , c           :: MantineColorImpl
   , className   :: String
   , key         :: String
+  , ref         :: Ref (Nullable Node)
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
