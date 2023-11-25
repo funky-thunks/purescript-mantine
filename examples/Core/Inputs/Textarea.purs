@@ -1,6 +1,5 @@
 module Examples.Core.Inputs.Textarea where
 
-import Data.Nullable (null)
 import Examples.Core.Prelude
 import Mantine.Core as MC
 import React.Basic.DOM as DOM
