@@ -774,26 +774,26 @@ instance ToFFI Breakpoint BreakpointImpl where
     BreakpointExtraLarge -> "xl"
 
 type Props_Common r =
-  ( m           :: MantineSize
-  , mt          :: MantineSize
-  , mb          :: MantineSize
-  , ml          :: MantineSize
-  , mr          :: MantineSize
-  , mx          :: MantineSize
-  , my          :: MantineSize
-  , p           :: MantineSize
-  , pt          :: MantineSize
-  , pb          :: MantineSize
-  , pl          :: MantineSize
-  , pr          :: MantineSize
-  , px          :: MantineSize
-  , py          :: MantineSize
-  , w           :: MantineSize
-  , miw         :: MantineSize
-  , maw         :: MantineSize
-  , h           :: MantineSize
-  , mih         :: MantineSize
-  , mah         :: MantineSize
+  ( m           :: MantineNumberSize
+  , mt          :: MantineNumberSize
+  , mb          :: MantineNumberSize
+  , ml          :: MantineNumberSize
+  , mr          :: MantineNumberSize
+  , mx          :: MantineNumberSize
+  , my          :: MantineNumberSize
+  , p           :: MantineNumberSize
+  , pt          :: MantineNumberSize
+  , pb          :: MantineNumberSize
+  , pl          :: MantineNumberSize
+  , pr          :: MantineNumberSize
+  , px          :: MantineNumberSize
+  , py          :: MantineNumberSize
+  , w           :: MantineNumberSize
+  , miw         :: MantineNumberSize
+  , maw         :: MantineNumberSize
+  , h           :: MantineNumberSize
+  , mih         :: MantineNumberSize
+  , mah         :: MantineNumberSize
   , fw          :: FontWeight
   , bg          :: MantineColor
   , c           :: MantineColor
@@ -809,26 +809,26 @@ type Props_Common r =
   )
 
 type Props_CommonImpl r =
-  ( m           :: MantineSizeImpl
-  , mt          :: MantineSizeImpl
-  , mb          :: MantineSizeImpl
-  , ml          :: MantineSizeImpl
-  , mr          :: MantineSizeImpl
-  , mx          :: MantineSizeImpl
-  , my          :: MantineSizeImpl
-  , p           :: MantineSizeImpl
-  , pt          :: MantineSizeImpl
-  , pb          :: MantineSizeImpl
-  , pl          :: MantineSizeImpl
-  , pr          :: MantineSizeImpl
-  , px          :: MantineSizeImpl
-  , py          :: MantineSizeImpl
-  , w           :: MantineSizeImpl
-  , miw         :: MantineSizeImpl
-  , maw         :: MantineSizeImpl
-  , h           :: MantineSizeImpl
-  , mih         :: MantineSizeImpl
-  , mah         :: MantineSizeImpl
+  ( m           :: MantineNumberSizeImpl
+  , mt          :: MantineNumberSizeImpl
+  , mb          :: MantineNumberSizeImpl
+  , ml          :: MantineNumberSizeImpl
+  , mr          :: MantineNumberSizeImpl
+  , mx          :: MantineNumberSizeImpl
+  , my          :: MantineNumberSizeImpl
+  , p           :: MantineNumberSizeImpl
+  , pt          :: MantineNumberSizeImpl
+  , pb          :: MantineNumberSizeImpl
+  , pl          :: MantineNumberSizeImpl
+  , pr          :: MantineNumberSizeImpl
+  , px          :: MantineNumberSizeImpl
+  , py          :: MantineNumberSizeImpl
+  , w           :: MantineNumberSizeImpl
+  , miw         :: MantineNumberSizeImpl
+  , maw         :: MantineNumberSizeImpl
+  , h           :: MantineNumberSizeImpl
+  , mih         :: MantineNumberSizeImpl
+  , mah         :: MantineNumberSizeImpl
   , fw          :: FontWeightImpl
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl

@@ -45,7 +45,7 @@ leftAndRightSections =
                        }
         , MC.textInput { rightSectionPointerEvents: MC.PointerEventsNone
                        , rightSection: iconAt
-                       , mt: MC.Medium
+                       , mt: MC.Preset MC.Medium
                        , label: DOM.text "Your email"
                        , placeholder:    "Your email"
                        }
@@ -56,7 +56,7 @@ leftAndRightSections =
 -- Note that the "boolean variant" is not supported.
 errorState :: JSX
 errorState =
-  MC.textInput { mt: MC.Medium
+  MC.textInput { mt: MC.Preset MC.Medium
                , label: DOM.text "With error message"
                , placeholder:    "With error message"
                , error: DOM.text "Invalid name"

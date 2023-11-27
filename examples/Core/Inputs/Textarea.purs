@@ -55,7 +55,7 @@ controlled = React.component "Textarea_Controlled" \_ -> React.do
 -- Note that the "boolean variant" is not supported.
 errorState :: JSX
 errorState =
-  MC.textarea { mt: MC.Medium
+  MC.textarea { mt: MC.Preset MC.Medium
               , label: DOM.text "With error message"
               , placeholder:    "With error message"
               , error: DOM.text "Invalid name"
