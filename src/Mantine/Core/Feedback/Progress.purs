@@ -14,6 +14,8 @@ module Mantine.Core.Feedback.Progress
   , Props_ProgressSectionImpl
   , Props_ProgressSectionRow
   , Props_ProgressSectionImplRow
+
+  , progressLabel_
   ) where
 
 import Mantine.Core.Prelude
@@ -52,8 +54,9 @@ type Props_Progress =
   Props_Common (Props_ProgressSectionRow Props_ProgressRootRow)
 
 type Props_ProgressRootRow =
-  ( radius :: MantineNumberSize
-  , size   :: MantineNumberSize
+  ( children :: Array JSX
+  , radius   :: MantineNumberSize
+  , size     :: MantineNumberSize
   )
 
 type Props_ProgressRoot = Props_Common Props_ProgressRootRow
@@ -61,7 +64,8 @@ type Props_ProgressRoot = Props_Common Props_ProgressRootRow
 type Props_ProgressSection =
   Props_Common
     ( Props_ProgressSectionRow
-      ( onMouseEnter :: EventHandler
+      ( children     :: Array JSX
+      , onMouseEnter :: EventHandler
       , onMouseLeave :: EventHandler
       , withAria     :: Boolean
       )
@@ -79,8 +83,9 @@ type Props_ProgressImpl =
   Props_CommonImpl (Props_ProgressSectionImplRow Props_ProgressRootImplRow)
 
 type Props_ProgressRootImplRow =
-  ( radius :: MantineNumberSizeImpl
-  , size   :: MantineNumberSizeImpl
+  ( children :: Array JSX
+  , radius   :: MantineNumberSizeImpl
+  , size     :: MantineNumberSizeImpl
   )
 
 type Props_ProgressRootImpl = Props_CommonImpl Props_ProgressRootImplRow
@@ -88,7 +93,8 @@ type Props_ProgressRootImpl = Props_CommonImpl Props_ProgressRootImplRow
 type Props_ProgressSectionImpl =
   Props_CommonImpl
     ( Props_ProgressSectionImplRow
-      ( onMouseEnter :: EventHandler
+      ( children     :: Array JSX
+      , onMouseEnter :: EventHandler
       , onMouseLeave :: EventHandler
       , withAria     :: Boolean
       )
@@ -101,3 +107,13 @@ type Props_ProgressSectionImplRow rest =
   , value    :: Number
   | rest
   )
+
+progressLabel :: Props_ProgressLabel -> JSX
+progressLabel = element progressLabelComponent
+
+progressLabel_ :: Array JSX -> JSX
+progressLabel_ children = progressLabel { children }
+
+foreign import progressLabelComponent :: ReactComponent Props_ProgressLabel
+
+type Props_ProgressLabel = { children :: Array JSX }
