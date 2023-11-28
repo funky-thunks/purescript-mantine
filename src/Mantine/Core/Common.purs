@@ -87,7 +87,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
-import Mantine.Core.CSS (FontWeight, FontWeightImpl)
+import Mantine.Core.CSS (FontWeight, FontWeightImpl, TextAlign, TextAlignImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
 import React.Basic (Ref)
 import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
@@ -773,6 +773,7 @@ instance ToFFI Breakpoint BreakpointImpl where
     BreakpointLarge      -> "lg"
     BreakpointExtraLarge -> "xl"
 
+-- See https://mantine.dev/styles/style-props/#supported-props
 type Props_Common r =
   ( m           :: MantineNumberSize
   , mt          :: MantineNumberSize
@@ -795,6 +796,7 @@ type Props_Common r =
   , mih         :: MantineNumberSize
   , mah         :: MantineNumberSize
   , fw          :: FontWeight
+  , ta          :: TextAlign
   , bg          :: MantineColor
   , c           :: MantineColor
   , className   :: String
@@ -830,6 +832,7 @@ type Props_CommonImpl r =
   , mih         :: MantineNumberSizeImpl
   , mah         :: MantineNumberSizeImpl
   , fw          :: FontWeightImpl
+  , ta          :: TextAlignImpl
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl
   , className   :: String

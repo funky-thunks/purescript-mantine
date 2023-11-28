@@ -22,22 +22,19 @@ module Mantine.Core.Buttons.ActionIcon
 
 import Mantine.Core.Feedback.Loader (Props_LoaderInner, Props_LoaderInnerImpl)
 import Mantine.Core.Prelude
-import Prim.Row (class Nub)
 import React.Icons (icon_)
 import React.Icons.Types (ReactIcon)
 
 actionIcon
-  :: forall attrs attrs_ attrsImpl attrsImpl_ attrsImpl'
+  :: forall attrs attrs_ attrsImpl attrsImpl_
    . Union attrs     attrs_     Props_ActionIcon
   => Union attrsImpl attrsImpl_ Props_ActionIconImpl
   => ToFFI (Record attrs) (Record attrsImpl)
-  => Nub ( children :: Array JSX | attrsImpl) attrsImpl'
-  => ReactIcon -> Record attrs -> JSX
-actionIcon icon attrs =
-  element (unsafeCoerce actionIconComponent) ({ children: [ icon_ icon ] } `merge` toNative attrs)
+  => Record attrs -> JSX
+actionIcon = element (unsafeCoerce actionIconComponent) <<< toNative
 
 actionIcon_ :: ReactIcon -> JSX
-actionIcon_ icon = actionIcon icon {}
+actionIcon_ icon = actionIcon { children: [ icon_ icon ] }
 
 foreign import actionIconComponent :: ReactComponent (Record Props_ActionIconImpl)
 
@@ -45,6 +42,7 @@ type Props_ActionIcon = Props_Common Props_ActionIconRow
 
 type Props_ActionIconRow =
   ( color       :: MantineColor
+  , children    :: Array JSX
   , disabled    :: Boolean
   , gradient    :: MantineGradient
   , loaderProps :: Record Props_LoaderInner
@@ -67,10 +65,11 @@ type Props_ActionIconInner =
   , variant     :: Optional ActionIconVariant
   )
 
-type Props_ActionIconImpl = Props_CommonImpl ( children :: Array JSX | Props_ActionIconImplRow )
+type Props_ActionIconImpl = Props_CommonImpl ( Props_ActionIconImplRow )
 
 type Props_ActionIconImplRow =
   ( color       :: MantineColorImpl
+  , children    :: Array JSX
   , disabled    :: Boolean
   , gradient    :: MantineGradientImpl
   , loaderProps :: Record Props_LoaderInnerImpl
