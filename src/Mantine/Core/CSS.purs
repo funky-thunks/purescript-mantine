@@ -276,19 +276,23 @@ instance ToFFI PointerEvents PointerEventsImpl where
     PointerEventsGlobal gv      -> toNative gv
 
 data Position
-  = PositionLeft
-  | PositionRight
-  | PositionCenter
-  | PositionApart
+  = PositionStatic
+  | PositionRelative
+  | PositionAbsolute
+  | PositionFixed
+  | PositionSticky
+  | PositionGlobal GlobalValues
 
 type PositionImpl = String
 
 instance ToFFI Position PositionImpl where
   toNative = case _ of
-    PositionLeft   -> "left"
-    PositionRight  -> "right"
-    PositionCenter -> "center"
-    PositionApart  -> "apart"
+    PositionStatic    -> "static"
+    PositionRelative  -> "relative"
+    PositionAbsolute  -> "absolute"
+    PositionFixed     -> "fixed"
+    PositionSticky    -> "sticky"
+    PositionGlobal gv -> toNative gv
 
 data TableLayout
   = TableLayoutAuto

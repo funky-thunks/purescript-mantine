@@ -87,7 +87,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
-import Mantine.Core.CSS (FontWeight, FontWeightImpl, TextAlign, TextAlignImpl)
+import Mantine.Core.CSS (FontWeight, FontWeightImpl, Position, PositionImpl, TextAlign, TextAlignImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
 import React.Basic (Ref)
 import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
@@ -807,6 +807,7 @@ type Props_Common r =
   , lightHidden :: Boolean
   , hiddenFrom  :: Breakpoint
   , visibleFrom :: Breakpoint
+  , pos         :: Position
   | r
   )
 
@@ -843,5 +844,6 @@ type Props_CommonImpl r =
   , lightHidden :: Boolean
   , hiddenFrom  :: BreakpointImpl
   , visibleFrom :: BreakpointImpl
+  , pos         :: PositionImpl
   | r
   )
