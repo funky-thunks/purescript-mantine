@@ -87,7 +87,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
-import Mantine.Core.CSS (FontWeight, FontWeightImpl, Position, PositionImpl, TextAlign, TextAlignImpl)
+import Mantine.Core.CSS (FontWeight, FontWeightImpl, Position, PositionImpl, TextAlign, TextAlignImpl, TextDecoration, TextDecorationImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
 import React.Basic (Ref)
 import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
@@ -797,6 +797,7 @@ type Props_Common r =
   , mah         :: MantineNumberSize
   , fw          :: FontWeight
   , ta          :: TextAlign
+  , td          :: TextDecoration
   , bg          :: MantineColor
   , c           :: MantineColor
   , className   :: String
@@ -834,6 +835,7 @@ type Props_CommonImpl r =
   , mah         :: MantineNumberSizeImpl
   , fw          :: FontWeightImpl
   , ta          :: TextAlignImpl
+  , td          :: TextDecorationImpl
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl
   , className   :: String

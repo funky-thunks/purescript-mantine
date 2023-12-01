@@ -24,6 +24,8 @@ module Mantine.Core.CSS
   , TableLayoutImpl
   , TextAlign(..)
   , TextAlignImpl
+  , TextDecoration(..)
+  , TextDecorationImpl
   ) where
 
 import Prelude ((<>))
@@ -339,6 +341,25 @@ instance ToFFI TextAlign TextAlignImpl where
     TextAlignCharacterBased     s    -> quote s
     TextAlignCharacterBasedPlus s ta -> quote s <> " " <> toNative ta
     TextAlignGlobal             gv   -> toNative gv
+
+data TextDecoration
+  = TextDecorationUnderline
+  | TextDecorationOverline
+  | TextDecorationLineThrough
+  | TextDecorationNone
+  | TextDecorationElaborate String
+  | TextDecorationGlobal GlobalValues
+
+type TextDecorationImpl = String
+
+instance ToFFI TextDecoration TextDecorationImpl where
+  toNative = case _ of
+    TextDecorationUnderline   -> "underline"
+    TextDecorationOverline    -> "overline"
+    TextDecorationLineThrough -> "line-through"
+    TextDecorationNone        -> "none"
+    TextDecorationElaborate s -> s
+    TextDecorationGlobal gv   -> toNative gv
 
 quote :: String -> String
 quote s = "\"" <> s <> "\""
