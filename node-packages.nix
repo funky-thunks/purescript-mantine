@@ -63,31 +63,31 @@
           sha512 = "OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==";
           };
         };
-      "@mantine/core-7.2.1" = {
+      "@mantine/core-7.2.2" = {
         name = "_at_mantine_slash_core";
         packageName = "@mantine/core";
-        version = "7.2.1";
+        version = "7.2.2";
         src = fetchurl {
-          url = "https://registry.npmjs.org/@mantine/core/-/core-7.2.1.tgz";
-          sha512 = "vB5nMip/8fm+/9V49C856AGWEGocNzks6+KO/ocz4EKgd665F663Bs8x6cvop2onbZyVxhX/5Zge93ndX4UNFA==";
+          url = "https://registry.npmjs.org/@mantine/core/-/core-7.2.2.tgz";
+          sha512 = "cVGmLjYyKIzjn0LRwamj71O4HT43qCxPGAzMZqkMYGOako7xwBLYQNe7HjL/J0FXJDyfX8OdMylVhgsePWYbng==";
           };
         };
-      "@mantine/dates-7.2.1" = {
+      "@mantine/dates-7.2.2" = {
         name = "_at_mantine_slash_dates";
         packageName = "@mantine/dates";
-        version = "7.2.1";
+        version = "7.2.2";
         src = fetchurl {
-          url = "https://registry.npmjs.org/@mantine/dates/-/dates-7.2.1.tgz";
-          sha512 = "wOLbWU0DJGG3kC7GdoIXdUSvCq9ggFjyDfOuHwRLa0rpWoytsgn9X59ab/4kO341tcqvkMa4F9Yq90Vhyj//rA==";
+          url = "https://registry.npmjs.org/@mantine/dates/-/dates-7.2.2.tgz";
+          sha512 = "MgUy2qODhXEkdK5OQE3talThrbXKfBK6V0AJ8iwPcrxMoQ77u4aMzTv4+47bEjQeUFyjrT8u916VFd82mn59SA==";
           };
         };
-      "@mantine/hooks-7.2.1" = {
+      "@mantine/hooks-7.2.2" = {
         name = "_at_mantine_slash_hooks";
         packageName = "@mantine/hooks";
-        version = "7.2.1";
+        version = "7.2.2";
         src = fetchurl {
-          url = "https://registry.npmjs.org/@mantine/hooks/-/hooks-7.2.1.tgz";
-          sha512 = "v7GKjVQ6SV6dQ+hrs6HDHB50UB+ZXS5hhGp1bo2k6QGF3wcndws+eghCFO5hjKIVSLYm2YoaZxwKiQmjsZBXfQ==";
+          url = "https://registry.npmjs.org/@mantine/hooks/-/hooks-7.2.2.tgz";
+          sha512 = "7CFSVP2aQHrBwLLAVf0q5dgj+6QTZmhLTNcuc3pE1du+HLFUdyVS6vvQC6kieZXxOd6UzwFGBlN4G+aDx95XeA==";
           };
         };
       "aria-hidden-1.2.3" = {
@@ -363,9 +363,9 @@
         (sources."@floating-ui/react-0.24.8")
         (sources."@floating-ui/react-dom-2.0.2")
         (sources."@floating-ui/utils-0.1.6")
-        (sources."@mantine/core-7.2.1")
-        (sources."@mantine/dates-7.2.1")
-        (sources."@mantine/hooks-7.2.1")
+        (sources."@mantine/core-7.2.2")
+        (sources."@mantine/dates-7.2.2")
+        (sources."@mantine/hooks-7.2.2")
         (sources."aria-hidden-1.2.3")
         (sources."clsx-2.0.0")
         (sources."dayjs-1.11.10")

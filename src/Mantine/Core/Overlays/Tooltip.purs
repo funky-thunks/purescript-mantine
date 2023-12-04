@@ -47,7 +47,9 @@ type Props_Tooltip =
     , inline     :: Boolean
     , label      :: JSX
     , multiline  :: Boolean
+    , onChange   :: ValueHandler Boolean
     , openDelay  :: Milliseconds
+    , opened     :: Boolean
     , refProp    :: String
     )
 
@@ -61,7 +63,9 @@ type Props_TooltipImpl =
     , inline     :: Boolean
     , label      :: JSX
     , multiline  :: Boolean
+    , onChange   :: ValueHandlerImpl Boolean
     , openDelay  :: MillisecondsImpl
+    , opened     :: Boolean
     , refProp    :: String
     )
 
