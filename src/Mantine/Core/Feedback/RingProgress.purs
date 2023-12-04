@@ -20,36 +20,38 @@ foreign import ringProgressComponent :: ReactComponent (Record Props_RingProgres
 
 type Props_RingProgress =
   Props_Common
-    ( label     :: JSX
-    , rootColor :: MantineColor
-    , roundCaps :: Boolean
-    , sections  :: Array RingProgressSection
-    , size      :: Number
-    , thickness :: Number
+    ( label        :: JSX
+    , onMouseLeave :: EventHandler
+    , rootColor    :: MantineColor
+    , roundCaps    :: Boolean
+    , sections     :: Array RingProgressSection
+    , size         :: Pixels
+    , thickness    :: Pixels
     )
 
 type RingProgressSection =
-  { color        :: MantineColor
-  , onMouseEnter :: EventHandler
-  , onMouseLeave :: EventHandler
+  { color        :: Optional MantineColor
+  , onMouseEnter :: Optional EventHandler
+  , onMouseLeave :: Optional EventHandler
   , tooltip      :: Optional JSX
-  , value        :: Number
+  , value        :: Optional Number
   }
 
 type Props_RingProgressImpl =
   Props_CommonImpl
-    ( label     :: JSX
-    , rootColor :: MantineColorImpl
-    , roundCaps :: Boolean
-    , sections  :: Array RingProgressSectionImpl
-    , size      :: Number
-    , thickness :: Number
+    ( label        :: JSX
+    , onMouseLeave :: EventHandler
+    , rootColor    :: MantineColorImpl
+    , roundCaps    :: Boolean
+    , sections     :: Array RingProgressSectionImpl
+    , size         :: PixelsImpl
+    , thickness    :: PixelsImpl
     )
 
 type RingProgressSectionImpl =
-  { color        :: MantineColorImpl
-  , onMouseEnter :: EventHandler
-  , onMouseLeave :: EventHandler
+  { color        :: OptionalImpl MantineColorImpl
+  , onMouseEnter :: OptionalImpl EventHandler
+  , onMouseLeave :: OptionalImpl EventHandler
   , tooltip      :: OptionalImpl JSX
-  , value        :: Number
+  , value        :: OptionalImpl Number
   }

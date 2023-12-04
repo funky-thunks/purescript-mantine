@@ -21,36 +21,40 @@ foreign import closeButtonComponent :: ReactComponent (Record Props_CloseButtonI
 
 type Props_CloseButton =
   Props_Common
-    ( children :: Array JSX
-    , disabled :: Boolean
-    , iconSize :: MantineNumberSize
-    , onClick  :: EventHandler
-    , radius   :: MantineNumberSize
-    , size     :: MantineNumberSize
+    ( "aria-label" :: String
+    , children     :: Array JSX
+    , disabled     :: Boolean
+    , iconSize     :: MantineNumberSize
+    , onClick      :: EventHandler
+    , radius       :: MantineNumberSize
+    , size         :: MantineNumberSize
     )
 
 type Props_CloseButtonImpl =
   Props_CommonImpl
-    ( children :: Array JSX
-    , disabled :: Boolean
-    , iconSize :: MantineNumberSizeImpl
-    , onClick  :: EventHandler
-    , radius   :: MantineNumberSizeImpl
-    , size     :: MantineNumberSizeImpl
+    ( "aria-label" :: String
+    , children     :: Array JSX
+    , disabled     :: Boolean
+    , iconSize     :: MantineNumberSizeImpl
+    , onClick      :: EventHandler
+    , radius       :: MantineNumberSizeImpl
+    , size         :: MantineNumberSizeImpl
     )
 
 type Props_CloseButtonInner =
-    ( disabled :: Optional Boolean
-    , iconSize :: Optional MantineNumberSize
-    , onClick  :: Optional EventHandler
-    , radius   :: Optional MantineNumberSize
-    , size     :: Optional MantineNumberSize
+    ( "aria-label" :: Optional String
+    , disabled     :: Optional Boolean
+    , iconSize     :: Optional MantineNumberSize
+    , onClick      :: Optional EventHandler
+    , radius       :: Optional MantineNumberSize
+    , size         :: Optional MantineNumberSize
     )
 
 type Props_CloseButtonInnerImpl =
-    ( disabled :: OptionalImpl Boolean
-    , iconSize :: OptionalImpl MantineNumberSizeImpl
-    , onClick  :: OptionalImpl EventHandler
-    , radius   :: OptionalImpl MantineNumberSizeImpl
-    , size     :: OptionalImpl MantineNumberSizeImpl
+    ( "aria-label" :: OptionalImpl String
+    , disabled     :: OptionalImpl Boolean
+    , iconSize     :: OptionalImpl MantineNumberSizeImpl
+    , onClick      :: OptionalImpl EventHandler
+    , radius       :: OptionalImpl MantineNumberSizeImpl
+    , size         :: OptionalImpl MantineNumberSizeImpl
     )

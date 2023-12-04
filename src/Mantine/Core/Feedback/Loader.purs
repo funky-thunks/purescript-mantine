@@ -58,13 +58,15 @@ type Props_LoaderImpl =
     )
 
 type Props_LoaderInner =
-  ( color :: Optional MantineColor
-  , size  :: Optional MantineNumberSize
-  , type  :: Optional LoaderType
+  ( children :: Optional JSX
+  , color    :: Optional MantineColor
+  , size     :: Optional MantineNumberSize
+  , type     :: Optional LoaderType
   )
 
 type Props_LoaderInnerImpl =
-  ( color :: OptionalImpl MantineColorImpl
-  , size  :: OptionalImpl MantineNumberSizeImpl
-  , type  :: OptionalImpl String
+  ( children :: OptionalImpl JSX
+  , color    :: OptionalImpl MantineColorImpl
+  , size     :: OptionalImpl MantineNumberSizeImpl
+  , type     :: OptionalImpl String
   )

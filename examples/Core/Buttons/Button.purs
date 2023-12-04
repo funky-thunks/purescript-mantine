@@ -68,14 +68,14 @@ sectionsPosition { justify } =
                     , fullWidth: true
                     , leftSection: photoIcon
                     , variant: MC.ButtonVariantDefault
-                    , mt: MC.Medium
+                    , mt: MC.Preset MC.Medium
                     , children: [ DOM.text "Button label" ]
                     }
         , MC.button { justify
                     , fullWidth: true
                     , rightSection: photoIcon
                     , variant: MC.ButtonVariantDefault
-                    , mt: MC.Medium
+                    , mt: MC.Preset MC.Medium
                     , children: [ DOM.text "Button label" ]
                     }
         , MC.button { justify
@@ -83,7 +83,7 @@ sectionsPosition { justify } =
                     , leftSection: DOM.span_ []
                     , rightSection: photoIcon
                     , variant: MC.ButtonVariantDefault
-                    , mt: MC.Medium
+                    , mt: MC.Preset MC.Medium
                     , children: [ DOM.text "Button label" ]
                     }
         ]

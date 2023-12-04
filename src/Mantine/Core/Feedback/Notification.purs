@@ -16,14 +16,14 @@ notification
   => Record attrs -> JSX
 notification = element (unsafeCoerce notificationComponent) <<< toNative
 
-notification_ :: JSX -> JSX
+notification_ :: Array JSX -> JSX
 notification_ children = notification { children }
 
 foreign import notificationComponent :: ReactComponent (Record Props_NotificationImpl)
 
 type Props_Notification =
   Props_Common
-    ( children         :: JSX
+    ( children         :: Array JSX
     , closeButtonProps :: Record Props_CloseButtonInner
     , color            :: MantineColor
     , icon             :: JSX
@@ -37,7 +37,7 @@ type Props_Notification =
 
 type Props_NotificationImpl =
   Props_CommonImpl
-    ( children         :: JSX
+    ( children         :: Array JSX
     , closeButtonProps :: Record Props_CloseButtonInnerImpl
     , color            :: MantineColorImpl
     , icon             :: JSX

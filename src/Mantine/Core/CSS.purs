@@ -24,6 +24,8 @@ module Mantine.Core.CSS
   , TableLayoutImpl
   , TextAlign(..)
   , TextAlignImpl
+  , TextDecoration(..)
+  , TextDecorationImpl
   ) where
 
 import Prelude ((<>))
@@ -276,19 +278,23 @@ instance ToFFI PointerEvents PointerEventsImpl where
     PointerEventsGlobal gv      -> toNative gv
 
 data Position
-  = PositionLeft
-  | PositionRight
-  | PositionCenter
-  | PositionApart
+  = PositionStatic
+  | PositionRelative
+  | PositionAbsolute
+  | PositionFixed
+  | PositionSticky
+  | PositionGlobal GlobalValues
 
 type PositionImpl = String
 
 instance ToFFI Position PositionImpl where
   toNative = case _ of
-    PositionLeft   -> "left"
-    PositionRight  -> "right"
-    PositionCenter -> "center"
-    PositionApart  -> "apart"
+    PositionStatic    -> "static"
+    PositionRelative  -> "relative"
+    PositionAbsolute  -> "absolute"
+    PositionFixed     -> "fixed"
+    PositionSticky    -> "sticky"
+    PositionGlobal gv -> toNative gv
 
 data TableLayout
   = TableLayoutAuto
@@ -335,6 +341,25 @@ instance ToFFI TextAlign TextAlignImpl where
     TextAlignCharacterBased     s    -> quote s
     TextAlignCharacterBasedPlus s ta -> quote s <> " " <> toNative ta
     TextAlignGlobal             gv   -> toNative gv
+
+data TextDecoration
+  = TextDecorationUnderline
+  | TextDecorationOverline
+  | TextDecorationLineThrough
+  | TextDecorationNone
+  | TextDecorationElaborate String
+  | TextDecorationGlobal GlobalValues
+
+type TextDecorationImpl = String
+
+instance ToFFI TextDecoration TextDecorationImpl where
+  toNative = case _ of
+    TextDecorationUnderline   -> "underline"
+    TextDecorationOverline    -> "overline"
+    TextDecorationLineThrough -> "line-through"
+    TextDecorationNone        -> "none"
+    TextDecorationElaborate s -> s
+    TextDecorationGlobal gv   -> toNative gv
 
 quote :: String -> String
 quote s = "\"" <> s <> "\""

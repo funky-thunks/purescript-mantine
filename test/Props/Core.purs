@@ -2,7 +2,6 @@ module Test.Props.Core where
 
 import Mantine.Core as MC
 import Mantine.FFI (toNative)
-import React.Basic (JSX)
 import Web.File.File (File)
 
 accordionProps :: Record (MC.Props_Accordion String) -> Record (MC.Props_AccordionImpl String)
@@ -14,7 +13,7 @@ accordionControlProps = toNative
 accordionItemProps :: Record MC.Props_AccordionItem -> Record MC.Props_AccordionItemImpl
 accordionItemProps = toNative
 
-actionIconProps :: Record ( children :: Array JSX | MC.Props_ActionIcon ) -> Record MC.Props_ActionIconImpl
+actionIconProps :: Record MC.Props_ActionIcon -> Record MC.Props_ActionIconImpl
 actionIconProps = toNative
 
 actionIconGroupProps :: Record MC.Props_ActionIconGroup -> Record MC.Props_ActionIconGroupImpl

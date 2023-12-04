@@ -87,13 +87,15 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
 import Foreign (Foreign)
 import Foreign.Object (Object)
-import Mantine.Core.CSS (FontWeight, FontWeightImpl)
+import Mantine.Core.CSS (FontWeight, FontWeightImpl, Position, PositionImpl, TextAlign, TextAlignImpl, TextDecoration, TextDecorationImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
+import React.Basic (Ref)
 import React.Basic.Events (EventFn, EventHandler, SyntheticEvent, handler, unsafeEventFn)
 import React.Basic.DOM (CSS)
 import React.Basic.DOM.Events (targetChecked, targetValue)
 import Untagged.Union (type (|+|), asOneOf, toEither1)
 import Unsafe.Coerce (unsafeCoerce)
+import Web.DOM (Node)
 
 data MantineColor
   = Dark
@@ -771,70 +773,79 @@ instance ToFFI Breakpoint BreakpointImpl where
     BreakpointLarge      -> "lg"
     BreakpointExtraLarge -> "xl"
 
+-- See https://mantine.dev/styles/style-props/#supported-props
 type Props_Common r =
-  ( m           :: MantineSize
-  , mt          :: MantineSize
-  , mb          :: MantineSize
-  , ml          :: MantineSize
-  , mr          :: MantineSize
-  , mx          :: MantineSize
-  , my          :: MantineSize
-  , p           :: MantineSize
-  , pt          :: MantineSize
-  , pb          :: MantineSize
-  , pl          :: MantineSize
-  , pr          :: MantineSize
-  , px          :: MantineSize
-  , py          :: MantineSize
-  , w           :: MantineSize
-  , miw         :: MantineSize
-  , maw         :: MantineSize
-  , h           :: MantineSize
-  , mih         :: MantineSize
-  , mah         :: MantineSize
+  ( m           :: MantineNumberSize
+  , mt          :: MantineNumberSize
+  , mb          :: MantineNumberSize
+  , ml          :: MantineNumberSize
+  , mr          :: MantineNumberSize
+  , mx          :: MantineNumberSize
+  , my          :: MantineNumberSize
+  , p           :: MantineNumberSize
+  , pt          :: MantineNumberSize
+  , pb          :: MantineNumberSize
+  , pl          :: MantineNumberSize
+  , pr          :: MantineNumberSize
+  , px          :: MantineNumberSize
+  , py          :: MantineNumberSize
+  , w           :: MantineNumberSize
+  , miw         :: MantineNumberSize
+  , maw         :: MantineNumberSize
+  , h           :: MantineNumberSize
+  , mih         :: MantineNumberSize
+  , mah         :: MantineNumberSize
   , fw          :: FontWeight
+  , ta          :: TextAlign
+  , td          :: TextDecoration
   , bg          :: MantineColor
   , c           :: MantineColor
   , className   :: String
   , key         :: String
+  , ref         :: Ref (Nullable Node)
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
   , hiddenFrom  :: Breakpoint
   , visibleFrom :: Breakpoint
+  , pos         :: Position
   | r
   )
 
 type Props_CommonImpl r =
-  ( m           :: MantineSizeImpl
-  , mt          :: MantineSizeImpl
-  , mb          :: MantineSizeImpl
-  , ml          :: MantineSizeImpl
-  , mr          :: MantineSizeImpl
-  , mx          :: MantineSizeImpl
-  , my          :: MantineSizeImpl
-  , p           :: MantineSizeImpl
-  , pt          :: MantineSizeImpl
-  , pb          :: MantineSizeImpl
-  , pl          :: MantineSizeImpl
-  , pr          :: MantineSizeImpl
-  , px          :: MantineSizeImpl
-  , py          :: MantineSizeImpl
-  , w           :: MantineSizeImpl
-  , miw         :: MantineSizeImpl
-  , maw         :: MantineSizeImpl
-  , h           :: MantineSizeImpl
-  , mih         :: MantineSizeImpl
-  , mah         :: MantineSizeImpl
+  ( m           :: MantineNumberSizeImpl
+  , mt          :: MantineNumberSizeImpl
+  , mb          :: MantineNumberSizeImpl
+  , ml          :: MantineNumberSizeImpl
+  , mr          :: MantineNumberSizeImpl
+  , mx          :: MantineNumberSizeImpl
+  , my          :: MantineNumberSizeImpl
+  , p           :: MantineNumberSizeImpl
+  , pt          :: MantineNumberSizeImpl
+  , pb          :: MantineNumberSizeImpl
+  , pl          :: MantineNumberSizeImpl
+  , pr          :: MantineNumberSizeImpl
+  , px          :: MantineNumberSizeImpl
+  , py          :: MantineNumberSizeImpl
+  , w           :: MantineNumberSizeImpl
+  , miw         :: MantineNumberSizeImpl
+  , maw         :: MantineNumberSizeImpl
+  , h           :: MantineNumberSizeImpl
+  , mih         :: MantineNumberSizeImpl
+  , mah         :: MantineNumberSizeImpl
   , fw          :: FontWeightImpl
+  , ta          :: TextAlignImpl
+  , td          :: TextDecorationImpl
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl
   , className   :: String
   , key         :: String
+  , ref         :: Ref (Nullable Node)
   , style       :: CSS
   , darkHidden  :: Boolean
   , lightHidden :: Boolean
   , hiddenFrom  :: BreakpointImpl
   , visibleFrom :: BreakpointImpl
+  , pos         :: PositionImpl
   | r
   )

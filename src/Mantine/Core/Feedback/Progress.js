@@ -12,3 +12,7 @@ export function progressRootComponent(props) {
 export function progressSectionComponent(props) {
   return React.createElement(Progress.Section, props, props.children);
 }
+
+export function progressLabelComponent(props) {
+  return React.createElement(Progress.Label, props, props.children);
+}
