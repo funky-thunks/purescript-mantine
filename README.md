@@ -55,7 +55,7 @@ in  upstream
       , "web-uievents"
       ]
     , repo = "https://github.com/funky-thunks/purescript-mantine"
-    , version = "29db6b706b741ff9ceb71fa4c9cd0f656e783230"
+    , version = "9a8e16ffff92d6574b59bf25c261a6674798b78f"
     }
 ```
 
