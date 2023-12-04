@@ -106,8 +106,8 @@ type Props_NonDefaultableHovering =
   , withinPortal        :: Boolean
   }
 
-type Props_Popover     = HoveringCommons     ()
-type Props_PopoverImpl = HoveringCommonsImpl ()
+type Props_Popover     = HoveringCommons     ( onChange :: ValueHandler     Boolean, opened :: Boolean )
+type Props_PopoverImpl = HoveringCommonsImpl ( onChange :: ValueHandlerImpl Boolean, opened :: Boolean )
 
 popoverTarget
   :: forall attrs attrs_ attrsImpl attrsImpl_
@@ -143,7 +143,6 @@ type HoverableComponent rest =
     , keepMounted          :: Boolean
     , offset               :: Number
     , onPositionChange     :: ValueHandler HoverableFloatingPosition
-    , opened               :: Boolean
     , position             :: HoverableFloatingPosition
  -- , positionDependencies :: any[] -- TODO
     , radius               :: MantineNumberSize
@@ -162,7 +161,6 @@ type HoveringCommons rest =
     , defaultOpened       :: Boolean
     , id                  :: String
  -- , middlewares         :: PopoverMiddlewares -- TODO
-    , onChange            :: ValueHandler Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , returnFocus         :: Boolean
@@ -240,7 +238,6 @@ type HoverableComponentImpl rest =
     , keepMounted          :: Boolean
     , offset               :: Number
     , onPositionChange     :: ValueHandlerImpl HoverableFloatingPositionImpl
-    , opened               :: Boolean
     , position             :: HoverableFloatingPositionImpl
  -- , positionDependencies :: any[] -- TODO
     , radius               :: MantineNumberSizeImpl
@@ -259,7 +256,6 @@ type HoveringCommonsImpl rest =
     , defaultOpened       :: Boolean
     , id                  :: String
  -- , middlewares         :: PopoverMiddlewares -- TODO
-    , onChange            :: ValueHandlerImpl Boolean
     , onClose             :: Effect Unit
     , onOpen              :: Effect Unit
     , returnFocus         :: Boolean
@@ -308,5 +304,5 @@ type HoveringTargetImpl rest =
     | rest
     )
 
-type Props_HoveringDropdown     = Props_Common     (children :: Array JSX)
-type Props_HoveringDropdownImpl = Props_CommonImpl (children :: Array JSX)
+type Props_HoveringDropdown     = Props_Common     ( children :: Array JSX )
+type Props_HoveringDropdownImpl = Props_CommonImpl ( children :: Array JSX )
