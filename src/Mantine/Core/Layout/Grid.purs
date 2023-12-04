@@ -36,6 +36,7 @@ type Props_Grid =
     , grow     :: Boolean
     , gutter   :: FixedOrResponsive MantineSpacing
     , justify  :: JustifyContent
+    , overflow :: Overflow
     )
 
 type Props_GridImpl =
@@ -46,6 +47,7 @@ type Props_GridImpl =
     , grow     :: Boolean
     , gutter   :: FixedOrResponsiveImpl MantineSpacingImpl
     , justify  :: JustifyContentImpl
+    , overflow :: OverflowImpl
     )
 
 gridCol

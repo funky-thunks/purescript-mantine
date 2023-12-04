@@ -47,9 +47,6 @@ module Mantine.Core.Common
   , InputHandler(..)
   , InputHandlerImpl
 
-  , Polymorphic
-  , PolymorphicImpl
-
   , Responsive
   , ResponsiveImpl
   , FixedOrResponsive(..)
@@ -85,8 +82,6 @@ import Data.Show.Generic (genericShow)
 import Data.String (Pattern(..), stripSuffix)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
-import Foreign (Foreign)
-import Foreign.Object (Object)
 import Mantine.Core.CSS (FontWeight, FontWeightImpl, Position, PositionImpl, TextAlign, TextAlignImpl, TextDecoration, TextDecorationImpl)
 import Mantine.FFI (class FromFFI, class ToFFI, Optional, OptionalImpl, fromNative, toNative)
 import React.Basic (Ref)
@@ -671,18 +666,6 @@ instance FromFFI String value => ToFFI (InputHandler value) InputHandlerImpl whe
 currentTargetValue :: EventFn SyntheticEvent (Maybe String)
 currentTargetValue = unsafeEventFn \e -> toMaybe (unsafeCoerce e).currentTarget.value
 
-type Polymorphic rest =
-  ( component        :: String
-  , polymorphicProps :: Object Foreign
-  | rest
-  )
-
-type PolymorphicImpl rest =
-  ( component        :: String
-  , polymorphicProps :: Object Foreign
-  | rest
-  )
-
 type Responsive value =
   { base :: value
   , xs   :: Optional value
@@ -801,6 +784,7 @@ type Props_Common r =
   , bg          :: MantineColor
   , c           :: MantineColor
   , className   :: String
+  , component   :: String
   , key         :: String
   , ref         :: Ref (Nullable Node)
   , style       :: CSS
@@ -839,6 +823,7 @@ type Props_CommonImpl r =
   , bg          :: MantineColorImpl
   , c           :: MantineColorImpl
   , className   :: String
+  , component   :: String
   , key         :: String
   , ref         :: Ref (Nullable Node)
   , style       :: CSS

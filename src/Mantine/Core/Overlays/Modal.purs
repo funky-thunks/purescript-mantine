@@ -39,12 +39,13 @@ modal_ children = modal { children }
 foreign import modalComponent :: ReactComponent (Record Props_ModalImpl)
 
 -- Not supported properties
---    { closeButtonProps    :: ModalBaseCloseButtonProps
---    , portalProps         :: Omit<PortalProps, "children">
---    , scrollAreaComponent :: ScrollAreaComponent
---    , xOffset             :: MarginLeft<string | number>
---    , yOffset             :: MarginTop<string | number>
---    }
+--   { closeButtonProps    :: ModalBaseCloseButtonProps
+--   , portalProps         :: Omit<PortalProps, "children">
+--   , removeScrollProps   :: RemoveScrollProps
+--   , scrollAreaComponent :: ScrollAreaComponent
+--   , xOffset             :: MarginLeft<string | number>
+--   , yOffset             :: MarginTop<string | number>
+--   }
 
 type Props_Modal    = Props_Modal_ (children :: Array JSX)
 type Props_SubModal = Props_Modal_ ()
@@ -78,6 +79,7 @@ foreign import drawerComponent :: ReactComponent (Record Props_DrawerImpl)
 
 -- Not supported properties
 --   { portalProps         :: Omit<PortalProps, "children">
+--   , removeScrollProps   :: RemoveScrollProps
 --   , scrollAreaComponent :: ScrollAreaComponent
 --   }
 
@@ -85,6 +87,7 @@ type Props_Drawer =
   ModalComponent
     ( children         :: Array JSX
     , closeButtonProps :: Record Props_CloseButtonInner
+    , offset           :: Pixels
     , position         :: DrawerPosition
     )
 
@@ -107,6 +110,7 @@ type Props_DrawerImpl =
   ModalComponentImpl
     ( children         :: Array JSX
     , closeButtonProps :: Record Props_CloseButtonInnerImpl
+    , offset           :: PixelsImpl
     , position         :: DrawerPositionImpl
     )
 

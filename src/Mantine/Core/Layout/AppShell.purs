@@ -63,6 +63,7 @@ type Props_AppShell =
     , header                   :: AppShellHorizontalConfiguration
     , layout                   :: AppShellLayout
     , navbar                   :: AppShellVerticalConfiguration
+    , offsetScrollbars         :: Boolean
     , padding                  :: AppShellPadding
     , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: MantineTransitionTimingFunction
@@ -125,6 +126,7 @@ type Props_AppShellImpl =
     , header                   :: AppShellHorizontalConfigurationImpl
     , layout                   :: String
     , navbar                   :: AppShellVerticalConfigurationImpl
+    , offsetScrollbars         :: Boolean
     , padding                  :: AppShellPaddingImpl
     , transitionDuration       :: MillisecondsImpl
     , transitionTimingFunction :: MantineTransitionTimingFunctionImpl

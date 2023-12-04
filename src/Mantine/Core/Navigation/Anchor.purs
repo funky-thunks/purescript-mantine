@@ -25,7 +25,7 @@ type Props_Anchor =
     , href      :: String
     , target    :: String
     , underline :: AnchorUnderline
-    | Polymorphic Props_TextBase
+    | Props_TextBase
     )
 
 data AnchorUnderline
@@ -47,5 +47,5 @@ type Props_AnchorImpl =
     , href      :: String
     , target    :: String
     , underline :: AnchorUnderlineImpl
-    | PolymorphicImpl Props_TextBaseImpl
+    | Props_TextBaseImpl
     )

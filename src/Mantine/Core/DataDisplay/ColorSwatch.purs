@@ -21,23 +21,19 @@ colorSwatch_ color = colorSwatch { color }
 foreign import colorSwatchComponent :: ReactComponent (Record Props_ColorSwatchImpl)
 
 type Props_ColorSwatch =
-  Props_Common (
-    Polymorphic
-      ( children   :: Array JSX
-      , color      :: MantineColor
-      , radius     :: MantineNumberSize
-      , size       :: Pixels
-      , withShadow :: Boolean
-      )
-  )
+  Props_Common
+    ( children   :: Array JSX
+    , color      :: MantineColor
+    , radius     :: MantineNumberSize
+    , size       :: Pixels
+    , withShadow :: Boolean
+    )
 
 type Props_ColorSwatchImpl =
-  Props_CommonImpl (
-    PolymorphicImpl
-      ( children   :: Array JSX
-      , color      :: MantineColorImpl
-      , radius     :: MantineNumberSizeImpl
-      , size       :: PixelsImpl
-      , withShadow :: Boolean
-      )
-  )
+  Props_CommonImpl
+    ( children   :: Array JSX
+    , color      :: MantineColorImpl
+    , radius     :: MantineNumberSizeImpl
+    , size       :: PixelsImpl
+    , withShadow :: Boolean
+    )

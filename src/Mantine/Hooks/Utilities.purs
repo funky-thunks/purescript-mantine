@@ -15,7 +15,9 @@ module Mantine.Hooks.Utilities
   , UseFavicon
 
   , useHash
+  , useHash_
   , UseHash
+  , UseHashOptions
 
   , useHeadroom
   , UseHeadroom
@@ -178,13 +180,24 @@ type UseNetworkResultImpl =
 useNetwork :: Hook UseNetwork UseNetworkResult
 useNetwork = mkHook0 useNetworkImpl
 
-foreign import useHashImpl :: Effect { hash :: String, setHash :: EffectFn1 String Unit }
+foreign import useHashImpl :: EffectFn1 UseHashOptionsImpl { hash :: String, setHash :: EffectFn1 String Unit }
 foreign import data UseHash :: Type -> Type
 
-useHash :: Hook UseHash (String /\ (String -> Effect Unit))
-useHash =
+type UseHashOptions =
+  { getInitialValueInEffect :: Boolean
+  }
+
+type UseHashOptionsImpl =
+  { getInitialValueInEffect :: Boolean
+  }
+
+useHash_ :: Hook UseHash (String /\ (String -> Effect Unit))
+useHash_ = useHash { getInitialValueInEffect: true }
+
+useHash :: UseHashOptions -> Hook UseHash (String /\ (String -> Effect Unit))
+useHash options =
   let unpack { hash, setHash } = hash /\ setHash
-   in unpack <$> mkHook0 useHashImpl
+   in unpack <$> mkHook1 useHashImpl options
 
 foreign import useHeadroomImpl :: EffectFn1 UseHeadroomOptionsImpl Boolean
 foreign import data UseHeadroom :: Type -> Type

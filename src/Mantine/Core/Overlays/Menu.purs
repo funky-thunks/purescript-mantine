@@ -132,13 +132,15 @@ instance ToFFI MenuPopoverWidth MenuPopoverWidthImpl where
 data MenuTrigger
   = MenuTriggerClick
   | MenuTriggerHover
+  | MenuTriggerClickHover
 
 type MenuTriggerImpl = String
 
 instance ToFFI MenuTrigger MenuTriggerImpl where
   toNative = case _ of
-    MenuTriggerClick -> "click"
-    MenuTriggerHover -> "hover"
+    MenuTriggerClick      -> "click"
+    MenuTriggerHover      -> "hover"
+    MenuTriggerClickHover -> "click-hover"
 
 data MenuFloatingPosition
   = MenuFloatingPositionTop

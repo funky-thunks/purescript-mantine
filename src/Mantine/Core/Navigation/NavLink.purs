@@ -24,7 +24,6 @@ type Props_NavLink =
     , children                    :: Array JSX
     , childrenOffset              :: MantineNumberSize
     , color                       :: MantineColor
-    , component                   :: String
     , defaultOpened               :: Boolean
     , description                 :: JSX
     , disableRightSectionRotation :: Boolean
@@ -59,7 +58,6 @@ type Props_NavLinkImpl =
     , children                    :: Array JSX
     , childrenOffset              :: MantineNumberSizeImpl
     , color                       :: MantineColorImpl
-    , component                   :: String
     , defaultOpened               :: Boolean
     , description                 :: JSX
     , disableRightSectionRotation :: Boolean

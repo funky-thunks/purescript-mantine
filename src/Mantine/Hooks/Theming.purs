@@ -26,11 +26,14 @@ instance FromFFI MantineColorSchemeImpl MantineColorScheme where
     "dark" -> MantineColorSchemeDark
     _      -> MantineColorSchemeLight
 
-useMantineColorScheme :: Hook UseMantineColorScheme (MantineColorScheme /\ Effect Unit)
-useMantineColorScheme =
+useMantineColorScheme :: UseColorSchemeOptions -> Hook UseMantineColorScheme (MantineColorScheme /\ Effect Unit)
+useMantineColorScheme options =
   let picker = mkFn2 (Tuple <<< fromNative)
-   in unsafeHook (runEffectFn1 useMantineColorScheme_ picker)
+   in unsafeHook (runEffectFn2 useMantineColorScheme_ (toNative options) picker)
 
 type ColorSchemePicker = Fn2 String (Effect Unit) (MantineColorScheme /\ Effect Unit)
 
-foreign import useMantineColorScheme_ :: EffectFn1 ColorSchemePicker (MantineColorScheme /\ Effect Unit)
+foreign import useMantineColorScheme_ :: EffectFn2 UseColorSchemeOptionsImpl ColorSchemePicker (MantineColorScheme /\ Effect Unit)
+
+type UseColorSchemeOptions     = { keepTransition :: Optional     Boolean }
+type UseColorSchemeOptionsImpl = { keepTransition :: OptionalImpl Boolean }

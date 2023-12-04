@@ -2,7 +2,7 @@
 
 Bindings to use [Mantine](https://mantine.dev) components from a Purescript codebase.
 
-Currently supporting mantine v7.2.2.
+Currently supporting mantine v7.3.0.
 
 :warning: This is work-in-progress and this is very unstable.
 
@@ -60,7 +60,7 @@ in  upstream
 ```
 
 ```bash
-npm install --save @mantine/core@7.2.2 @mantine/hooks@7.2.2 @mantine/dates@7.2.2 dayjs react
+npm install --save @mantine/core@7.3.0 @mantine/hooks@7.3.0 @mantine/dates@7.3.0 dayjs react
 spago install mantine
 ```
 

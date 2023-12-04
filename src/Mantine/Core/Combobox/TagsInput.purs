@@ -19,18 +19,20 @@ foreign import tagsInputComponent :: ReactComponent (Record Props_TagsInputImpl)
 
 type Props_TagsInput =
   Props_Common
-    ( allowDuplicates :: Boolean
-    , maxTags         :: Maybe Int
-    , onDuplicate     :: ValueHandler String
-    , splitChars      :: Maybe (Array String)
+    ( allowDuplicates          :: Boolean
+    , hiddenInputValuesDivider :: String
+    , maxTags                  :: Maybe Int
+    , onDuplicate              :: ValueHandler String
+    , splitChars               :: Maybe (Array String)
     | BaseSelectPropsRow (Array String)
     )
 
 type Props_TagsInputImpl =
   Props_CommonImpl
-    ( allowDuplicates :: Boolean
-    , maxTags         :: Nullable Number
-    , onDuplicate     :: ValueHandlerImpl String
-    , splitChars      :: Nullable (Array String)
+    ( allowDuplicates          :: Boolean
+    , hiddenInputValuesDivider :: String
+    , maxTags                  :: Nullable Number
+    , onDuplicate              :: ValueHandlerImpl String
+    , splitChars               :: Nullable (Array String)
     | BaseSelectPropsRowImpl (Array String)
     )

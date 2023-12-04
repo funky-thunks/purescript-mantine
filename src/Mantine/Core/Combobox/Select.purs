@@ -54,8 +54,9 @@ foreign import multiSelectComponent :: ReactComponent (Record Props_MultiSelectI
 
 type Props_MultiSelect =
   Props_Common
-    ( hidePickedOptions :: Boolean
-    , maxValues         :: Int
+    ( hiddenInputValuesDivider :: String
+    , hidePickedOptions        :: Boolean
+    , maxValues                :: Int
     | SelectPropsRow (Array String)
     )
 
@@ -158,7 +159,8 @@ type Props_SelectImpl =
 
 type Props_MultiSelectImpl =
   Props_CommonImpl
-    ( hidePickedOptions :: Boolean
-    , maxValues         :: Number
+    ( hiddenInputValuesDivider :: String
+    , hidePickedOptions        :: Boolean
+    , maxValues                :: Number
     | SelectPropsRowImpl (Array String)
     )
