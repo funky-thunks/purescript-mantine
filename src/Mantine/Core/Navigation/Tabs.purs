@@ -172,12 +172,14 @@ foreign import tabPanelComponent :: ReactComponent (Record Props_TabPanelImpl)
 
 type Props_TabPanel =
   Props_Common
-    ( children :: Array JSX
-    , value    :: String
+    ( children    :: Array JSX
+    , keepMounted :: Boolean
+    , value       :: String
     )
 
 type Props_TabPanelImpl =
   Props_CommonImpl
-    ( children :: Array JSX
-    , value    :: String
+    ( children    :: Array JSX
+    , keepMounted :: Boolean
+    , value       :: String
     )

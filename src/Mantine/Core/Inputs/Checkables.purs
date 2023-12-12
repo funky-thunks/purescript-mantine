@@ -7,6 +7,9 @@ module Mantine.Core.Inputs.Checkables
 
   , CheckableLabelPosition(..)
   , CheckableLabelPositionImpl
+
+  , CheckableVariant(..)
+  , CheckableVariantImpl
   ) where
 
 import Mantine.Core.Prelude
@@ -32,6 +35,7 @@ type Props_CheckableFieldComponent rest =
     , error         :: JSX
     , label         :: JSX
     , labelPosition :: CheckableLabelPosition
+    , variant       :: CheckableVariant
     | rest
     )
 
@@ -55,6 +59,7 @@ type Props_CheckableFieldComponentImpl rest =
     , error         :: JSX
     , label         :: JSX
     , labelPosition :: CheckableLabelPositionImpl
+    , variant       :: CheckableVariantImpl
     | rest
     )
 
@@ -68,3 +73,14 @@ instance ToFFI CheckableLabelPosition CheckableLabelPositionImpl where
   toNative = case _ of
     CheckableLabelPositionLeft  -> "left"
     CheckableLabelPositionRight -> "right"
+
+data CheckableVariant
+  = CheckableVariantFilled
+  | CheckableVariantOutline
+
+type CheckableVariantImpl = String
+
+instance ToFFI CheckableVariant CheckableVariantImpl where
+  toNative = case _ of
+    CheckableVariantFilled  -> "filled"
+    CheckableVariantOutline -> "outline"

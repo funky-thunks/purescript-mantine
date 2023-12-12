@@ -22,12 +22,12 @@ module Mantine.Core.Inputs
   , module Mantine.Core.Inputs.Textarea
   ) where
 
-import Mantine.Core.Inputs.Checkables (CheckableLabelPosition(..), CheckableLabelPositionImpl, Props_CheckableComponent, Props_CheckableComponentImpl, Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
+import Mantine.Core.Inputs.Checkables (CheckableLabelPosition(..), CheckableLabelPositionImpl, CheckableVariant(..), CheckableVariantImpl, Props_CheckableComponent, Props_CheckableComponentImpl, Props_CheckableFieldComponent, Props_CheckableFieldComponentImpl)
 import Mantine.Core.Inputs.Checkbox (Props_CheckIcon, Props_CheckIconImpl, Props_Checkbox, Props_CheckboxGroup, Props_CheckboxGroupImpl, Props_CheckboxImpl, checkIcon, checkIcon_, checkbox, checkboxGroup, checkboxGroup_)
 import Mantine.Core.Inputs.Chip (ChipType(..), ChipTypeImpl, ChipVariant(..), ChipVariantImpl, Props_Chip, Props_ChipGroup, Props_ChipGroupImpl, Props_ChipImpl, chip, chipGroup, multipleChipGroup)
 import Mantine.Core.Inputs.ClearButtonProps (ClearButtonProps, ClearButtonPropsImpl)
 import Mantine.Core.Inputs.ColorInput (PopoverProps, PopoverPropsImpl, Props_ColorInput, Props_ColorInputImpl, colorInput)
-import Mantine.Core.Inputs.ColorPicker (ColorFormat(..), ColorFormatImpl, ColorFormula(..), ColorFormulaImpl, ColorPicking, ColorPickingImpl, Props_ColorPicker, Props_ColorPickerImpl, colorPicker)
+import Mantine.Core.Inputs.ColorPicker (ColorFormat(..), ColorFormatImpl, ColorFormula(..), ColorFormulaImpl, ColorPicking, ColorPickingImpl, Props_AlphaSlider, Props_AlphaSliderImpl, Props_ColorPicker, Props_ColorPickerImpl, Props_HueSlider, Props_HueSliderImpl, alphaSlider, colorPicker, hueSlider)
 import Mantine.Core.Inputs.FieldSet (FieldsetVariant(..), FieldsetVariantImpl, Props_Fieldset, Props_FieldsetImpl, fieldset)
 import Mantine.Core.Inputs.FileInput (CaptureMode(..), CaptureModeImpl, ClearButtonProps, ClearButtonPropsImpl, Props_FileInput, Props_FileInputImpl, fileInput)
 import Mantine.Core.Inputs.Input (InputType(..), InputTypeImpl, InputVariant(..), InputVariantImpl, InputWrapperElement(..), InputWrapperElementImpl, InputWrapperOrder(..), InputWrapperOrderImpl, Props_Input, Props_InputBaseRow, Props_InputBaseRowImpl, Props_InputBaseRowImpl_, Props_InputBaseRow_, Props_InputComponent, Props_InputComponentImpl, Props_InputDescription, Props_InputDescriptionImpl, Props_InputError, Props_InputErrorImpl, Props_InputGroupComponent, Props_InputGroupComponentImpl, Props_InputGroupRow, Props_InputGroupRowImpl, Props_InputGroupRowImpl_, Props_InputGroupRow_, Props_InputImpl, Props_InputLabel, Props_InputLabelImpl, Props_InputRow, Props_InputRowImpl, Props_InputRowImpl_, Props_InputRow_, Props_InputWrapper, Props_InputWrapperImpl, WithInputContainer, WithInputContainerImpl, input, inputDescription, inputError, inputLabel, inputWrapper)

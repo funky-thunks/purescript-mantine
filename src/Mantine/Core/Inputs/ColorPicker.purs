@@ -7,6 +7,14 @@ module Mantine.Core.Inputs.ColorPicker
   , ColorFormula(..)
   , ColorFormulaImpl
 
+  , alphaSlider
+  , Props_AlphaSlider
+  , Props_AlphaSliderImpl
+
+  , hueSlider
+  , Props_HueSlider
+  , Props_HueSliderImpl
+
   , ColorPicking
   , ColorPickingImpl
   ) where
@@ -101,3 +109,29 @@ type Props_ColorPickerImpl =
     , size               :: MantineSizeImpl
     | ColorPickingImpl
     )
+
+alphaSlider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_AlphaSlider
+  => Union attrsImpl attrsImpl_ Props_AlphaSliderImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+alphaSlider = element (unsafeCoerce alphaSliderComponent) <<< toNative
+
+foreign import alphaSliderComponent :: ReactComponent (Record Props_AlphaSliderImpl)
+
+type Props_AlphaSlider     = ( color :: String, value :: Number, onChange :: ValueHandler     Number )
+type Props_AlphaSliderImpl = ( color :: String, value :: Number, onChange :: ValueHandlerImpl Number )
+
+hueSlider
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_HueSlider
+  => Union attrsImpl attrsImpl_ Props_HueSliderImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+hueSlider = element (unsafeCoerce hueSliderComponent) <<< toNative
+
+foreign import hueSliderComponent :: ReactComponent (Record Props_HueSliderImpl)
+
+type Props_HueSlider     = ( value :: Int,    onChange :: ValueHandler     Int )
+type Props_HueSliderImpl = ( value :: Number, onChange :: ValueHandlerImpl Number )

@@ -40,7 +40,6 @@ type Props_Button =
   Props_Common
     ( children        :: Array JSX
     , color           :: MantineColor
-    , component       :: String
     , "data-disabled" :: Boolean
     , disabled        :: Boolean
     , fullWidth       :: Boolean
@@ -100,7 +99,6 @@ type Props_ButtonImpl =
   Props_CommonImpl
     ( children        :: Array JSX
     , color           :: MantineColorImpl
-    , component       :: String
     , "data-disabled" :: Boolean
     , disabled        :: Boolean
     , fullWidth       :: Boolean
@@ -155,12 +153,10 @@ type Props_UnstyledButton =
   Props_Common
     ( children :: Array JSX
     , onClick  :: EventHandler
-    | Polymorphic ()
     )
 
 type Props_UnstyledButtonImpl =
   Props_CommonImpl
     ( children :: Array JSX
     , onClick  :: EventHandler
-    | PolymorphicImpl ()
     )

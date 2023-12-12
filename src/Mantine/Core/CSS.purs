@@ -16,6 +16,8 @@ module Mantine.Core.CSS
   , ListStyleTypeImpl
   , ObjectFit(..)
   , ObjectFitImpl
+  , Overflow(..)
+  , OverflowImpl
   , PointerEvents(..)
   , PointerEventsImpl
   , Position(..)
@@ -245,6 +247,27 @@ instance ToFFI ObjectFit ObjectFitImpl where
     ObjectFitNone      -> "none"
     ObjectFitScaleDown -> "scale-down"
     ObjectFitGlobal gv -> toNative gv
+
+data Overflow
+  = OverflowVisible
+  | OverflowHidden
+  | OverflowClip
+  | OverflowScroll
+  | OverflowAuto
+  | OverflowGlobal GlobalValues
+  | OverflowXY Overflow Overflow
+
+type OverflowImpl = String
+
+instance ToFFI Overflow OverflowImpl where
+  toNative = case _ of
+   OverflowVisible   -> "visible"
+   OverflowHidden    -> "hidden"
+   OverflowClip      -> "clip"
+   OverflowScroll    -> "scroll"
+   OverflowAuto      -> "auto"
+   OverflowGlobal gv -> toNative gv
+   OverflowXY x y    -> toNative x <> " " <> toNative y
 
 data PointerEvents
   = PointerEventsAll

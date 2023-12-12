@@ -49,19 +49,15 @@ cardSection = element (unsafeCoerce cardSectionComponent) <<< toNative
 foreign import cardSectionComponent :: ReactComponent (Record Props_CardSectionImpl)
 
 type Props_CardSection =
-  Props_Common (
-    Polymorphic
-      ( children       :: Array JSX
-      , inheritPadding :: Boolean
-      , withBorder     :: Boolean
-      )
-  )
+  Props_Common
+    ( children       :: Array JSX
+    , inheritPadding :: Boolean
+    , withBorder     :: Boolean
+    )
 
 type Props_CardSectionImpl =
-  Props_CommonImpl (
-    PolymorphicImpl
-      ( children       :: Array JSX
-      , inheritPadding :: Boolean
-      , withBorder     :: Boolean
-      )
-  )
+  Props_CommonImpl
+    ( children       :: Array JSX
+    , inheritPadding :: Boolean
+    , withBorder     :: Boolean
+    )
