@@ -2,7 +2,7 @@
 
 Bindings to use [Mantine](https://mantine.dev) components from a Purescript codebase.
 
-Currently supporting mantine v7.3.0.
+Currently supporting mantine v7.3.1.
 
 :warning: This is work-in-progress and this is very unstable.
 
@@ -55,12 +55,12 @@ in  upstream
       , "web-uievents"
       ]
     , repo = "https://github.com/funky-thunks/purescript-mantine"
-    , version = "29db6b706b741ff9ceb71fa4c9cd0f656e783230"
+    , version = "9a8e16ffff92d6574b59bf25c261a6674798b78f"
     }
 ```
 
 ```bash
-npm install --save @mantine/core@7.3.0 @mantine/hooks@7.3.0 @mantine/dates@7.3.0 dayjs react
+npm install --save @mantine/core@7.3.1 @mantine/hooks@7.3.1 @mantine/dates@7.3.1 dayjs react
 spago install mantine
 ```
 
