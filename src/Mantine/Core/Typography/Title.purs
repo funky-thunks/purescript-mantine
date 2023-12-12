@@ -48,9 +48,10 @@ foreign import titleComponent :: ReactComponent (Record Props_TitleImpl)
 
 type Props_Title =
   Props_Common
-    ( children :: Array JSX
-    , order    :: TitleOrder
-    , size     :: MantineNumberSize
+    ( children  :: Array JSX
+    , lineClamp :: Number
+    , order     :: TitleOrder
+    , size      :: MantineNumberSize
     )
 
 data TitleOrder
@@ -74,7 +75,8 @@ instance ToFFI TitleOrder TitleOrderImpl where
 
 type Props_TitleImpl =
   Props_CommonImpl
-    ( children :: Array JSX
-    , order    :: TitleOrderImpl
-    , size     :: MantineNumberSizeImpl
+    ( children  :: Array JSX
+    , lineClamp :: Number
+    , order     :: TitleOrderImpl
+    , size      :: MantineNumberSizeImpl
     )
