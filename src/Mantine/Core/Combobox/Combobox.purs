@@ -62,10 +62,15 @@ module Mantine.Core.Combobox.Combobox
   , Props_ComboboxGroup
   , Props_ComboboxGroupImpl
 
+  , comboboxSearch
+  , Props_ComboboxSearch
+  , Props_ComboboxSearchImpl
+
   , EventsTargetType(..)
   , EventsTargetTypeImpl
   ) where
 
+import Mantine.Core.Inputs.Input (Props_InputRow, Props_InputRowImpl)
 import Mantine.Core.Prelude
 import Effect.Uncurried ( runEffectFn1)
 import React.Basic.Hooks (Hook, unsafeHook)
@@ -592,3 +597,16 @@ type Props_ComboboxInnerImpl =
   , withinPortal                :: OptionalImpl Boolean
   , zIndex                      :: OptionalImpl ZIndexImpl
   )
+
+comboboxSearch
+  :: forall attrs attrs_ attrsImpl attrsImpl_
+   . Union attrs     attrs_     Props_ComboboxSearch
+  => Union attrsImpl attrsImpl_ Props_ComboboxSearchImpl
+  => ToFFI (Record attrs) (Record attrsImpl)
+  => Record attrs -> JSX
+comboboxSearch = element (unsafeCoerce comboboxSearchComponent) <<< toNative
+
+foreign import comboboxSearchComponent :: ReactComponent (Record Props_ComboboxSearchImpl)
+
+type Props_ComboboxSearch     = Props_Common     ( Props_InputRow     )
+type Props_ComboboxSearchImpl = Props_CommonImpl ( Props_InputRowImpl )
