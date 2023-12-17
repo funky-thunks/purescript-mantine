@@ -50,3 +50,7 @@ export function comboboxDropdownComponent(props) {
 export function comboboxGroupComponent(props) {
   return React.createElement(Combobox.Group, props, props.children);
 }
+
+export function comboboxSearchComponent(props) {
+  return React.createElement(Combobox.Search, props, props.children);
+}
