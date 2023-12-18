@@ -23,6 +23,7 @@ type Props_Anchor =
   Props_Common
     ( children  :: Array JSX
     , href      :: String
+    , onClick   :: EventHandler
     , target    :: String
     , underline :: AnchorUnderline
     | Props_TextBase
@@ -45,6 +46,7 @@ type Props_AnchorImpl =
   Props_CommonImpl
     ( children  :: Array JSX
     , href      :: String
+    , onClick   :: EventHandler
     , target    :: String
     , underline :: AnchorUnderlineImpl
     | Props_TextBaseImpl
