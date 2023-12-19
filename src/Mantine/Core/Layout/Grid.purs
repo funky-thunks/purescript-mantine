@@ -10,6 +10,9 @@ module Mantine.Core.Layout.Grid
   , Props_GridColImpl
   , GridColSpan(..)
   , GridColSpanImpl
+
+  , gridSpan
+  , gridOffset
   ) where
 
 import Data.Int (toNumber)
@@ -66,7 +69,7 @@ foreign import gridColComponent :: ReactComponent (Record Props_GridColImpl)
 type Props_GridCol =
   Props_Common
     ( children :: Array JSX
-    , offset   :: FixedOrResponsive Pixels
+    , offset   :: FixedOrResponsive Int
     , order    :: FixedOrResponsive Int
     , span     :: FixedOrResponsive GridColSpan
     )
@@ -87,7 +90,13 @@ instance ToFFI GridColSpan GridColSpanImpl where
 type Props_GridColImpl =
   Props_CommonImpl
     ( children :: Array JSX
-    , offset   :: FixedOrResponsiveImpl Pixels
+    , offset   :: FixedOrResponsiveImpl Number
     , order    :: FixedOrResponsiveImpl Number
     , span     :: FixedOrResponsiveImpl GridColSpanImpl
     )
+
+gridSpan :: Int -> FixedOrResponsive GridColSpan
+gridSpan = Fixed <<< GridColSpanNumber
+
+gridOffset :: Int -> FixedOrResponsive Int
+gridOffset = Fixed
