@@ -794,6 +794,8 @@ type Props_Common r =
   , hiddenFrom  :: Breakpoint
   , visibleFrom :: Breakpoint
   , pos         :: Position
+
+  , tabIndex    :: Int
   | r
   )
 
@@ -833,5 +835,7 @@ type Props_CommonImpl r =
   , hiddenFrom  :: BreakpointImpl
   , visibleFrom :: BreakpointImpl
   , pos         :: PositionImpl
+
+  , tabIndex    :: Number
   | r
   )
