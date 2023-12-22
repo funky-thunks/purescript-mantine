@@ -50,7 +50,7 @@ type Props_PinInput =
     , readOnly    :: Boolean
     , size        :: MantineSize
     , type        :: PinInputType
-    | Controlled String
+    | Controlled ValueHandler String
     )
 
 data PinInputMode
@@ -111,5 +111,5 @@ type Props_PinInputImpl =
     , readOnly    :: Boolean
     , size        :: MantineSizeImpl
     , type        :: PinInputTypeImpl
-    | ControlledImpl String
+    | ControlledImpl ValueHandlerImpl String
     )
