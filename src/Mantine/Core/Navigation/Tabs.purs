@@ -53,7 +53,7 @@ type Props_Tabs =
     , placement               :: TabsPlacement
     , radius                  :: MantineNumberSize
     , variant                 :: TabsVariant
-    | Controlled String
+    | Controlled ValueHandler String
     )
 
 data TabsPlacement
@@ -94,7 +94,7 @@ type Props_TabsImpl =
     , placement               :: TabsPlacementImpl
     , radius                  :: MantineNumberSizeImpl
     , variant                 :: TabsVariantImpl
-    | ControlledImpl String
+    | ControlledImpl ValueHandlerImpl String
     )
 
 tab

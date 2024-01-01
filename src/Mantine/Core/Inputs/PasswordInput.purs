@@ -27,7 +27,7 @@ type Props_PasswordInput =
     , visibilityToggleButtonProps :: ToggleOptions
     , visibilityToggleIcon        :: { reveal :: Boolean, size :: Number } -> JSX
     , visible                     :: Boolean
-    | Controlled String
+    | Controlled InputHandler String
     )
 
 type Props_PasswordInputImpl =
@@ -37,7 +37,7 @@ type Props_PasswordInputImpl =
     , visibilityToggleButtonProps :: ToggleButtonProps
     , visibilityToggleIcon        :: { reveal :: Boolean, size :: Number } -> JSX
     , visible                     :: Boolean
-    | ControlledImpl String
+    | ControlledImpl InputHandlerImpl String
     )
 
 newtype ToggleOptions = ToggleOptions { focusable :: Boolean, label :: String }

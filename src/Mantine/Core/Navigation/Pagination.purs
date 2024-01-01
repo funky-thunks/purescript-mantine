@@ -55,7 +55,7 @@ type Props_Pagination =
     , total          :: PageCount
     , withControls   :: Boolean
     , withEdges      :: Boolean
-    | Controlled Page
+    | Controlled ValueHandler Page
     )
 
 newtype Page = Page Int
@@ -101,5 +101,5 @@ type Props_PaginationImpl =
     , total          :: PageCountImpl
     , withControls   :: Boolean
     , withEdges      :: Boolean
-    | ControlledImpl PageImpl
+    | ControlledImpl ValueHandlerImpl PageImpl
     )

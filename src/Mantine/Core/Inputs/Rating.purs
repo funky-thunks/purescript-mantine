@@ -29,7 +29,7 @@ type Props_Rating =
     , onHover               :: ValueHandler Number
     , readOnly              :: Boolean
     , size                  :: MantineSize
-    | Controlled Number
+    | Controlled ValueHandler Number
     )
 
 type Props_RatingImpl =
@@ -45,5 +45,5 @@ type Props_RatingImpl =
     , onHover               :: ValueHandlerImpl Number
     , readOnly              :: Boolean
     , size                  :: MantineSizeImpl
-    | ControlledImpl Number
+    | ControlledImpl ValueHandlerImpl Number
     )

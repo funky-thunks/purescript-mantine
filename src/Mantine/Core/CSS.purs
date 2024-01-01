@@ -3,6 +3,8 @@ module Mantine.Core.CSS
   , AlignContentImpl
   , AlignItems(..)
   , AlignItemsImpl
+  , ButtonType(..)
+  , ButtonTypeImpl
   , FlexDirection(..)
   , FlexDirectionImpl
   , FlexWrap(..)
@@ -108,6 +110,19 @@ instance ToFFI AlignItems AlignItemsImpl where
     AlignItemsStretch       -> "stretch"
     AlignItemsUnsafeCenter  -> "unsafe center"
     AlignItemsGlobal gv     -> toNative gv
+
+data ButtonType
+  = ButtonTypeButton
+  | ButtonTypeSubmit
+  | ButtonTypeReset
+
+type ButtonTypeImpl = String
+
+instance ToFFI ButtonType ButtonTypeImpl where
+  toNative = case _ of
+    ButtonTypeButton -> "button"
+    ButtonTypeSubmit -> "submit"
+    ButtonTypeReset  -> "reset"
 
 data FlexDirection
   = FlexDirectionRow

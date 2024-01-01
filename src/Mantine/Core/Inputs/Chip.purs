@@ -106,11 +106,11 @@ type Props_MultipleChipGroupImpl = Props_ChipGroupImpl (Array String)
 type Props_ChipGroup value =
   Props_Common
     ( children :: Array JSX
-    | Controlled value
+    | Controlled ValueHandler value
     )
 
 type Props_ChipGroupImpl value =
   Props_CommonImpl
     ( children :: Array JSX
-    | ControlledImpl value
+    | ControlledImpl ValueHandlerImpl value
     )

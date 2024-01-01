@@ -33,7 +33,7 @@ type Props_SegmentedControl =
     , size                     :: MantineSize
     , transitionDuration       :: Milliseconds
     , transitionTimingFunction :: MantineTransitionTimingFunction
-    | Controlled String
+    | Controlled ValueHandler String
     )
 
 type SegmentedControlItem =
@@ -66,7 +66,7 @@ type Props_SegmentedControlImpl =
     , size                     :: MantineSizeImpl
     , transitionDuration       :: MillisecondsImpl
     , transitionTimingFunction :: MantineTransitionTimingFunctionImpl
-    | ControlledImpl String
+    | ControlledImpl ValueHandlerImpl String
     )
 
 type SegmentedControlItemImpl =

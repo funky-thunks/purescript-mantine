@@ -177,7 +177,7 @@ type Props_InputGroupRow items = Props_InputGroupRow_ items ()
 type Props_InputGroupRow_ items rest =
   ( children     :: Array JSX
   , labelElement :: InputWrapperElement
-  | Controlled_ items + Props_InputBaseRow_ rest
+  | Controlled_ ValueHandler items + Props_InputBaseRow_ rest
   )
 
 type Props_InputBaseRow = Props_InputBaseRow_ ()
@@ -219,7 +219,7 @@ type Props_InputGroupRowImpl items = Props_InputGroupRowImpl_ items ()
 type Props_InputGroupRowImpl_ items rest =
   ( children     :: Array JSX
   , labelElement :: InputWrapperElementImpl
-  | ControlledImpl_ items + Props_InputBaseRowImpl_ rest
+  | ControlledImpl_ ValueHandlerImpl items + Props_InputBaseRowImpl_ rest
   )
 
 type Props_InputBaseRowImpl = Props_InputBaseRowImpl_ ()

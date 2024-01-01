@@ -653,9 +653,10 @@ data InputHandler value
   = InputTargetHandler        (value -> Effect Unit)
   | InputCurrentTargetHandler (value -> Effect Unit)
 
-type InputHandlerImpl = EventHandler
+type InputHandlerImpl :: forall k. k -> Type
+type InputHandlerImpl value = EventHandler
 
-instance FromFFI String value => ToFFI (InputHandler value) InputHandlerImpl where
+instance FromFFI String value => ToFFI (InputHandler value) (InputHandlerImpl value) where
   toNative =
     let mkHandler h ch = handler h (foldMap (ch <<< fromNative))
      in case _ of
@@ -707,19 +708,19 @@ type PopoverMiddlewaresImpl =
   , inline :: OptionalImpl Boolean
   }
 
-type Controlled  value = Controlled_ value ()
-type Controlled_ value rest =
-  ( defaultValue :: Maybe        value
-  , onChange     :: ValueHandler value
-  , value        :: Maybe        value
+type Controlled  handler value = Controlled_ handler value ()
+type Controlled_ handler value rest =
+  ( defaultValue :: Maybe   value
+  , onChange     :: handler value
+  , value        :: Maybe   value
   | rest
   )
 
-type ControlledImpl  value = ControlledImpl_ value ()
-type ControlledImpl_ value rest =
-  ( defaultValue :: Nullable         value
-  , onChange     :: ValueHandlerImpl value
-  , value        :: Nullable         value
+type ControlledImpl  handlerImpl value = ControlledImpl_ handlerImpl value ()
+type ControlledImpl_ handlerImpl value rest =
+  ( defaultValue :: Nullable    value
+  , onChange     :: handlerImpl value
+  , value        :: Nullable    value
   | rest
   )
 
@@ -734,7 +735,7 @@ type RawControlled_ value rest =
 type RawControlledImpl  value = RawControlledImpl_ value ()
 type RawControlledImpl_ value rest =
   ( defaultValue :: Nullable         value
-  , onChange     :: InputHandlerImpl
+  , onChange     :: InputHandlerImpl value
   , value        :: Nullable         value
   | rest
   )
@@ -793,6 +794,8 @@ type Props_Common r =
   , hiddenFrom  :: Breakpoint
   , visibleFrom :: Breakpoint
   , pos         :: Position
+
+  , tabIndex    :: Int
   | r
   )
 
@@ -832,5 +835,7 @@ type Props_CommonImpl r =
   , hiddenFrom  :: BreakpointImpl
   , visibleFrom :: BreakpointImpl
   , pos         :: PositionImpl
+
+  , tabIndex    :: Number
   | r
   )

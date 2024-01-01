@@ -58,7 +58,7 @@ type Props_Accordion accordionValue =
     , radius                 :: MantineNumberSize
     , transitionDuration     :: Milliseconds
     , variant                :: AccordionVariant
-    | Controlled accordionValue
+    | Controlled ValueHandler accordionValue
     )
 
 data AccordionChevronPosition
@@ -117,7 +117,7 @@ type Props_AccordionImpl accordionValueImpl =
     , radius                 :: MantineNumberSizeImpl
     , transitionDuration     :: MillisecondsImpl
     , variant                :: AccordionVariantImpl
-    | ControlledImpl accordionValueImpl
+    | ControlledImpl ValueHandlerImpl accordionValueImpl
     )
 
 accordionControl

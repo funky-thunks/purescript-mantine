@@ -37,7 +37,7 @@ type ColorPicking =
   , swatches       :: Array ColorFormula
   , swatchesPerRow :: Int
   , withPicker     :: Boolean
-  | Controlled ColorFormula
+  | Controlled ValueHandler ColorFormula
   )
 
 type Props_ColorPicker =
@@ -95,7 +95,7 @@ type ColorPickingImpl =
   , swatches       :: Array ColorFormulaImpl
   , swatchesPerRow :: Number
   , withPicker     :: Boolean
-  | ControlledImpl ColorFormulaImpl
+  | ControlledImpl ValueHandlerImpl ColorFormulaImpl
   )
 
 type Props_ColorPickerImpl =

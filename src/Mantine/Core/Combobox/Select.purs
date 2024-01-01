@@ -84,7 +84,7 @@ type BaseSelectPropsRow items =
     , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
     , withScrollArea            :: Boolean
-    | Controlled_ items + ClearablePropsRow + WithInputContainer + Props_InputRow
+    | Controlled_ ValueHandler items + ClearablePropsRow + WithInputContainer + Props_InputRow
     )
 
 type ClearablePropsRow rest =
@@ -135,7 +135,7 @@ type BaseSelectPropsRowImpl items =
     , searchValue               :: String
     , selectFirstOptionOnChange :: Boolean
     , withScrollArea            :: Boolean
-    | ControlledImpl_ items + ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl
+    | ControlledImpl_ ValueHandlerImpl items + ClearablePropsRowImpl + WithInputContainerImpl + Props_InputRowImpl
     )
 
 type ClearablePropsRowImpl restImpl =

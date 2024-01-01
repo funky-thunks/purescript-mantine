@@ -82,7 +82,7 @@ type Props_DatePicker_ rest =
     ( allowDeselect          :: Boolean
     , allowSingleDateInRange :: Boolean
     , type                   :: DatePickerType
-    | Controlled_ DateValue rest
+    | Controlled_ ValueHandler DateValue rest
     )
 
 data DatePickerType
@@ -104,7 +104,7 @@ type Props_DatePickerImpl_ rest =
     ( allowDeselect          :: Boolean
     , allowSingleDateInRange :: Boolean
     , type                   :: DatePickerTypeImpl
-    | ControlledImpl_ DateValueImpl rest
+    | ControlledImpl_ ValueHandlerImpl DateValueImpl rest
     )
 
 dateInput
@@ -136,7 +136,7 @@ type Props_DateInput =
     , previousDisabled :: Boolean
     , withNext         :: Boolean
     , withPrevious     :: Boolean
-    | Controlled_ DateValue + Props_DateInputBase
+    | Controlled_ ValueHandler DateValue + Props_DateInputBase
     )
 
 type Props_DateInputImpl =
@@ -154,7 +154,7 @@ type Props_DateInputImpl =
     , previousDisabled :: Boolean
     , withNext         :: Boolean
     , withPrevious     :: Boolean
-    | ControlledImpl_ DateValueImpl + Props_DateInputBaseImpl
+    | ControlledImpl_ ValueHandlerImpl DateValueImpl + Props_DateInputBaseImpl
     )
 
 datePickerInput
@@ -195,7 +195,7 @@ type Props_DateTimePicker =
     , timeInputProps    :: Record Props_TimeInput
     , valueFormat       :: String
     , withSeconds       :: Boolean
-    | Controlled_ DateValue + InputProps
+    | Controlled_ ValueHandler DateValue + InputProps
     )
 
 type Props_DateTimePickerImpl =
@@ -209,7 +209,7 @@ type Props_DateTimePickerImpl =
     , timeInputProps    :: Record Props_TimeInputImpl
     , valueFormat       :: String
     , withSeconds       :: Boolean
-    | ControlledImpl_ DateValueImpl + InputPropsImpl
+    | ControlledImpl_ ValueHandlerImpl DateValueImpl + InputPropsImpl
     )
 
 type DatePickerLevel3Component rest =

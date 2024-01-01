@@ -22,7 +22,7 @@ type Props_Textarea =
     ( autosize :: Boolean
     , maxRows  :: Int
     , minRows  :: Int
-    | Controlled String
+    | Controlled InputHandler String
     )
 
 type Props_TextareaImpl =
@@ -30,5 +30,5 @@ type Props_TextareaImpl =
     ( autosize :: Boolean
     , maxRows  :: Number
     , minRows  :: Number
-    | ControlledImpl String
+    | ControlledImpl InputHandlerImpl String
     )

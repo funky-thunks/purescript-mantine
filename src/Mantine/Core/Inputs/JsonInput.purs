@@ -29,7 +29,7 @@ type Props_JsonInput =
     , maxRows         :: Int
     , minRows         :: Int
     , validationError :: JSX
-    | Controlled String
+    | Controlled ValueHandler String
     )
 
 type Props_JsonInputImpl =
@@ -39,5 +39,5 @@ type Props_JsonInputImpl =
     , maxRows         :: Number
     , minRows         :: Number
     , validationError :: JSX
-    | ControlledImpl String
+    | ControlledImpl ValueHandlerImpl String
     )

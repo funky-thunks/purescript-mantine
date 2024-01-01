@@ -39,7 +39,7 @@ type Props_Autocomplete =
     , onOptionSubmit            :: ValueHandler String
     , selectFirstOptionOnChange :: Boolean
     , withScrollArea            :: Boolean
-    | Controlled String
+    | Controlled ValueHandler String
     )
 
 type AutocompleteItem =
@@ -60,5 +60,5 @@ type Props_AutocompleteImpl =
     , onOptionSubmit            :: ValueHandlerImpl String
     , selectFirstOptionOnChange :: Boolean
     , withScrollArea            :: Boolean
-    | ControlledImpl String
+    | ControlledImpl ValueHandlerImpl String
     )
