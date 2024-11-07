@@ -47,7 +47,7 @@ controlled :: Component Unit
 controlled = React.component "Textarea_Controlled" \_ -> React.do
   value /\ onChange <- React.useState' ""
   pure $
-    MC.textarea { value: pure value, onChange }
+    MC.textarea { value: pure value, onChange: MC.InputTargetHandler onChange }
 
 -- Error state
 -- https://mantine.dev/core/textarea/#error-state

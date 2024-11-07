@@ -29,7 +29,7 @@ controlled :: Component Unit
 controlled = React.component "TextInput_Controlled" \_ -> React.do
   value /\ onChange <- React.useState' ""
   pure $
-    MC.textInput { value: pure value, onChange }
+    MC.textInput { value: pure value, onChange: MC.InputTargetHandler onChange }
 
 -- Left and right sections
 -- https://mantine.dev/core/text-input/#left-and-right-sections

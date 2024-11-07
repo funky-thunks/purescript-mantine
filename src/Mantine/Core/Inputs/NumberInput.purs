@@ -57,7 +57,7 @@ type Props_NumberInput =
     , thousandsGroupStyle      :: ThousandsGroupStyle
     , type                     :: NumberInputType
     , valueIsNumericString     :: Boolean
-    | Controlled NumberInput
+    | Controlled ValueHandler NumberInput
     )
 
 data NumberClampBehavior
@@ -149,5 +149,5 @@ type Props_NumberInputImpl =
     , thousandsGroupStyle      :: ThousandsGroupStyleImpl
     , type                     :: NumberInputTypeImpl
     , valueIsNumericString     :: Boolean
-    | ControlledImpl NumberInputImpl
+    | ControlledImpl ValueHandlerImpl NumberInputImpl
     )

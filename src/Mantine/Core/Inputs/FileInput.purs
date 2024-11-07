@@ -35,7 +35,7 @@ type Props_FileInput =
     , clearButtonProps :: ClearButtonProps
     , clearable        :: Boolean
     , multiple         :: Boolean
-    | Controlled File
+    | Controlled ValueHandler File
     )
 
 data CaptureMode = User | Environment | Explicit Boolean
@@ -55,5 +55,5 @@ type Props_FileInputImpl =
     , clearButtonProps :: ClearButtonPropsImpl
     , clearable        :: Boolean
     , multiple         :: Boolean
-    | ControlledImpl File
+    | ControlledImpl ValueHandlerImpl File
     )

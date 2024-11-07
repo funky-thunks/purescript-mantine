@@ -53,6 +53,7 @@ type Props_Button =
     , radius          :: Radius
     , rightSection    :: JSX
     , size            :: ButtonSize
+    , type            :: ButtonType
     , variant         :: ButtonVariant
     )
 
@@ -112,6 +113,7 @@ type Props_ButtonImpl =
     , radius          :: RadiusImpl
     , rightSection    :: JSX
     , size            :: ButtonSizeImpl
+    , type            :: ButtonTypeImpl
     , variant         :: ButtonVariantImpl
     )
 

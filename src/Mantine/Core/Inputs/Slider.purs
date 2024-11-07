@@ -103,7 +103,7 @@ type Props_SliderCommon value =
   , step                 :: Number
   , thumbChildren        :: JSX
   , thumbSize            :: Pixels
-  | Controlled value
+  | Controlled ValueHandler value
   )
 
 type SliderMark =
@@ -131,7 +131,7 @@ type Props_SliderCommonImpl value =
   , step                 :: Number
   , thumbChildren        :: JSX
   , thumbSize            :: PixelsImpl
-  | ControlledImpl value
+  | ControlledImpl ValueHandlerImpl value
   )
 
 type SliderMarkImpl =
